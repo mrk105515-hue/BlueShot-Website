@@ -11,23 +11,23 @@ let activeSize = "M"; // Default selected size for the featured shirt
 const PRODUCTS_CATALOG = {
   "ruler-tshirt": {
     name: "DXZ Official \"RULER\" T-Shirt",
-    price: 24.99,
+    price: 1999,
     image: "assets/merch-2.png"
   },
   "dxz-obsidian-hoodie": {
     name: "DXZ Obsidian Hoodie",
-    price: 49.99,
+    price: 3999,
     image: "assets/merch-2.png",
     customClass: "hoodie-color"
   },
   "dxz-s3-poster": {
     name: "Season 3 Metallic Poster",
-    price: 14.99,
+    price: 1199,
     image: "assets/dxz-poster.jpg"
   },
   "dxz-redago-case": {
     name: "Redago Aura Phone Case",
-    price: 19.99,
+    price: 1599,
     image: "assets/merch-1.png",
     customClass: "case-color"
   }
@@ -103,7 +103,7 @@ function updateCartUI() {
 
   // Update Subtotal
   if (subtotalDisplay) {
-    subtotalDisplay.textContent = `$${subtotal.toFixed(2)}`;
+    subtotalDisplay.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
   }
 
   // Render Items List
@@ -152,7 +152,7 @@ function updateCartUI() {
       <div class="cart-item-details">
         <h4 class="cart-item-name">${item.name}</h4>
         <div class="cart-item-meta">Size: ${item.size}</div>
-        <div class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+        <div class="cart-item-price">₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
         <div class="cart-item-qty">
           <button class="qty-btn" onclick="changeQty('${item.id}', '${item.size}', -1)">-</button>
           <span class="qty-val">${item.quantity}</span>
@@ -344,7 +344,7 @@ function initCheckoutWizard() {
   const backdrop = document.getElementById("checkout-modal-backdrop");
 
   const shippingForm = document.getElementById("shipping-form");
-  const paymentForm = document.getElementById("payment-form");
+
   const successBtn = document.getElementById("success-continue-btn");
   const paymentBack = document.getElementById("payment-back-btn");
 
@@ -387,7 +387,7 @@ function initCheckoutWizard() {
     let subtotal = 0;
     cart.forEach(item => subtotal += item.price * item.quantity);
     const summaryTotal = document.getElementById("checkout-summary-total");
-    if (summaryTotal) summaryTotal.textContent = `$${subtotal.toFixed(2)}`;
+    if (summaryTotal) summaryTotal.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
 
     // Close the cart drawer first
     toggleCartDrawer(false);
@@ -428,42 +428,7 @@ function initCheckoutWizard() {
     });
   }
 
-  if (paymentForm) {
-    paymentForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      
-      const submitBtn = paymentForm.querySelector("button[type='submit']");
-      const originalHtml = submitBtn.innerHTML;
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `Authorizing... <i class="fa-solid fa-spinner fa-spin" style="margin-left: 0.5rem;"></i>`;
-
-      // Simulate API payment authorization delay
-      setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalHtml;
-
-        // Calculate totals for receipt
-        let subtotal = 0;
-        cart.forEach(item => subtotal += item.price * item.quantity);
-        document.getElementById("success-total-text").textContent = `$${subtotal.toFixed(2)}`;
-
-        // Generate mock Order ID
-        const randomOrderId = "DXZ-" + Math.floor(10000 + Math.random() * 90000);
-        document.getElementById("success-order-id").textContent = randomOrderId;
-
-        // Clear forms & cart state completely
-        shippingForm.reset();
-        paymentForm.reset();
-        cart = [];
-        saveCartToStorage();
-        updateCartUI();
-
-        showStep(3); // Go to success receipt
-      }, 2000);
-    });
-  }
-
-  // Wire up the dynamic Razorpay gateway button
+  // Razorpay is the sole payment method — prices are natively in INR
   const razorpayBtn = document.querySelector(".razorpay-gateway");
   if (razorpayBtn) {
     razorpayBtn.addEventListener("click", (e) => {
@@ -476,22 +441,20 @@ function initCheckoutWizard() {
       
       if (!shipName || !shipEmail || !shipAddress) {
         showNotification("Please complete your shipping address first!", true);
-        showStep(1); // Redirect back to step 1
+        showStep(1);
         return;
       }
 
-      // Calculate dynamically for whatever is in the cart
-      let subtotalUSD = 0;
+      // Calculate dynamically for whatever is in the cart (prices are in INR)
+      let subtotal = 0;
       let itemsList = [];
       
       cart.forEach(item => {
-        subtotalUSD += item.price * item.quantity;
+        subtotal += item.price * item.quantity;
         itemsList.push(`${item.quantity}x ${item.name} (${item.size})`);
       });
 
-      const exchangeRate = 83; // 1 USD = 83 INR
-      const totalINR = subtotalUSD * exchangeRate;
-      const amountPaise = Math.round(totalINR * 100); 
+      const amountPaise = Math.round(subtotal * 100);
 
       // Get address details
       const city = document.getElementById("ship-city").value;
@@ -507,16 +470,17 @@ function initCheckoutWizard() {
         "description": itemsList.join(", "),
         "image": "https://blueshotwiki.netlify.app/assets/char-bsg.png",
         "handler": function (response) {
-          // Dynamic payment successful callback!
+          // Payment successful!
           showNotification(`Payment Successful! ID: ${response.razorpay_payment_id}`);
 
-          // Populate success screen receipt details dynamically
-          document.getElementById("success-total-text").textContent = `₹${totalINR.toLocaleString('en-IN')} (approx. $${subtotalUSD.toFixed(2)})`;
+          // Populate success screen receipt
+          document.getElementById("success-total-text").textContent = `₹${subtotal.toLocaleString('en-IN')}`;
           document.getElementById("success-order-id").textContent = response.razorpay_payment_id;
+          document.getElementById("success-name-text").textContent = shipName;
+          document.getElementById("success-email-text").textContent = shipEmail;
           
           // Clear cart state completely
           shippingForm.reset();
-          paymentForm.reset();
           cart = [];
           saveCartToStorage();
           updateCartUI();

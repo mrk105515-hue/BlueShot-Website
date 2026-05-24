@@ -74,7 +74,7 @@
           <h1 class="product-title">DXZ Official "RULER" T-Shirt</h1>
           
           <div class="product-pricing">
-            <span class="price-value">$24.99</span>
+            <span class="price-value">₹1,999</span>
             <span class="price-tag">In stock & ready to ship</span>
           </div>
           
@@ -121,7 +121,7 @@
       
       <div class="products-grid">
         <!-- Product Item 1: Hoodie -->
-        <div class="product-card" data-id="dxz-obsidian-hoodie" data-price="49.99" data-name="DXZ Obsidian Hoodie">
+        <div class="product-card" data-id="dxz-obsidian-hoodie" data-price="3999" data-name="DXZ Obsidian Hoodie">
           <div class="card-img-container">
             <div class="card-badge pre-order">Pre-order</div>
             <img src="assets/merch-2.png" alt="DXZ Obsidian Hoodie" class="card-product-img hoodie-color">
@@ -131,14 +131,14 @@
             <h3 class="card-product-name">DXZ "Flame Devil" Hoodie</h3>
             <span class="card-product-theme">Obsidian Black & Crimson</span>
             <div class="card-footer">
-              <span class="card-price">$49.99</span>
+              <span class="card-price">₹3,999</span>
               <button class="card-btn-add">Add to Cart</button>
             </div>
           </div>
         </div>
 
         <!-- Product Item 2: Poster -->
-        <div class="product-card" data-id="dxz-s3-poster" data-price="14.99" data-name="Season 3 Metallic Poster">
+        <div class="product-card" data-id="dxz-s3-poster" data-price="1199" data-name="Season 3 Metallic Poster">
           <div class="card-img-container">
             <div class="card-badge new">New</div>
             <img src="assets/dxz-poster.jpg" alt="Season 3 Poster" class="card-product-img">
@@ -148,14 +148,14 @@
             <h3 class="card-product-name">DXZ S3 Metallic Poster</h3>
             <span class="card-product-theme">Ultra High Gloss 18"x24"</span>
             <div class="card-footer">
-              <span class="card-price">$14.99</span>
+              <span class="card-price">₹1,199</span>
               <button class="card-btn-add">Add to Cart</button>
             </div>
           </div>
         </div>
 
         <!-- Product Item 3: Phone Case -->
-        <div class="product-card" data-id="dxz-redago-case" data-price="19.99" data-name="Redago Aura Phone Case">
+        <div class="product-card" data-id="dxz-redago-case" data-price="1599" data-name="Redago Aura Phone Case">
           <div class="card-img-container">
             <div class="card-badge limited">Limited</div>
             <img src="assets/merch-1.png" alt="Redago Case" class="card-product-img case-color">
@@ -165,7 +165,7 @@
             <h3 class="card-product-name">Redago Aura Phone Case</h3>
             <span class="card-product-theme">Sleek Armor (iPhone/Samsung)</span>
             <div class="card-footer">
-              <span class="card-price">$19.99</span>
+              <span class="card-price">₹1,599</span>
               <button class="card-btn-add">Add to Cart</button>
             </div>
           </div>
@@ -197,7 +197,7 @@
       <div class="cart-footer" id="cart-drawer-footer">
         <div class="cart-summary-row">
           <span>Subtotal:</span>
-          <span class="subtotal-val" id="cart-subtotal">$0.00</span>
+          <span class="subtotal-val" id="cart-subtotal">₹0</span>
         </div>
         <div class="cart-summary-row shipping-row">
           <span>Shipping:</span>
@@ -283,50 +283,23 @@
           <!-- STEP 2: PAYMENT INTEGRATION -->
           <div class="checkout-step-panel" id="checkout-step-2">
             <h3 class="checkout-panel-title">Secure Faction Payment</h3>
-            <p class="payment-subtitle">Connect your preferred payment system to complete the order.</p>
+            <p class="payment-subtitle">Review your order and pay securely via Razorpay — UPI, Cards, Wallets & Net Banking.</p>
             
             <div class="checkout-order-summary">
-              <span>Amount due: <strong id="checkout-summary-total">$0.00</strong></span>
+              <span>Amount due: <strong id="checkout-summary-total">₹0</strong></span>
             </div>
             
             <div class="payment-options-list">
-              <!-- Mock Payment Card -->
-              <div class="payment-card-mockup">
-                <div class="card-mock-row">
-                  <i class="fa-solid fa-credit-card card-provider-icon"></i>
-                  <span class="card-title-mock">Credit / Debit Card</span>
+              <div class="payment-card-mockup" style="text-align: center; padding: 2.5rem 2rem;">
+                <div class="card-mock-row" style="justify-content: center; border: none; padding: 0; margin-bottom: 1rem;">
+                  <i class="fa-solid fa-shield-halved card-provider-icon" style="font-size: 2rem;"></i>
                 </div>
-                <form id="payment-form" class="checkout-form">
-                  <div class="form-group">
-                    <label for="card-num">Card Number</label>
-                    <input type="text" id="card-num" placeholder="4000 1234 5678 9010" maxlength="19" required>
-                  </div>
-                  <div class="form-grid-2">
-                    <div class="form-group">
-                      <label for="card-expiry">Expiry Date</label>
-                      <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="card-cvc">CVC Code</label>
-                      <input type="password" id="card-cvc" placeholder="***" maxlength="4" required>
-                    </div>
-                  </div>
-                  
-                  <div class="wizard-buttons" style="margin-top: 1.5rem;">
-                    <button type="button" class="btn btn-secondary wizard-back-btn" id="payment-back-btn"><i class="fa-solid fa-arrow-left"></i> Shipping</button>
-                    <button type="submit" class="btn btn-danger wizard-next-btn">Authorize Payment <i class="fa-solid fa-shield-check"></i></button>
-                  </div>
-                </form>
-              </div>
-
-              <!-- Connecting Real Gateways Placeholder -->
-              <div class="payment-portal-redirect">
-                <span class="divider-or">OR</span>
-                <p>Already have a direct invoice link or custom Stripe/Gumroad/Razorpay portal?</p>
-                <div class="payment-link-buttons">
-                  <a href="https://razorpay.com/" target="_blank" class="btn btn-secondary gateway-btn razorpay-gateway"><i class="fa-solid fa-credit-card"></i> Pay with Razorpay (UPI)</a>
-                  <a href="https://stripe.com/" target="_blank" class="btn btn-secondary gateway-btn stripe-gateway"><i class="fa-brands fa-stripe"></i> Pay with Stripe</a>
-                  <a href="https://gumroad.com/" target="_blank" class="btn btn-secondary gateway-btn gumroad-gateway"><i class="fa-solid fa-bag-shopping"></i> Pay with Gumroad</a>
+                <h4 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem;">Razorpay Secure Checkout</h4>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 2rem;">Supports UPI, Debit/Credit Cards, Net Banking, Paytm, PhonePe & more.</p>
+                
+                <div class="wizard-buttons" style="justify-content: space-between;">
+                  <button type="button" class="btn btn-secondary wizard-back-btn" id="payment-back-btn"><i class="fa-solid fa-arrow-left"></i> Shipping</button>
+                  <button type="button" class="btn btn-danger wizard-next-btn razorpay-gateway"><i class="fa-solid fa-lock"></i> Pay Now</button>
                 </div>
               </div>
             </div>
@@ -344,7 +317,7 @@
             <div class="success-receipt-box">
               <div class="receipt-row"><span>Order ID:</span> <strong id="success-order-id">DXZ-87629</strong></div>
               <div class="receipt-row"><span>Shipped To:</span> <span id="success-name-text">John Doe</span></div>
-              <div class="receipt-row"><span>Total Price:</span> <strong id="success-total-text">$24.99</strong></div>
+              <div class="receipt-row"><span>Total Price:</span> <strong id="success-total-text">₹1,999</strong></div>
             </div>
             <button id="success-continue-btn" class="btn btn-danger" style="margin-top: 2rem; padding: 0.8rem 2.5rem;">Continue Shopping</button>
           </div>
