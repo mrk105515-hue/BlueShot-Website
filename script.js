@@ -378,45 +378,31 @@ function initNavbar() {
 
 // STATS COUNTER FUNCTIONS
 function initStatsCounter() {
-  const subCounter = document.getElementById("stat-subs");
-  const viewCounter = document.getElementById("stat-views");
-  if (!subCounter || !viewCounter) return;
+  const statItems = document.querySelectorAll(".hero-stats .stat-item");
+  if (statItems.length === 0) return;
   
-  const targetSubs = 530000;
-  const targetViews = 40000000;
-  
+  // Set initial hidden styling dynamically so they fade in cleanly when scrolled to
+  statItems.forEach(item => {
+    item.style.opacity = "0";
+    item.style.transform = "translateY(20px)";
+    item.style.transition = "opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)";
+  });
+
   let started = false;
 
-  const countUp = (element, target, duration, suffix = "") => {
-    let start = 0;
-    const increment = target / (duration / 16); // ~60fps
-    
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= target) {
-        clearInterval(timer);
-        element.textContent = formatNumber(target) + suffix;
-      } else {
-        element.textContent = formatNumber(Math.floor(start)) + suffix;
-      }
-    }, 16);
-  };
-
-  const formatNumber = (num) => {
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + "M";
-    } else if (num >= 1000) {
-      return (num / 1000).toFixed(0) + "K";
-    }
-    return num;
-  };
-
   const checkScroll = () => {
-    const rect = subCounter.getBoundingClientRect();
+    const rect = statItems[0].getBoundingClientRect();
     if (rect.top < window.innerHeight && !started) {
       started = true;
-      countUp(subCounter, targetSubs, 2000, "+");
-      countUp(viewCounter, targetViews, 2000, "+");
+      
+      // Animate stat items sequentially with a delay
+      statItems.forEach((item, index) => {
+        setTimeout(() => {
+          item.style.opacity = "1";
+          item.style.transform = "translateY(0)";
+        }, index * 300); // 300ms delay between each number fading in
+      });
+
       window.removeEventListener("scroll", checkScroll);
     }
   };
