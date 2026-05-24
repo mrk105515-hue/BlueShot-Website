@@ -41,6 +41,7 @@
       </nav>
       
       <div class="nav-socials">
+        <button class="social-icon global-search-trigger" title="Search site (Press /)" id="nav-search-trigger"><i class="fa-solid fa-magnifying-glass"></i></button>
         <a href="https://youtube.com/@BlueShot77" target="_blank" class="social-icon" title="YouTube" id="nav-yt"><i class="fa-brands fa-youtube"></i></a>
         <a href="https://instagram.com/blueshot_x/?__pwa=1" target="_blank" class="social-icon instagram" title="Instagram" id="nav-ig"><i class="fa-brands fa-instagram"></i></a>
         <a href="https://discord.gg/gfvf46ymng" target="_blank" class="social-icon" title="Discord" id="nav-dc"><i class="fa-brands fa-discord"></i></a>
@@ -256,11 +257,20 @@
     <div class="container-width">
       <div class="section-header">
         <span class="section-subtitle">DXZ Universe</span>
-        <h2 class="section-title">Character Lore & Archives</h2>
+        <h2 class="section-title">Character Lore &amp; Archives</h2>
         <p class="section-desc">Explore the detailed lore, active abilities, and stats of key figures in the divided world, formatted in the cinematic Season 3 style.</p>
       </div>
       
-      <div class="characters-grid">
+      <!-- Wiki Search Bar -->
+      <div class="search-container">
+        <div class="search-box">
+          <input type="text" id="wiki-search-input" placeholder="Search characters, factions, weapons, or abilities...">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <button id="search-clear-btn" class="search-clear-btn" aria-label="Clear Search"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+      
+      <div class="characters-grid" id="characters-grid">
         <!-- BSG -->
         <div class="character-card faction-hero char-bsg" data-char="bsg">
           <img src="assets/char-bsg.png" alt="BSG" class="character-img">
@@ -535,5 +545,6 @@
 
   <!-- Custom Scripts -->
   <script src="script.js"></script>
+  <script src="search.js"></script>
 </body>
 </html>

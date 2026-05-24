@@ -126,7 +126,27 @@ document.addEventListener("DOMContentLoaded", () => {
   try { initContactForm(); } catch(e) { console.error("Error in initContactForm:", e); }
   try { initImageFallbacks(); } catch(e) { console.error("Error in initImageFallbacks:", e); }
   try { initEpisodeModal(); } catch(e) { console.error("Error in initEpisodeModal:", e); }
+  try { initWikiSearch(); } catch(e) { console.error("Error in initWikiSearch:", e); }
 
+  // Handle cross-page query parameters for search modals
+  const urlParams = new URLSearchParams(window.location.search);
+  const charParam = urlParams.get('char');
+  const epParam = urlParams.get('episode');
+
+  if (charParam) {
+    setTimeout(() => {
+      if (window.openCharModal) window.openCharModal(charParam);
+      // Clean query params so refresh doesn't pop open modal
+      const newUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, document.title, newUrl);
+    }, 600);
+  } else if (epParam) {
+    setTimeout(() => {
+      if (window.openEpisodeModal) window.openEpisodeModal(epParam);
+      const newUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, document.title, newUrl);
+    }, 600);
+  }
 });
 
 // DYNAMIC IFRAMES INJECTOR
@@ -456,7 +476,7 @@ function initCharacterModal() {
   const backdrop = modal.querySelector(".modal-backdrop");
   if (!backdrop) return;
 
-  const openCharModal = (charKey) => {
+  window.openCharModal = (charKey) => {
     const char = CHARACTER_DB[charKey];
     if (!char) return;
 
@@ -586,7 +606,7 @@ function initCharacterModal() {
         else if (nameText.includes("kan") || altText.includes("kan")) charKey = "kan";
         else if (nameText.includes("dagger") || altText.includes("dagger")) charKey = "blackdagger";
       }
-      if (charKey) openCharModal(charKey);
+      if (charKey) window.openCharModal(charKey);
     });
   });
 
@@ -682,22 +702,18 @@ function initEpisodeModal() {
     <p style="margin-bottom: 0;"><strong>Season 3 Onwards:</strong> Now, with only one year remaining before the God Butcher DMAGA returns to Earth, the heroes must unite, awaken the Beyond State, and stop Black Dagger from claiming the ultimate cosmic force.</p>
   `;
 
-  const openEp1 = (e) => {
-    e.preventDefault();
-    if (modalTitle) modalTitle.textContent = "The Journey Begins";
-    if (modalSubtitle) modalSubtitle.textContent = "Episode 01";
-    if (modalImg) modalImg.src = "https://blueshotwiki.netlify.app/assets/ep1-explanation.jpg";
-    textContainer.innerHTML = ep1Story;
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  };
-
-  const openRecap = (e) => {
-    e.preventDefault();
-    if (modalTitle) modalTitle.textContent = "S1 & S2 Complete Lore Recap";
-    if (modalSubtitle) modalSubtitle.textContent = "Lore Archives";
-    if (modalImg) modalImg.src = "https://blueshotwiki.netlify.app/assets/ep1-recap.png";
-    textContainer.innerHTML = recapStory;
+  window.openEpisodeModal = (type) => {
+    if (type === "ep1") {
+      if (modalTitle) modalTitle.textContent = "The Journey Begins";
+      if (modalSubtitle) modalSubtitle.textContent = "Episode 01";
+      if (modalImg) modalImg.src = "https://blueshotwiki.netlify.app/assets/ep1-explanation.jpg";
+      textContainer.innerHTML = ep1Story;
+    } else if (type === "recap") {
+      if (modalTitle) modalTitle.textContent = "S1 & S2 Complete Lore Recap";
+      if (modalSubtitle) modalSubtitle.textContent = "Lore Archives";
+      if (modalImg) modalImg.src = "https://blueshotwiki.netlify.app/assets/ep1-recap.png";
+      textContainer.innerHTML = recapStory;
+    }
     modal.classList.add("active");
     document.body.style.overflow = "hidden";
   };
@@ -707,8 +723,14 @@ function initEpisodeModal() {
     document.body.style.overflow = "";
   };
 
-  if (ep1Trigger) ep1Trigger.addEventListener("click", openEp1);
-  if (recapTrigger) recapTrigger.addEventListener("click", openRecap);
+  if (ep1Trigger) ep1Trigger.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.openEpisodeModal("ep1");
+  });
+  if (recapTrigger) recapTrigger.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.openEpisodeModal("recap");
+  });
   
   if (charTrigger) {
     charTrigger.addEventListener("click", (e) => {
@@ -722,6 +744,84 @@ function initEpisodeModal() {
   
   closeBtn.addEventListener("click", closeModal);
   backdrop.addEventListener("click", closeModal);
+}
+
+// WIKI SEARCH BAR LOGIC
+function initWikiSearch() {
+  const searchInput = document.getElementById("wiki-search-input");
+  const clearBtn = document.getElementById("search-clear-btn");
+  const cards = document.querySelectorAll(".characters-grid .character-card");
+  const grid = document.getElementById("characters-grid");
+  if (!searchInput || !grid) return;
+
+  // Create "No Results" message element
+  const noResultsDiv = document.createElement("div");
+  noResultsDiv.className = "search-no-results";
+  noResultsDiv.style.display = "none";
+  noResultsDiv.innerHTML = `
+    <i class="fa-solid fa-circle-question"></i>
+    <h3>No Archive Records Found</h3>
+    <p>We couldn't find any characters, factions, or abilities matching your search query. Try another term!</p>
+  `;
+  grid.appendChild(noResultsDiv);
+
+  const handleSearch = () => {
+    const query = searchInput.value.trim().toLowerCase();
+    
+    // Toggle clear button visibility
+    if (clearBtn) {
+      clearBtn.style.display = query.length > 0 ? "flex" : "none";
+    }
+
+    let matchCount = 0;
+
+    cards.forEach(card => {
+      const charKey = card.getAttribute("data-char");
+      const charData = CHARACTER_DB[charKey];
+      
+      // If we don't have metadata for this card, fallback to card text
+      if (!charData) {
+        const textContent = card.textContent.toLowerCase();
+        if (textContent.includes(query)) {
+          card.style.display = "";
+          matchCount++;
+        } else {
+          card.style.display = "none";
+        }
+        return;
+      }
+
+      // Build text pool from name, faction, quote, desc, weapon, special
+      const textPool = [
+        charData.name,
+        charData.faction,
+        charData.quote,
+        charData.desc,
+        charData.weapon,
+        charData.special
+      ].join(" ").toLowerCase();
+
+      if (textPool.includes(query)) {
+        card.style.display = "";
+        matchCount++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    // Handle "No Results" display
+    noResultsDiv.style.display = matchCount === 0 && query.length > 0 ? "block" : "none";
+  };
+
+  searchInput.addEventListener("input", handleSearch);
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      handleSearch();
+      searchInput.focus();
+    });
+  }
 }
 
 
