@@ -463,7 +463,7 @@ function initCheckoutWizard() {
 
       // Configure Razorpay checkout options
       const options = {
-        "key": "rzp_test_YOUR_KEY_HERE", // REPLACE WITH YOUR LIVE KEY ID FROM RAZORPAY DASHBOARD
+        "key": "rzp_test_St8tveZSpmHUkX", // REPLACE WITH YOUR LIVE KEY ID FROM RAZORPAY DASHBOARD
         "amount": amountPaise,
         "currency": "INR",
         "name": "The BlueShot Merch Store",
