@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>DXZ Shop | Official Danger X Zone Merchandise</title>
+  <meta name="description" content="Shop official apparel, posters, and limited drops from the Danger X Zone anime series. High-quality obsidian-themed streetwear from The BlueShot.">
+  <meta name="keywords" content="Danger X Zone Merch, DXZ T-Shirt, Redago T-Shirt, The BlueShot Shop, Anime Apparel, Minecraft Anime Merch">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="https://blueshotgamerz.blogspot.com/favicon.ico">
+  
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="merch.css">
+</head>
+<body class="shop-body">
+
+  <!-- NAVIGATION HEADER -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="nav-logo">
+        THE BLUESHOT <span class="logo-dot"></span>
+      </a>
+      
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html#hero">Home</a></li>
+          <li><a href="index.html#featured-video">Season 3</a></li>
+          <li><a href="index.html#characters">Characters</a></li>
+          <li><a href="index.html#community">Community</a></li>
+          <li class="active"><a href="merch.html">Shop</a></li>
+        </ul>
+      </nav>
+      
+      <div class="nav-actions">
+        <!-- Floating Cart Toggle Trigger -->
+        <button id="cart-toggle-btn" class="social-icon cart-trigger-btn" title="View Cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-count-badge" class="cart-badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- SHOP HERO SECTION (FEATURED PRODUCT) -->
+  <section class="shop-hero">
+    <div class="container-width">
+      <div class="shop-back-link">
+        <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Universe</a>
+      </div>
+      
+      <div class="featured-product-grid">
+        <!-- Gallery Columns -->
+        <div class="product-gallery">
+          <div class="gallery-main">
+            <div class="gallery-glow"></div>
+            <img id="main-product-img" src="assets/merch-2.png" alt="DXZ Official T-shirt" class="gallery-main-img">
+          </div>
+          <div class="gallery-thumbnails">
+            <img class="thumb-img active" src="assets/merch-2.png" alt="DXZ Collection Layout" onclick="switchMainImage(this)">
+            <img class="thumb-img" src="assets/merch-1.png" alt="DXZ Phone Mockup" onclick="switchMainImage(this)">
+          </div>
+        </div>
+        
+        <!-- Info Column -->
+        <div class="product-details">
+          <span class="product-badge redago-badge"><i class="fa-solid fa-fire"></i> Season 3 Limited Drop</span>
+          <h1 class="product-title">DXZ Official "RULER" T-Shirt</h1>
+          
+          <div class="product-pricing">
+            <span class="price-value">$24.99</span>
+            <span class="price-tag">In stock & ready to ship</span>
+          </div>
+          
+          <p class="product-description">
+            Embrace the power of the West and East Emperors. Featuring the custom <strong>"THE RULER OF THE WORLD"</strong> compass design and Emperor Jiggo Degan's high-contrast Season 3 anime graphics. Tailored with heavyweight Obsidian fabric and a crimson neon finish.
+          </p>
+          
+          <div class="product-options">
+            <div class="option-group">
+              <label class="option-label">Select Size</label>
+              <div class="size-chips" id="size-selector">
+                <button class="size-chip" data-size="S">S</button>
+                <button class="size-chip active" data-size="M">M</button>
+                <button class="size-chip" data-size="L">L</button>
+                <button class="size-chip" data-size="XL">XL</button>
+                <button class="size-chip" data-size="XXL">XXL</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="product-actions">
+            <button id="add-featured-to-cart" class="btn btn-danger btn-add-cart">
+              <i class="fa-solid fa-cart-plus"></i> Add to Cart
+            </button>
+          </div>
+          
+          <div class="product-benefits">
+            <div class="benefit-item"><i class="fa-solid fa-truck-fast"></i> Global Shipping</div>
+            <div class="benefit-item"><i class="fa-solid fa-shield-halved"></i> Secure Checkout</div>
+            <div class="benefit-item"><i class="fa-solid fa-shirt"></i> Heavyweight 100% Combed Cotton</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORE COLLECTION GRID (AMAZON LAYOUT) -->
+  <section class="store-collection">
+    <div class="container-width">
+      <div class="shop-section-header">
+        <h2 class="section-title">Danger X Zone Collection</h2>
+        <p class="section-desc">More drops will be added in future. Click to add directly to your cart.</p>
+      </div>
+      
+      <div class="products-grid">
+        <!-- Product Item 1: Hoodie -->
+        <div class="product-card" data-id="dxz-obsidian-hoodie" data-price="49.99" data-name="DXZ Obsidian Hoodie">
+          <div class="card-img-container">
+            <div class="card-badge pre-order">Pre-order</div>
+            <img src="assets/merch-2.png" alt="DXZ Obsidian Hoodie" class="card-product-img hoodie-color">
+            <button class="quick-add-btn" title="Add to Cart"><i class="fa-solid fa-cart-plus"></i></button>
+          </div>
+          <div class="card-info">
+            <h3 class="card-product-name">DXZ "Flame Devil" Hoodie</h3>
+            <span class="card-product-theme">Obsidian Black & Crimson</span>
+            <div class="card-footer">
+              <span class="card-price">$49.99</span>
+              <button class="card-btn-add">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Item 2: Poster -->
+        <div class="product-card" data-id="dxz-s3-poster" data-price="14.99" data-name="Season 3 Metallic Poster">
+          <div class="card-img-container">
+            <div class="card-badge new">New</div>
+            <img src="assets/dxz-poster.jpg" alt="Season 3 Poster" class="card-product-img">
+            <button class="quick-add-btn" title="Add to Cart"><i class="fa-solid fa-cart-plus"></i></button>
+          </div>
+          <div class="card-info">
+            <h3 class="card-product-name">DXZ S3 Metallic Poster</h3>
+            <span class="card-product-theme">Ultra High Gloss 18"x24"</span>
+            <div class="card-footer">
+              <span class="card-price">$14.99</span>
+              <button class="card-btn-add">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Item 3: Phone Case -->
+        <div class="product-card" data-id="dxz-redago-case" data-price="19.99" data-name="Redago Aura Phone Case">
+          <div class="card-img-container">
+            <div class="card-badge limited">Limited</div>
+            <img src="assets/merch-1.png" alt="Redago Case" class="card-product-img case-color">
+            <button class="quick-add-btn" title="Add to Cart"><i class="fa-solid fa-cart-plus"></i></button>
+          </div>
+          <div class="card-info">
+            <h3 class="card-product-name">Redago Aura Phone Case</h3>
+            <span class="card-product-theme">Sleek Armor (iPhone/Samsung)</span>
+            <div class="card-footer">
+              <span class="card-price">$19.99</span>
+              <button class="card-btn-add">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CART SIDEBAR DRAWER -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-backdrop" id="cart-drawer-backdrop"></div>
+    <div class="cart-drawer-container">
+      <div class="cart-header">
+        <h3>Your Faction Cart (<span id="cart-drawer-count">0</span>)</h3>
+        <button id="cart-close-btn" class="cart-close-btn" aria-label="Close Cart"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <!-- Cart Items list -->
+      <div class="cart-items-list" id="cart-items-list">
+        <!-- Dynamically injected items -->
+        <div class="cart-empty-message">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <p>Your cart is empty.</p>
+          <a href="#" class="btn btn-secondary btn-close-drawer">Start Shopping</a>
+        </div>
+      </div>
+      
+      <!-- Cart Footer -->
+      <div class="cart-footer" id="cart-drawer-footer">
+        <div class="cart-summary-row">
+          <span>Subtotal:</span>
+          <span class="subtotal-val" id="cart-subtotal">$0.00</span>
+        </div>
+        <div class="cart-summary-row shipping-row">
+          <span>Shipping:</span>
+          <span class="shipping-val">Calculated at Checkout</span>
+        </div>
+        <button id="checkout-btn" class="btn btn-danger checkout-action-btn" style="width:100%; margin-top: 1rem;">
+          <i class="fa-solid fa-credit-card"></i> Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT WIZARD MODAL -->
+  <div class="modal" id="checkout-modal">
+    <div class="modal-backdrop" id="checkout-modal-backdrop"></div>
+    <div class="modal-content checkout-modal-content">
+      <button class="modal-close-btn" id="checkout-modal-close" aria-label="Close Checkout"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="checkout-wizard">
+        <!-- Wizard Sidebar Header Progress -->
+        <div class="checkout-progress">
+          <div class="step active" id="step-indicator-1">
+            <span class="step-num">1</span>
+            <span class="step-label">Shipping</span>
+          </div>
+          <div class="step" id="step-indicator-2">
+            <span class="step-num">2</span>
+            <span class="step-label">Payment</span>
+          </div>
+          <div class="step" id="step-indicator-3">
+            <span class="step-num">3</span>
+            <span class="step-label">Success</span>
+          </div>
+        </div>
+        
+        <!-- Wizard Form Content -->
+        <div class="checkout-form-container">
+          
+          <!-- STEP 1: SHIPPING ADDRESS -->
+          <div class="checkout-step-panel active" id="checkout-step-1">
+            <h3 class="checkout-panel-title">Shipping &amp; Contact Information</h3>
+            <form id="shipping-form" class="checkout-form">
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="ship-name">Full Name *</label>
+                  <input type="text" id="ship-name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                  <label for="ship-email">Email Address *</label>
+                  <input type="email" id="ship-email" required placeholder="johndoe@email.com">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="ship-address">Street Address *</label>
+                <input type="text" id="ship-address" required placeholder="123 Redago Street">
+              </div>
+              <div class="form-grid-3">
+                <div class="form-group">
+                  <label for="ship-city">City *</label>
+                  <input type="text" id="ship-city" required placeholder="New York">
+                </div>
+                <div class="form-group">
+                  <label for="ship-zip">Zip / Postal Code *</label>
+                  <input type="text" id="ship-zip" required placeholder="10001">
+                </div>
+                <div class="form-group">
+                  <label for="ship-country">Country *</label>
+                  <select id="ship-country" required>
+                    <option value="US">United States</option>
+                    <option value="IN" selected>India</option>
+                    <option value="CA">Canada</option>
+                    <option value="GB">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                  </select>
+                </div>
+              </div>
+              <div class="wizard-buttons">
+                <button type="submit" class="btn btn-primary wizard-next-btn">Continue to Payment <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+            </form>
+          </div>
+          
+          <!-- STEP 2: PAYMENT INTEGRATION -->
+          <div class="checkout-step-panel" id="checkout-step-2">
+            <h3 class="checkout-panel-title">Secure Faction Payment</h3>
+            <p class="payment-subtitle">Connect your preferred payment system to complete the order.</p>
+            
+            <div class="checkout-order-summary">
+              <span>Amount due: <strong id="checkout-summary-total">$0.00</strong></span>
+            </div>
+            
+            <div class="payment-options-list">
+              <!-- Mock Payment Card -->
+              <div class="payment-card-mockup">
+                <div class="card-mock-row">
+                  <i class="fa-solid fa-credit-card card-provider-icon"></i>
+                  <span class="card-title-mock">Credit / Debit Card</span>
+                </div>
+                <form id="payment-form" class="checkout-form">
+                  <div class="form-group">
+                    <label for="card-num">Card Number</label>
+                    <input type="text" id="card-num" placeholder="4000 1234 5678 9010" maxlength="19" required>
+                  </div>
+                  <div class="form-grid-2">
+                    <div class="form-group">
+                      <label for="card-expiry">Expiry Date</label>
+                      <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="card-cvc">CVC Code</label>
+                      <input type="password" id="card-cvc" placeholder="***" maxlength="4" required>
+                    </div>
+                  </div>
+                  
+                  <div class="wizard-buttons" style="margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary wizard-back-btn" id="payment-back-btn"><i class="fa-solid fa-arrow-left"></i> Shipping</button>
+                    <button type="submit" class="btn btn-danger wizard-next-btn">Authorize Payment <i class="fa-solid fa-shield-check"></i></button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Connecting Real Gateways Placeholder -->
+              <div class="payment-portal-redirect">
+                <span class="divider-or">OR</span>
+                <p>Already have a direct invoice link or custom Stripe/Gumroad portal?</p>
+                <div class="payment-link-buttons">
+                  <a href="https://stripe.com/" target="_blank" class="btn btn-secondary gateway-btn stripe-gateway"><i class="fa-brands fa-stripe"></i> Pay with Stripe</a>
+                  <a href="https://gumroad.com/" target="_blank" class="btn btn-secondary gateway-btn gumroad-gateway"><i class="fa-solid fa-bag-shopping"></i> Pay with Gumroad</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- STEP 3: ORDER SUCCESS -->
+          <div class="checkout-step-panel" id="checkout-step-3" style="text-align: center;">
+            <div class="success-icon-wrap">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="checkout-panel-title success-title">Order Confirmed!</h3>
+            <p class="success-desc">
+              Your DXZ order has been received. A receipt and shipping confirmation will be sent to <strong id="success-email-text"></strong> shortly.
+            </p>
+            <div class="success-receipt-box">
+              <div class="receipt-row"><span>Order ID:</span> <strong id="success-order-id">DXZ-87629</strong></div>
+              <div class="receipt-row"><span>Shipped To:</span> <span id="success-name-text">John Doe</span></div>
+              <div class="receipt-row"><span>Total Price:</span> <strong id="success-total-text">$24.99</strong></div>
+            </div>
+            <button id="success-continue-btn" class="btn btn-danger" style="margin-top: 2rem; padding: 0.8rem 2.5rem;">Continue Shopping</button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING FEEDBACK ALERT -->
+  <div class="alert-container" id="alert-container"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container-width">
+      <div class="footer-top">
+        <a href="index.html#hero" class="footer-logo">
+          THE BLUESHOT <span class="logo-dot"></span>
+        </a>
+        <ul class="footer-nav">
+          <li><a href="index.html#hero">Home</a></li>
+          <li><a href="index.html#featured-video">Season 3</a></li>
+          <li><a href="index.html#characters">Characters</a></li>
+          <li><a href="index.html#community">Community</a></li>
+          <li><a href="merch.html">Shop</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="index.html#hero">Back to Home</a>
+          <a href="https://youtube.com/@BlueShot77" target="_blank">YouTube Channel</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Shop Logic Script -->
+  <script src="merch.js"></script>
+</body>
+</html>

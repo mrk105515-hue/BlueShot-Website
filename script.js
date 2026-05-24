@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
   try { initContactForm(); } catch(e) { console.error("Error in initContactForm:", e); }
   try { initImageFallbacks(); } catch(e) { console.error("Error in initImageFallbacks:", e); }
   try { initEpisodeModal(); } catch(e) { console.error("Error in initEpisodeModal:", e); }
-  try { initMerchModal(); } catch(e) { console.error("Error in initMerchModal:", e); }
+
 });
 
 // DYNAMIC IFRAMES INJECTOR
@@ -738,65 +738,5 @@ function initEpisodeModal() {
   backdrop.addEventListener("click", closeModal);
 }
 
-// MERCHANDISE MODAL FUNCTIONS
-function initMerchModal() {
-  const trigger = document.getElementById("shop-card-trigger");
-  const storyBtn = document.getElementById("story-shop-btn");
-  const modal = document.getElementById("merch-modal");
-  if (!modal) return;
 
-  const closeBtn = document.getElementById("merch-modal-close");
-  const backdrop = modal.querySelector(".modal-backdrop");
-  const mainImg = document.getElementById("merch-active-img");
-  const thumbs = modal.querySelectorAll(".merch-thumb");
-  const orderBtn = document.getElementById("merch-order-btn");
-
-  const openModal = (e) => {
-    e.preventDefault();
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  };
-
-  const closeModal = () => {
-    modal.classList.remove("active");
-    document.body.style.overflow = "";
-  };
-
-  // Wire both the shop card AND the story section button
-  if (trigger) trigger.addEventListener("click", openModal);
-  if (storyBtn) storyBtn.addEventListener("click", openModal);
-  if (closeBtn) closeBtn.addEventListener("click", closeModal);
-  if (backdrop) backdrop.addEventListener("click", closeModal);
-
-  // ESC key closes modal
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("active")) closeModal();
-  });
-
-  // Thumbnail click logic
-  if (mainImg && thumbs) {
-    thumbs.forEach(thumb => {
-      thumb.addEventListener("click", function() {
-        thumbs.forEach(t => {
-          t.classList.remove("active");
-          t.style.borderColor = "transparent";
-        });
-        this.classList.add("active");
-        this.style.borderColor = "var(--color-redago)";
-        mainImg.src = this.src;
-      });
-    });
-  }
-
-  // Order button click: close modal and scroll to community/form section
-  if (orderBtn) {
-    orderBtn.addEventListener("click", () => {
-      closeModal();
-      setTimeout(() => {
-        const community = document.getElementById("community");
-        if (community) community.scrollIntoView({ behavior: "smooth" });
-      }, 350);
-    });
-  }
-}
 
