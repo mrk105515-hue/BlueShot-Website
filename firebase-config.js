@@ -6,10 +6,11 @@
 // ==========================================================================
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDpLmB9A3Qcky153SBWI_XzOh8nsZcjI48",
+  authDomain: "blueshotwiki.firebaseapp.com",
+  projectId: "blueshotwiki",
+  storageBucket: "blueshotwiki.firebasestorage.app",
+  messagingSenderId: "432209991069",
+  appId: "1:432209991069:web:3cea1637058783892e0b74",
+  measurementId: "G-L6LMYSVPB8"
 };
