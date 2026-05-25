@@ -752,3 +752,208 @@
     flex-direction: column;
   }
 }
+
+/* ==========================================================================
+   FIREBASE USER AUTH & DEMO BANNER STYLES
+   ========================================================================== */
+
+/* DEMO MODE BANNER */
+.demo-banner {
+  background: linear-gradient(90deg, rgba(255, 18, 79, 0.18) 0%, rgba(255, 18, 79, 0.05) 100%);
+  border-bottom: 1px solid rgba(255, 18, 79, 0.3);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  text-align: center;
+  position: relative;
+  z-index: 100;
+}
+
+.demo-banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.demo-banner-content i {
+  color: var(--color-redago);
+  animation: pulseNotif 1.5s infinite;
+}
+
+@keyframes pulseNotif {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 1; text-shadow: 0 0 8px var(--color-redago); }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+/* AUTH PORTAL STYLES */
+.auth-box-wrap {
+  background: var(--bg-card);
+  border: var(--border-glass);
+  border-radius: 16px;
+  padding: 2.25rem 2rem;
+  box-shadow: var(--shadow-card);
+  width: 100%;
+}
+
+.auth-tabs {
+  display: flex;
+  border-bottom: var(--border-glass);
+  margin-bottom: 1.75rem;
+  gap: 1.5rem;
+}
+
+.auth-tab {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 0.25rem 0.75rem;
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition-smooth);
+}
+
+.auth-tab:hover {
+  color: var(--text-primary);
+}
+
+.auth-tab.active {
+  color: var(--color-blue-neon);
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+}
+
+.auth-tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-blue-neon);
+  box-shadow: 0 0 8px var(--color-blue-neon);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.auth-form .form-group label {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.auth-form .form-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: var(--border-glass);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: var(--transition-smooth);
+}
+
+.auth-form .form-group input:focus {
+  outline: none;
+  border-color: var(--color-blue-neon);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.auth-submit-btn {
+  width: 100%;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* USER PROFILE CARD */
+.profile-panel {
+  background: var(--bg-card);
+  border: var(--border-glass);
+  border-radius: 16px;
+  padding: 2.25rem 2rem;
+  box-shadow: var(--shadow-card);
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.profile-avatar-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-avatar-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 110px;
+  height: 110px;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-blue-neon), var(--color-redago));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.2rem;
+  color: #FFF;
+  border: 3px solid var(--color-blue-neon);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+  text-transform: uppercase;
+  z-index: 1;
+  position: relative;
+}
+
+.profile-details h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin-bottom: 0.35rem;
+  color: var(--text-primary);
+}
+
+.profile-details p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+

@@ -46,6 +46,14 @@
     </div>
   </header>
 
+  <!-- DEMO MODE NOTICE BANNER -->
+  <div id="dxz-demo-banner" class="demo-banner" style="display: none;">
+    <div class="demo-banner-content">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <span>Running in <strong>Offline Demo Mode</strong>. Configure API keys in <code>firebase-config.js</code> to enable global user accounts and live comments!</span>
+    </div>
+  </div>
+
   <!-- HUB HERO BANNER -->
   <section class="hub-hero">
     <div class="hub-hero-glow"></div>
@@ -208,38 +216,86 @@
   <section class="join-section" id="join-faction">
     <div class="container-width">
       <div class="join-grid">
-        <!-- Left: Join Form -->
-        <div class="join-form-wrap">
-          <span class="section-subtitle">Become a Member</span>
-          <h2 class="section-title">Join The Faction 🔔</h2>
-          <p class="join-desc">Enter your name and email to join the community. Enable browser notifications to get instant alerts when new episodes, merch drops, or polls are released.</p>
+        <!-- Left: Auth Portal or User Profile -->
+        <div class="join-form-wrap" id="join-form-wrap">
           
-          <form id="join-form" class="join-form">
-            <div class="form-group">
-              <label for="join-name">Your Name *</label>
-              <input type="text" id="join-name" required placeholder="Neeraj Saklani">
+          <!-- LOBBY (LOGGED OUT): TABBED PORTAL -->
+          <div class="auth-box-wrap" id="auth-box-wrap">
+            <div class="auth-tabs">
+              <button type="button" class="auth-tab active" id="tab-login-btn">Log In</button>
+              <button type="button" class="auth-tab" id="tab-register-btn">Register</button>
             </div>
-            <div class="form-group">
-              <label for="join-email">Email Address *</label>
-              <input type="email" id="join-email" required placeholder="fan@dangerxzone.com">
-            </div>
-            <button type="submit" class="btn btn-danger join-submit-btn" id="join-submit-btn">
-              <i class="fa-solid fa-user-plus"></i> Join The Faction
-            </button>
-          </form>
 
-          <!-- Post-Join UI (shown after joining) -->
-          <div class="join-success-panel" id="join-success-panel" style="display: none;">
-            <div class="join-success-icon"><i class="fa-solid fa-circle-check"></i></div>
-            <h3>Welcome to the Faction!</h3>
-            <p>You're now a member. Enable notifications below to never miss an update.</p>
-            <button class="btn btn-primary notification-btn" id="enable-notif-btn">
-              <i class="fa-solid fa-bell"></i> Enable Notifications
-            </button>
-            <button class="btn btn-secondary test-notif-btn" id="test-notif-btn" style="display: none;">
-              <i class="fa-solid fa-paper-plane"></i> Send Test Notification
-            </button>
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form">
+              <span class="section-subtitle" style="margin-bottom: -5px;">Access Faction</span>
+              <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 0.5rem;">Welcome Back</h2>
+              <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; line-height: 1.5;">Log in to cast your vote and chat in the community comment section.</p>
+              
+              <div class="form-group">
+                <label for="login-email">Email Address</label>
+                <input type="email" id="login-email" required placeholder="fan@dangerxzone.com">
+              </div>
+              <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" required placeholder="••••••••" minlength="6">
+              </div>
+              <button type="submit" class="btn btn-danger auth-submit-btn" id="login-submit-btn">
+                <i class="fa-solid fa-right-to-bracket"></i> Log In
+              </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form" style="display: none;">
+              <span class="section-subtitle" style="margin-bottom: -5px;">Become a Member</span>
+              <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 0.5rem;">Join The Faction</h2>
+              <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; line-height: 1.5;">Create a profile to unlock global comments and participate in real-time design polls.</p>
+              
+              <div class="form-group">
+                <label for="register-name">Username / Display Name</label>
+                <input type="text" id="register-name" required placeholder="BSG Fan 99" maxlength="30">
+              </div>
+              <div class="form-group">
+                <label for="register-email">Email Address</label>
+                <input type="email" id="register-email" required placeholder="fan@dangerxzone.com">
+              </div>
+              <div class="form-group">
+                <label for="register-password">Password</label>
+                <input type="password" id="register-password" required placeholder="Min 6 characters" minlength="6">
+              </div>
+              <button type="submit" class="btn btn-danger auth-submit-btn" id="register-submit-btn">
+                <i class="fa-solid fa-user-plus"></i> Create Account
+              </button>
+            </form>
           </div>
+
+          <!-- USER PORTAL (LOGGED IN) -->
+          <div class="profile-panel" id="profile-panel" style="display: none;">
+            <div class="profile-avatar-wrap">
+              <div class="profile-avatar-glow"></div>
+              <div class="profile-avatar" id="profile-avatar-initials">BF</div>
+            </div>
+            <div class="profile-details">
+              <h3 id="profile-display-name">BSG Fan</h3>
+              <p id="profile-email-text">fan@dangerxzone.com</p>
+            </div>
+            
+            <div style="height: 1px; width: 100%; background: var(--border-glass); margin: 0.5rem 0;"></div>
+            
+            <div class="profile-actions">
+              <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.5;">Enable desktop notifications to get live updates on new episodes & merch drops.</p>
+              <button class="btn btn-primary notification-btn" id="enable-notif-btn">
+                <i class="fa-solid fa-bell"></i> Enable Notifications
+              </button>
+              <button class="btn btn-secondary test-notif-btn" id="test-notif-btn" style="display: none;">
+                <i class="fa-solid fa-paper-plane"></i> Send Test Notification
+              </button>
+              <button class="btn btn-outline" id="logout-btn" style="margin-top: 1rem; width: 100%; justify-content: center; border-color: rgba(255,255,255,0.1); color: var(--text-secondary);">
+                <i class="fa-solid fa-right-from-bracket" style="margin-right: 0.5rem;"></i> Log Out
+              </button>
+            </div>
+          </div>
+          
         </div>
 
         <!-- Right: Stats & Member Counter -->
@@ -301,7 +357,13 @@
     </div>
   </footer>
 
+  <!-- Firebase SDK Client Libraries (v9 Compat Mode) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
   <!-- Hub Logic Script -->
+  <script src="firebase-config.js"></script>
   <script src="hub.js"></script>
   <script src="search.js"></script>
   <script src="admin.js"></script>
