@@ -286,6 +286,9 @@ function onUserStateChange(user) {
   refreshPollUI();
   refreshCommentsUI();
   updateStatsCounters();
+
+  // Notify navbar profile widget in search.js
+  window.dispatchEvent(new Event("dxz_user_changed"));
 }
 
 // Local storage helper databases for Demo Mode

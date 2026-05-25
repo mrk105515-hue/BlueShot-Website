@@ -35,6 +35,7 @@ const GLOBAL_SEARCH_DB = [
 
 document.addEventListener("DOMContentLoaded", () => {
   initGlobalSearch();
+  initNavbarProfileWidget();
 });
 
 function initGlobalSearch() {
@@ -252,3 +253,71 @@ function initGlobalSearch() {
     }
   };
 }
+
+function initNavbarProfileWidget() {
+  let container = document.querySelector(".nav-socials") || document.querySelector(".nav-actions");
+  if (!container) return;
+
+  let widget = document.getElementById("nav-profile-widget");
+  if (!widget) {
+    widget = document.createElement("div");
+    widget.id = "nav-profile-widget";
+    widget.className = "nav-profile-widget";
+    container.appendChild(widget);
+  }
+
+  const isFirebaseConfigured = typeof firebaseConfig !== 'undefined' && 
+                               firebaseConfig.apiKey && 
+                               firebaseConfig.apiKey !== "YOUR_API_KEY";
+
+  let useLiveFirebase = typeof firebase !== 'undefined' && isFirebaseConfigured;
+
+  function updateWidgetUI(user) {
+    if (user) {
+      const displayName = user.displayName || "Member";
+      const initials = displayName.split(" ").map(w => w[0]).join("").substring(0, 2).toUpperCase();
+      widget.innerHTML = `
+        <a href="hub.html#join-faction" class="nav-profile-avatar" title="Logged in as ${displayName}. Click to view profile.">
+          ${initials}
+        </a>
+      `;
+    } else {
+      widget.innerHTML = `
+        <a href="hub.html#join-faction" class="nav-profile-login-btn" title="Log In / Register to participate in polls and comments">
+          <i class="fa-solid fa-right-to-bracket"></i> Log In
+        </a>
+      `;
+    }
+  }
+
+  if (useLiveFirebase) {
+    try {
+      if (firebase.apps.length === 0) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      const auth = firebase.auth();
+      auth.onAuthStateChanged((user) => {
+        updateWidgetUI(user);
+      });
+    } catch (e) {
+      console.warn("Firebase Auth listener failed in search.js. Falling back to local state.", e);
+      setupLocalStateTracking();
+    }
+  } else {
+    setupLocalStateTracking();
+  }
+
+  function setupLocalStateTracking() {
+    const checkLocalState = () => {
+      const savedUser = localStorage.getItem("dxz_demo_user");
+      const user = savedUser ? JSON.parse(savedUser) : null;
+      updateWidgetUI(user);
+    };
+
+    checkLocalState();
+
+    window.addEventListener("dxz_user_changed", checkLocalState);
+    window.addEventListener("focus", checkLocalState);
+  }
+}
+
