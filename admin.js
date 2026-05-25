@@ -27,6 +27,116 @@
   let selectedPrimary = "#00e5ff";
   let selectedSecondary = "#ff124f";
 
+  // Track currently active element and card for individual styling
+  let activeElement = null;
+  let activeCard = null;
+
+  function selectElement(el) {
+    if (activeElement) {
+      activeElement.classList.remove("dxz-active-element");
+    }
+    activeElement = el;
+    if (activeElement) {
+      activeElement.classList.add("dxz-active-element");
+    }
+
+    // Find nearest parent card
+    const cardSelectors = ".character-card, .media-card, .promo-card, .stats-card, .story-visual-card";
+    const foundCard = el ? el.closest(cardSelectors) : null;
+    selectCard(foundCard);
+
+    updateInspectorUI();
+  }
+
+  function selectCard(card) {
+    if (activeCard) {
+      activeCard.classList.remove("dxz-active-card");
+    }
+    activeCard = card;
+    if (activeCard) {
+      activeCard.classList.add("dxz-active-card");
+    }
+  }
+
+  function updateInspectorUI() {
+    const sep = document.getElementById("dxz-inspector-sep");
+    const panel = document.getElementById("dxz-inspector-panel");
+    const titleEl = document.getElementById("dxz-inspector-title");
+    const textCtrl = document.getElementById("dxz-text-color-ctrl");
+    const textColorPicker = document.getElementById("dxz-text-color");
+    
+    const cardPrimaryCtrl = document.getElementById("dxz-card-primary-ctrl");
+    const cardPrimaryPicker = document.getElementById("dxz-card-primary");
+    const cardSecondaryCtrl = document.getElementById("dxz-card-secondary-ctrl");
+    const cardSecondaryPicker = document.getElementById("dxz-card-secondary");
+
+    if (!panel) return;
+
+    if (!activeElement && !activeCard) {
+      sep.style.display = "none";
+      panel.style.display = "none";
+      return;
+    }
+
+    sep.style.display = "block";
+    panel.style.display = "flex";
+
+    // 1. If text or image is active
+    if (activeElement) {
+      const isImg = activeElement.tagName === "IMG";
+      titleEl.textContent = isImg ? "Selected Image" : `Selected Text (${activeElement.tagName.toLowerCase()})`;
+      
+      if (isImg) {
+        textCtrl.style.display = "none";
+      } else {
+        textCtrl.style.display = "flex";
+        
+        // Read current inline text color or compute color if none set
+        const inlineColor = activeElement.style.color;
+        if (inlineColor) {
+          textColorPicker.value = rgbToHex(inlineColor.trim());
+        } else {
+          // Read computed color style
+          const compColor = getComputedStyle(activeElement).color;
+          textColorPicker.value = rgbToHex(compColor.trim()) || "#ffffff";
+        }
+      }
+    } else {
+      textCtrl.style.display = "none";
+    }
+
+    // 2. If card is active
+    if (activeCard) {
+      if (activeElement) {
+        titleEl.textContent += " in Card";
+      } else {
+        titleEl.textContent = "Selected Card";
+      }
+      
+      cardPrimaryCtrl.style.display = "flex";
+      cardSecondaryCtrl.style.display = "flex";
+
+      // Read current inline variables or default fallbacks
+      const customPrimary = activeCard.style.getPropertyValue('--color-blue-neon');
+      const customSecondary = activeCard.style.getPropertyValue('--color-redago');
+      
+      if (customPrimary) {
+        cardPrimaryPicker.value = rgbToHex(customPrimary.trim());
+      } else {
+        cardPrimaryPicker.value = selectedPrimary;
+      }
+
+      if (customSecondary) {
+        cardSecondaryPicker.value = rgbToHex(customSecondary.trim());
+      } else {
+        cardSecondaryPicker.value = selectedSecondary;
+      }
+    } else {
+      cardPrimaryCtrl.style.display = "none";
+      cardSecondaryCtrl.style.display = "none";
+    }
+  }
+
   function initVisualEditor() {
     if (document.getElementById("dxz-admin-panel")) return;
 
@@ -55,7 +165,7 @@
         outline: 1px dashed rgba(0, 229, 255, 0.8) !important;
         background: rgba(0, 229, 255, 0.03) !important;
       }
-      [contenteditable="true"]:focus {
+      [contenteditable="true"]:focus, [contenteditable="true"].dxz-active-element {
         outline: 2px solid var(--color-blue-neon) !important;
         background: rgba(0, 229, 255, 0.08) !important;
       }
@@ -67,6 +177,14 @@
       img.dxz-editable-img:hover {
         outline: 2px solid var(--color-redago) !important;
         opacity: 0.85;
+      }
+      img.dxz-editable-img.dxz-active-element {
+        outline: 3px solid var(--color-blue-neon) !important;
+        box-shadow: 0 0 15px var(--color-blue-neon) !important;
+      }
+      .dxz-active-card {
+        outline: 2px solid var(--color-blue-neon) !important;
+        box-shadow: 0 0 25px var(--color-blue-neon), inset 0 0 15px rgba(0, 229, 255, 0.2) !important;
       }
     `;
     document.head.appendChild(styleEl);
@@ -86,10 +204,12 @@
       if (el.classList.contains("logo-dot") || el.querySelector("i")) return;
       el.setAttribute("contenteditable", "true");
       
-      // Stop propagation so clicking text inside a card doesn't bubble up to open the modal
-      const stopBubble = (e) => e.stopPropagation();
-      el.addEventListener("click", stopBubble);
-      el._stopBubble = stopBubble;
+      const onTextClick = (e) => {
+        e.stopPropagation();
+        selectElement(el);
+      };
+      el.addEventListener("click", onTextClick);
+      el._onTextClick = onTextClick;
     });
 
     // 3. Make images editable via double-click
@@ -110,22 +230,32 @@
       img._changeImageHandler = changeImageHandler;
 
       // Stop propagation on single click so it doesn't open card modal
-      const stopImgBubble = (e) => e.stopPropagation();
+      const stopImgBubble = (e) => {
+        e.stopPropagation();
+        selectElement(img);
+      };
       img.addEventListener("click", stopImgBubble);
       img._stopImgBubble = stopImgBubble;
     });
 
     // 4. Disable card click modals and navigation in capture phase
     const preventCardClick = (e) => {
-      // If we clicked on editable text, allow normal text cursor click, but stop card modal
+      const card = e.currentTarget;
+      // If we clicked on editable text or an image, let the normal flow handle it
       if (e.target.hasAttribute("contenteditable") || e.target.tagName === "IMG") {
         return;
       }
+      
       e.preventDefault();
       e.stopPropagation();
+
+      // Clicked on card background, select card and clear text selection
+      selectElement(null);
+      selectCard(card);
+      updateInspectorUI();
     };
 
-    document.querySelectorAll(".character-card, .media-card, .video-container").forEach(card => {
+    document.querySelectorAll(".character-card, .media-card, .video-container, .promo-card, .stats-card, .story-visual-card").forEach(card => {
       card.addEventListener("click", preventCardClick, true); // Capture phase (intercepts script.js)
       card._preventCardClick = preventCardClick;
     });
@@ -139,9 +269,24 @@
       a._preventLinkClick = preventLinkClick;
     });
 
-    // 6. Inject Admin Control Panel
+    // 6. Click outside handler to deselect active items
+    const onDocumentClick = (e) => {
+      if (e.target.closest("#dxz-admin-panel") || 
+          e.target.closest("[contenteditable='true']") || 
+          e.target.closest("img") || 
+          e.target.closest(".character-card, .media-card, .promo-card, .stats-card, .story-visual-card")) {
+        return;
+      }
+      selectElement(null);
+      selectCard(null);
+      updateInspectorUI();
+    };
+    document.addEventListener("click", onDocumentClick);
+    document._onDocumentClick = onDocumentClick;
+
+    // 7. Inject Admin Control Panel
     const panelHTML = `
-      <div id="dxz-admin-panel" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(8, 8, 12, 0.94); border: 1px solid var(--color-blue-neon); border-radius: 12px; padding: 12px 24px; z-index: 100000; display: flex; align-items: center; gap: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 229, 255, 0.15); backdrop-filter: blur(15px); font-family: sans-serif; color: white; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+      <div id="dxz-admin-panel" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(8, 8, 12, 0.96); border: 1px solid var(--color-blue-neon); border-radius: 12px; padding: 12px 24px; z-index: 100000; display: flex; align-items: center; gap: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 229, 255, 0.15); backdrop-filter: blur(15px); font-family: sans-serif; color: white; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
         <style>
           @keyframes slideUp {
             from { transform: translate(-50%, 50px); opacity: 0; }
@@ -158,12 +303,40 @@
         <!-- Theme Color Picker Panel -->
         <div style="display: flex; align-items: center; gap: 12px; font-size: 0.85rem;">
           <div style="display: flex; align-items: center; gap: 5px;">
-            <label for="theme-color-primary" style="color: #8E9297;">Cyan/Blue:</label>
+            <label for="theme-color-primary" style="color: #8E9297;">Global Cyan:</label>
             <input type="color" id="theme-color-primary" value="${selectedPrimary}" style="width: 25px; height: 25px; border: none; background: none; cursor: pointer; border-radius: 4px;">
           </div>
           <div style="display: flex; align-items: center; gap: 5px;">
-            <label for="theme-color-secondary" style="color: #8E9297;">Redago:</label>
+            <label for="theme-color-secondary" style="color: #8E9297;">Global Redago:</label>
             <input type="color" id="theme-color-secondary" value="${selectedSecondary}" style="width: 25px; height: 25px; border: none; background: none; cursor: pointer; border-radius: 4px;">
+          </div>
+        </div>
+
+        <!-- Separator -->
+        <div id="dxz-inspector-sep" style="height: 20px; width: 1px; background: rgba(255, 255, 255, 0.15); display: none;"></div>
+
+        <!-- Inspector Section -->
+        <div id="dxz-inspector-panel" style="display: none; align-items: center; gap: 15px; font-size: 0.85rem;">
+          <span id="dxz-inspector-title" style="color: var(--color-blue-neon); font-weight: 700; font-family: 'Outfit', sans-serif; text-transform: uppercase; white-space: nowrap;">Select an item</span>
+          
+          <!-- Text Color Controls -->
+          <div id="dxz-text-color-ctrl" style="display: flex; align-items: center; gap: 6px;">
+            <label for="dxz-text-color" style="color: #8E9297;">Text Color:</label>
+            <input type="color" id="dxz-text-color" style="width: 22px; height: 22px; border: none; background: none; cursor: pointer; border-radius: 4px;">
+            <button id="dxz-text-color-reset" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15); color: white; cursor: pointer; font-size: 0.75rem; padding: 2px 6px; border-radius: 4px;" title="Reset text color">Reset</button>
+          </div>
+
+          <!-- Card Neon Primary Color Controls -->
+          <div id="dxz-card-primary-ctrl" style="display: flex; align-items: center; gap: 6px;">
+            <label for="dxz-card-primary" style="color: #8E9297;">Card Blue:</label>
+            <input type="color" id="dxz-card-primary" style="width: 22px; height: 22px; border: none; background: none; cursor: pointer; border-radius: 4px;">
+          </div>
+
+          <!-- Card Neon Secondary Color Controls -->
+          <div id="dxz-card-secondary-ctrl" style="display: flex; align-items: center; gap: 6px;">
+            <label for="dxz-card-secondary" style="color: #8E9297;">Card Red:</label>
+            <input type="color" id="dxz-card-secondary" style="width: 22px; height: 22px; border: none; background: none; cursor: pointer; border-radius: 4px;">
+            <button id="dxz-card-reset" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15); color: white; cursor: pointer; font-size: 0.75rem; padding: 2px 6px; border-radius: 4px;" title="Reset card colors">Reset</button>
           </div>
         </div>
 
@@ -175,7 +348,7 @@
     `;
     document.body.insertAdjacentHTML("beforeend", panelHTML);
 
-    // Bind color picker inputs
+    // Bind global color picker inputs
     const primaryInput = document.getElementById("theme-color-primary");
     const secondaryInput = document.getElementById("theme-color-secondary");
 
@@ -189,12 +362,49 @@
       document.documentElement.style.setProperty('--color-redago', selectedSecondary);
     });
 
+    // Bind individual inspector color pickers
+    const textColorPicker = document.getElementById("dxz-text-color");
+    textColorPicker.addEventListener("input", (e) => {
+      if (activeElement && activeElement.tagName !== "IMG") {
+        activeElement.style.color = e.target.value;
+      }
+    });
+
+    document.getElementById("dxz-text-color-reset").addEventListener("click", () => {
+      if (activeElement && activeElement.tagName !== "IMG") {
+        activeElement.style.removeProperty("color");
+        updateInspectorUI();
+      }
+    });
+
+    const cardPrimaryPicker = document.getElementById("dxz-card-primary");
+    cardPrimaryPicker.addEventListener("input", (e) => {
+      if (activeCard) {
+        activeCard.style.setProperty('--color-blue-neon', e.target.value);
+      }
+    });
+
+    const cardSecondaryPicker = document.getElementById("dxz-card-secondary");
+    cardSecondaryPicker.addEventListener("input", (e) => {
+      if (activeCard) {
+        activeCard.style.setProperty('--color-redago', e.target.value);
+      }
+    });
+
+    document.getElementById("dxz-card-reset").addEventListener("click", () => {
+      if (activeCard) {
+        activeCard.style.removeProperty('--color-blue-neon');
+        activeCard.style.removeProperty('--color-redago');
+        updateInspectorUI();
+      }
+    });
+
     // Bind panel buttons
     document.getElementById("dxz-admin-save").addEventListener("click", exportCleanHTML);
     document.getElementById("dxz-admin-exit").addEventListener("click", exitVisualEditor);
 
     if (window.showNotification) {
-      window.showNotification("Visual Editor enabled! Click text to edit and change colors below.");
+      window.showNotification("Visual Editor enabled! Click text or cards to edit individual colors.");
     }
   }
 
@@ -204,17 +414,30 @@
     if (panel) panel.remove();
     if (styles) styles.remove();
 
+    // Remove active styles
+    if (activeElement) {
+      activeElement.classList.remove("dxz-active-element");
+      activeElement = null;
+    }
+    if (activeCard) {
+      activeCard.classList.remove("dxz-active-card");
+      activeCard = null;
+    }
+    document.querySelectorAll(".dxz-active-element, .dxz-active-card").forEach(el => {
+      el.classList.remove("dxz-active-element", "dxz-active-card");
+    });
+
     // Remove editable states
     document.querySelectorAll("[contenteditable]").forEach(el => {
       el.removeAttribute("contenteditable");
-      if (el._stopBubble) {
-        el.removeEventListener("click", el._stopBubble);
-        delete el._stopBubble;
+      if (el._onTextClick) {
+        el.removeEventListener("click", el._onTextClick);
+        delete el._onTextClick;
       }
     });
 
     // Restore cards
-    document.querySelectorAll(".character-card, .media-card, .video-container").forEach(card => {
+    document.querySelectorAll(".character-card, .media-card, .video-container, .promo-card, .stats-card, .story-visual-card").forEach(card => {
       if (card._preventCardClick) {
         card.removeEventListener("click", card._preventCardClick, true);
         delete card._preventCardClick;
@@ -242,6 +465,11 @@
         delete img._stopImgBubble;
       }
     });
+
+    if (document._onDocumentClick) {
+      document.removeEventListener("click", document._onDocumentClick);
+      delete document._onDocumentClick;
+    }
 
     if (window.showNotification) {
       window.showNotification("Visual Editor disabled.", true);
@@ -272,6 +500,11 @@
     // 5. Clean search overlay active classes
     const activeSearchOverlay = clone.querySelector(".global-search-overlay");
     if (activeSearchOverlay) activeSearchOverlay.classList.remove("active");
+
+    // 5b. Remove temporary active selection classes
+    clone.querySelectorAll(".dxz-active-element, .dxz-active-card").forEach(el => {
+      el.classList.remove("dxz-active-element", "dxz-active-card");
+    });
 
     // 6. Inject the custom selected theme colors into a style tag inside head
     let customThemeStyle = clone.querySelector("#dxz-custom-theme");
@@ -313,6 +546,7 @@
 
   // Helper: Convert rgb(r, g, b) to #hex
   function rgbToHex(rgbStr) {
+    if (!rgbStr) return "#ffffff";
     if (!rgbStr.startsWith("rgb")) return rgbStr;
     const match = rgbStr.match(/\d+/g);
     if (!match) return rgbStr;
