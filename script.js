@@ -163,22 +163,6 @@ function initDynamicIframes() {
     iframe.style.border = "none";
     latestVideoContainer.appendChild(iframe);
   }
-
-  // 2. Google Form Iframe
-  const googleFormPlaceholder = document.getElementById("google-form-placeholder");
-  if (googleFormPlaceholder) {
-    googleFormPlaceholder.innerHTML = "";
-    const iframe = document.createElement("iframe");
-    iframe.src = "https://docs.google.com/forms/d/e/1FAIpQLSfx75OfXmtCLO7Qd2f8gwg9niubxoYGMA0whdP2qrEp4mzUhg/viewform?embedded=true";
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
-    iframe.style.border = "none";
-    iframe.setAttribute("frameborder", "0");
-    iframe.setAttribute("marginheight", "0");
-    iframe.setAttribute("marginwidth", "0");
-    iframe.textContent = "Loading…";
-    googleFormPlaceholder.appendChild(iframe);
-  }
 }
 
 // SMART HERO BACKGROUND VIDEO
