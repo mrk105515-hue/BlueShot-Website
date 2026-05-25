@@ -108,6 +108,11 @@
       
       img.addEventListener("dblclick", changeImageHandler);
       img._changeImageHandler = changeImageHandler;
+
+      // Stop propagation on single click so it doesn't open card modal
+      const stopImgBubble = (e) => e.stopPropagation();
+      img.addEventListener("click", stopImgBubble);
+      img._stopImgBubble = stopImgBubble;
     });
 
     // 4. Disable card click modals and navigation in capture phase
@@ -231,6 +236,10 @@
       if (img._changeImageHandler) {
         img.removeEventListener("dblclick", img._changeImageHandler);
         delete img._changeImageHandler;
+      }
+      if (img._stopImgBubble) {
+        img.removeEventListener("click", img._stopImgBubble);
+        delete img._stopImgBubble;
       }
     });
 
