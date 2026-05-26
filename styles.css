@@ -1553,7 +1553,8 @@ textarea.form-input {
   }
   
   .hero-visual {
-    order: -1;
+    order: 0;
+    margin-top: 2rem;
   }
   
   .visual-card {
@@ -1617,6 +1618,11 @@ textarea.form-input {
   }
   
   .nav-socials {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .nav-socials a.social-icon {
     display: none;
   }
   
