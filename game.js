@@ -1433,47 +1433,6 @@ function executeOpponentAI() {
   const o = CHARACTERS[currentOpponent];
   const p = CHARACTERS[activeFighter];
 
-  // Decide move index (AI defaults to Ult if 100% Energy, otherwise 40% chance special, 60% base)
-  let moveIdx = 0;
-  if (opponentEnergy >= 100) {
-    moveIdx = 2;
-  } else {
-    moveIdx = Math.random() < 0.4 ? 1 : 0;
-  }
-
-  const move = o.moves[moveIdx];
-  
-  // Simulated timing gauge slider for AI:
-  // AI Hit rates: 15% Perfect, 35% Great, 40% Normal, 10% Miss
-  let rand = Math.random();
-  let multiplier = 0;
-  let rankText = "MISS";
-  let soundType = "miss";
-
-  if (rand < 0.15) {
-    multiplier = 2.5;
-    rankText = "CRITICAL PERFECT!";
-    soundType = "critical";
-    triggerScreenFlash();
-  } else if (rand < 0.5) {
-    multiplier = 1.5;
-    rankText = "GREAT HIT";
-    soundType = "hit";
-  } else if (rand < 0.9) {
-    multiplier = 1.0;
-    soundType = "hit";
-    rankText = "NORMAL STRIKE";
-  } else {
-    multiplier = 0.0;
-    soundType = "miss";
-    rankText = "ATTACK MISSED";
-  }
-
-  // Start animated AI sliding simulator
-function executeOpponentAI() {
-  const o = CHARACTERS[currentOpponent];
-  const p = CHARACTERS[activeFighter];
-
   // Decide move index: choose highest unlocked move that meets energy requirements
   let moveIdx = 0;
   if (opponentUnlockedCount >= 5 && opponentEnergy >= 100) {
