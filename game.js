@@ -921,11 +921,7 @@ function handleOpponentActionSync(lastAction) {
   } else {
     appendChatLog(currentOpponent, dialogue);
     
-    const pCard = document.getElementById("combat-player-card");
-    if (pCard) {
-      pCard.classList.add("damaged");
-      setTimeout(() => pCard.classList.remove("damaged"), 400);
-    }
+    triggerDamageEffect("combat-player-card", moveName, finalDmg, multiplier === 2.5);
     
     let criticalFlag = multiplier === 2.5 ? " critical" : "";
     appendChatMsg("action" + criticalFlag, `💥 ${o.name} lands ${moveName} (${rankText}) dealing <strong>${finalDmg} damage</strong>!`);
@@ -1287,11 +1283,7 @@ async function executePlayerAttack(multiplier, rankText) {
       } else {
         appendChatLog(activeFighter, matchUpdate.lastAction.dialogueText);
         
-        const oppCard = document.getElementById("combat-opponent-card");
-        if (oppCard) {
-          oppCard.classList.add("damaged");
-          setTimeout(() => oppCard.classList.remove("damaged"), 400);
-        }
+        triggerDamageEffect("combat-opponent-card", move.name, finalDmg, multiplier === 2.5);
         
         let criticalFlag = multiplier === 2.5 ? " critical" : "";
         appendChatMsg("action" + criticalFlag, `⚔️ ${p.name} lands ${move.name} (${rankText}) dealing <strong>${finalDmg} damage</strong>!`);
@@ -1315,11 +1307,7 @@ async function executePlayerAttack(multiplier, rankText) {
 
       appendChatLog(activeFighter, dialogue);
       
-      const oppCard = document.getElementById("combat-opponent-card");
-      if (oppCard) {
-        oppCard.classList.add("damaged");
-        setTimeout(() => oppCard.classList.remove("damaged"), 400);
-      }
+      triggerDamageEffect("combat-opponent-card", move.name, finalDmg, multiplier === 2.5);
 
       let criticalFlag = multiplier === 2.5 ? " critical" : "";
       appendChatMsg("action" + criticalFlag, `⚔️ ${p.name} lands ${move.name} (${rankText}) dealing <strong>${finalDmg} damage</strong>!`);
@@ -1420,18 +1408,13 @@ function executeOpponentAI() {
       if (multiplier === 2.5) dialogue = o.dialogues.ultimate;
       else if (moveIdx === 1) dialogue = o.dialogues.special;
 
-      appendChatLog(currentOpponent, dialogue);
-
-      // Shake Player card
-      const pCard = document.getElementById("combat-player-card");
-      if (pCard) {
-        pCard.classList.add("damaged");
-        setTimeout(() => pCard.classList.remove("damaged"), 400);
-      }
-
       // Apply Damage
       let finalDmg = Math.round(move.dmg * multiplier);
       playerHP = Math.max(playerHP - finalDmg, 0);
+
+      appendChatLog(currentOpponent, dialogue);
+
+      triggerDamageEffect("combat-player-card", move.name, finalDmg, multiplier === 2.5);
 
       let criticalFlag = multiplier === 2.5 ? " critical" : "";
       appendChatMsg("action" + criticalFlag, `💥 ${o.name} lands ${move.name} (${rankText}) dealing <strong>${finalDmg} damage</strong>!`);
@@ -1765,6 +1748,88 @@ function escapeHtml(str) {
   const div = document.createElement("div");
   div.textContent = str;
   return div.innerHTML;
+}
+
+function getEffectType(moveName) {
+  if (!moveName) return "slash";
+  const name = moveName.toLowerCase();
+  if (name.includes("flame") || name.includes("burn") || name.includes("fire") || name.includes("heat") || name.includes("ash")) return "fire";
+  if (name.includes("dragon") || name.includes("aura") || name.includes("celestial") || name.includes("timeline") || name.includes("swap") || name.includes("void")) return "energy";
+  if (name.includes("portal") || name.includes("dimension") || name.includes("erase") || name.includes("curse")) return "dark";
+  if (name.includes("stomp") || name.includes("earth") || name.includes("rampage") || name.includes("stride") || name.includes("impact")) return "stomp";
+  return "slash";
+}
+
+function triggerDamageEffect(targetCardId, moveName, damageAmount = 0, isCritical = false) {
+  const card = document.getElementById(targetCardId);
+  if (!card) return;
+
+  const effectType = getEffectType(moveName);
+  
+  // Remove existing overlays first to prevent overlaps
+  const oldOverlays = card.querySelectorAll(".damage-effect-overlay");
+  oldOverlays.forEach(el => el.remove());
+
+  // Create overlay element
+  const overlay = document.createElement("div");
+  overlay.className = `damage-effect-overlay effect-${effectType}`;
+  
+  // Add sub-elements for particle effects
+  let particlesHtml = "";
+  if (effectType === "fire") {
+    particlesHtml = `
+      <div class="flame-particle p1"></div>
+      <div class="flame-particle p2"></div>
+      <div class="flame-particle p3"></div>
+      <div class="fire-slash"></div>
+    `;
+  } else if (effectType === "energy") {
+    particlesHtml = `
+      <div class="energy-blast"></div>
+      <div class="energy-spark s1"></div>
+      <div class="energy-spark s2"></div>
+      <div class="energy-spark s3"></div>
+    `;
+  } else if (effectType === "dark") {
+    particlesHtml = `
+      <div class="dark-portal"></div>
+      <div class="dark-smoke sm1"></div>
+      <div class="dark-smoke sm2"></div>
+    `;
+  } else if (effectType === "stomp") {
+    particlesHtml = `
+      <div class="earth-fracture"></div>
+      <div class="earth-dust d1"></div>
+      <div class="earth-dust d2"></div>
+    `;
+  } else { // default: slash
+    particlesHtml = `
+      <div class="slash-line s1"></div>
+      <div class="slash-line s2"></div>
+    `;
+  }
+
+  // Damage number indicator HTML
+  const criticalClass = isCritical ? " critical" : "";
+  const damageHtml = `
+    <div class="damage-number dmg-${effectType}${criticalClass}">
+      <span>-${damageAmount}</span>
+    </div>
+  `;
+
+  overlay.innerHTML = particlesHtml + damageHtml;
+  
+  // Append to card
+  card.appendChild(overlay);
+  
+  // Add screen shake class
+  card.classList.add("damaged");
+  
+  // Remove after animation finishes
+  setTimeout(() => {
+    overlay.remove();
+    card.classList.remove("damaged");
+  }, 600);
 }
 
 function showNotification(message, isError = false) {
