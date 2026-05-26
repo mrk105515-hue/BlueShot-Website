@@ -36,6 +36,7 @@ const GLOBAL_SEARCH_DB = [
 document.addEventListener("DOMContentLoaded", () => {
   initGlobalSearch();
   initNavbarProfileWidget();
+  initMobileMenuToggle();
 });
 
 function initGlobalSearch() {
@@ -318,6 +319,41 @@ function initNavbarProfileWidget() {
 
     window.addEventListener("dxz_user_changed", checkLocalState);
     window.addEventListener("focus", checkLocalState);
+  }
+}
+
+function initMobileMenuToggle() {
+  const isHomepage = window.location.pathname.endsWith("index.html") || 
+                     window.location.pathname.endsWith("/") ||
+                     window.location.pathname === "";
+  if (isHomepage) return;
+
+  const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+  const navLinksList = document.getElementById("nav-links");
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  if (mobileMenuBtn && navLinksList) {
+    mobileMenuBtn.addEventListener("click", () => {
+      navLinksList.classList.toggle("active");
+      const icon = mobileMenuBtn.querySelector("i");
+      if (icon) {
+        if (navLinksList.classList.contains("active")) {
+          icon.className = "fa-solid fa-xmark";
+        } else {
+          icon.className = "fa-solid fa-bars";
+        }
+      }
+    });
+  }
+
+  if (navLinks && navLinksList && mobileMenuBtn) {
+    navLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        navLinksList.classList.remove("active");
+        const icon = mobileMenuBtn.querySelector("i");
+        if (icon) icon.className = "fa-solid fa-bars";
+      });
+    });
   }
 }
 
