@@ -22,6 +22,14 @@ let combatPhase = "select"; // select, battle, result
 let perfectHits = 0;
 let totalTurns = 0;
 
+// Multiplayer matchmaking & synchronization state
+let activeMatchId = null;
+let activeMatchRef = null;
+let unsubscribeMatch = null;
+let playerRole = null; // "host" or "opponent"
+let lastProcessedTurn = null;
+let lastActionTimestamp = null;
+
 // Gauge physics loop
 let gaugePosition = 0;
 let gaugeDirection = 1;
@@ -136,6 +144,20 @@ document.addEventListener("DOMContentLoaded", () => {
     setupLobbyControls();
     setupCombatControls();
     loadLeaderboardUI();
+
+    // Cleanup match document on unexpected tab closes/reloads
+    window.addEventListener("beforeunload", () => {
+      if (activeMatchRef) {
+        if (playerRole === "host" && combatPhase === "select") {
+          activeMatchRef.delete();
+        } else if (combatPhase === "battle") {
+          activeMatchRef.update({
+            status: "forfeited",
+            forfeitedBy: currentUser.uid
+          });
+        }
+      }
+    });
   } catch (e) {
     console.error("DXZ Arena: Setup failed:", e);
   }
@@ -434,9 +456,20 @@ function setupCombatControls() {
   }
   
   if (forfeit) {
-    forfeit.addEventListener("click", () => {
+    forfeit.addEventListener("click", async () => {
       playSound("defeat");
-      endCombat(false);
+      if (!isDemoMode && activeMatchRef) {
+        try {
+          await activeMatchRef.update({
+            status: "forfeited",
+            forfeitedBy: currentUser.uid
+          });
+        } catch (e) {
+          console.error("Error setting forfeit status:", e);
+        }
+      } else {
+        endCombat(false);
+      }
     });
   }
 
@@ -504,14 +537,340 @@ function enterCombatState() {
     return;
   }
 
+  // Reset matchmaking state
+  activeMatchId = null;
+  activeMatchRef = null;
+  unsubscribeMatch = null;
+  playerRole = null;
+  lastProcessedTurn = null;
+  lastActionTimestamp = null;
+
+  if (isDemoMode) {
+    startOfflineMatch();
+  } else {
+    // Show matchmaking overlay
+    document.getElementById("arena-lobby").style.display = "none";
+    document.getElementById("arena-matchmaking").style.display = "flex";
+    document.getElementById("arena-combat").style.display = "none";
+    document.getElementById("arena-result").style.display = "none";
+    
+    findMultiplayerMatch();
+  }
+}
+
+async function findMultiplayerMatch() {
+  const p = CHARACTERS[activeFighter];
+  const cancelBtn = document.getElementById("btn-cancel-matchmaking");
+  
+  document.getElementById("matchmaking-fighter-name").textContent = p.name;
+  
+  if (cancelBtn) {
+    cancelBtn.onclick = () => {
+      cancelMatchmaking();
+    };
+  }
+
+  try {
+    const matchesRef = db.collection("matches");
+    const snapshot = await matchesRef
+      .where("status", "==", "waiting")
+      .orderBy("createdAt", "asc")
+      .limit(1)
+      .get();
+      
+    if (!snapshot.empty) {
+      // Join existing match
+      const doc = snapshot.docs[0];
+      activeMatchId = doc.id;
+      activeMatchRef = doc.ref;
+      playerRole = "opponent";
+      
+      const matchData = doc.data();
+      currentOpponent = matchData.host.fighter;
+      
+      await activeMatchRef.update({
+        opponent: {
+          uid: currentUser.uid,
+          name: currentUser.displayName || "Warrior",
+          fighter: activeFighter,
+          maxHp: p.hp,
+          hp: p.hp,
+          energy: 0
+        },
+        status: "active",
+        currentTurn: "host",
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      
+      console.log("Multiplayer: Joined match " + activeMatchId + " as opponent");
+      setupMatchListeners();
+    } else {
+      // Create new match
+      playerRole = "host";
+      
+      const newMatchDoc = await matchesRef.add({
+        host: {
+          uid: currentUser.uid,
+          name: currentUser.displayName || "Warrior",
+          fighter: activeFighter,
+          maxHp: p.hp,
+          hp: p.hp,
+          energy: 0
+        },
+        opponent: null,
+        status: "waiting",
+        currentTurn: "host",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      
+      activeMatchId = newMatchDoc.id;
+      activeMatchRef = newMatchDoc;
+      
+      console.log("Multiplayer: Created new match " + activeMatchId + " as host. Waiting for opponent...");
+      setupMatchListeners();
+    }
+  } catch (err) {
+    console.error("Matchmaking error:", err);
+    showNotification("Matchmaking failed. Switching to offline AI Practice Mode.", true);
+    startOfflineMatch();
+  }
+}
+
+async function cancelMatchmaking() {
+  playSound("defeat");
+  
+  if (unsubscribeMatch) {
+    unsubscribeMatch();
+    unsubscribeMatch = null;
+  }
+  
+  if (activeMatchRef && playerRole === "host") {
+    try {
+      await activeMatchRef.delete();
+      console.log("Matchmaking cancelled: match document deleted");
+    } catch (e) {
+      console.error("Error deleting match doc:", e);
+    }
+  }
+  
+  activeMatchId = null;
+  activeMatchRef = null;
+  playerRole = null;
+  
+  document.getElementById("arena-matchmaking").style.display = "none";
+  document.getElementById("arena-lobby").style.display = "block";
+}
+
+function setupMatchListeners() {
+  if (!activeMatchRef) return;
+  
+  unsubscribeMatch = activeMatchRef.onSnapshot((doc) => {
+    if (!doc.exists) return;
+    
+    const data = doc.data();
+    
+    // 1. If matchmaking wait
+    if (data.status === "waiting") {
+      document.getElementById("arena-lobby").style.display = "none";
+      document.getElementById("arena-matchmaking").style.display = "flex";
+      document.getElementById("arena-combat").style.display = "none";
+      return;
+    }
+    
+    // 2. If match is active
+    if (data.status === "active") {
+      document.getElementById("arena-matchmaking").style.display = "none";
+      document.getElementById("arena-lobby").style.display = "none";
+      document.getElementById("arena-combat").style.display = "block";
+      
+      const hostData = data.host;
+      const oppData = data.opponent;
+      
+      if (!oppData) return;
+      
+      currentOpponent = playerRole === "host" ? oppData.fighter : hostData.fighter;
+      
+      const playerStat = playerRole === "host" ? hostData : oppData;
+      const oppStat = playerRole === "host" ? oppData : hostData;
+      
+      playerHP = playerStat.hp;
+      playerMaxHP = playerStat.maxHp;
+      playerEnergy = playerStat.energy;
+      
+      opponentHP = oppStat.hp;
+      opponentMaxHP = oppStat.maxHp;
+      opponentEnergy = oppStat.energy;
+      
+      const pChar = CHARACTERS[activeFighter];
+      const oChar = CHARACTERS[currentOpponent];
+      
+      document.getElementById("player-fighter-name").textContent = playerStat.name + " (" + pChar.name + ")";
+      document.getElementById("player-fighter-title").textContent = pChar.title;
+      document.getElementById("player-fighter-title").className = pChar.redago ? "faction-badge redago-theme" : "faction-badge";
+      
+      const pAvatar = document.getElementById("player-avatar");
+      pAvatar.textContent = "";
+      pAvatar.style.backgroundImage = `url(assets/char-${activeFighter}.png)`;
+      pAvatar.style.backgroundSize = "cover";
+      pAvatar.style.backgroundPosition = "center top";
+      pAvatar.style.backgroundRepeat = "no-repeat";
+      pAvatar.style.border = pChar.redago ? "2px solid var(--color-redago)" : "2px solid var(--color-blue-neon)";
+      
+      document.getElementById("opponent-fighter-name").textContent = oppStat.name + " (" + oChar.name + ")";
+      document.getElementById("opponent-fighter-title").textContent = oChar.title;
+      document.getElementById("opponent-fighter-title").className = oChar.redago ? "faction-badge redago-theme" : "faction-badge";
+      
+      const oAvatar = document.getElementById("opponent-avatar");
+      oAvatar.textContent = "";
+      oAvatar.style.backgroundImage = `url(assets/char-${currentOpponent}.png)`;
+      oAvatar.style.backgroundSize = "cover";
+      oAvatar.style.backgroundPosition = "center top";
+      oAvatar.style.backgroundRepeat = "no-repeat";
+      oAvatar.style.border = oChar.redago ? "2px solid var(--color-redago)" : "2px solid var(--color-blue-neon)";
+      
+      updateMeterBars();
+      
+      const turnRole = data.currentTurn;
+      const isMyTurn = playerRole === turnRole;
+      
+      if (combatPhase !== "battle") {
+        combatPhase = "battle";
+        
+        const log = document.getElementById("chat-messages");
+        log.innerHTML = `
+          <div class="chat-msg system"><i class="fa-solid fa-swords"></i> Multiplayer Match Started!</div>
+          <div class="chat-msg system">Host: <strong>${hostData.name}</strong> vs Opponent: <strong>${oppData.name}</strong></div>
+        `;
+        
+        appendChatLog(hostData.fighter, CHARACTERS[hostData.fighter].dialogues.intro);
+        setTimeout(() => {
+          appendChatLog(oppData.fighter, CHARACTERS[oppData.fighter].dialogues.intro);
+          runMultiplayerTurnState(isMyTurn, turnRole);
+        }, 1200);
+      } else {
+        runMultiplayerTurnState(isMyTurn, turnRole);
+      }
+      
+      if (data.lastAction && data.lastAction.timestamp) {
+        handleOpponentActionSync(data.lastAction);
+      }
+    }
+    
+    // 3. If forfeited
+    if (data.status === "forfeited") {
+      if (unsubscribeMatch) {
+        unsubscribeMatch();
+        unsubscribeMatch = null;
+      }
+      activeMatchId = null;
+      activeMatchRef = null;
+      
+      const isWinner = data.forfeitedBy !== currentUser.uid;
+      endCombat(isWinner);
+    }
+    
+    // 4. If finished
+    if (data.status === "finished") {
+      if (unsubscribeMatch) {
+        unsubscribeMatch();
+        unsubscribeMatch = null;
+      }
+      activeMatchId = null;
+      activeMatchRef = null;
+      
+      const isWinner = data.winnerUid === currentUser.uid;
+      endCombat(isWinner);
+    }
+  }, (err) => {
+    console.error("Match snap listener failed:", err);
+  });
+}
+
+function runMultiplayerTurnState(isMyTurn, turnRole) {
+  if (lastProcessedTurn === turnRole) return;
+  lastProcessedTurn = turnRole;
+
+  if (isMyTurn) {
+    totalTurns++;
+    document.getElementById("combat-phase-text").textContent = "Your Turn";
+    document.getElementById("combat-player-card").classList.add("active-turn");
+    document.getElementById("combat-opponent-card").classList.remove("active-turn");
+    
+    for (let i = 0; i < attackCooldowns.length; i++) {
+      if (attackCooldowns[i] > 0) attackCooldowns[i]--;
+    }
+    
+    updateActionButtonDeck();
+  } else {
+    document.getElementById("combat-phase-text").textContent = "Enemy Turn";
+    document.getElementById("combat-player-card").classList.remove("active-turn");
+    document.getElementById("combat-opponent-card").classList.add("active-turn");
+    
+    disableAllActionButtons();
+    
+    const feedback = document.getElementById("timing-feedback");
+    feedback.textContent = "WAITING FOR ENEMY STRIKE...";
+    feedback.className = "timing-feedback";
+  }
+}
+
+function handleOpponentActionSync(lastAction) {
+  if (lastAction.by === playerRole || lastAction.timestamp === lastActionTimestamp) return;
+  lastActionTimestamp = lastAction.timestamp;
+  
+  const o = CHARACTERS[currentOpponent];
+  const p = CHARACTERS[activeFighter];
+  
+  const multiplier = lastAction.multiplier;
+  const finalDmg = lastAction.damage;
+  const moveName = lastAction.moveName;
+  const rankText = lastAction.resultText;
+  const dialogue = lastAction.dialogueText;
+  
+  let soundType = "miss";
+  if (multiplier === 2.5) {
+    soundType = "critical";
+    triggerScreenFlash();
+  } else if (multiplier > 0) {
+    soundType = "hit";
+  }
+  
+  playSound(soundType);
+  
+  if (multiplier === 0) {
+    appendChatLog(currentOpponent, `*misses attack* "Missed! How did that happen?!"`);
+    appendChatMsg("system", `* Opponent's <strong>${moveName}</strong> missed completely.`, "system");
+  } else {
+    appendChatLog(currentOpponent, dialogue);
+    
+    const pCard = document.getElementById("combat-player-card");
+    if (pCard) {
+      pCard.classList.add("damaged");
+      setTimeout(() => pCard.classList.remove("damaged"), 400);
+    }
+    
+    let criticalFlag = multiplier === 2.5 ? " critical" : "";
+    appendChatMsg("action" + criticalFlag, `💥 ${o.name} lands ${moveName} (${rankText}) dealing <strong>${finalDmg} damage</strong>!`);
+    
+    if (playerHP > 0) {
+      setTimeout(() => {
+        appendChatLog(activeFighter, p.dialogues.damaged);
+      }, 700);
+    }
+  }
+}
+
+function startOfflineMatch() {
+  console.log("Starting Local offline practice match...");
+  
   combatPhase = "battle";
   
-  // Hide Lobby, show combat grid
   document.getElementById("arena-lobby").style.display = "none";
+  document.getElementById("arena-matchmaking").style.display = "none";
   document.getElementById("arena-combat").style.display = "block";
   document.getElementById("arena-result").style.display = "none";
 
-  // Load Player Stats
   const player = CHARACTERS[activeFighter];
   playerHP = player.hp;
   playerMaxHP = player.hp;
@@ -520,7 +879,7 @@ function enterCombatState() {
   totalTurns = 0;
   attackCooldowns = [0, 0, 0];
 
-  document.getElementById("player-fighter-name").textContent = player.name;
+  document.getElementById("player-fighter-name").textContent = player.name + " (AI Practice)";
   document.getElementById("player-fighter-title").textContent = player.title;
   document.getElementById("player-fighter-title").className = player.redago ? "faction-badge redago-theme" : "faction-badge";
   
@@ -534,12 +893,10 @@ function enterCombatState() {
 
   updateMeterBars();
 
-  // Reset Labels on overlay buttons
   document.getElementById("btn-attack1-label").textContent = player.moves[0].name;
   document.getElementById("btn-attack2-label").textContent = player.moves[1].name;
   document.getElementById("btn-attack3-label").textContent = player.moves[2].name;
 
-  // Initialize Opponent
   const charKeys = Object.keys(CHARACTERS).filter(k => k !== activeFighter);
   const randomOpp = charKeys[Math.floor(Math.random() * charKeys.length)];
   currentOpponent = randomOpp;
@@ -549,7 +906,7 @@ function enterCombatState() {
   opponentMaxHP = opponent.hp;
   opponentEnergy = 0;
 
-  document.getElementById("opponent-fighter-name").textContent = opponent.name;
+  document.getElementById("opponent-fighter-name").textContent = opponent.name + " (Practice AI)";
   document.getElementById("opponent-fighter-title").textContent = opponent.title;
   document.getElementById("opponent-fighter-title").className = opponent.redago ? "faction-badge redago-theme" : "faction-badge";
 
@@ -561,21 +918,18 @@ function enterCombatState() {
   oAvatar.style.backgroundRepeat = "no-repeat";
   oAvatar.style.border = opponent.redago ? "2px solid var(--color-redago)" : "2px solid var(--color-blue-neon)";
 
-  // Reset chat battle log
   const log = document.getElementById("chat-messages");
   log.innerHTML = `
-    <div class="chat-msg system"><i class="fa-solid fa-swords"></i> Combat Matchup Finalized!</div>
+    <div class="chat-msg system"><i class="fa-solid fa-swords"></i> Local AI Practice Started!</div>
     <div class="chat-msg system">Opponent matched: <strong>${opponent.name} (${opponent.title})</strong></div>
   `;
 
-  // Animate matchmaking sequence
-  document.getElementById("combat-phase-text").textContent = "Opponent Located!";
+  document.getElementById("combat-phase-text").textContent = "Practice Ready!";
   
   setTimeout(() => {
     appendChatLog(currentOpponent, CHARACTERS[currentOpponent].dialogues.intro);
     setTimeout(() => {
       appendChatLog(activeFighter, CHARACTERS[activeFighter].dialogues.intro);
-      // Start Combat Loop (Player Turn)
       startPlayerTurn();
     }, 1200);
   }, 1000);
@@ -792,7 +1146,7 @@ function executeTimingCapture() {
 // ==========================================================================
 // DAMAGE LOGGING & ACTIONS
 // ==========================================================================
-function executePlayerAttack(multiplier, rankText) {
+async function executePlayerAttack(multiplier, rankText) {
   const p = CHARACTERS[activeFighter];
   const o = CHARACTERS[currentOpponent];
   const move = p.moves[activeAttackIndex];
@@ -807,61 +1161,109 @@ function executePlayerAttack(multiplier, rankText) {
 
   // Resolve Energy charges
   if (activeAttackIndex === 2) {
-    // Ult resets energy
     playerEnergy = 0;
   } else {
-    // Normal hit builds energy
     let energyGain = multiplier === 2.5 ? 30 : multiplier > 0 ? 15 : 0;
     playerEnergy = Math.min(playerEnergy + energyGain, 100);
   }
 
-  // Log to chat
-  if (multiplier === 0) {
-    appendChatLog(activeFighter, `*misses attack* "Darn, my timing was off!"`);
-    appendChatMsg("system", `* Player's <strong>${move.name}</strong> missed completely.`, "system");
+  opponentHP = Math.max(opponentHP - finalDmg, 0);
+
+  // Multiplayer sync block
+  if (!isDemoMode && activeMatchRef) {
+    try {
+      const matchUpdate = {};
+      const hostOrOpp = playerRole; // "host" or "opponent"
+      const targetRole = playerRole === "host" ? "opponent" : "host";
+      
+      matchUpdate[`${hostOrOpp}.hp`] = playerHP; // playerHP is unchanged
+      matchUpdate[`${hostOrOpp}.energy`] = playerEnergy;
+      matchUpdate[`${targetRole}.hp`] = opponentHP;
+      matchUpdate.currentTurn = targetRole;
+      
+      if (opponentHP <= 0) {
+        matchUpdate.status = "finished";
+        matchUpdate.winnerUid = currentUser.uid;
+      }
+      
+      matchUpdate.lastAction = {
+        by: hostOrOpp,
+        moveName: move.name,
+        damage: finalDmg,
+        multiplier: multiplier,
+        resultText: rankText,
+        dialogueText: multiplier === 2.5 ? p.dialogues.ultimate : activeAttackIndex === 1 ? p.dialogues.special : p.dialogues.strike,
+        timestamp: Date.now()
+      };
+      
+      matchUpdate.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+      
+      await activeMatchRef.update(matchUpdate);
+      
+      // Log local action directly for smooth performance
+      if (multiplier === 0) {
+        appendChatLog(activeFighter, `*misses attack* "Darn, my timing was off!"`);
+        appendChatMsg("system", `* Player's <strong>${move.name}</strong> missed completely.`, "system");
+      } else {
+        appendChatLog(activeFighter, matchUpdate.lastAction.dialogueText);
+        
+        const oppCard = document.getElementById("combat-opponent-card");
+        if (oppCard) {
+          oppCard.classList.add("damaged");
+          setTimeout(() => oppCard.classList.remove("damaged"), 400);
+        }
+        
+        let criticalFlag = multiplier === 2.5 ? " critical" : "";
+        appendChatMsg("action" + criticalFlag, `⚔️ ${p.name} lands ${move.name} (${rankText}) dealing <strong>${finalDmg} damage</strong>!`);
+      }
+      
+      updateMeterBars();
+    } catch (err) {
+      console.error("Firestore multiplayer attack sync failed:", err);
+      showNotification("Communication with server lost. Match failed.", true);
+      endCombat(false);
+    }
   } else {
-    // Choose dialogue
-    let dialogue = p.dialogues.strike;
-    if (multiplier === 2.5) dialogue = p.dialogues.ultimate;
-    else if (activeAttackIndex === 1) dialogue = p.dialogues.special;
+    // Local AI Practice Mode logic (original local offline loop)
+    if (multiplier === 0) {
+      appendChatLog(activeFighter, `*misses attack* "Darn, my timing was off!"`);
+      appendChatMsg("system", `* Player's <strong>${move.name}</strong> missed completely.`, "system");
+    } else {
+      let dialogue = p.dialogues.strike;
+      if (multiplier === 2.5) dialogue = p.dialogues.ultimate;
+      else if (activeAttackIndex === 1) dialogue = p.dialogues.special;
 
-    appendChatLog(activeFighter, dialogue);
-    
-    // Shake Opponent card
-    const oppCard = document.getElementById("combat-opponent-card");
-    if (oppCard) {
-      oppCard.classList.add("damaged");
-      setTimeout(() => oppCard.classList.remove("damaged"), 400);
+      appendChatLog(activeFighter, dialogue);
+      
+      const oppCard = document.getElementById("combat-opponent-card");
+      if (oppCard) {
+        oppCard.classList.add("damaged");
+        setTimeout(() => oppCard.classList.remove("damaged"), 400);
+      }
+
+      let criticalFlag = multiplier === 2.5 ? " critical" : "";
+      appendChatMsg("action" + criticalFlag, `⚔️ ${p.name} lands ${move.name} (${rankText}) dealing <strong>${finalDmg} damage</strong>!`);
+      
+      if (opponentHP > 0) {
+        setTimeout(() => {
+          appendChatLog(currentOpponent, o.dialogues.damaged);
+        }, 700);
+      }
     }
 
-    // Apply Damage
-    opponentHP = Math.max(opponentHP - finalDmg, 0);
-    
-    let criticalFlag = multiplier === 2.5 ? " critical" : "";
-    appendChatMsg("action" + criticalFlag, `⚔️ ${p.name} lands ${move.name} (${rankText}) dealing <strong>${finalDmg} damage</strong>!`);
-    
-    // If not dead, opponent responds
-    if (opponentHP > 0) {
+    updateMeterBars();
+    activeAttackIndex = null;
+
+    if (opponentHP <= 0) {
       setTimeout(() => {
-        appendChatLog(currentOpponent, o.dialogues.damaged);
-      }, 700);
+        appendChatLog(currentOpponent, o.dialogues.victory);
+        setTimeout(() => endCombat(true), 1200);
+      }, 1000);
+      return;
     }
+
+    setTimeout(startOpponentTurn, 2200);
   }
-
-  updateMeterBars();
-  activeAttackIndex = null;
-
-  // Check victory condition
-  if (opponentHP <= 0) {
-    setTimeout(() => {
-      appendChatLog(currentOpponent, o.dialogues.victory); // Opponent final words
-      setTimeout(() => endCombat(true), 1200);
-    }, 1000);
-    return;
-  }
-
-  // Opponent turn transition
-  setTimeout(startOpponentTurn, 2200);
 }
 
 function startOpponentTurn() {
@@ -1033,6 +1435,14 @@ function animateAIGaugeSlide(multiplier, callback) {
 async function endCombat(isVictory) {
   combatPhase = "result";
   disableAllActionButtons();
+
+  // Clean up match real-time subscription and references
+  if (unsubscribeMatch) {
+    unsubscribeMatch();
+    unsubscribeMatch = null;
+  }
+  activeMatchId = null;
+  activeMatchRef = null;
 
   const overlay = document.getElementById("arena-result");
   overlay.style.display = "flex";

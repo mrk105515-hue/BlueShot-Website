@@ -146,6 +146,100 @@
   0% { box-shadow: 0 0 0 0 rgba(255, 18, 79, 0.4); }
   70% { box-shadow: 0 0 0 15px rgba(255, 18, 79, 0); }
   100% { box-shadow: 0 0 0 0 rgba(255, 18, 79, 0); }
+/* ==========================================================================
+   ARENA MATCHMAKING OVERLAY
+   ========================================================================== */
+.arena-matchmaking-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1rem;
+  width: 100%;
+}
+
+.matchmaking-card {
+  background: var(--bg-card);
+  border: 2px solid rgba(0, 229, 255, 0.15);
+  border-radius: 20px;
+  padding: 3.5rem;
+  max-width: 550px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 229, 255, 0.05);
+  backdrop-filter: blur(15px);
+  animation: slideUpMatchmaking 0.4s ease;
+}
+
+@keyframes slideUpMatchmaking {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.matchmaking-spinner {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid rgba(0, 229, 255, 0.05);
+  border-top-color: var(--color-blue-neon);
+  border-bottom-color: var(--color-redago);
+  animation: rotateMatchmakingSpinner 1.5s linear infinite;
+}
+
+@keyframes rotateMatchmakingSpinner {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.matchmaking-center-icon {
+  font-size: 2.2rem;
+  color: #FFF;
+  text-shadow: 0 0 10px var(--color-blue-neon);
+  animation: pulseSwords 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulseSwords {
+  from { transform: scale(0.9); }
+  to { transform: scale(1.1); }
+}
+
+.matchmaking-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #FFF;
+}
+
+.matchmaking-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.matchmaking-details {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  display: inline-block;
+}
+
+.matchmaking-details strong {
+  color: var(--color-blue-neon);
+  text-shadow: 0 0 5px var(--color-blue-neon);
 }
 
 /* ==========================================================================

@@ -199,6 +199,23 @@
           </div>
         </div>
       </div>
+      <!-- Matchmaking Loading Overlay -->
+      <div class="arena-matchmaking-overlay" id="arena-matchmaking" style="display: none;">
+        <div class="matchmaking-card">
+          <div class="matchmaking-spinner">
+            <div class="spinner-ring"></div>
+            <i class="fa-solid fa-swords matchmaking-center-icon"></i>
+          </div>
+          <h2>Searching for Faction Duel...</h2>
+          <p>Looking for a live opponent. Factions are aligning their warriors.</p>
+          <div class="matchmaking-details">
+            Selected Fighter: <strong id="matchmaking-fighter-name">BSG</strong>
+          </div>
+          <button class="btn btn-outline" id="btn-cancel-matchmaking" style="margin-top: 1.5rem; justify-content: center; width: 100%;">
+            <i class="fa-solid fa-xmark"></i> Cancel Matchmaking
+          </button>
+        </div>
+      </div>
 
       <!-- 3. BATTLE ARENA AREA (Visible during combat) -->
       <div class="arena-combat-view" id="arena-combat" style="display: none;">
