@@ -1661,7 +1661,8 @@ async function submitHighScore(score) {
       name: currentUser.displayName || "Anonymous Faction Member",
       character: charName,
       score: score,
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      uid: currentUser.uid || "local-user"
     });
     // Sort and keep top 10
     leaderboard.sort((a, b) => b.score - a.score);
@@ -1695,17 +1696,29 @@ function loadLeaderboardUI() {
   if (!container) return;
 
   if (isDemoMode) {
-    renderLeaderboardRows(getLocalLeaderboard());
+    const rawScores = getLocalLeaderboard();
+    // Deduplicate: Keep only the highest score for each unique player (uid or name)
+    const uniqueScores = [];
+    const seen = new Set();
+    for (const item of rawScores) {
+      const key = item.uid || item.name;
+      if (key && !seen.has(key)) {
+        seen.add(key);
+        uniqueScores.push(item);
+      }
+      if (uniqueScores.length >= 10) break;
+    }
+    renderLeaderboardRows(uniqueScores);
   } else {
     if (!db) return;
     db.collection("leaderboard")
       .orderBy("score", "desc")
-      .limit(10)
+      .limit(100)
       .onSnapshot(snapshot => {
-        const scores = [];
+        const rawScores = [];
         snapshot.forEach(doc => {
           const data = doc.data();
-          scores.push({
+          rawScores.push({
             name: data.name,
             character: data.character,
             score: data.score,
@@ -1713,7 +1726,20 @@ function loadLeaderboardUI() {
             uid: data.uid
           });
         });
-        renderLeaderboardRows(scores);
+
+        // Deduplicate: Keep only the highest score for each unique player (uid or name)
+        const uniqueScores = [];
+        const seen = new Set();
+        for (const item of rawScores) {
+          const key = item.uid || item.name;
+          if (key && !seen.has(key)) {
+            seen.add(key);
+            uniqueScores.push(item);
+          }
+          if (uniqueScores.length >= 10) break;
+        }
+
+        renderLeaderboardRows(uniqueScores);
       }, err => {
         console.error("Firestore leaderboard read error:", err);
         container.innerHTML = `<div class="leaderboard-empty">Could not load online ranking. Rules or config issue.</div>`;
