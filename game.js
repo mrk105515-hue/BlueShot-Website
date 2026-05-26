@@ -591,7 +591,6 @@ async function findMultiplayerMatch() {
     const matchesRef = db.collection("matches");
     const snapshot = await matchesRef
       .where("status", "==", "waiting")
-      .orderBy("createdAt", "asc")
       .limit(1)
       .get();
       
