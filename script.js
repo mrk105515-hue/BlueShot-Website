@@ -89,13 +89,13 @@ const CHARACTER_DB = {
     redagoTheme: true
   },
   blackdagger: {
-    name: "Black Dagger",
-    faction: "DXZ Evil Org. Leader",
-    quote: "Black Dagger conducts experiments on humans, demons, and devils to create brainwashed soldiers.",
-    desc: "The supreme leader of the DXZ Evil Organisation. Black Dagger specializes in creating cybernetic augmentations, brainwashed biological clones, and destructive high-tech gadgets to take over the world directions. His right hand is Doizen Raydar.",
-    weapon: "Cybernetic Dagger & Clone Controller",
-    special: "Brainwashed Army Summon",
-    stats: { strength: 78, speed: 80, power: 85, intellect: 96 },
+    name: "Black Dagger (Scinto)",
+    faction: "DXZ Evil Leader / Vanguard",
+    quote: "Black Dagger conducts experiments on humans, demons, and devils to create brainwashed soldiers. Lightning is just a simple illusion.",
+    desc: "The supreme leader of the DXZ Evil Organisation. Hiding under the guise of the friendly swordsman Scinto, Black Dagger orchestrates the war from both ends to extract the Redago force from BSG's genes. He combines electric lightning swordplay with high-tech cybernetics and brainwashed clones, playing both sides of the cosmic war.",
+    weapon: "Cybernetic Dagger & Lightning Blade",
+    special: "Ragnarok Bolt & Summon Clones",
+    stats: { strength: 80, speed: 90, power: 88, intellect: 96 },
     image: "assets/char-blackdagger.png",
     redagoTheme: true
   }
@@ -461,6 +461,7 @@ function initCharacterModal() {
   if (!backdrop) return;
 
   window.openCharModal = (charKey) => {
+    if (charKey === "scinto") charKey = "blackdagger";
     const char = CHARACTER_DB[charKey];
     if (!char) return;
 
@@ -486,6 +487,13 @@ function initCharacterModal() {
         <h3 class="char-modal-name">${char.name}</h3>
         <p class="char-modal-quote ${char.redagoTheme ? 'redago-quote' : ''}">"${char.quote}"</p>
         <p class="char-modal-desc">${char.desc}</p>
+        
+        ${charKey === 'scinto' || charKey === 'blackdagger' ? `
+          <div class="identity-reveal-badge" style="margin-top: 1rem; margin-bottom: 1rem; padding: 0.75rem; background: rgba(255, 18, 79, 0.12); border: 1px solid var(--color-redago); border-radius: 4px; display: flex; align-items: center; gap: 0.5rem; color: #FFF; font-size: 0.85rem; font-family: var(--font-body); box-shadow: 0 0 10px rgba(255, 18, 79, 0.2);">
+            <i class="fa-solid fa-mask" style="color: var(--color-redago); font-size: 1rem; animation: pulse 1.5s infinite;"></i>
+            <span><strong>Secret Identity:</strong> Scinto and Black Dagger are the exact same person!</span>
+          </div>
+        ` : ''}
         
         <div class="char-details-list">
           <div class="char-detail-item">

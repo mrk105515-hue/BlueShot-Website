@@ -1655,4 +1655,177 @@
   100% { transform: translate(-20%, -70%) scale(0.8); opacity: 0; }
 }
 
+/* EMERALD EFFECT */
+.effect-emerald {
+  background: radial-gradient(circle, rgba(46, 204, 113, 0.15) 0%, rgba(0, 0, 0, 0) 80%);
+  animation: emeraldFlash 0.5s ease-out;
+}
+.emerald-cut {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, #2ECC71, #A3E4D7, transparent);
+  box-shadow: 0 0 15px #2ECC71;
+  opacity: 0;
+  height: 4px;
+}
+.emerald-cut.c1 {
+  top: 30%;
+  left: -10%;
+  width: 120%;
+  transform: rotate(15deg);
+  animation: slashAnim 0.35s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+.emerald-cut.c2 {
+  top: 60%;
+  left: -10%;
+  width: 120%;
+  transform: rotate(-15deg);
+  animation: slashAnim 0.35s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  animation-delay: 0.12s;
+}
+.emerald-sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #A3E4D7;
+  box-shadow: 0 0 8px #2ECC71;
+  border-radius: 20% 80% 20% 80%; /* diamond shard shape */
+  animation: sparkFly 0.55s ease-out forwards;
+}
+.emerald-sparkle.es1 { top: 40%; left: 45%; --dx: -50px; --dy: -30px; }
+.emerald-sparkle.es2 { top: 55%; left: 55%; --dx: 45px; --dy: 25px; animation-delay: 0.06s; }
+
+.dmg-emerald {
+  color: #2ECC71;
+  text-shadow: 0 0 10px #27AE60, 0 0 25px #A3E4D7, 0 0 45px #1E8449;
+  animation: floatUpEnergy 0.55s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+
+@keyframes emeraldFlash {
+  0% { background-color: rgba(46, 204, 113, 0.3); }
+  100% { background-color: rgba(46, 204, 113, 0); }
+}
+
+/* HEAVY EFFECT */
+.effect-heavy {
+  background: radial-gradient(circle, rgba(241, 196, 15, 0.2) 0%, rgba(0, 0, 0, 0) 80%);
+  animation: heavyFlash 0.5s ease-out;
+}
+.heavy-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 5px solid #F1C40F;
+  box-shadow: 0 0 25px #F39C12, inset 0 0 15px #F1C40F;
+  transform: translate(-50%, -55%) scale(1);
+  animation: heavyRingAnim 0.55s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+.heavy-crater {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  background-image: radial-gradient(ellipse at center, transparent 20%, #E67E22 60%, transparent 100%);
+  opacity: 0;
+  transform: translate(-50%, -55%) scale(0.6);
+  animation: heavyCraterAnim 0.5s ease-out forwards;
+}
+.gold-dust {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #FFF;
+  box-shadow: 0 0 10px #F1C40F;
+  border-radius: 50%;
+  animation: sparkFly 0.5s ease-out forwards;
+}
+.gold-dust.gd1 { top: 50%; left: 50%; --dx: -80px; --dy: 40px; }
+.gold-dust.gd2 { top: 50%; left: 50%; --dx: 70px; --dy: -50px; animation-delay: 0.05s; }
+
+.dmg-heavy {
+  color: #F1C40F;
+  text-shadow: 0 0 10px #F39C12, 0 0 20px #D35400, 0 0 40px #FFF;
+  animation: floatUpStomp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes heavyFlash {
+  0% { background-color: rgba(241, 196, 15, 0.35); }
+  100% { background-color: rgba(241, 196, 15, 0); }
+}
+@keyframes heavyRingAnim {
+  0% { transform: translate(-50%, -55%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -55%) scale(22); opacity: 0; border-width: 1px; }
+}
+@keyframes heavyCraterAnim {
+  0% { transform: translate(-50%, -55%) scale(0.5); opacity: 0; }
+  30% { opacity: 0.8; }
+  100% { transform: translate(-50%, -55%) scale(1.6); opacity: 0; filter: blur(4px); }
+}
+
+/* LIGHTNING EFFECT */
+.effect-lightning {
+  background: radial-gradient(circle, rgba(52, 152, 219, 0.2) 0%, rgba(0, 0, 0, 0) 80%);
+  animation: lightningFlash 0.45s ease-out;
+}
+.lightning-strike {
+  position: absolute;
+  width: 4px;
+  background: linear-gradient(180deg, transparent, #FFF, #5DADE2, transparent);
+  box-shadow: 0 0 15px #3498DB, 0 0 30px #FFF;
+  opacity: 0;
+}
+.lightning-strike.l1 {
+  top: -10%;
+  left: 30%;
+  height: 120%;
+  transform: rotate(20deg);
+  animation: lightningAnim 0.3s ease-out forwards;
+}
+.lightning-strike.l2 {
+  top: -10%;
+  left: 65%;
+  height: 120%;
+  transform: rotate(-15deg);
+  animation: lightningAnim 0.3s ease-out forwards;
+  animation-delay: 0.08s;
+}
+.electric-discharge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px dashed rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 20px #3498DB;
+  transform: translate(-50%, -50%) scale(0.5);
+  animation: dischargeAnim 0.4s ease-out forwards;
+}
+
+.dmg-lightning {
+  color: #FFF;
+  text-shadow: 0 0 10px #3498DB, 0 0 20px #5DADE2, 0 0 40px #FFF;
+  animation: floatUpEnergy 0.55s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+
+@keyframes lightningFlash {
+  0% { background-color: rgba(52, 152, 219, 0.4); }
+  50% { background-color: rgba(255, 255, 255, 0.25); }
+  100% { background-color: rgba(52, 152, 219, 0); }
+}
+@keyframes lightningAnim {
+  0% { opacity: 0; transform: scaleY(0) rotate(var(--rot, 15deg)); }
+  10%, 40% { opacity: 1; transform: scaleY(1) rotate(var(--rot, 15deg)); }
+  70% { opacity: 0.5; }
+  100% { opacity: 0; transform: scaleY(1.1) rotate(var(--rot, 15deg)); filter: blur(3px); }
+}
+@keyframes dischargeAnim {
+  0% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.8) rotate(180deg); opacity: 0; filter: blur(5px); }
+}
+
 

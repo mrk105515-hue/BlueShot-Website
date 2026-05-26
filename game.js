@@ -24,6 +24,12 @@ let totalTurns = 0;
 let playerUnlockedCount = 1;
 let opponentUnlockedCount = 1;
 
+// Combat passive trackers
+let playerBurnNext = false;
+let opponentBurnNext = false;
+let playerStunned = false;
+let opponentStunned = false;
+
 // Multiplayer matchmaking & synchronization state
 let activeMatchId = null;
 let activeMatchRef = null;
@@ -54,7 +60,7 @@ const CHARACTERS = {
     name: "BSG",
     title: "Flame Devil V3.0",
     avatar: "BF",
-    hp: 120,
+    hp: 150,
     attack: 25,
     speed: 1.2,
     redago: false,
@@ -78,7 +84,7 @@ const CHARACTERS = {
     name: "Hell",
     title: "West Emperor",
     avatar: "HE",
-    hp: 100,
+    hp: 180,
     attack: 30,
     speed: 1.0,
     redago: true,
@@ -91,18 +97,18 @@ const CHARACTERS = {
       victory: "As written. Your demise was foretold."
     },
     moves: [
-      { name: "Fate Cut", dmg: 11, speed: 2.2, cd: 0, desc: "Quick blade strike with low damage, easy speed, no cooldown." },
-      { name: "Timeline Edit", dmg: 19, speed: 3.2, cd: 2, desc: "Alter probability for medium damage. 2 turns cooldown. [Locked]" },
-      { name: "Chronos Brake", dmg: 26, speed: 4.2, cd: 3, desc: "A time-slowing slice. 3 turns cooldown. [Locked]" },
-      { name: "Absolute Erase", dmg: 36, speed: 5.2, cd: 4, energyReq: 50, desc: "Erase the opponent from history. Requires 50% Energy. [Locked]" },
-      { name: "Reality Tear", dmg: 52, speed: 6.5, cd: 5, energyReq: 100, desc: "Shatter reality itself for massive damage. Requires 100% Energy. [Locked]" }
+      { name: "Fate Cut", dmg: 15, speed: 2.2, cd: 0, desc: "Quick blade strike with low damage, easy speed, no cooldown." },
+      { name: "Timeline Edit", dmg: 25, speed: 3.2, cd: 2, desc: "Alter probability for medium damage. 2 turns cooldown. [Locked]" },
+      { name: "Chronos Brake", dmg: 35, speed: 4.2, cd: 3, desc: "A time-slowing slice. 3 turns cooldown. [Locked]" },
+      { name: "Absolute Erase", dmg: 48, speed: 5.2, cd: 4, energyReq: 50, desc: "Erase the opponent from history. Requires 50% Energy. [Locked]" },
+      { name: "Reality Tear", dmg: 68, speed: 6.5, cd: 5, energyReq: 100, desc: "Shatter reality itself for massive damage. Requires 100% Energy. [Locked]" }
     ]
   },
   jiggo: {
     name: "Emperor Jiggo",
     title: "Legendary Mentor",
     avatar: "JD",
-    hp: 140,
+    hp: 180,
     attack: 20,
     speed: 1.4,
     redago: false,
@@ -126,7 +132,7 @@ const CHARACTERS = {
     name: "Curse God Zalta",
     title: "Dark Bull Beast",
     avatar: "CZ",
-    hp: 150,
+    hp: 160,
     attack: 22,
     speed: 0.85,
     redago: true,
@@ -144,6 +150,78 @@ const CHARACTERS = {
       { name: "Iron Horn Charge", dmg: 24, speed: 4.5, cd: 3, desc: "A heavy frontal ram. 3 turns cooldown. [Locked]" },
       { name: "Curse God Awaken", dmg: 35, speed: 5.5, cd: 4, energyReq: 50, desc: "Unleash curse bull energy. Requires 50% Energy. [Locked]" },
       { name: "Earth Shatter Apocalypse", dmg: 48, speed: 6.8, cd: 5, energyReq: 100, desc: "A tectonic apocalyptic slam. Requires 100% Energy. [Locked]" }
+    ]
+  },
+  suma: {
+    name: "Suma",
+    title: "Emerald Shadow",
+    avatar: "ES",
+    hp: 140,
+    attack: 22,
+    speed: 1.1,
+    redago: false,
+    dialogues: {
+      intro: "The shadows will consume you. Face the Emerald Blade.",
+      strike: "Emerald Cut! Did you see that?",
+      special: "Shadow Step! Try to hit me now.",
+      ultimate: "Emerald Tempest! Slice through everything!",
+      damaged: "You found a gap in my guard...",
+      victory: "The shadow remains supreme."
+    },
+    moves: [
+      { name: "Emerald Cut", dmg: 10, speed: 2.1, cd: 0, desc: "Quick jade blade slash. Easy speed, no cooldown." },
+      { name: "Shadow Step", dmg: 18, speed: 3.1, cd: 2, desc: "A fast shadow step strike. 2 turns cooldown. [Locked]" },
+      { name: "Jade Pierce", dmg: 24, speed: 4.1, cd: 3, desc: "A piercing jade stab. 3 turns cooldown. [Locked]" },
+      { name: "Emerald Tempest", dmg: 34, speed: 5.1, cd: 4, energyReq: 50, desc: "Release a storm of jade blades. Requires 50% Energy. [Locked]" },
+      { name: "Grand Shadow Dance", dmg: 47, speed: 6.3, cd: 5, energyReq: 100, desc: "The ultimate shadow assassin dance. Requires 100% Energy. [Locked]" }
+    ]
+  },
+  berry: {
+    name: "Berry",
+    title: "Golden Giant",
+    avatar: "GG",
+    hp: 150,
+    attack: 24,
+    speed: 0.9,
+    redago: true,
+    dialogues: {
+      intro: "I am the Golden Giant. None can withstand my weight.",
+      strike: "Heavy Press! Crush!",
+      special: "Giga Smash! Feel the impact!",
+      ultimate: "Golden Shockwave! Tectonic destruction!",
+      damaged: "Huh, quite a heavy blow...",
+      victory: "You were crushed beneath my feet."
+    },
+    moves: [
+      { name: "Heavy Press", dmg: 11, speed: 2.4, cd: 0, desc: "A slow heavy body slam. No cooldown." },
+      { name: "Giga Smash", dmg: 19, speed: 3.4, cd: 2, desc: "A crushing hammer fist. 2 turns cooldown. [Locked]" },
+      { name: "Iron Impact", dmg: 25, speed: 4.4, cd: 3, desc: "An iron defense-breaking punch. 3 turns cooldown. [Locked]" },
+      { name: "Golden Shockwave", dmg: 36, speed: 5.4, cd: 4, energyReq: 50, desc: "Release a massive shockwave. Requires 50% Energy. [Locked]" },
+      { name: "Meteorite Crater", dmg: 50, speed: 6.6, cd: 5, energyReq: 100, desc: "Slam the ground to create a meteorite crater. Requires 100% Energy. [Locked]" }
+    ]
+  },
+  scinto: {
+    name: "Black Dagger",
+    title: "Lightning Blade",
+    avatar: "BD",
+    hp: 170,
+    attack: 21,
+    speed: 1.3,
+    redago: false,
+    dialogues: {
+      intro: "I strike like lightning. Blink and you'll miss the truth.",
+      strike: "Volt Cutter! Speed of light!",
+      special: "Thunder Dash! A simple illusion, just like my identity.",
+      ultimate: "Ragnarok Bolt! The Black Dagger sends his regards!",
+      damaged: "A direct hit... but my shadow clones took the brunt of it.",
+      victory: "The lightning fades... and the Black Dagger remains victorious."
+    },
+    moves: [
+      { name: "Volt Cutter", dmg: 9, speed: 1.7, cd: 0, desc: "An electrified sword slice. Very slow timing pointer. No cooldown." },
+      { name: "Thunder Dash", dmg: 17, speed: 2.7, cd: 2, desc: "Dash at thunderous speed. 2 turns cooldown. [Locked]" },
+      { name: "Plasma Spark", dmg: 23, speed: 3.7, cd: 3, desc: "Shock the enemy with high voltage. 3 turns cooldown. [Locked]" },
+      { name: "Lightning Discharge", dmg: 33, speed: 4.7, cd: 4, energyReq: 50, desc: "Unleash a wide lightning discharge. Requires 50% Energy. [Locked]" },
+      { name: "Ragnarok Bolt", dmg: 45, speed: 5.9, cd: 5, energyReq: 100, desc: "Call down the final Ragnarok bolt. Requires 100% Energy. [Locked]" }
     ]
   }
 };
@@ -584,6 +662,11 @@ function enterCombatState() {
   playerRole = null;
   lastProcessedTurn = null;
   lastActionTimestamp = null;
+  
+  playerBurnNext = false;
+  opponentBurnNext = false;
+  playerStunned = false;
+  opponentStunned = false;
 
   if (isDemoMode) {
     startOfflineMatch();
@@ -824,7 +907,8 @@ function setupMatchListeners() {
       
       const pAvatar = document.getElementById("player-avatar");
       pAvatar.textContent = "";
-      pAvatar.style.backgroundImage = `url(assets/char-${activeFighter}.png)`;
+      const pImg = activeFighter === "scinto" ? "blackdagger" : activeFighter;
+      pAvatar.style.backgroundImage = `url(assets/char-${pImg}.png)`;
       pAvatar.style.backgroundSize = "cover";
       pAvatar.style.backgroundPosition = "center top";
       pAvatar.style.backgroundRepeat = "no-repeat";
@@ -836,7 +920,8 @@ function setupMatchListeners() {
       
       const oAvatar = document.getElementById("opponent-avatar");
       oAvatar.textContent = "";
-      oAvatar.style.backgroundImage = `url(assets/char-${currentOpponent}.png)`;
+      const oImg = currentOpponent === "scinto" ? "blackdagger" : currentOpponent;
+      oAvatar.style.backgroundImage = `url(assets/char-${oImg}.png)`;
       oAvatar.style.backgroundSize = "cover";
       oAvatar.style.backgroundPosition = "center top";
       oAvatar.style.backgroundRepeat = "no-repeat";
@@ -942,7 +1027,9 @@ function handleOpponentActionSync(lastAction) {
   const dialogue = lastAction.dialogueText;
   
   let soundType = "miss";
-  if (multiplier === 2.5) {
+  if (lastAction.evaded) {
+    soundType = "miss";
+  } else if (multiplier === 2.5) {
     soundType = "critical";
     triggerScreenFlash();
   } else if (multiplier > 0) {
@@ -951,7 +1038,10 @@ function handleOpponentActionSync(lastAction) {
   
   playSound(soundType);
   
-  if (multiplier === 0) {
+  if (lastAction.evaded) {
+    appendChatLog(currentOpponent, dialogue);
+    appendChatMsg("system", `🛡️ **Hell's Timeline Edit** active! Attack was completely evaded!`, "system");
+  } else if (multiplier === 0) {
     appendChatLog(currentOpponent, `*misses attack* "Missed! How did that happen?!"`);
     appendChatMsg("system", `* Opponent's <strong>${moveName}</strong> missed completely.`, "system");
   } else {
@@ -962,6 +1052,26 @@ function handleOpponentActionSync(lastAction) {
     let criticalFlag = multiplier === 2.5 ? " critical" : "";
     appendChatMsg("action" + criticalFlag, `💥 ${o.name} lands ${moveName} (${rankText}) dealing <strong>${finalDmg} damage</strong>!`);
     
+    // Print other passives in local logs
+    if (lastAction.beastRageApplied) {
+      appendChatMsg("system", `💢 **Zalta's Beast Rage** active! Deals +30% extra damage!`, "system");
+    }
+    if (lastAction.blazingFuryApplied) {
+      appendChatMsg("system", `🔥 **BSG's Blazing Fury** burns the enemy for +15% extra damage!`, "system");
+    }
+    if (lastAction.blazingFuryPrimed) {
+      appendChatMsg("system", `🔥 BSG's Blazing Fury primed! Next attack will burn!`, "system");
+    }
+    if (lastAction.tacticalGuardApplied) {
+      appendChatMsg("system", `🛡️ **Suma's Tactical Guard** reduces incoming damage by 20%!`, "system");
+    }
+    if (lastAction.lifestealHeal > 0) {
+      appendChatMsg("system", `🌀 **Jiggo's Void Absorption** active! Heals Jiggo for **+${lastAction.lifestealHeal} HP**!`, "system");
+    }
+    if (lastAction.stunTriggered) {
+      appendChatMsg("system", `💫 **${p.name} is STUNNED**! Opponent retains the turn!`, "system");
+    }
+
     if (playerHP > 0) {
       setTimeout(() => {
         appendChatLog(activeFighter, p.dialogues.damaged);
@@ -992,6 +1102,10 @@ function startOfflineMatch() {
   attackCooldowns = [0, 0, 0, 0, 0];
   playerUnlockedCount = 1;
   opponentUnlockedCount = 1;
+  playerBurnNext = false;
+  opponentBurnNext = false;
+  playerStunned = false;
+  opponentStunned = false;
 
   document.getElementById("player-fighter-name").textContent = player.name + " (AI Practice)";
   document.getElementById("player-fighter-title").textContent = player.title;
@@ -999,7 +1113,8 @@ function startOfflineMatch() {
   
   const pAvatar = document.getElementById("player-avatar");
   pAvatar.textContent = "";
-  pAvatar.style.backgroundImage = `url(assets/char-${activeFighter}.png)`;
+  const pImg = activeFighter === "scinto" ? "blackdagger" : activeFighter;
+  pAvatar.style.backgroundImage = `url(assets/char-${pImg}.png)`;
   pAvatar.style.backgroundSize = "cover";
   pAvatar.style.backgroundPosition = "center top";
   pAvatar.style.backgroundRepeat = "no-repeat";
@@ -1024,7 +1139,8 @@ function startOfflineMatch() {
 
   const oAvatar = document.getElementById("opponent-avatar");
   oAvatar.textContent = "";
-  oAvatar.style.backgroundImage = `url(assets/char-${currentOpponent}.png)`;
+  const oImg = currentOpponent === "scinto" ? "blackdagger" : currentOpponent;
+  oAvatar.style.backgroundImage = `url(assets/char-${oImg}.png)`;
   oAvatar.style.backgroundSize = "cover";
   oAvatar.style.backgroundPosition = "center top";
   oAvatar.style.backgroundRepeat = "no-repeat";
@@ -1182,6 +1298,9 @@ function startTimingGauge() {
   let targetHpRatio = opponentHP / opponentMaxHP;
   let speedScale = 1.5 - 0.5 * targetHpRatio; // 1.0 at full HP, 1.5 at low HP
   gaugeSpeed = (attackInfo.speed) * (1 / char.speed) * speedScale;
+  if (activeFighter === "scinto") {
+    gaugeSpeed *= 0.85;
+  }
 
   document.getElementById("timing-feedback").textContent = "PRESS SPACE / TAP BUTTON TO STRIKE!";
   document.getElementById("timing-feedback").className = "timing-feedback";
@@ -1302,6 +1421,66 @@ async function executePlayerAttack(multiplier, rankText) {
   let defenseScale = 0.4 + 0.6 * targetHpRatio; // ranges from 1.0 down to 0.4
   let finalDmg = Math.round(move.dmg * multiplier * defenseScale);
 
+  // --- PASSIVES CALCULATIONS (Attacker) ---
+  
+  // Zalta's Beast Rage: Deal +30% damage when HP < 50%
+  let beastRageApplied = false;
+  if (activeFighter === "zalta" && multiplier > 0 && finalDmg > 0) {
+    if (playerHP < playerMaxHP * 0.5) {
+      finalDmg = Math.round(finalDmg * 1.30);
+      beastRageApplied = true;
+    }
+  }
+
+  // BSG's Blazing Fury: Deal +15% extra burn damage on next strike after PERFECT
+  let blazingFuryApplied = false;
+  if (activeFighter === "bsg" && multiplier > 0 && finalDmg > 0) {
+    if (playerBurnNext) {
+      finalDmg = Math.round(finalDmg * 1.15);
+      playerBurnNext = false;
+      blazingFuryApplied = true;
+    }
+    if (multiplier === 2.5) {
+      playerBurnNext = true;
+    }
+  }
+
+  // --- PASSIVES CALCULATIONS (Defender) ---
+  
+  // Hell's Timeline Edit (Dodge): 12% chance to evade completely
+  let evaded = false;
+  if (currentOpponent === "hell" && multiplier > 0 && finalDmg > 0) {
+    if (Math.random() < 0.12) {
+      finalDmg = 0;
+      evaded = true;
+    }
+  }
+
+  // Suma's Tactical Guard: Reduce incoming damage by 20%
+  let tacticalGuardApplied = false;
+  if (currentOpponent === "suma" && multiplier > 0 && finalDmg > 0) {
+    finalDmg = Math.round(finalDmg * 0.80);
+    tacticalGuardApplied = true;
+  }
+
+  // --- POST-DAMAGE PASSIVES ---
+  
+  // Jiggo's Void Absorption (Lifesteal): Heal Jiggo for 20% of damage dealt
+  let lifestealHeal = 0;
+  if (activeFighter === "jiggo" && multiplier > 0 && finalDmg > 0) {
+    lifestealHeal = Math.round(finalDmg * 0.20);
+    playerHP = Math.min(playerHP + lifestealHeal, playerMaxHP);
+  }
+
+  // Berry's Heavy Impact (Stun): GREAT or PERFECT has a 20% chance to stun
+  let stunTriggered = false;
+  if (activeFighter === "berry" && (multiplier === 1.5 || multiplier === 2.5) && finalDmg > 0) {
+    if (Math.random() < 0.20) {
+      stunTriggered = true;
+      opponentStunned = true;
+    }
+  }
+
   // Apply cooldown if move has one
   if (move.cd > 0) {
     attackCooldowns[activeAttackIndex] = move.cd + 1; // +1 to account for current turn
@@ -1332,11 +1511,13 @@ async function executePlayerAttack(multiplier, rankText) {
       const hostOrOpp = playerRole; // "host" or "opponent"
       const targetRole = playerRole === "host" ? "opponent" : "host";
       
-      matchUpdate[`${hostOrOpp}.hp`] = playerHP; // playerHP is unchanged
+      matchUpdate[`${hostOrOpp}.hp`] = playerHP; // playerHP includes lifesteal
       matchUpdate[`${hostOrOpp}.energy`] = playerEnergy;
       matchUpdate[`${hostOrOpp}.unlockedCount`] = playerUnlockedCount;
       matchUpdate[`${targetRole}.hp`] = opponentHP;
-      matchUpdate.currentTurn = targetRole;
+      
+      // If opponent is stunned, player keeps their turn!
+      matchUpdate.currentTurn = stunTriggered ? hostOrOpp : targetRole;
       
       if (opponentHP <= 0) {
         matchUpdate.status = "finished";
@@ -1347,10 +1528,17 @@ async function executePlayerAttack(multiplier, rankText) {
         by: hostOrOpp,
         moveName: move.name,
         damage: finalDmg,
-        multiplier: multiplier,
-        resultText: rankText,
-        dialogueText: multiplier === 2.5 ? p.dialogues.ultimate : activeAttackIndex === 1 ? p.dialogues.special : p.dialogues.strike,
-        timestamp: Date.now()
+        multiplier: evaded ? 0 : multiplier,
+        resultText: evaded ? "EVADED" : rankText,
+        dialogueText: evaded ? o.dialogues.special : (multiplier === 2.5 ? p.dialogues.ultimate : (activeAttackIndex === 1 ? p.dialogues.special : p.dialogues.strike)),
+        timestamp: Date.now(),
+        evaded: evaded,
+        beastRageApplied: beastRageApplied,
+        blazingFuryApplied: blazingFuryApplied,
+        blazingFuryPrimed: (multiplier === 2.5 && activeFighter === "bsg"),
+        tacticalGuardApplied: tacticalGuardApplied,
+        lifestealHeal: lifestealHeal,
+        stunTriggered: stunTriggered
       };
       
       matchUpdate.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
@@ -1358,7 +1546,10 @@ async function executePlayerAttack(multiplier, rankText) {
       await activeMatchRef.update(matchUpdate);
       
       // Log local action directly for smooth performance
-      if (multiplier === 0) {
+      if (evaded) {
+        appendChatLog(currentOpponent, o.dialogues.special);
+        appendChatMsg("system", `🛡️ **Hell's Timeline Edit** active! Attack was completely evaded!`, "system");
+      } else if (multiplier === 0) {
         appendChatLog(activeFighter, `*misses attack* "Darn, my timing was off!"`);
         appendChatMsg("system", `* Player's <strong>${move.name}</strong> missed completely.`, "system");
       } else {
@@ -1368,6 +1559,26 @@ async function executePlayerAttack(multiplier, rankText) {
         
         let criticalFlag = multiplier === 2.5 ? " critical" : "";
         appendChatMsg("action" + criticalFlag, `⚔️ ${p.name} lands ${move.name} (${rankText}) dealing <strong>${finalDmg} damage</strong>!`);
+        
+        // Print other passives in local logs
+        if (beastRageApplied) {
+          appendChatMsg("system", `💢 **Zalta's Beast Rage** active! Deals +30% extra damage!`, "system");
+        }
+        if (blazingFuryApplied) {
+          appendChatMsg("system", `🔥 **BSG's Blazing Fury** burns the enemy for +15% extra damage!`, "system");
+        }
+        if (multiplier === 2.5 && activeFighter === "bsg") {
+          appendChatMsg("system", `🔥 BSG's Blazing Fury primed! Next attack will burn!`, "system");
+        }
+        if (tacticalGuardApplied) {
+          appendChatMsg("system", `🛡️ **Suma's Tactical Guard** reduces incoming damage by 20%!`, "system");
+        }
+        if (lifestealHeal > 0) {
+          appendChatMsg("system", `🌀 **Jiggo's Void Absorption** active! Heals Jiggo for **+${lifestealHeal} HP**!`, "system");
+        }
+        if (stunTriggered) {
+          appendChatMsg("system", `💫 **${o.name} is STUNNED**! Berry retains the turn!`, "system");
+        }
       }
       
       updateMeterBars();
@@ -1378,7 +1589,10 @@ async function executePlayerAttack(multiplier, rankText) {
     }
   } else {
     // Local AI Practice Mode logic (original local offline loop)
-    if (multiplier === 0) {
+    if (evaded) {
+      appendChatLog(currentOpponent, o.dialogues.special);
+      appendChatMsg("system", `🛡️ **Hell's Timeline Edit** active! Attack was completely evaded!`, "system");
+    } else if (multiplier === 0) {
       appendChatLog(activeFighter, `*misses attack* "Darn, my timing was off!"`);
       appendChatMsg("system", `* Player's <strong>${move.name}</strong> missed completely.`, "system");
     } else {
@@ -1393,7 +1607,26 @@ async function executePlayerAttack(multiplier, rankText) {
       let criticalFlag = multiplier === 2.5 ? " critical" : "";
       appendChatMsg("action" + criticalFlag, `⚔️ ${p.name} lands ${move.name} (${rankText}) dealing <strong>${finalDmg} damage</strong>!`);
       
-      if (opponentHP > 0) {
+      if (beastRageApplied) {
+        appendChatMsg("system", `💢 **Zalta's Beast Rage** active! Deals +30% extra damage!`, "system");
+      }
+      if (blazingFuryApplied) {
+        appendChatMsg("system", `🔥 **BSG's Blazing Fury** burns the enemy for +15% extra damage!`, "system");
+      }
+      if (multiplier === 2.5 && activeFighter === "bsg") {
+        appendChatMsg("system", `🔥 BSG's Blazing Fury primed! Next attack will burn!`, "system");
+      }
+      if (tacticalGuardApplied) {
+        appendChatMsg("system", `🛡️ **Suma's Tactical Guard** reduces incoming damage by 20%!`, "system");
+      }
+      if (lifestealHeal > 0) {
+        appendChatMsg("system", `🌀 **Jiggo's Void Absorption** active! Heals Jiggo for **+${lifestealHeal} HP**!`, "system");
+      }
+      if (stunTriggered) {
+        appendChatMsg("system", `💫 **${o.name} is STUNNED**! Berry gets an extra turn!`, "system");
+      }
+
+      if (opponentHP > 0 && !stunTriggered) {
         setTimeout(() => {
           appendChatLog(currentOpponent, o.dialogues.damaged);
         }, 700);
@@ -1411,7 +1644,12 @@ async function executePlayerAttack(multiplier, rankText) {
       return;
     }
 
-    setTimeout(startOpponentTurn, 2200);
+    if (stunTriggered) {
+      opponentStunned = false; // reset for player's extra turn
+      setTimeout(startPlayerTurn, 2200);
+    } else {
+      setTimeout(startOpponentTurn, 2200);
+    }
   }
 }
 
@@ -1496,7 +1734,75 @@ function executeOpponentAI() {
       appendChatMsg("system", `🔓 OPPONENT PERFECT STRIKE! Enemy unlocked a new power move: **${o.moves[opponentUnlockedCount - 1].name}**!`, "system");
     }
 
-    if (multiplier === 0) {
+    // Desperation Defensive Scaling: As player HP drops, damage taken is reduced (up to 60% mitigation)
+    let playerHpRatio = playerHP / playerMaxHP;
+    let defenseScale = 0.4 + 0.6 * playerHpRatio;
+    let finalDmg = Math.round(move.dmg * multiplier * defenseScale);
+
+    // --- PASSIVES CALCULATIONS (Attacker AI) ---
+    
+    // Zalta's Beast Rage: Deal +30% damage when HP < 50%
+    let beastRageApplied = false;
+    if (currentOpponent === "zalta" && multiplier > 0 && finalDmg > 0) {
+      if (opponentHP < opponentMaxHP * 0.5) {
+        finalDmg = Math.round(finalDmg * 1.30);
+        beastRageApplied = true;
+      }
+    }
+
+    // BSG's Blazing Fury: Deal +15% extra burn damage on next strike after PERFECT
+    let blazingFuryApplied = false;
+    if (currentOpponent === "bsg" && multiplier > 0 && finalDmg > 0) {
+      if (opponentBurnNext) {
+        finalDmg = Math.round(finalDmg * 1.15);
+        opponentBurnNext = false;
+        blazingFuryApplied = true;
+      }
+      if (multiplier === 2.5) {
+        opponentBurnNext = true;
+      }
+    }
+
+    // --- PASSIVES CALCULATIONS (Defender Player) ---
+    
+    // Hell's Timeline Edit (Dodge): 12% chance to evade completely
+    let evaded = false;
+    if (activeFighter === "hell" && multiplier > 0 && finalDmg > 0) {
+      if (Math.random() < 0.12) {
+        finalDmg = 0;
+        evaded = true;
+      }
+    }
+
+    // Suma's Tactical Guard: Reduce incoming damage by 20%
+    let tacticalGuardApplied = false;
+    if (activeFighter === "suma" && multiplier > 0 && finalDmg > 0) {
+      finalDmg = Math.round(finalDmg * 0.80);
+      tacticalGuardApplied = true;
+    }
+
+    // --- POST-DAMAGE PASSIVES ---
+    
+    // Jiggo's Void Absorption (Lifesteal): Heal Jiggo for 20% of damage dealt
+    let lifestealHeal = 0;
+    if (currentOpponent === "jiggo" && multiplier > 0 && finalDmg > 0) {
+      lifestealHeal = Math.round(finalDmg * 0.20);
+      opponentHP = Math.min(opponentHP + lifestealHeal, opponentMaxHP);
+    }
+
+    // Berry's Heavy Impact (Stun): GREAT or PERFECT has a 20% chance to stun
+    let stunTriggered = false;
+    if (currentOpponent === "berry" && (multiplier === 1.5 || multiplier === 2.5) && finalDmg > 0) {
+      if (Math.random() < 0.20) {
+        stunTriggered = true;
+        playerStunned = true;
+      }
+    }
+
+    if (evaded) {
+      appendChatLog(activeFighter, p.dialogues.special);
+      appendChatMsg("system", `🛡️ **Hell's Timeline Edit** active! Attack was completely evaded!`, "system");
+    } else if (multiplier === 0) {
       appendChatLog(currentOpponent, `*misses attack* "Missed! How did that happen?!"`);
       appendChatMsg("system", `* Opponent's <strong>${move.name}</strong> missed completely.`, "system");
     } else {
@@ -1504,10 +1810,6 @@ function executeOpponentAI() {
       if (multiplier === 2.5) dialogue = o.dialogues.ultimate;
       else if (moveIdx === 1) dialogue = o.dialogues.special;
 
-      // Desperation Defensive Scaling: As player HP drops, damage taken is reduced (up to 60% mitigation)
-      let playerHpRatio = playerHP / playerMaxHP;
-      let defenseScale = 0.4 + 0.6 * playerHpRatio;
-      let finalDmg = Math.round(move.dmg * multiplier * defenseScale);
       playerHP = Math.max(playerHP - finalDmg, 0);
 
       appendChatLog(currentOpponent, dialogue);
@@ -1517,7 +1819,26 @@ function executeOpponentAI() {
       let criticalFlag = multiplier === 2.5 ? " critical" : "";
       appendChatMsg("action" + criticalFlag, `💥 ${o.name} lands ${move.name} (${rankText}) dealing <strong>${finalDmg} damage</strong>!`);
 
-      if (playerHP > 0) {
+      if (beastRageApplied) {
+        appendChatMsg("system", `💢 **Zalta's Beast Rage** active! Deals +30% extra damage!`, "system");
+      }
+      if (blazingFuryApplied) {
+        appendChatMsg("system", `🔥 **BSG's Blazing Fury** burns the enemy for +15% extra damage!`, "system");
+      }
+      if (multiplier === 2.5 && currentOpponent === "bsg") {
+        appendChatMsg("system", `🔥 BSG's Blazing Fury primed! Next attack will burn!`, "system");
+      }
+      if (tacticalGuardApplied) {
+        appendChatMsg("system", `🛡️ **Suma's Tactical Guard** reduces incoming damage by 20%!`, "system");
+      }
+      if (lifestealHeal > 0) {
+        appendChatMsg("system", `🌀 **Jiggo's Void Absorption** active! Heals Jiggo for **+${lifestealHeal} HP**!`, "system");
+      }
+      if (stunTriggered) {
+        appendChatMsg("system", `💫 **${p.name} is STUNNED**! Berry gets an extra turn!`, "system");
+      }
+
+      if (playerHP > 0 && !stunTriggered) {
         setTimeout(() => {
           appendChatLog(activeFighter, p.dialogues.damaged);
         }, 700);
@@ -1535,8 +1856,13 @@ function executeOpponentAI() {
       return;
     }
 
-    // Go back to Player turn
-    setTimeout(startPlayerTurn, 2200);
+    // Go back to Player turn or repeat AI turn if stunned
+    if (stunTriggered) {
+      playerStunned = false; // Reset
+      setTimeout(startOpponentTurn, 2200);
+    } else {
+      setTimeout(startPlayerTurn, 2200);
+    }
   });
 }
 
@@ -1549,6 +1875,9 @@ function animateAIGaugeSlide(multiplier, callback) {
   let targetHpRatio = playerHP / playerMaxHP;
   let speedScale = 1.5 - 0.5 * targetHpRatio; // 1.0 at full HP, 1.5 at low HP
   gaugeSpeed = 4.0 * speedScale;
+  if (currentOpponent === "scinto") {
+    gaugeSpeed *= 0.85;
+  }
 
   const feedback = document.getElementById("timing-feedback");
   feedback.textContent = "ENEMY IS ALIGNING STRIKE...";
@@ -1898,7 +2227,9 @@ function getEffectType(moveName) {
   if (name.includes("flame") || name.includes("burn") || name.includes("fire") || name.includes("heat") || name.includes("ash")) return "fire";
   if (name.includes("dragon") || name.includes("aura") || name.includes("celestial") || name.includes("timeline") || name.includes("swap") || name.includes("void")) return "energy";
   if (name.includes("portal") || name.includes("dimension") || name.includes("erase") || name.includes("curse")) return "dark";
-  if (name.includes("stomp") || name.includes("earth") || name.includes("rampage") || name.includes("stride") || name.includes("impact")) return "stomp";
+  if (name.includes("stomp") || name.includes("earth") || name.includes("rampage") || name.includes("stride") || name.includes("heavy") || name.includes("meteorite") || name.includes("crater")) return "heavy";
+  if (name.includes("emerald") || name.includes("shadow") || name.includes("jade")) return "emerald";
+  if (name.includes("lightning") || name.includes("volt") || name.includes("thunder") || name.includes("plasma") || name.includes("bolt") || name.includes("spark")) return "lightning";
   return "slash";
 }
 
@@ -1938,11 +2269,25 @@ function triggerDamageEffect(targetCardId, moveName, damageAmount = 0, isCritica
       <div class="dark-smoke sm1"></div>
       <div class="dark-smoke sm2"></div>
     `;
-  } else if (effectType === "stomp") {
+  } else if (effectType === "heavy") {
     particlesHtml = `
-      <div class="earth-fracture"></div>
-      <div class="earth-dust d1"></div>
-      <div class="earth-dust d2"></div>
+      <div class="heavy-ring"></div>
+      <div class="heavy-crater"></div>
+      <div class="gold-dust gd1"></div>
+      <div class="gold-dust gd2"></div>
+    `;
+  } else if (effectType === "emerald") {
+    particlesHtml = `
+      <div class="emerald-cut c1"></div>
+      <div class="emerald-cut c2"></div>
+      <div class="emerald-sparkle es1"></div>
+      <div class="emerald-sparkle es2"></div>
+    `;
+  } else if (effectType === "lightning") {
+    particlesHtml = `
+      <div class="lightning-strike l1"></div>
+      <div class="lightning-strike l2"></div>
+      <div class="electric-discharge"></div>
     `;
   } else { // default: slash
     particlesHtml = `

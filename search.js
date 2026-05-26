@@ -13,7 +13,7 @@ const GLOBAL_SEARCH_DB = [
   { name: "Berry Cade (Ogre Blade)", category: "characters", desc: "Adoptive son of Jiggo Degan wielding the heavy Ogre greatsword.", link: "index.html#characters", type: "character", key: "berry" },
   { name: "Hell (Fate Author)", category: "characters", desc: "West Emperor and antagonist wielding the God-Gifted Fate-Eraser Blade.", link: "index.html#characters", type: "character", key: "hell" },
   { name: "Kan (Teleporting Bomber)", category: "characters", desc: "Assassin ally using writing pens as dimensional teleportation anchors.", link: "index.html#characters", type: "character", key: "kan" },
-  { name: "Black Dagger (Scinto)", category: "characters", desc: "Evil DXZ Organisation leader. A 150-year-old entity seeking Redago.", link: "index.html#characters", type: "character", key: "blackdagger" },
+  { name: "Black Dagger (Scinto)", category: "characters", desc: "Evil DXZ Organisation leader and the true identity of Scinto. A 150-year-old entity seeking Redago.", link: "index.html#characters", type: "character", key: "blackdagger" },
   
   // Episodes & Lore Sections
   { name: "Episode 1: The Journey Begins", category: "episodes", desc: "Read the story breakdown of BSG's escape, meeting Scinto, and DXZ threats.", link: "index.html#media-hub", type: "episode", key: "ep1" },
