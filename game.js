@@ -648,7 +648,7 @@ async function findMultiplayerMatch() {
     }
   } catch (err) {
     console.error("Matchmaking error:", err);
-    showNotification("Matchmaking failed. Switching to offline AI Practice Mode.", true);
+    showNotification("Matchmaking failed: " + (err.message || err) + ". Switching to offline AI Practice Mode.", true);
     startOfflineMatch();
   }
 }
@@ -940,6 +940,9 @@ function handleOpponentActionSync(lastAction) {
 
 function startOfflineMatch() {
   console.log("Starting Local offline practice match...");
+  
+  // Clear matchmaking timer in case it was running
+  clearMatchmakingTimer();
   
   combatPhase = "battle";
   
