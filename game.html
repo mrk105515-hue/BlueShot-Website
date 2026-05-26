@@ -196,9 +196,14 @@
                 </div>
               </div>
 
-              <button class="btn btn-danger btn-enter-combat" id="btn-start-fight">
-                <i class="fa-solid fa-swords"></i> Enter Battle Arena ⚔️
-              </button>
+              <div class="lobby-action-buttons" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
+                <button class="btn btn-danger btn-enter-combat" id="btn-start-fight" style="width: 100%; margin-top: 0; justify-content: center; padding: 0.9rem;">
+                  <i class="fa-solid fa-swords"></i> Find Online Match (1v1) ⚔️
+                </button>
+                <button class="btn btn-outline" id="btn-start-practice" style="width: 100%; justify-content: center; padding: 0.9rem;">
+                  <i class="fa-solid fa-robot"></i> Play Practice Mode (AI) 🤖
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -214,6 +219,9 @@
           <p>Looking for a live opponent. Factions are aligning their warriors.</p>
           <div class="matchmaking-details">
             Selected Fighter: <strong id="matchmaking-fighter-name">BSG</strong>
+          </div>
+          <div class="matchmaking-timer" id="matchmaking-timer" style="margin-top: 1.25rem; font-family: var(--font-display); font-size: 0.9rem; color: var(--text-muted);">
+            Finding opponent... (Auto-practice in 60s)
           </div>
           <button class="btn btn-outline" id="btn-cancel-matchmaking" style="margin-top: 1.5rem; justify-content: center; width: 100%;">
             <i class="fa-solid fa-xmark"></i> Cancel Matchmaking

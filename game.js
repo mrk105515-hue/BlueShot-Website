@@ -30,6 +30,10 @@ let playerRole = null; // "host" or "opponent"
 let lastProcessedTurn = null;
 let lastActionTimestamp = null;
 
+// Matchmaking timeout timer state
+let matchmakingTimerId = null;
+let matchmakingTimeLeft = 60;
+
 // Gauge physics loop
 let gaugePosition = 0;
 let gaugeDirection = 1;
@@ -387,6 +391,16 @@ function setupLobbyControls() {
       }
     });
   }
+
+  const startPracticeBtn = document.getElementById("btn-start-practice");
+  if (startPracticeBtn) {
+    startPracticeBtn.addEventListener("click", () => {
+      if (activeFighter) {
+        playSound("victory");
+        startOfflineMatch();
+      }
+    });
+  }
 }
 
 function showCharacterDetails(key) {
@@ -570,6 +584,9 @@ async function findMultiplayerMatch() {
     };
   }
 
+  // Start 1 minute matchmaking countdown
+  startMatchmakingTimer();
+
   try {
     const matchesRef = db.collection("matches");
     const snapshot = await matchesRef
@@ -640,6 +657,9 @@ async function findMultiplayerMatch() {
 async function cancelMatchmaking() {
   playSound("defeat");
   
+  // Clear matchmaking timer
+  clearMatchmakingTimer();
+
   if (unsubscribeMatch) {
     unsubscribeMatch();
     unsubscribeMatch = null;
@@ -662,6 +682,61 @@ async function cancelMatchmaking() {
   document.getElementById("arena-lobby").style.display = "block";
 }
 
+function startMatchmakingTimer() {
+  // Clear any existing timer first
+  clearMatchmakingTimer();
+
+  matchmakingTimeLeft = 60;
+  const timerEl = document.getElementById("matchmaking-timer");
+  if (timerEl) {
+    timerEl.textContent = `Finding opponent... (Auto-practice in ${matchmakingTimeLeft}s)`;
+  }
+
+  matchmakingTimerId = setInterval(() => {
+    matchmakingTimeLeft--;
+    if (timerEl) {
+      timerEl.textContent = `Finding opponent... (Auto-practice in ${matchmakingTimeLeft}s)`;
+    }
+
+    if (matchmakingTimeLeft <= 0) {
+      clearMatchmakingTimer();
+      handleMatchmakingTimeout();
+    }
+  }, 1000);
+}
+
+function clearMatchmakingTimer() {
+  if (matchmakingTimerId) {
+    clearInterval(matchmakingTimerId);
+    matchmakingTimerId = null;
+  }
+}
+
+async function handleMatchmakingTimeout() {
+  console.log("Matchmaking timed out (1 min). Switching to AI Practice Mode...");
+  showNotification("No online players found. Switching to AI Practice Mode!", false);
+
+  if (unsubscribeMatch) {
+    unsubscribeMatch();
+    unsubscribeMatch = null;
+  }
+
+  if (activeMatchRef && playerRole === "host") {
+    try {
+      await activeMatchRef.delete();
+      console.log("Matchmaking timeout: host match document deleted");
+    } catch (e) {
+      console.error("Error deleting match doc on timeout:", e);
+    }
+  }
+
+  activeMatchId = null;
+  activeMatchRef = null;
+  playerRole = null;
+
+  startOfflineMatch();
+}
+
 function setupMatchListeners() {
   if (!activeMatchRef) return;
   
@@ -680,6 +755,9 @@ function setupMatchListeners() {
     
     // 2. If match is active
     if (data.status === "active") {
+      // Clear matchmaking timer since match is found
+      clearMatchmakingTimer();
+
       document.getElementById("arena-matchmaking").style.display = "none";
       document.getElementById("arena-lobby").style.display = "none";
       document.getElementById("arena-combat").style.display = "block";
