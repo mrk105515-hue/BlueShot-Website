@@ -440,6 +440,19 @@ function setupCombatControls() {
     });
   }
 
+  // Mobile/Mouse tap direct-on-gauge timing execution
+  const timingGauge = document.getElementById("timing-gauge");
+  if (timingGauge) {
+    const handleGaugeTap = (e) => {
+      if (isPointerMoving) {
+        e.preventDefault();
+        executeTimingCapture();
+      }
+    };
+    timingGauge.addEventListener("click", handleGaugeTap);
+    timingGauge.addEventListener("touchstart", handleGaugeTap, { passive: false });
+  }
+
   // Keyboard actions for timings (Keys 1, 2, 3 and Spacebar)
   document.addEventListener("keydown", (e) => {
     if (combatPhase !== "battle") return;
@@ -486,6 +499,11 @@ function setupCombatControls() {
 // BATTLE ARENA ENGINE (COMBAT STATE MACHINE)
 // ==========================================================================
 function enterCombatState() {
+  if (!currentUser) {
+    showNotification("Access Denied: Only authenticated faction members can enter combat!", true);
+    return;
+  }
+
   combatPhase = "battle";
   
   // Hide Lobby, show combat grid
@@ -507,10 +525,12 @@ function enterCombatState() {
   document.getElementById("player-fighter-title").className = player.redago ? "faction-badge redago-theme" : "faction-badge";
   
   const pAvatar = document.getElementById("player-avatar");
-  pAvatar.textContent = player.avatar;
-  pAvatar.style.background = player.redago ? 
-    "linear-gradient(135deg, var(--color-redago), #e74c3c)" : 
-    "linear-gradient(135deg, var(--color-blue-electric), var(--color-blue-neon))";
+  pAvatar.textContent = "";
+  pAvatar.style.backgroundImage = `url(assets/char-${activeFighter}.png)`;
+  pAvatar.style.backgroundSize = "cover";
+  pAvatar.style.backgroundPosition = "center top";
+  pAvatar.style.backgroundRepeat = "no-repeat";
+  pAvatar.style.border = player.redago ? "2px solid var(--color-redago)" : "2px solid var(--color-blue-neon)";
 
   updateMeterBars();
 
@@ -534,10 +554,12 @@ function enterCombatState() {
   document.getElementById("opponent-fighter-title").className = opponent.redago ? "faction-badge redago-theme" : "faction-badge";
 
   const oAvatar = document.getElementById("opponent-avatar");
-  oAvatar.textContent = opponent.avatar;
-  oAvatar.style.background = opponent.redago ? 
-    "linear-gradient(135deg, var(--color-redago), #e74c3c)" : 
-    "linear-gradient(135deg, var(--color-blue-electric), var(--color-blue-neon))";
+  oAvatar.textContent = "";
+  oAvatar.style.backgroundImage = `url(assets/char-${currentOpponent}.png)`;
+  oAvatar.style.backgroundSize = "cover";
+  oAvatar.style.backgroundPosition = "center top";
+  oAvatar.style.backgroundRepeat = "no-repeat";
+  oAvatar.style.border = opponent.redago ? "2px solid var(--color-redago)" : "2px solid var(--color-blue-neon)";
 
   // Reset chat battle log
   const log = document.getElementById("chat-messages");
@@ -616,8 +638,11 @@ function updateActionButtonDeck() {
 }
 
 function triggerAttack(index) {
-  // If pointer is already moving, ignore clicks to change attack mid-strike
-  if (isPointerMoving) return;
+  // If pointer is already moving, click executes the timing capture strike
+  if (isPointerMoving) {
+    executeTimingCapture();
+    return;
+  }
 
   // Verify move availability
   if (index === 1 && attackCooldowns[1] > 0) return;
@@ -655,8 +680,19 @@ function startTimingGauge() {
   // Speed multiplier: base speed modified by the specific attack speed and the fighter's base speed attribute
   gaugeSpeed = (attackInfo.speed) * (1 / char.speed);
 
-  document.getElementById("timing-feedback").textContent = "PRESS SPACE / ATTACK!";
+  document.getElementById("timing-feedback").textContent = "PRESS SPACE / TAP BUTTON TO STRIKE!";
   document.getElementById("timing-feedback").className = "timing-feedback";
+
+  // Pulse the active attack button with striking animations and text
+  const activeBtn = document.getElementById(`btn-attack-${activeAttackIndex + 1}`);
+  if (activeBtn) {
+    activeBtn.classList.add("striking-active");
+  }
+  const coolLabel = document.getElementById(`cooldown-${activeAttackIndex + 1}`);
+  if (coolLabel) {
+    coolLabel.textContent = "STRIKE!";
+    coolLabel.style.color = "var(--color-blue-neon)";
+  }
 
   // Start Animation frame loop
   runGaugeLoop();
@@ -692,6 +728,18 @@ function executeTimingCapture() {
 
   // Disable buttons while executing attack animation
   disableAllActionButtons();
+
+  // Clear striking-active states
+  document.getElementById("btn-attack-1").classList.remove("striking-active");
+  document.getElementById("btn-attack-2").classList.remove("striking-active");
+  document.getElementById("btn-attack-3").classList.remove("striking-active");
+
+  const cool1 = document.getElementById("cooldown-1");
+  const cool2 = document.getElementById("cooldown-2");
+  const cool3 = document.getElementById("cooldown-3");
+  if (cool1) cool1.style.color = "";
+  if (cool2) cool2.style.color = "";
+  if (cool3) cool3.style.color = "";
 
   const p = gaugePosition;
   let multiplier = 0;

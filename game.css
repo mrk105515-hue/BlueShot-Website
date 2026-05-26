@@ -721,6 +721,39 @@
   justify-content: center;
 }
 
+.combat-btn-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: var(--color-blue-neon);
+  transition: all 0.3s ease;
+}
+
+.combat-btn.ult .combat-btn-icon-wrap {
+  color: #F1C40F;
+  border-color: rgba(241, 196, 15, 0.2);
+}
+
+.combat-btn:not(:disabled):hover .combat-btn-icon-wrap {
+  transform: scale(1.1);
+  background: rgba(0, 229, 255, 0.08);
+  border-color: var(--color-blue-neon);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+}
+
+.combat-btn.ult:not(:disabled):hover .combat-btn-icon-wrap {
+  background: rgba(241, 196, 15, 0.1);
+  border-color: #F1C40F;
+  box-shadow: 0 0 10px rgba(241, 196, 15, 0.3);
+}
+
 .btn-attack-name {
   font-family: var(--font-display);
   font-size: 0.85rem;
@@ -753,6 +786,22 @@
 .combat-btn.active-choice {
   border-color: var(--color-blue-neon) !important;
   background: rgba(0, 229, 255, 0.04) !important;
+}
+
+.combat-btn.striking-active {
+  animation: buttonPulseNeon 0.8s infinite alternate;
+  border-color: var(--color-blue-neon) !important;
+  background: rgba(0, 229, 255, 0.08) !important;
+  transform: scale(1.03);
+}
+
+@keyframes buttonPulseNeon {
+  0% {
+    box-shadow: 0 0 5px var(--color-blue-neon), inset 0 0 3px var(--color-blue-neon);
+  }
+  100% {
+    box-shadow: 0 0 18px var(--color-blue-neon), inset 0 0 10px var(--color-blue-neon);
+  }
 }
 
 /* Ultimate attack card styling */
