@@ -194,6 +194,22 @@
                     <p id="move3-desc">Description</p>
                   </div>
                 </div>
+
+                <div class="move-item">
+                  <span class="move-key">4</span>
+                  <div class="move-info">
+                    <strong id="move4-name">Attack 4</strong>
+                    <p id="move4-desc">Description</p>
+                  </div>
+                </div>
+
+                <div class="move-item">
+                  <span class="move-key">5</span>
+                  <div class="move-info">
+                    <strong id="move5-name">Attack 5</strong>
+                    <p id="move5-desc">Description</p>
+                  </div>
+                </div>
               </div>
 
               <div class="lobby-action-buttons" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
@@ -304,14 +320,34 @@
                 <span class="btn-cooldown" id="cooldown-2">READY</span>
               </button>
 
-              <!-- Attack 3 button (Ultimate) -->
-              <button class="combat-btn ult" id="btn-attack-3" disabled>
+              <!-- Attack 3 button -->
+              <button class="combat-btn" id="btn-attack-3" disabled>
                 <span class="btn-hotkey">3</span>
                 <div class="combat-btn-icon-wrap" id="btn-attack-3-icon">
-                  <i class="fa-solid fa-dragon"></i>
+                  <i class="fa-solid fa-bolt"></i>
                 </div>
                 <span class="btn-attack-name" id="btn-attack3-label">Attack 3</span>
-                <span class="btn-cooldown" id="cooldown-3">0% CHARGE</span>
+                <span class="btn-cooldown" id="cooldown-3">READY</span>
+              </button>
+
+              <!-- Attack 4 button (Ultimate 1) -->
+              <button class="combat-btn ult" id="btn-attack-4" disabled>
+                <span class="btn-hotkey">4</span>
+                <div class="combat-btn-icon-wrap" id="btn-attack-4-icon">
+                  <i class="fa-solid fa-fire-flame-curved"></i>
+                </div>
+                <span class="btn-attack-name" id="btn-attack4-label">Attack 4</span>
+                <span class="btn-cooldown" id="cooldown-4">0% CHARGE</span>
+              </button>
+
+              <!-- Attack 5 button (Ultimate 2) -->
+              <button class="combat-btn ult" id="btn-attack-5" disabled>
+                <span class="btn-hotkey">5</span>
+                <div class="combat-btn-icon-wrap" id="btn-attack-5-icon">
+                  <i class="fa-solid fa-dragon"></i>
+                </div>
+                <span class="btn-attack-name" id="btn-attack5-label">Attack 5</span>
+                <span class="btn-cooldown" id="cooldown-5">0% CHARGE</span>
               </button>
             </div>
 

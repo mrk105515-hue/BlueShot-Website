@@ -21,6 +21,8 @@ let currentOpponent = null;
 let combatPhase = "select"; // select, battle, result
 let perfectHits = 0;
 let totalTurns = 0;
+let playerUnlockedCount = 1;
+let opponentUnlockedCount = 1;
 
 // Multiplayer matchmaking & synchronization state
 let activeMatchId = null;
@@ -40,8 +42,8 @@ let gaugeDirection = 1;
 let gaugeSpeed = 2.5; // Controls moving pointer speed
 let isPointerMoving = false;
 let animationFrameId = null;
-let activeAttackIndex = null; // 1, 2, or 3
-let attackCooldowns = [0, 0, 0]; // Turn cooldown trackers for player attacks
+let activeAttackIndex = null; // 0, 1, 2, 3, or 4
+let attackCooldowns = [0, 0, 0, 0, 0]; // Turn cooldown trackers for player attacks
 
 // Synth Audio Engine
 let audioCtx = null;
@@ -66,8 +68,10 @@ const CHARACTERS = {
     },
     moves: [
       { name: "Flame Slash", dmg: 10, speed: 2.0, cd: 0, desc: "A quick slash with low damage, slow slider speed, and no cooldown." },
-      { name: "Dragon Aura", dmg: 20, speed: 3.5, cd: 2, desc: "An aura burst with medium damage. 2 turns cooldown." },
-      { name: "Celestial Release", dmg: 45, speed: 5.5, cd: 4, desc: "Release 1% power. Devastating damage, extremely fast slider speed. Requires 100% Energy." }
+      { name: "Dragon Aura", dmg: 18, speed: 3.0, cd: 2, desc: "An aura burst with medium damage. 2 turns cooldown. [Locked]" },
+      { name: "Phoenix Rise", dmg: 25, speed: 4.0, cd: 3, desc: "A blazing phoenix dash. 3 turns cooldown. [Locked]" },
+      { name: "Celestial Release", dmg: 35, speed: 5.0, cd: 4, energyReq: 50, desc: "Release 1% power. Devastating damage. Requires 50% Energy. [Locked]" },
+      { name: "Hellfire Cataclysm", dmg: 50, speed: 6.2, cd: 5, energyReq: 100, desc: "Summon the final cataclysm. Catastrophic damage. Requires 100% Energy. [Locked]" }
     ]
   },
   hell: {
@@ -87,9 +91,11 @@ const CHARACTERS = {
       victory: "As written. Your demise was foretold."
     },
     moves: [
-      { name: "Fate Cut", dmg: 12, speed: 2.2, cd: 0, desc: "Quick blade strike with low damage, easy speed, no cooldown." },
-      { name: "Timeline Edit", dmg: 24, speed: 3.8, cd: 2, desc: "Alter probability for high damage. 2 turns cooldown." },
-      { name: "Absolute Erase", dmg: 55, speed: 6.0, cd: 4, desc: "Erase the opponent. High critical scaling. Requires 100% Energy." }
+      { name: "Fate Cut", dmg: 11, speed: 2.2, cd: 0, desc: "Quick blade strike with low damage, easy speed, no cooldown." },
+      { name: "Timeline Edit", dmg: 19, speed: 3.2, cd: 2, desc: "Alter probability for medium damage. 2 turns cooldown. [Locked]" },
+      { name: "Chronos Brake", dmg: 26, speed: 4.2, cd: 3, desc: "A time-slowing slice. 3 turns cooldown. [Locked]" },
+      { name: "Absolute Erase", dmg: 36, speed: 5.2, cd: 4, energyReq: 50, desc: "Erase the opponent from history. Requires 50% Energy. [Locked]" },
+      { name: "Reality Tear", dmg: 52, speed: 6.5, cd: 5, energyReq: 100, desc: "Shatter reality itself for massive damage. Requires 100% Energy. [Locked]" }
     ]
   },
   jiggo: {
@@ -109,9 +115,11 @@ const CHARACTERS = {
       victory: "Control your mind. Only then can you conquer power."
     },
     moves: [
-      { name: "Portal Strike", dmg: 8, speed: 1.8, cd: 0, desc: "Ambush from portal. Slow slider speed, no cooldown." },
-      { name: "Void Swap", dmg: 18, speed: 3.0, cd: 2, desc: "Swapping positions to confuse defenses. 2 turns cooldown." },
-      { name: "Eastern Dimension", dmg: 38, speed: 5.0, cd: 4, desc: "Summon the dimensional void. Medium timing bar. Requires 100% Energy." }
+      { name: "Portal Strike", dmg: 9, speed: 1.8, cd: 0, desc: "Ambush from portal. Slow slider speed, no cooldown." },
+      { name: "Void Swap", dmg: 16, speed: 2.8, cd: 2, desc: "Swapping positions to confuse defenses. 2 turns cooldown. [Locked]" },
+      { name: "Rift Collapse", dmg: 23, speed: 3.8, cd: 3, desc: "A local spatial collapse. 3 turns cooldown. [Locked]" },
+      { name: "Eastern Dimension", dmg: 32, speed: 4.8, cd: 4, energyReq: 50, desc: "Summon the dimensional void. Requires 50% Energy. [Locked]" },
+      { name: "Cosmic Black Hole", dmg: 46, speed: 5.8, cd: 5, energyReq: 100, desc: "Create a miniature black hole. Requires 100% Energy. [Locked]" }
     ]
   },
   zalta: {
@@ -131,9 +139,11 @@ const CHARACTERS = {
       victory: "Zalta is the strongest! Back to the cage with you!"
     },
     moves: [
-      { name: "Bull Stomp", dmg: 9, speed: 2.5, cd: 0, desc: "Heavy stomp. Average speed, no cooldown." },
-      { name: "Rampage Stride", dmg: 19, speed: 4.0, cd: 2, desc: "A brutal charge. 2 turns cooldown." },
-      { name: "Curse God Awaken", dmg: 40, speed: 6.5, cd: 4, desc: "Unleash curse bull energy. Destructive timing window. Requires 100% Energy." }
+      { name: "Bull Stomp", dmg: 10, speed: 2.5, cd: 0, desc: "Heavy stomp. Average speed, no cooldown." },
+      { name: "Rampage Stride", dmg: 18, speed: 3.5, cd: 2, desc: "A brutal charge. 2 turns cooldown. [Locked]" },
+      { name: "Iron Horn Charge", dmg: 24, speed: 4.5, cd: 3, desc: "A heavy frontal ram. 3 turns cooldown. [Locked]" },
+      { name: "Curse God Awaken", dmg: 35, speed: 5.5, cd: 4, energyReq: 50, desc: "Unleash curse bull energy. Requires 50% Energy. [Locked]" },
+      { name: "Earth Shatter Apocalypse", dmg: 48, speed: 6.8, cd: 5, energyReq: 100, desc: "A tectonic apocalyptic slam. Requires 100% Energy. [Locked]" }
     ]
   }
 };
@@ -445,6 +455,10 @@ function showCharacterDetails(key) {
   document.getElementById("move2-desc").textContent = char.moves[1].desc;
   document.getElementById("move3-name").textContent = char.moves[2].name;
   document.getElementById("move3-desc").textContent = char.moves[2].desc;
+  document.getElementById("move4-name").textContent = char.moves[3].name;
+  document.getElementById("move4-desc").textContent = char.moves[3].desc;
+  document.getElementById("move5-name").textContent = char.moves[4].name;
+  document.getElementById("move5-desc").textContent = char.moves[4].desc;
 }
 
 // ==========================================================================
@@ -454,11 +468,13 @@ function setupCombatControls() {
   const attack1 = document.getElementById("btn-attack-1");
   const attack2 = document.getElementById("btn-attack-2");
   const attack3 = document.getElementById("btn-attack-3");
+  const attack4 = document.getElementById("btn-attack-4");
+  const attack5 = document.getElementById("btn-attack-5");
   const forfeit = document.getElementById("btn-forfeit");
   
   const resultLobby = document.getElementById("btn-result-lobby");
   const resultLboard = document.getElementById("btn-result-leaderboard");
-
+ 
   if (attack1) {
     attack1.addEventListener("click", () => triggerAttack(0));
   }
@@ -467,6 +483,12 @@ function setupCombatControls() {
   }
   if (attack3) {
     attack3.addEventListener("click", () => triggerAttack(2));
+  }
+  if (attack4) {
+    attack4.addEventListener("click", () => triggerAttack(3));
+  }
+  if (attack5) {
+    attack5.addEventListener("click", () => triggerAttack(4));
   }
   
   if (forfeit) {
@@ -510,6 +532,10 @@ function setupCombatControls() {
       triggerAttack(1);
     } else if (e.key === "3") {
       triggerAttack(2);
+    } else if (e.key === "4") {
+      triggerAttack(3);
+    } else if (e.key === "5") {
+      triggerAttack(4);
     } else if (e.key === " " || e.code === "Space") {
       // Space trigger executes the currently active choice button
       e.preventDefault();
@@ -611,7 +637,8 @@ async function findMultiplayerMatch() {
           fighter: activeFighter,
           maxHp: p.hp,
           hp: p.hp,
-          energy: 0
+          energy: 0,
+          unlockedCount: 1
         },
         status: "active",
         currentTurn: "host",
@@ -631,7 +658,8 @@ async function findMultiplayerMatch() {
           fighter: activeFighter,
           maxHp: p.hp,
           hp: p.hp,
-          energy: 0
+          energy: 0,
+          unlockedCount: 1
         },
         opponent: null,
         status: "waiting",
@@ -779,8 +807,16 @@ function setupMatchListeners() {
       opponentMaxHP = oppStat.maxHp;
       opponentEnergy = oppStat.energy;
       
+      // Sync unlocked count from Firestore
+      let prevOppUnlocked = opponentUnlockedCount;
+      playerUnlockedCount = playerStat.unlockedCount || 1;
+      opponentUnlockedCount = oppStat.unlockedCount || 1;
+      
       const pChar = CHARACTERS[activeFighter];
       const oChar = CHARACTERS[currentOpponent];
+      if (opponentUnlockedCount > prevOppUnlocked && oChar) {
+        appendChatMsg("system", `🔓 OPPONENT PERFECT STRIKE! Enemy unlocked a new power move: **${oChar.moves[opponentUnlockedCount - 1].name}**!`, "system");
+      }
       
       document.getElementById("player-fighter-name").textContent = playerStat.name + " (" + pChar.name + ")";
       document.getElementById("player-fighter-title").textContent = pChar.title;
@@ -953,7 +989,9 @@ function startOfflineMatch() {
   playerEnergy = 0;
   perfectHits = 0;
   totalTurns = 0;
-  attackCooldowns = [0, 0, 0];
+  attackCooldowns = [0, 0, 0, 0, 0];
+  playerUnlockedCount = 1;
+  opponentUnlockedCount = 1;
 
   document.getElementById("player-fighter-name").textContent = player.name + " (AI Practice)";
   document.getElementById("player-fighter-title").textContent = player.title;
@@ -969,9 +1007,7 @@ function startOfflineMatch() {
 
   updateMeterBars();
 
-  document.getElementById("btn-attack1-label").textContent = player.moves[0].name;
-  document.getElementById("btn-attack2-label").textContent = player.moves[1].name;
-  document.getElementById("btn-attack3-label").textContent = player.moves[2].name;
+  updateActionButtonDeck();
 
   const charKeys = Object.keys(CHARACTERS).filter(k => k !== activeFighter);
   const randomOpp = charKeys[Math.floor(Math.random() * charKeys.length)];
@@ -1031,39 +1067,66 @@ function startPlayerTurn() {
 
 function updateActionButtonDeck() {
   const p = CHARACTERS[activeFighter];
+  if (!p) return;
   
-  const btn1 = document.getElementById("btn-attack-1");
-  const btn2 = document.getElementById("btn-attack-2");
-  const btn3 = document.getElementById("btn-attack-3");
+  const buttons = [
+    document.getElementById("btn-attack-1"),
+    document.getElementById("btn-attack-2"),
+    document.getElementById("btn-attack-3"),
+    document.getElementById("btn-attack-4"),
+    document.getElementById("btn-attack-5")
+  ];
 
-  const cool1 = document.getElementById("cooldown-1");
-  const cool2 = document.getElementById("cooldown-2");
-  const cool3 = document.getElementById("cooldown-3");
+  const cooldownsText = [
+    document.getElementById("cooldown-1"),
+    document.getElementById("cooldown-2"),
+    document.getElementById("cooldown-3"),
+    document.getElementById("cooldown-4"),
+    document.getElementById("cooldown-5")
+  ];
 
-  btn1.classList.remove("active-choice");
-  btn2.classList.remove("active-choice");
-  btn3.classList.remove("active-choice");
-
-  // Basic Strike
-  btn1.disabled = false;
-  cool1.textContent = "READY";
-
-  // Special Skill (Cooldown)
-  if (attackCooldowns[1] > 0) {
-    btn2.disabled = true;
-    cool2.textContent = `${attackCooldowns[1]} TURNS`;
-  } else {
-    btn2.disabled = false;
-    cool2.textContent = "READY";
+  for (let i = 1; i <= 5; i++) {
+    const btn = document.getElementById(`btn-attack-${i}`);
+    if (btn) btn.classList.remove("active-choice");
   }
 
-  // Ultimate (Energy requirement)
-  if (playerEnergy < 100) {
-    btn3.disabled = true;
-    cool3.textContent = `${playerEnergy}% CHARGED`;
-  } else {
-    btn3.disabled = false;
-    cool3.textContent = "READY";
+  for (let i = 0; i < 5; i++) {
+    const btn = buttons[i];
+    const cool = cooldownsText[i];
+    if (!btn || !cool) continue;
+
+    const move = p.moves[i];
+    const label = document.getElementById(`btn-attack${i + 1}-label`);
+    
+    // Lock check
+    if (i >= playerUnlockedCount) {
+      if (label) label.textContent = `🔒 ${move.name}`;
+      btn.classList.add("locked");
+      btn.disabled = true;
+      cool.textContent = "LOCKED";
+      continue;
+    } else {
+      if (label) label.textContent = move.name;
+      btn.classList.remove("locked");
+    }
+
+    // Cooldown check
+    if (attackCooldowns[i] > 0) {
+      btn.disabled = true;
+      cool.textContent = `${attackCooldowns[i]} TURNS`;
+      continue;
+    }
+
+    // Energy requirement check
+    if (move.energyReq && playerEnergy < move.energyReq) {
+      btn.disabled = true;
+      cool.textContent = `${playerEnergy}/${move.energyReq}% ULT`;
+      continue;
+    }
+
+    // Ready!
+    btn.disabled = false;
+    cool.textContent = "READY";
   }
 }
 
@@ -1075,17 +1138,25 @@ function triggerAttack(index) {
   }
 
   // Verify move availability
-  if (index === 1 && attackCooldowns[1] > 0) return;
-  if (index === 2 && playerEnergy < 100) return;
+  const p = CHARACTERS[activeFighter];
+  const move = p.moves[index];
+
+  if (index >= playerUnlockedCount) {
+    showNotification("This move is locked! Land PERFECT hits to unlock it.", true);
+    return;
+  }
+  if (attackCooldowns[index] > 0) return;
+  if (move.energyReq && playerEnergy < move.energyReq) return;
 
   playSound("click");
 
   // Set active choice
   activeAttackIndex = index;
   
-  document.getElementById("btn-attack-1").classList.remove("active-choice");
-  document.getElementById("btn-attack-2").classList.remove("active-choice");
-  document.getElementById("btn-attack-3").classList.remove("active-choice");
+  for (let i = 1; i <= 5; i++) {
+    const btn = document.getElementById(`btn-attack-${i}`);
+    if (btn) btn.classList.remove("active-choice");
+  }
   
   const selectedBtn = document.getElementById(`btn-attack-${index + 1}`);
   if (selectedBtn) selectedBtn.classList.add("active-choice");
@@ -1107,8 +1178,10 @@ function startTimingGauge() {
   const char = CHARACTERS[activeFighter];
   const attackInfo = char.moves[activeAttackIndex];
   
-  // Speed multiplier: base speed modified by the specific attack speed and the fighter's base speed attribute
-  gaugeSpeed = (attackInfo.speed) * (1 / char.speed);
+  // Desperation Speed Scaling: As target HP drops, timing gauge speed increases by up to 50%
+  let targetHpRatio = opponentHP / opponentMaxHP;
+  let speedScale = 1.5 - 0.5 * targetHpRatio; // 1.0 at full HP, 1.5 at low HP
+  gaugeSpeed = (attackInfo.speed) * (1 / char.speed) * speedScale;
 
   document.getElementById("timing-feedback").textContent = "PRESS SPACE / TAP BUTTON TO STRIKE!";
   document.getElementById("timing-feedback").className = "timing-feedback";
@@ -1160,16 +1233,13 @@ function executeTimingCapture() {
   disableAllActionButtons();
 
   // Clear striking-active states
-  document.getElementById("btn-attack-1").classList.remove("striking-active");
-  document.getElementById("btn-attack-2").classList.remove("striking-active");
-  document.getElementById("btn-attack-3").classList.remove("striking-active");
-
-  const cool1 = document.getElementById("cooldown-1");
-  const cool2 = document.getElementById("cooldown-2");
-  const cool3 = document.getElementById("cooldown-3");
-  if (cool1) cool1.style.color = "";
-  if (cool2) cool2.style.color = "";
-  if (cool3) cool3.style.color = "";
+  for (let i = 1; i <= 5; i++) {
+    const btn = document.getElementById(`btn-attack-${i}`);
+    if (btn) btn.classList.remove("striking-active");
+    
+    const cool = document.getElementById(`cooldown-${i}`);
+    if (cool) cool.style.color = "";
+  }
 
   const p = gaugePosition;
   let multiplier = 0;
@@ -1227,8 +1297,10 @@ async function executePlayerAttack(multiplier, rankText) {
   const o = CHARACTERS[currentOpponent];
   const move = p.moves[activeAttackIndex];
 
-  // Base Damage scaled by multiplier
-  let finalDmg = Math.round(move.dmg * multiplier);
+  // Desperation Defensive Scaling: As target HP drops, they take less damage (up to 60% mitigation)
+  let targetHpRatio = opponentHP / opponentMaxHP;
+  let defenseScale = 0.4 + 0.6 * targetHpRatio; // ranges from 1.0 down to 0.4
+  let finalDmg = Math.round(move.dmg * multiplier * defenseScale);
 
   // Apply cooldown if move has one
   if (move.cd > 0) {
@@ -1236,11 +1308,19 @@ async function executePlayerAttack(multiplier, rankText) {
   }
 
   // Resolve Energy charges
-  if (activeAttackIndex === 2) {
-    playerEnergy = 0;
+  if (activeAttackIndex === 4) {
+    playerEnergy = 0; // Ultimate 2 consumes 100%
+  } else if (activeAttackIndex === 3) {
+    playerEnergy = Math.max(playerEnergy - 50, 0); // Ultimate 1 consumes 50%
   } else {
     let energyGain = multiplier === 2.5 ? 30 : multiplier > 0 ? 15 : 0;
     playerEnergy = Math.min(playerEnergy + energyGain, 100);
+  }
+
+  // Handle Perfect Hit move unlock
+  if (multiplier === 2.5 && playerUnlockedCount < 5) {
+    playerUnlockedCount++;
+    appendChatMsg("system", `🔓 PERFECT STRIKE! Unlocked a new power move: **${p.moves[playerUnlockedCount - 1].name}**!`, "system");
   }
 
   opponentHP = Math.max(opponentHP - finalDmg, 0);
@@ -1254,6 +1334,7 @@ async function executePlayerAttack(multiplier, rankText) {
       
       matchUpdate[`${hostOrOpp}.hp`] = playerHP; // playerHP is unchanged
       matchUpdate[`${hostOrOpp}.energy`] = playerEnergy;
+      matchUpdate[`${hostOrOpp}.unlockedCount`] = playerUnlockedCount;
       matchUpdate[`${targetRole}.hp`] = opponentHP;
       matchUpdate.currentTurn = targetRole;
       
@@ -1389,15 +1470,71 @@ function executeOpponentAI() {
   }
 
   // Start animated AI sliding simulator
+function executeOpponentAI() {
+  const o = CHARACTERS[currentOpponent];
+  const p = CHARACTERS[activeFighter];
+
+  // Decide move index: choose highest unlocked move that meets energy requirements
+  let moveIdx = 0;
+  if (opponentUnlockedCount >= 5 && opponentEnergy >= 100) {
+    moveIdx = 4;
+  } else if (opponentUnlockedCount >= 4 && opponentEnergy >= 50) {
+    moveIdx = 3;
+  } else if (opponentUnlockedCount >= 3 && Math.random() < 0.4) {
+    moveIdx = 2;
+  } else if (opponentUnlockedCount >= 2 && Math.random() < 0.5) {
+    moveIdx = 1;
+  } else {
+    moveIdx = 0;
+  }
+
+  const move = o.moves[moveIdx];
+  
+  // Simulated timing gauge slider for AI:
+  // AI Hit rates: 15% Perfect, 35% Great, 40% Normal, 10% Miss
+  let rand = Math.random();
+  let multiplier = 0;
+  let rankText = "MISS";
+  let soundType = "miss";
+
+  if (rand < 0.15) {
+    multiplier = 2.5;
+    rankText = "CRITICAL PERFECT!";
+    soundType = "critical";
+    triggerScreenFlash();
+  } else if (rand < 0.5) {
+    multiplier = 1.5;
+    rankText = "GREAT HIT";
+    soundType = "hit";
+  } else if (rand < 0.9) {
+    multiplier = 1.0;
+    soundType = "hit";
+    rankText = "NORMAL STRIKE";
+  } else {
+    multiplier = 0.0;
+    soundType = "miss";
+    rankText = "ATTACK MISSED";
+  }
+
+  // Start animated AI sliding simulator
   animateAIGaugeSlide(multiplier, () => {
     // Execute AI attack calculations
     playSound(soundType);
 
-    if (moveIdx === 2) {
+    // Resolve Energy changes for AI
+    if (moveIdx === 4) {
       opponentEnergy = 0;
+    } else if (moveIdx === 3) {
+      opponentEnergy = Math.max(opponentEnergy - 50, 0);
     } else {
       let energyGain = multiplier === 2.5 ? 30 : multiplier > 0 ? 15 : 0;
       opponentEnergy = Math.min(opponentEnergy + energyGain, 100);
+    }
+
+    // Handle AI Perfect hit unlocking next move
+    if (multiplier === 2.5 && opponentUnlockedCount < 5) {
+      opponentUnlockedCount++;
+      appendChatMsg("system", `🔓 OPPONENT PERFECT STRIKE! Enemy unlocked a new power move: **${o.moves[opponentUnlockedCount - 1].name}**!`, "system");
     }
 
     if (multiplier === 0) {
@@ -1408,8 +1545,10 @@ function executeOpponentAI() {
       if (multiplier === 2.5) dialogue = o.dialogues.ultimate;
       else if (moveIdx === 1) dialogue = o.dialogues.special;
 
-      // Apply Damage
-      let finalDmg = Math.round(move.dmg * multiplier);
+      // Desperation Defensive Scaling: As player HP drops, damage taken is reduced (up to 60% mitigation)
+      let playerHpRatio = playerHP / playerMaxHP;
+      let defenseScale = 0.4 + 0.6 * playerHpRatio;
+      let finalDmg = Math.round(move.dmg * multiplier * defenseScale);
       playerHP = Math.max(playerHP - finalDmg, 0);
 
       appendChatLog(currentOpponent, dialogue);
@@ -1446,7 +1585,11 @@ function animateAIGaugeSlide(multiplier, callback) {
   isPointerMoving = true;
   gaugePosition = 0;
   gaugeDirection = 1;
-  gaugeSpeed = 4.0; // Fixed quick slide for AI
+  
+  // Desperation Speed Scaling: As target HP drops, AI gauge speed increases by up to 50%
+  let targetHpRatio = playerHP / playerMaxHP;
+  let speedScale = 1.5 - 0.5 * targetHpRatio; // 1.0 at full HP, 1.5 at low HP
+  gaugeSpeed = 4.0 * speedScale;
 
   const feedback = document.getElementById("timing-feedback");
   feedback.textContent = "ENEMY IS ALIGNING STRIKE...";
@@ -1703,12 +1846,26 @@ function updateMeterBars() {
 }
 
 function disableAllActionButtons() {
-  document.getElementById("btn-attack-1").disabled = true;
-  document.getElementById("btn-attack-2").disabled = true;
-  document.getElementById("btn-attack-3").disabled = true;
-  document.getElementById("btn-attack-1").classList.remove("active-choice");
-  document.getElementById("btn-attack-2").classList.remove("active-choice");
-  document.getElementById("btn-attack-3").classList.remove("active-choice");
+  const p = CHARACTERS[activeFighter];
+  for (let i = 1; i <= 5; i++) {
+    const btn = document.getElementById(`btn-attack-${i}`);
+    if (btn) {
+      btn.disabled = true;
+      btn.classList.remove("active-choice");
+    }
+    // Update labels to keep locks visually in sync
+    const label = document.getElementById(`btn-attack${i}-label`);
+    if (label && p) {
+      const move = p.moves[i - 1];
+      if (i <= playerUnlockedCount) {
+        label.textContent = move.name;
+        if (btn) btn.classList.remove("locked");
+      } else {
+        label.textContent = `🔒 ${move.name}`;
+        if (btn) btn.classList.add("locked");
+      }
+    }
+  }
 }
 
 function triggerScreenFlash() {
