@@ -21,10 +21,9 @@ const GLOBAL_SEARCH_DB = [
   { name: "Divided World & Darkness Lore", category: "episodes", desc: "Detailed lore of Black Dagger, Rejock, and the returned menace DMAGA.", link: "index.html#story-overview", type: "section" },
   
   // Merchandise Catalog
-  { name: "DXZ Official 'RULER' T-Shirt", category: "merch", desc: "Heavyweight cotton crimson apparel featuring the West & East Emperor design (₹1,999).", link: "merch.html", type: "merch" },
-  { name: "DXZ Obsidian 'Flame Devil' Hoodie", category: "merch", desc: "Limited edition black and neon-red high-contrast anime hoodie (₹3,999).", link: "merch.html", type: "merch" },
-  { name: "Season 3 Metallic Poster", category: "merch", desc: "Ultra-glossy 18\"x24\" anime display poster for Danger X Zone (₹1,199).", link: "merch.html", type: "merch" },
-  { name: "Redago Aura Phone Case", category: "merch", desc: "Sleek protective armor case for iPhone and Samsung (₹1,599).", link: "merch.html", type: "merch" },
+  { name: "REDAGO T-Shirt", category: "merch", desc: "Official Flame Devil Redago Edition heavyweight combed cotton t-shirt (₹899).", link: "product.html?id=redago-tshirt", type: "merch", key: "redago-tshirt" },
+  { name: "CURSE GOD T-Shirt", category: "merch", desc: "Official Dark Bull Beast Curse God Edition heavyweight combed cotton t-shirt (₹799).", link: "product.html?id=cursegod-tshirt", type: "merch", key: "cursegod-tshirt" },
+  { name: "BERRY T-Shirt", category: "merch", desc: "Official Golden Giant Heavyweight Edition combed cotton t-shirt (₹699).", link: "product.html?id=berry-tshirt", type: "merch", key: "berry-tshirt" },
   
   // Behind the Scenes Sections
   { name: "BTS: Scriptwriting & Lore Drafting", category: "bts", desc: "Step 1: Planning directions, Government experiments, and the Beyond State.", link: "index.html#bts", type: "section" },
@@ -242,7 +241,11 @@ function initGlobalSearch() {
         window.location.href = "index.html?episode=" + item.key;
       }
     } else if (item.type === "merch") {
-      window.location.href = "merch.html";
+      if (item.key) {
+        window.location.href = "product.html?id=" + item.key;
+      } else {
+        window.location.href = "merch.html";
+      }
     } else if (item.type === "section") {
       const hash = item.link.substring(item.link.indexOf("#"));
       if (isHomepage) {

@@ -55,125 +55,106 @@
     </div>
   </header>
 
-  <!-- SHOP HERO SECTION (FEATURED PRODUCT) -->
-  <section class="shop-hero">
-    <div class="container-width">
-      <div class="shop-back-link">
-        <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Universe</a>
-      </div>
-      
-      <div class="featured-product-grid">
-        <!-- Gallery Columns -->
-        <div class="product-gallery">
-          <div class="gallery-main">
-            <div class="gallery-glow"></div>
-            <img id="main-product-img" src="assets/merch-2.png" alt="DXZ Official T-shirt" class="gallery-main-img">
-          </div>
-          <div class="gallery-thumbnails">
-            <img class="thumb-img active" src="assets/merch-2.png" alt="DXZ Collection Layout" onclick="switchMainImage(this)">
-            <img class="thumb-img" src="assets/merch-1.png" alt="DXZ Phone Mockup" onclick="switchMainImage(this)">
-          </div>
+  <!-- CINEMATIC PRE-ORDER BANNER CAROUSEL -->
+  <section class="shop-banner-carousel" id="shop-banner-carousel">
+    <div class="carousel-track" id="carousel-track">
+      <!-- Slide 1: Video Banner (Wait till video ends) -->
+      <div class="carousel-slide video-slide">
+        <div class="video-banner-bg-wrap">
+          <!-- Removed loop attribute to fire "ended" event -->
+          <video class="video-banner-el" id="banner-video" autoplay muted playsinline>
+            <source src="assets/berry-promo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <div class="video-banner-overlay"></div>
         </div>
-        
-        <!-- Info Column -->
-        <div class="product-details">
-          <span class="product-badge redago-badge"><i class="fa-solid fa-fire"></i> Season 3 Limited Drop</span>
-          <h1 class="product-title">DXZ Official "RULER" T-Shirt</h1>
-          
-          <div class="product-pricing">
-            <span class="price-value">₹1,999</span>
-            <span class="price-tag">In stock & ready to ship</span>
-          </div>
-          
-          <p class="product-description">
-            Embrace the power of the West and East Emperors. Featuring the custom <strong>"THE RULER OF THE WORLD"</strong> compass design and Emperor Jiggo Degan's high-contrast Season 3 anime graphics. Tailored with heavyweight Obsidian fabric and a crimson neon finish.
-          </p>
-          
-          <div class="product-options">
-            <div class="option-group">
-              <label class="option-label">Select Size</label>
-              <div class="size-chips" id="size-selector">
-                <button class="size-chip" data-size="S">S</button>
-                <button class="size-chip active" data-size="M">M</button>
-                <button class="size-chip" data-size="L">L</button>
-                <button class="size-chip" data-size="XL">XL</button>
-                <button class="size-chip" data-size="XXL">XXL</button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="product-actions">
-            <button id="add-featured-to-cart" class="btn btn-danger btn-add-cart">
-              <i class="fa-solid fa-cart-plus"></i> Add to Cart
-            </button>
-          </div>
-          
-          <div class="product-benefits">
-            <div class="benefit-item"><i class="fa-solid fa-truck-fast"></i> Global Shipping</div>
-            <div class="benefit-item"><i class="fa-solid fa-shield-halved"></i> Secure Checkout</div>
-            <div class="benefit-item"><i class="fa-solid fa-shirt"></i> Heavyweight 100% Combed Cotton</div>
-          </div>
+        <div class="video-banner-content container-width">
+          <span class="video-banner-badge"><i class="fa-solid fa-circle-exclamation"></i> Pre-Order Waitlist Open</span>
+          <h2 class="video-banner-title">DXZ OFFICIAL SHOP PRE-ORDER</h2>
+          <p class="video-banner-lead">Only Pre-order. Shop is under development. Only lucky customers can be first buyers.</p>
         </div>
       </div>
+
+      <!-- Slide 2: Anime Image Banner -->
+      <div class="carousel-slide image-slide">
+        <div class="image-banner-bg-wrap">
+          <img src="assets/design-anime.png" alt="Anime Design Concept" class="image-banner-el">
+          <div class="image-banner-overlay"></div>
+        </div>
+        <div class="video-banner-content container-width">
+          <span class="video-banner-badge"><i class="fa-solid fa-circle-exclamation"></i> Pre-Order Waitlist Open</span>
+          <h2 class="video-banner-title">DXZ OFFICIAL SHOP PRE-ORDER</h2>
+          <p class="video-banner-lead">Only Pre-order. Shop is under development. Only lucky customers can be first buyers.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation indicators (dots) -->
+    <div class="carousel-indicators">
+      <button class="indicator-dot active" data-slide="0" aria-label="Go to Video Slide"></button>
+      <button class="indicator-dot" data-slide="1" aria-label="Go to Anime Slide"></button>
     </div>
   </section>
 
   <!-- STORE COLLECTION GRID (AMAZON LAYOUT) -->
-  <section class="store-collection">
+  <section class="store-collection" style="padding: 3rem 0 5rem;">
     <div class="container-width">
+      <div class="shop-back-link" style="margin-bottom: 2rem;">
+        <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Universe</a>
+      </div>
       <div class="shop-section-header">
         <h2 class="section-title">Danger X Zone Collection</h2>
-        <p class="section-desc">More drops will be added in future. Click to add directly to your cart.</p>
+        <p class="section-desc">More drops will be added in future. Click any card to select size and view details.</p>
       </div>
       
       <div class="products-grid">
-        <!-- Product Item 1: Hoodie -->
-        <div class="product-card" data-id="dxz-obsidian-hoodie" data-price="3999" data-name="DXZ Obsidian Hoodie">
+        <!-- Product Item 1: REDAGO -->
+        <div class="product-card" data-id="redago-tshirt" data-price="899" data-name="REDAGO T-Shirt">
           <div class="card-img-container">
             <div class="card-badge pre-order">Pre-order</div>
-            <img src="assets/merch-2.png" alt="DXZ Obsidian Hoodie" class="card-product-img hoodie-color">
-            <button class="quick-add-btn" title="Add to Cart"><i class="fa-solid fa-cart-plus"></i></button>
+            <img src="assets/merch-redago.png" alt="REDAGO T-Shirt" class="card-product-img">
+            <button class="quick-add-btn" title="View Options"><i class="fa-solid fa-eye"></i></button>
           </div>
           <div class="card-info">
-            <h3 class="card-product-name">DXZ "Flame Devil" Hoodie</h3>
-            <span class="card-product-theme">Obsidian Black & Crimson</span>
+            <h3 class="card-product-name">REDAGO T-Shirt</h3>
+            <span class="card-product-theme">Flame Devil Redago Edition</span>
             <div class="card-footer">
-              <span class="card-price">₹3,999</span>
-              <button class="card-btn-add">Add to Cart</button>
+              <span class="card-price">₹899</span>
+              <button class="card-btn-add">Pre-order</button>
             </div>
           </div>
         </div>
 
-        <!-- Product Item 2: Poster -->
-        <div class="product-card" data-id="dxz-s3-poster" data-price="1199" data-name="Season 3 Metallic Poster">
+        <!-- Product Item 2: CURSE GOD -->
+        <div class="product-card" data-id="cursegod-tshirt" data-price="799" data-name="CURSE GOD T-Shirt">
           <div class="card-img-container">
-            <div class="card-badge new">New</div>
-            <img src="assets/dxz-poster.jpg" alt="Season 3 Poster" class="card-product-img">
-            <button class="quick-add-btn" title="Add to Cart"><i class="fa-solid fa-cart-plus"></i></button>
+            <div class="card-badge pre-order">Pre-order</div>
+            <img src="assets/merch-cursegod.png" alt="CURSE GOD T-Shirt" class="card-product-img">
+            <button class="quick-add-btn" title="View Options"><i class="fa-solid fa-eye"></i></button>
           </div>
           <div class="card-info">
-            <h3 class="card-product-name">DXZ S3 Metallic Poster</h3>
-            <span class="card-product-theme">Ultra High Gloss 18"x24"</span>
+            <h3 class="card-product-name">CURSE GOD T-Shirt</h3>
+            <span class="card-product-theme">Dark Bull Beast Edition</span>
             <div class="card-footer">
-              <span class="card-price">₹1,199</span>
-              <button class="card-btn-add">Add to Cart</button>
+              <span class="card-price">₹799</span>
+              <button class="card-btn-add">Pre-order</button>
             </div>
           </div>
         </div>
 
-        <!-- Product Item 3: Phone Case -->
-        <div class="product-card" data-id="dxz-redago-case" data-price="1599" data-name="Redago Aura Phone Case">
+        <!-- Product Item 3: BERRY -->
+        <div class="product-card" data-id="berry-tshirt" data-price="699" data-name="BERRY T-Shirt">
           <div class="card-img-container">
-            <div class="card-badge limited">Limited</div>
-            <img src="assets/merch-1.png" alt="Redago Case" class="card-product-img case-color">
-            <button class="quick-add-btn" title="Add to Cart"><i class="fa-solid fa-cart-plus"></i></button>
+            <div class="card-badge pre-order">Pre-order</div>
+            <img src="assets/merch-berry.png" alt="BERRY T-Shirt" class="card-product-img">
+            <button class="quick-add-btn" title="View Options"><i class="fa-solid fa-eye"></i></button>
           </div>
           <div class="card-info">
-            <h3 class="card-product-name">Redago Aura Phone Case</h3>
-            <span class="card-product-theme">Sleek Armor (iPhone/Samsung)</span>
+            <h3 class="card-product-name">BERRY T-Shirt</h3>
+            <span class="card-product-theme">Golden Giant Heavyweight Edition</span>
             <div class="card-footer">
-              <span class="card-price">₹1,599</span>
-              <button class="card-btn-add">Add to Cart</button>
+              <span class="card-price">₹699</span>
+              <button class="card-btn-add">Pre-order</button>
             </div>
           </div>
         </div>
@@ -186,7 +167,7 @@
     <div class="cart-drawer-backdrop" id="cart-drawer-backdrop"></div>
     <div class="cart-drawer-container">
       <div class="cart-header">
-        <h3>Your Faction Cart (<span id="cart-drawer-count">0</span>)</h3>
+        <h3>Your Pre-order List (<span id="cart-drawer-count">0</span>)</h3>
         <button id="cart-close-btn" class="cart-close-btn" aria-label="Close Cart"><i class="fa-solid fa-xmark"></i></button>
       </div>
       
@@ -195,8 +176,8 @@
         <!-- Dynamically injected items -->
         <div class="cart-empty-message">
           <i class="fa-solid fa-cart-shopping"></i>
-          <p>Your cart is empty.</p>
-          <a href="#" class="btn btn-secondary btn-close-drawer">Start Shopping</a>
+          <p>Your pre-order list is empty.</p>
+          <a href="#" class="btn btn-secondary btn-close-drawer">Start Exploring</a>
         </div>
       </div>
       
@@ -208,10 +189,10 @@
         </div>
         <div class="cart-summary-row shipping-row">
           <span>Shipping:</span>
-          <span class="shipping-val">Calculated at Checkout</span>
+          <span class="shipping-val">Free (Pre-order Drop)</span>
         </div>
         <button id="checkout-btn" class="btn btn-danger checkout-action-btn" style="width:100%; margin-top: 1rem;">
-          <i class="fa-solid fa-credit-card"></i> Proceed to Checkout
+          <i class="fa-solid fa-file-signature"></i> Apply for Pre-order
         </button>
       </div>
     </div>
@@ -228,24 +209,26 @@
         <div class="checkout-progress">
           <div class="step active" id="step-indicator-1">
             <span class="step-num">1</span>
-            <span class="step-label">Shipping</span>
-          </div>
-          <div class="step" id="step-indicator-2">
-            <span class="step-num">2</span>
-            <span class="step-label">Payment</span>
+            <span class="step-label">Application</span>
           </div>
           <div class="step" id="step-indicator-3">
-            <span class="step-num">3</span>
-            <span class="step-label">Success</span>
+            <span class="step-num">2</span>
+            <span class="step-label">Status</span>
           </div>
         </div>
         
         <!-- Wizard Form Content -->
         <div class="checkout-form-container">
           
-          <!-- STEP 1: SHIPPING ADDRESS -->
+          <!-- STEP 1: PRE-ORDER APPLICATION -->
           <div class="checkout-step-panel active" id="checkout-step-1">
-            <h3 class="checkout-panel-title">Shipping &amp; Contact Information</h3>
+            <h3 class="checkout-panel-title">DXZ Shop Pre-order Application</h3>
+            
+            <div class="alert-banner" style="background: rgba(255, 18, 79, 0.1); border: 1px solid var(--color-redago); border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; color: #FFF; font-size: 0.9rem; display: flex; align-items: center; gap: 0.75rem;">
+              <i class="fa-solid fa-triangle-exclamation" style="color: var(--color-redago); font-size: 1.2rem;"></i>
+              <span><strong>Notice:</strong> Only Pre-order. Shop is under development. Only lucky customers can be first buyers.</span>
+            </div>
+            
             <form id="shipping-form" class="checkout-form">
               <div class="form-grid-2">
                 <div class="form-group">
@@ -282,7 +265,7 @@
                 </div>
               </div>
               <div class="wizard-buttons">
-                <button type="submit" class="btn btn-primary wizard-next-btn">Continue to Payment <i class="fa-solid fa-arrow-right"></i></button>
+                <button type="submit" class="btn btn-primary wizard-next-btn">Submit Pre-order Application <i class="fa-solid fa-paper-plane"></i></button>
               </div>
             </form>
           </div>
@@ -312,27 +295,29 @@
             </div>
           </div>
           
-          <!-- STEP 3: ORDER SUCCESS -->
+          <!-- STEP 3: PRE-ORDER SUCCESS -->
           <div class="checkout-step-panel" id="checkout-step-3" style="text-align: center;">
             <div class="success-icon-wrap">
               <i class="fa-solid fa-circle-check"></i>
             </div>
-            <h3 class="checkout-panel-title success-title">Order Confirmed!</h3>
+            <h3 class="checkout-panel-title success-title">Pre-order Application Received!</h3>
             <p class="success-desc">
-              Your DXZ order has been received. A receipt and shipping confirmation will be sent to <strong id="success-email-text"></strong> shortly.
+              Your pre-order application has been received. Since the shop is currently under development, only lucky customers will be selected as the first buyers. If selected, a custom purchase link will be sent to <strong id="success-email-text"></strong>.
             </p>
             <div class="success-receipt-box">
-              <div class="receipt-row"><span>Order ID:</span> <strong id="success-order-id">DXZ-87629</strong></div>
-              <div class="receipt-row"><span>Shipped To:</span> <span id="success-name-text">John Doe</span></div>
-              <div class="receipt-row"><span>Total Price:</span> <strong id="success-total-text">₹1,999</strong></div>
+              <div class="receipt-row"><span>Application ID:</span> <strong id="success-order-id">DXZ-87629</strong></div>
+              <div class="receipt-row"><span>Applied By:</span> <span id="success-name-text">John Doe</span></div>
+              <div class="receipt-row"><span>Est. Total:</span> <strong id="success-total-text">₹1,999</strong></div>
             </div>
-            <button id="success-continue-btn" class="btn btn-danger" style="margin-top: 2rem; padding: 0.8rem 2.5rem;">Continue Shopping</button>
+            <button id="success-continue-btn" class="btn btn-danger" style="margin-top: 2rem; padding: 0.8rem 2.5rem;">Continue Exploring</button>
           </div>
           
         </div>
       </div>
     </div>
   </div>
+
+
 
   <!-- FLOATING FEEDBACK ALERT -->
   <div class="alert-container" id="alert-container"></div>

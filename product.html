@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>DXZ Shop | Product Details</title>
+  <meta name="description" content="Shop official apparel, posters, and limited drops from the Danger X Zone anime series. High-quality obsidian-themed streetwear from The BlueShot.">
+  <meta name="keywords" content="Danger X Zone Merch, DXZ T-Shirt, Redago T-Shirt, The BlueShot Shop, Anime Apparel, Minecraft Anime Merch">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="merch.css">
+</head>
+<body class="shop-body">
+
+  <!-- NAVIGATION HEADER -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="nav-logo">
+        THE BLUESHOT <span class="logo-dot"></span>
+      </a>
+      
+      <nav>
+        <ul class="nav-links" id="nav-links">
+          <li class="nav-link"><a href="index.html#hero">Home</a></li>
+          <li class="nav-link"><a href="index.html#featured-video">Season 3</a></li>
+          <li class="nav-link"><a href="index.html#characters">Characters</a></li>
+          <li class="nav-link"><a href="index.html#community">Community</a></li>
+          <li class="nav-link active"><a href="merch.html">Shop</a></li>
+          <li class="nav-link"><a href="hub.html">Hub</a></li>
+          <li class="nav-link"><a href="game.html">Arena</a></li>
+        </ul>
+      </nav>
+      
+      <div class="nav-actions" style="display: flex; gap: 1rem;">
+        <button class="social-icon global-search-trigger" title="Search site (Press /)" id="nav-search-trigger"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <!-- Floating Cart Toggle Trigger -->
+        <button id="cart-toggle-btn" class="social-icon cart-trigger-btn" title="View Cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-count-badge" class="cart-badge">0</span>
+        </button>
+      </div>
+      
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- PRODUCT DETAIL CONTENT -->
+  <section class="product-detail-section" style="padding: 3rem 0 5rem; flex-grow: 1;">
+    <div class="container-width">
+      <div class="shop-back-link" style="margin-bottom: 2.5rem;">
+        <a href="merch.html"><i class="fa-solid fa-arrow-left"></i> Back to Shop</a>
+      </div>
+      
+      <!-- Loaded dynamically by product.js -->
+      <div id="product-detail-container">
+         <!-- Spinner while loading -->
+         <div style="text-align: center; padding: 7rem 0;">
+           <i class="fa-solid fa-spinner fa-spin" style="font-size: 3rem; color: var(--color-blue-neon);"></i>
+           <p style="margin-top: 1rem; color: var(--text-muted); font-family: var(--font-display);">Loading product details...</p>
+         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CART SIDEBAR DRAWER -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-backdrop" id="cart-drawer-backdrop"></div>
+    <div class="cart-drawer-container">
+      <div class="cart-header">
+        <h3>Your Pre-order List (<span id="cart-drawer-count">0</span>)</h3>
+        <button id="cart-close-btn" class="cart-close-btn" aria-label="Close Cart"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <!-- Cart Items list -->
+      <div class="cart-items-list" id="cart-items-list">
+        <div class="cart-empty-message">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <p>Your pre-order list is empty.</p>
+          <a href="#" class="btn btn-secondary btn-close-drawer">Start Exploring</a>
+        </div>
+      </div>
+      
+      <!-- Cart Footer -->
+      <div class="cart-footer" id="cart-drawer-footer">
+        <div class="cart-summary-row">
+          <span>Subtotal:</span>
+          <span class="subtotal-val" id="cart-subtotal">₹0</span>
+        </div>
+        <div class="cart-summary-row shipping-row">
+          <span>Shipping:</span>
+          <span class="shipping-val">Free (Pre-order Drop)</span>
+        </div>
+        <button id="checkout-btn" class="btn btn-danger checkout-action-btn" style="width:100%; margin-top: 1rem;">
+          <i class="fa-solid fa-file-signature"></i> Apply for Pre-order
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT WIZARD MODAL -->
+  <div class="modal" id="checkout-modal">
+    <div class="modal-backdrop" id="checkout-modal-backdrop"></div>
+    <div class="modal-content checkout-modal-content">
+      <button class="modal-close-btn" id="checkout-modal-close" aria-label="Close Checkout"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="checkout-wizard">
+        <!-- Wizard Sidebar Header Progress -->
+        <div class="checkout-progress">
+          <div class="step active" id="step-indicator-1">
+            <span class="step-num">1</span>
+            <span class="step-label">Application</span>
+          </div>
+          <div class="step" id="step-indicator-3">
+            <span class="step-num">2</span>
+            <span class="step-label">Status</span>
+          </div>
+        </div>
+        
+        <!-- Wizard Form Content -->
+        <div class="checkout-form-container">
+          <!-- STEP 1: PRE-ORDER APPLICATION -->
+          <div class="checkout-step-panel active" id="checkout-step-1">
+            <h3 class="checkout-panel-title">DXZ Shop Pre-order Application</h3>
+            
+            <div class="alert-banner" style="background: rgba(255, 18, 79, 0.1); border: 1px solid var(--color-redago); border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; color: #FFF; font-size: 0.9rem; display: flex; align-items: center; gap: 0.75rem;">
+              <i class="fa-solid fa-triangle-exclamation" style="color: var(--color-redago); font-size: 1.2rem;"></i>
+              <span><strong>Notice:</strong> Only Pre-order. Shop is under development. Only lucky customers can be first buyers.</span>
+            </div>
+            
+            <form id="shipping-form" class="checkout-form">
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="ship-name">Full Name *</label>
+                  <input type="text" id="ship-name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                  <label for="ship-email">Email Address *</label>
+                  <input type="email" id="ship-email" required placeholder="johndoe@email.com">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="ship-address">Street Address *</label>
+                <input type="text" id="ship-address" required placeholder="123 Redago Street">
+              </div>
+              <div class="form-grid-3">
+                <div class="form-group">
+                  <label for="ship-city">City *</label>
+                  <input type="text" id="ship-city" required placeholder="New York">
+                </div>
+                <div class="form-group">
+                  <label for="ship-zip">Zip / Postal Code *</label>
+                  <input type="text" id="ship-zip" required placeholder="10001">
+                </div>
+                <div class="form-group">
+                  <label for="ship-country">Country *</label>
+                  <select id="ship-country" required>
+                    <option value="US">United States</option>
+                    <option value="IN" selected>India</option>
+                    <option value="CA">Canada</option>
+                    <option value="GB">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                  </select>
+                </div>
+              </div>
+              <div class="wizard-buttons">
+                <button type="submit" class="btn btn-primary wizard-next-btn">Submit Pre-order Application <i class="fa-solid fa-paper-plane"></i></button>
+              </div>
+            </form>
+          </div>
+          
+          <!-- STEP 2: PAYMENT INTEGRATION (Placeholder, skipped in pre-order flow) -->
+          <div class="checkout-step-panel" id="checkout-step-2">
+            <h3 class="checkout-panel-title">Secure Faction Payment</h3>
+            <p class="payment-subtitle">Review your order and pay securely via Razorpay — UPI, Cards, Wallets & Net Banking.</p>
+            <div class="checkout-order-summary">
+              <span>Amount due: <strong id="checkout-summary-total">₹0</strong></span>
+            </div>
+            <div class="payment-options-list">
+              <div class="payment-card-mockup" style="text-align: center; padding: 2.5rem 2rem;">
+                <div class="card-mock-row" style="justify-content: center; border: none; padding: 0; margin-bottom: 1rem;">
+                  <i class="fa-solid fa-shield-halved card-provider-icon" style="font-size: 2rem;"></i>
+                </div>
+                <h4 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem;">Razorpay Secure Checkout</h4>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 2rem;">Supports UPI, Debit/Credit Cards, Net Banking, Paytm, PhonePe & more.</p>
+                <div class="wizard-buttons" style="justify-content: space-between;">
+                  <button type="button" class="btn btn-secondary wizard-back-btn" id="payment-back-btn"><i class="fa-solid fa-arrow-left"></i> Shipping</button>
+                  <button type="button" class="btn btn-danger wizard-next-btn razorpay-gateway"><i class="fa-solid fa-lock"></i> Pay Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- STEP 3: PRE-ORDER SUCCESS -->
+          <div class="checkout-step-panel" id="checkout-step-3" style="text-align: center;">
+            <div class="success-icon-wrap">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="checkout-panel-title success-title">Pre-order Application Received!</h3>
+            <p class="success-desc">
+              Your pre-order application has been received. Since the shop is currently under development, only lucky customers will be selected as the first buyers. If selected, a custom purchase link will be sent to <strong id="success-email-text"></strong>.
+            </p>
+            <div class="success-receipt-box">
+              <div class="receipt-row"><span>Application ID:</span> <strong id="success-order-id">DXZ-87629</strong></div>
+              <div class="receipt-row"><span>Applied By:</span> <span id="success-name-text">John Doe</span></div>
+              <div class="receipt-row"><span>Est. Total:</span> <strong id="success-total-text">₹1,999</strong></div>
+            </div>
+            <button id="success-continue-btn" class="btn btn-danger" style="margin-top: 2rem; padding: 0.8rem 2.5rem;">Continue Exploring</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING FEEDBACK ALERT -->
+  <div class="alert-container" id="alert-container"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container-width">
+      <div class="footer-top">
+        <a href="index.html#hero" class="footer-logo">
+          THE BLUESHOT <span class="logo-dot"></span>
+        </a>
+        <ul class="footer-nav">
+          <li><a href="index.html#hero">Home</a></li>
+          <li><a href="index.html#featured-video">Season 3</a></li>
+          <li><a href="index.html#characters">Characters</a></li>
+          <li><a href="index.html#community">Community</a></li>
+          <li><a href="merch.html">Shop</a></li>
+          <li><a href="hub.html">Hub</a></li>
+          <li><a href="game.html">Arena</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="index.html#hero">Back to Home</a>
+          <a href="https://youtube.com/@BlueShot77" target="_blank">YouTube Channel</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK Client Libraries (v9 Compat Mode) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  
+  <!-- Scripts -->
+  <script src="product.js"></script>
+  <script src="search.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

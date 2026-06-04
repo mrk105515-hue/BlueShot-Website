@@ -6,30 +6,56 @@
 // Global Cart State
 let cart = [];
 let activeSize = "M"; // Default selected size for the featured shirt
+let currentFeaturedId = "redago-tshirt"; // Active selected featured product
 
 // Products Catalog (Matches UI markup)
 const PRODUCTS_CATALOG = {
-  "ruler-tshirt": {
-    name: "DXZ Official \"RULER\" T-Shirt",
-    price: 1999,
-    image: "assets/merch-2.png"
+  "redago-tshirt": {
+    id: "redago-tshirt",
+    name: "REDAGO T-Shirt",
+    price: 899,
+    image: "assets/merch-redago.png",
+    badge: "Season 3 Limited Drop",
+    badgeClass: "redago-badge",
+    images: [
+      "assets/merch-redago.png",
+      "assets/redago-2.png",
+      "assets/redago-3.png"
+    ],
+    description: "Unleash the ultimate cosmic force. The official REDAGO custom graphic t-shirt features BSG's powerful Season 3 aura. Made with heavyweight 100% combed cotton for maximum durability and comfort."
   },
-  "dxz-obsidian-hoodie": {
-    name: "DXZ Obsidian Hoodie",
-    price: 3999,
-    image: "assets/merch-2.png",
-    customClass: "hoodie-color"
+  "cursegod-tshirt": {
+    id: "cursegod-tshirt",
+    name: "CURSE GOD T-Shirt",
+    price: 799,
+    image: "assets/merch-cursegod.png",
+    badge: "Dark Magic Drop",
+    badgeClass: "cursegod-badge",
+    images: [
+      "assets/merch-cursegod.png",
+      "assets/cursegod-2.png",
+      "assets/cursegod-3.png",
+      "assets/cursegod-4.png",
+      "assets/cursegod-5.png",
+      "assets/cursegod-6.png"
+    ],
+    description: "Embrace the dark power of Curse God Zalta. The official CURSE GOD custom graphic t-shirt features Zalta's dark bull beast aura. Made with heavyweight 100% combed cotton for premium comfort and long-lasting print quality."
   },
-  "dxz-s3-poster": {
-    name: "Season 3 Metallic Poster",
-    price: 1199,
-    image: "assets/dxz-poster.jpg"
-  },
-  "dxz-redago-case": {
-    name: "Redago Aura Phone Case",
-    price: 1599,
-    image: "assets/merch-1.png",
-    customClass: "case-color"
+  "berry-tshirt": {
+    id: "berry-tshirt",
+    name: "BERRY T-Shirt",
+    price: 699,
+    image: "assets/merch-berry.png",
+    badge: "Golden Heavyweight Drop",
+    badgeClass: "berry-badge",
+    images: [
+      "assets/merch-berry.png",
+      "assets/berry-2.png",
+      "assets/berry-3.png",
+      "assets/berry-4.png",
+      "assets/berry-5.png"
+    ],
+    description: "Harness the golden heavyweight force. The official BERRY custom graphic t-shirt features the legendary Golden Giant heavyweight energy. Made with premium 100% combed cotton, built to withstand any battle."
   }
 };
 
@@ -40,9 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
   try {
     loadCartFromStorage();
     initCartDrawer();
-    initFeaturedProduct();
     initCollectionGrid();
     initCheckoutWizard();
+    initBannerCarousel();
     updateCartUI();
   } catch (e) {
     console.error("Error initializing shop script:", e);
@@ -113,8 +139,8 @@ function updateCartUI() {
     itemsContainer.innerHTML = `
       <div class="cart-empty-message">
         <i class="fa-solid fa-cart-shopping"></i>
-        <p>Your cart is empty.</p>
-        <button class="btn btn-secondary btn-close-drawer" style="padding: 0.6rem 1.5rem; font-size: 0.8rem;">Start Shopping</button>
+        <p>Your pre-order list is empty.</p>
+        <button class="btn btn-secondary btn-close-drawer" style="padding: 0.6rem 1.5rem; font-size: 0.8rem;">Start Exploring</button>
       </div>
     `;
     if (checkoutFooter) {
@@ -193,7 +219,7 @@ window.addToCart = function(id, size = "N/A") {
 
   saveCartToStorage();
   updateCartUI();
-  showNotification(`Added ${product.name} (${size}) to cart!`);
+  showNotification(`Added ${product.name} (${size}) to pre-order list!`);
   
   // Auto slide open the cart drawer so user sees it added
   setTimeout(() => {
@@ -224,7 +250,7 @@ window.removeCartItem = function(id, size) {
 
   saveCartToStorage();
   updateCartUI();
-  showNotification(`Removed ${itemName} from cart.`, true);
+  showNotification(`Removed ${itemName} from pre-order list.`, true);
 };
 
 // ==========================================================================
@@ -291,46 +317,36 @@ window.switchMainImage = function(thumbEl) {
   }, 150);
 };
 
-// 2. Featured T-Shirt setup
-function initFeaturedProduct() {
-  const sizeSelector = document.getElementById("size-selector");
-  const addFeaturedBtn = document.getElementById("add-featured-to-cart");
-
-  if (sizeSelector) {
-    const chips = sizeSelector.querySelectorAll(".size-chip");
-    chips.forEach(chip => {
-      chip.addEventListener("click", () => {
-        chips.forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-        activeSize = chip.getAttribute("data-size");
-      });
-    });
-  }
-
-  if (addFeaturedBtn) {
-    addFeaturedBtn.addEventListener("click", () => {
-      window.addToCart("ruler-tshirt", activeSize);
-    });
-  }
-}
-
-// 3. Grid product selection hook
+// 4. Grid product selection hook - Redirects to dynamic product.html details page
 function initCollectionGrid() {
   const gridCards = document.querySelectorAll(".products-grid .product-card");
   
   gridCards.forEach(card => {
     const productId = card.getAttribute("data-id");
+    
+    // Clicking anywhere on the card redirects to product detail page
+    card.style.cursor = "pointer";
+    card.addEventListener("click", (e) => {
+      window.location.href = "product.html?id=" + productId;
+    });
+
     const addBtn = card.querySelector(".card-btn-add");
     const quickAdd = card.querySelector(".quick-add-btn");
 
-    const handler = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      window.addToCart(productId, "N/A"); // Grid items are standard size
-    };
-
-    if (addBtn) addBtn.addEventListener("click", handler);
-    if (quickAdd) quickAdd.addEventListener("click", handler);
+    if (addBtn) {
+      addBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = "product.html?id=" + productId;
+      });
+    }
+    if (quickAdd) {
+      quickAdd.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = "product.html?id=" + productId;
+      });
+    }
   });
 }
 
@@ -379,7 +395,7 @@ function initCheckoutWizard() {
 
   const openCheckout = () => {
     if (cart.length === 0) {
-      showNotification("Your cart is empty!", true);
+      showNotification("Your pre-order list is empty!", true);
       return;
     }
 
@@ -407,17 +423,30 @@ function initCheckoutWizard() {
   if (closeBtn) closeBtn.addEventListener("click", closeCheckout);
   if (backdrop) backdrop.addEventListener("click", closeCheckout);
 
-  // Form submit handles
+  // Form submit handles: Pre-order Waitlist directly skips payment and triggers success screen
   if (shippingForm) {
     shippingForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      // Store details for success screen
       const nameVal = document.getElementById("ship-name").value;
       const emailVal = document.getElementById("ship-email").value;
       document.getElementById("success-name-text").textContent = nameVal;
       document.getElementById("success-email-text").textContent = emailVal;
 
-      showStep(2); // Go to payment
+      // Populate waitlist price & ref ID details
+      let subtotal = 0;
+      cart.forEach(item => subtotal += item.price * item.quantity);
+      document.getElementById("success-total-text").textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+      
+      const randomRef = "PRE-" + Math.floor(100000 + Math.random() * 900000);
+      document.getElementById("success-order-id").textContent = randomRef;
+
+      // Reset cart state
+      shippingForm.reset();
+      cart = [];
+      saveCartToStorage();
+      updateCartUI();
+
+      showStep(3); // Go straight to waitlist confirmation screen
     });
   }
 
@@ -545,4 +574,96 @@ function showNotification(message, isError = false) {
       alertCard.remove();
     }, 500);
   }, 3500);
+}
+
+// ==========================================================================
+// BANNER INTERACTIVE CAROUSEL SYSTEM
+// ==========================================================================
+function initBannerCarousel() {
+  const track = document.getElementById("carousel-track");
+  const dots = document.querySelectorAll(".indicator-dot");
+  const video = document.getElementById("banner-video");
+
+  if (!track || dots.length === 0) return;
+
+  let imageTimer = null;
+  let isManualOverride = false;
+
+  // Update dots indicator active state based on current scroll position
+  function updateActiveDot() {
+    const width = track.clientWidth;
+    const activeIndex = Math.round(track.scrollLeft / width);
+    dots.forEach((dot, idx) => {
+      if (idx === activeIndex) {
+        dot.classList.add("active");
+      } else {
+        dot.classList.remove("active");
+      }
+    });
+  }
+
+  track.addEventListener("scroll", updateActiveDot);
+
+  // Navigate to slide on indicator click
+  dots.forEach(dot => {
+    dot.addEventListener("click", () => {
+      isManualOverride = true; // User interacted manually, cancel auto flow
+      clearTimeout(imageTimer);
+      
+      const slideIndex = parseInt(dot.getAttribute("data-slide"));
+      const width = track.clientWidth;
+      track.scrollTo({
+        left: slideIndex * width,
+        behavior: "smooth"
+      });
+
+      // Handle video play/pause status based on manual slide selection
+      if (video) {
+        if (slideIndex === 0) {
+          video.currentTime = 0;
+          video.play().catch(err => console.log("Video auto play blocked:", err));
+        } else {
+          video.pause();
+        }
+      }
+    });
+  });
+
+  // Handle user manual swiping/scrolling via mouse/touch
+  const userScrollTrigger = () => {
+    isManualOverride = true;
+    clearTimeout(imageTimer);
+  };
+  track.addEventListener("touchstart", userScrollTrigger, { passive: true });
+  track.addEventListener("mousedown", userScrollTrigger);
+
+  // Flow logic: Wait for video to end, then slide to concept art (Slide 2)
+  if (video) {
+    video.addEventListener("ended", () => {
+      if (isManualOverride) return;
+      
+      // Scroll to Slide 2 (Anime concept art)
+      const width = track.clientWidth;
+      track.scrollTo({
+        left: width,
+        behavior: "smooth"
+      });
+
+      // Start the image slide duration timer (8 seconds)
+      clearTimeout(imageTimer);
+      imageTimer = setTimeout(() => {
+        if (isManualOverride) return;
+
+        // Scroll back to Slide 1 (Video)
+        track.scrollTo({
+          left: 0,
+          behavior: "smooth"
+        });
+
+        // Replay video
+        video.currentTime = 0;
+        video.play().catch(err => console.log("Video play blocked:", err));
+      }, 8000); // Display image slide for 8 seconds
+    });
+  }
 }
