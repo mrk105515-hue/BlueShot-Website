@@ -587,7 +587,22 @@ function initBannerCarousel() {
   if (!track || dots.length === 0) return;
 
   let imageTimer = null;
+  let fallbackTimer = null;
   let isManualOverride = false;
+
+  // Helper: Programmatic scroll that avoids scroll snapping conflicts
+  function scrollToSlide(slideIndex) {
+    const width = track.clientWidth;
+    track.style.scrollSnapType = "none";
+    track.scrollTo({
+      left: slideIndex * width,
+      behavior: "smooth"
+    });
+    // Restore snap behaviour after smooth animation finishes (600ms)
+    setTimeout(() => {
+      track.style.scrollSnapType = "x mandatory";
+    }, 600);
+  }
 
   // Update dots indicator active state based on current scroll position
   function updateActiveDot() {
@@ -609,13 +624,10 @@ function initBannerCarousel() {
     dot.addEventListener("click", () => {
       isManualOverride = true; // User interacted manually, cancel auto flow
       clearTimeout(imageTimer);
+      clearTimeout(fallbackTimer);
       
       const slideIndex = parseInt(dot.getAttribute("data-slide"));
-      const width = track.clientWidth;
-      track.scrollTo({
-        left: slideIndex * width,
-        behavior: "smooth"
-      });
+      scrollToSlide(slideIndex);
 
       // Handle video play/pause status based on manual slide selection
       if (video) {
@@ -629,41 +641,55 @@ function initBannerCarousel() {
     });
   });
 
-  // Handle user manual swiping/scrolling via mouse/touch
+  // Handle user manual swiping/scrolling via mouse/touch/wheel
   const userScrollTrigger = () => {
     isManualOverride = true;
     clearTimeout(imageTimer);
+    clearTimeout(fallbackTimer);
   };
   track.addEventListener("touchstart", userScrollTrigger, { passive: true });
   track.addEventListener("mousedown", userScrollTrigger);
+  track.addEventListener("wheel", userScrollTrigger, { passive: true });
+
+  function startImageTimer() {
+    clearTimeout(imageTimer);
+    imageTimer = setTimeout(() => {
+      if (isManualOverride) return;
+
+      // Scroll back to Slide 1 (Video)
+      scrollToSlide(0);
+
+      // Replay video
+      if (video) {
+        video.currentTime = 0;
+        video.play().catch(err => console.log("Video play blocked:", err));
+      }
+    }, 8000); // Display image slide for 8 seconds
+  }
 
   // Flow logic: Wait for video to end, then slide to concept art (Slide 2)
   if (video) {
     video.addEventListener("ended", () => {
       if (isManualOverride) return;
-      
-      // Scroll to Slide 2 (Anime concept art)
-      const width = track.clientWidth;
-      track.scrollTo({
-        left: width,
-        behavior: "smooth"
-      });
-
-      // Start the image slide duration timer (8 seconds)
-      clearTimeout(imageTimer);
-      imageTimer = setTimeout(() => {
-        if (isManualOverride) return;
-
-        // Scroll back to Slide 1 (Video)
-        track.scrollTo({
-          left: 0,
-          behavior: "smooth"
-        });
-
-        // Replay video
-        video.currentTime = 0;
-        video.play().catch(err => console.log("Video play blocked:", err));
-      }, 8000); // Display image slide for 8 seconds
+      scrollToSlide(1);
+      startImageTimer();
     });
+  }
+
+  // Autoplay fallback: if video is paused or blocked on load, auto-advance after 10s
+  fallbackTimer = setTimeout(() => {
+    if (video && video.paused && !isManualOverride) {
+      scrollToSlide(1);
+      startImageTimer();
+    }
+  }, 10000);
+
+  // Clear fallback timer if video successfully starts playing
+  if (video) {
+    const clearFallback = () => {
+      clearTimeout(fallbackTimer);
+    };
+    video.addEventListener("play", clearFallback);
+    video.addEventListener("playing", clearFallback);
   }
 }

@@ -533,7 +533,7 @@ function showNotification(message, isError = false) {
   if (!container) return;
 
   const alert = document.createElement("div");
-  alert.className = `alert-toast ${isError ? 'error' : ''}`;
+  alert.className = `alert-card ${isError ? 'error' : ''}`;
   alert.innerHTML = `
     <i class="${isError ? 'fa-solid fa-triangle-exclamation' : 'fa-solid fa-circle-check'}"></i>
     <span>${message}</span>

@@ -1302,6 +1302,10 @@
 }
 
 @media (max-width: 768px) {
+  .shop-banner-carousel {
+    aspect-ratio: auto;
+    height: 280px;
+  }
   .video-banner-title {
     font-size: 1.4rem;
   }
