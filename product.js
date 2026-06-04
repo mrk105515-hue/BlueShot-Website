@@ -14,7 +14,7 @@ const PRODUCTS_CATALOG = {
     id: "redago-tshirt",
     name: "REDAGO T-Shirt",
     price: 899,
-    image: "assets/merch-redago.png",
+    image: "assets/redago-3.png",
     badge: "Season 3 Limited Drop",
     badgeClass: "redago-badge",
     images: [
@@ -28,7 +28,7 @@ const PRODUCTS_CATALOG = {
     id: "cursegod-tshirt",
     name: "CURSE GOD T-Shirt",
     price: 799,
-    image: "assets/merch-cursegod.png",
+    image: "assets/cursegod-3.png",
     badge: "Dark Magic Drop",
     badgeClass: "cursegod-badge",
     images: [
