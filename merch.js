@@ -28,18 +28,19 @@ const PRODUCTS_CATALOG = {
     id: "cursegod-tshirt",
     name: "CURSE GOD T-Shirt",
     price: 799,
-    image: "assets/cursegod-3.png",
-    badge: "Dark Magic Drop",
+    image: "assets/cursegod-new.png",
+    badge: "Dark Magic Pink & Metal Edition",
     badgeClass: "cursegod-badge",
     images: [
+      "assets/cursegod-new.png",
+      "assets/cursegod-3.png",
       "assets/merch-cursegod.png",
       "assets/cursegod-2.png",
-      "assets/cursegod-3.png",
       "assets/cursegod-4.png",
       "assets/cursegod-5.png",
       "assets/cursegod-6.png"
     ],
-    description: "Embrace the dark power of Curse God Zalta. The official CURSE GOD custom graphic t-shirt features Zalta's dark bull beast aura. Made with heavyweight 100% combed cotton for premium comfort and long-lasting print quality."
+    description: "Embrace the dark power of Curse God Zalta. The official CURSE GOD custom graphic t-shirt features Zalta's dark bull beast aura and signature CG monogram and pink metal metal lettering. Made with heavyweight 100% combed cotton for premium comfort and long-lasting print quality."
   },
   "berry-tshirt": {
     id: "berry-tshirt",
@@ -56,6 +57,32 @@ const PRODUCTS_CATALOG = {
       "assets/berry-5.png"
     ],
     description: "Harness the golden heavyweight force. The official BERRY custom graphic t-shirt features the legendary Golden Giant heavyweight energy. Made with premium 100% combed cotton, built to withstand any battle."
+  },
+  "ruler-tshirt": {
+    id: "ruler-tshirt",
+    name: "RULER OF THE WORLD T-Shirt",
+    price: 899,
+    image: "assets/ruler-1.png",
+    badge: "The Ruler Season 3 Drop",
+    badgeClass: "ruler-badge",
+    images: [
+      "assets/ruler-1.png",
+      "assets/ruler-2.png"
+    ],
+    description: "Command the battlefield with the official RULER OF THE WORLD custom graphic t-shirt. Featuring the Eren-inspired character portrait and a detailed compass alignment graphic. Engineered with premium heavyweight combed cotton."
+  },
+  "suma-berry-bundle": {
+    id: "suma-berry-bundle",
+    name: "SUMA & BERRY Duo Bundle",
+    price: 1499,
+    image: "assets/bundle-duo-new.png",
+    badge: "Faction Power Duo Pack",
+    badgeClass: "bundle-badge",
+    images: [
+      "assets/bundle-duo-new.png",
+      "assets/bundle-duo-2.png"
+    ],
+    description: "Double the faction power. Get both the custom SUMA and BERRY T-Shirts in one exclusive faction bundle pack. Show your support for the East Emperor's line and command the battlefield."
   }
 };
 

@@ -1314,3 +1314,87 @@
   }
 }
 
+/* Custom Series Suggestion Banner */
+.custom-shirt-banner {
+  margin-top: 5rem;
+  padding: 3.5rem 2.5rem;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.04) 0%, rgba(13, 13, 21, 0.75) 100%);
+  border: 1px solid rgba(0, 229, 255, 0.18);
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 32px 0 rgba(0, 229, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+
+.custom-shirt-content {
+  position: relative;
+  z-index: 2;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.custom-shirt-banner h3 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 0.75rem;
+  color: #FFF;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.35);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.custom-shirt-banner p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.custom-shirt-banner .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 2.2rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  background: var(--color-blue-neon);
+  color: #000;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
+  border-radius: 4px;
+  transition: var(--transition-bounce);
+  text-decoration: none;
+}
+
+.custom-shirt-banner .btn:hover {
+  background: #FFF;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+}
+
+.custom-shirt-banner .btn i {
+  font-size: 1rem;
+}
+
+.bundle-badge {
+  background: rgba(243, 156, 18, 0.1);
+  color: #F39C12;
+  border: 1px solid rgba(243, 156, 18, 0.25);
+  box-shadow: 0 0 15px rgba(243, 156, 18, 0.08);
+}
+
+.ruler-badge {
+  background: rgba(0, 229, 255, 0.1);
+  color: var(--color-blue-neon);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.08);
+}
+
+
