@@ -59,12 +59,9 @@
     <div class="carousel-track" id="carousel-track">
       <!-- Slide 1: Video Banner (Wait till video ends) -->
       <div class="carousel-slide video-slide">
-        <div class="video-banner-bg-wrap">
-          <!-- Removed loop attribute to fire "ended" event -->
-          <video class="video-banner-el" id="banner-video" autoplay muted playsinline>
-            <source src="assets/berry-promo.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
+        <div class="video-banner-bg-wrap" id="shop-yt-bg">
+          <!-- Fallback image shown before/instead of video -->
+          <img src="assets/design-anime-2.png" alt="Shop Banner Fallback" class="video-banner-el" id="shop-bg-poster" style="opacity: 0.28;">
           <div class="video-banner-overlay"></div>
         </div>
         <div class="video-banner-content container-width">

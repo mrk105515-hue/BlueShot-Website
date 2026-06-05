@@ -602,13 +602,15 @@ function showNotification(message, isError = false) {
 function initBannerCarousel() {
   const track = document.getElementById("carousel-track");
   const dots = document.querySelectorAll(".indicator-dot");
-  const video = document.getElementById("banner-video");
+  const ytBg = document.getElementById("shop-yt-bg");
+  const poster = document.getElementById("shop-bg-poster");
 
   if (!track || dots.length === 0) return;
 
   let imageTimer = null;
   let fallbackTimer = null;
   let isManualOverride = false;
+  let ytPlayer = null;
 
   // Helper: Programmatic scroll that avoids scroll snapping conflicts
   function scrollToSlide(slideIndex) {
@@ -649,13 +651,13 @@ function initBannerCarousel() {
       const slideIndex = parseInt(dot.getAttribute("data-slide"));
       scrollToSlide(slideIndex);
 
-      // Handle video play/pause status based on manual slide selection
-      if (video) {
+      // Handle YouTube video play/pause based on slide selection
+      if (ytPlayer && typeof ytPlayer.playVideo === "function") {
         if (slideIndex === 0) {
-          video.currentTime = 0;
-          video.play().catch(err => console.log("Video auto play blocked:", err));
+          ytPlayer.seekTo(0);
+          ytPlayer.playVideo();
         } else {
-          video.pause();
+          ytPlayer.pauseVideo();
         }
       }
     });
@@ -679,37 +681,100 @@ function initBannerCarousel() {
       // Scroll back to Slide 1 (Video)
       scrollToSlide(0);
 
-      // Replay video
-      if (video) {
-        video.currentTime = 0;
-        video.play().catch(err => console.log("Video play blocked:", err));
+      // Replay YouTube video
+      if (ytPlayer && typeof ytPlayer.playVideo === "function") {
+        ytPlayer.seekTo(0);
+        ytPlayer.playVideo();
       }
     }, 8000); // Display image slide for 8 seconds
   }
 
-  // Flow logic: Wait for video to end, then slide to concept art (Slide 2)
-  if (video) {
-    video.addEventListener("ended", () => {
-      if (isManualOverride) return;
-      scrollToSlide(1);
-      startImageTimer();
-    });
-  }
-
-  // Autoplay fallback: if video is paused or blocked on load, auto-advance after 10s
-  fallbackTimer = setTimeout(() => {
-    if (video && video.paused && !isManualOverride) {
-      scrollToSlide(1);
-      startImageTimer();
+  // Initialize YouTube Player Banner
+  function initYTPlayer() {
+    const isHTTP = location.protocol === "http:" || location.protocol === "https:";
+    if (!isHTTP) {
+      // Running locally from disk — keep fallback image and set fallback advance
+      if (poster) poster.style.opacity = "0.28";
+      startAutoplayFallback(12000); // Wait 12 seconds locally then slide
+      return;
     }
-  }, 10000);
 
-  // Clear fallback timer if video successfully starts playing
-  if (video) {
-    const clearFallback = () => {
-      clearTimeout(fallbackTimer);
+    // Create container element for iframe embedding
+    const playerContainer = document.createElement("div");
+    playerContainer.id = "shop-yt-player";
+    playerContainer.className = "shop-yt-iframe";
+    ytBg.insertBefore(playerContainer, ytBg.firstChild);
+
+    const loadPlayer = () => {
+      ytPlayer = new YT.Player("shop-yt-player", {
+        videoId: "phKgmmnrFNk",
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          loop: 1,
+          playlist: "phKgmmnrFNk",
+          controls: 0,
+          rel: 0,
+          fs: 0,
+          iv_load_policy: 3,
+          disablekb: 1,
+          modestbranding: 1,
+          enablejsapi: 1
+        },
+        events: {
+          onReady: (event) => {
+            event.target.mute();
+            event.target.playVideo();
+            clearTimeout(fallbackTimer);
+            if (poster) {
+              poster.style.transition = "opacity 2s ease";
+              poster.style.opacity = "0";
+            }
+          },
+          onStateChange: (event) => {
+            // YT.PlayerState.ENDED is 0
+            if (event.data === 0) {
+              if (!isManualOverride) {
+                scrollToSlide(1);
+                startImageTimer();
+              }
+            }
+          }
+        }
+      });
     };
-    video.addEventListener("play", clearFallback);
-    video.addEventListener("playing", clearFallback);
+
+    if (window.YT && window.YT.Player) {
+      loadPlayer();
+    } else {
+      const prevOnReady = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        if (prevOnReady) prevOnReady();
+        loadPlayer();
+      };
+
+      if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      }
+    }
   }
+
+  function startAutoplayFallback(ms) {
+    clearTimeout(fallbackTimer);
+    fallbackTimer = setTimeout(() => {
+      if (!isManualOverride) {
+        scrollToSlide(1);
+        startImageTimer();
+      }
+    }, ms);
+  }
+
+  // Setup fallback advancement timer (e.g. advance to slide 2 if API fails or blocks)
+  startAutoplayFallback(10000);
+
+  // Initialize YT Player
+  initYTPlayer();
 }
