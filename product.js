@@ -14,13 +14,14 @@ const PRODUCTS_CATALOG = {
     id: "redago-tshirt",
     name: "REDAGO T-Shirt",
     price: 899,
-    image: "assets/redago-3.png",
+    image: "assets/redago-new-1.png",
     badge: "Season 3 Limited Drop",
     badgeClass: "redago-badge",
     images: [
-      "assets/merch-redago.png",
-      "assets/redago-2.png",
-      "assets/redago-3.png"
+      "assets/redago-new-1.png",
+      "assets/redago-new-2.png",
+      "assets/redago-new-3.png",
+      "assets/redago-new-4.png"
     ],
     description: "Unleash the ultimate cosmic force. The official REDAGO custom graphic t-shirt features BSG's powerful Season 3 aura. Made with heavyweight 100% combed cotton for maximum durability and comfort."
   },
@@ -34,11 +35,7 @@ const PRODUCTS_CATALOG = {
     images: [
       "assets/cursegod-new.png",
       "assets/cursegod-3.png",
-      "assets/merch-cursegod.png",
-      "assets/cursegod-2.png",
-      "assets/cursegod-4.png",
-      "assets/cursegod-5.png",
-      "assets/cursegod-6.png"
+      "assets/merch-cursegod.png"
     ],
     description: "Embrace the dark power of Curse God Zalta. The official CURSE GOD custom graphic t-shirt features Zalta's dark bull beast aura and signature CG monogram and pink metal metal lettering. Made with heavyweight 100% combed cotton for premium comfort and long-lasting print quality."
   },
@@ -51,10 +48,7 @@ const PRODUCTS_CATALOG = {
     badgeClass: "berry-badge",
     images: [
       "assets/merch-berry.png",
-      "assets/berry-2.png",
-      "assets/berry-3.png",
-      "assets/berry-4.png",
-      "assets/berry-5.png"
+      "assets/berry-2.png"
     ],
     description: "Harness the golden heavyweight force. The official BERRY custom graphic t-shirt features the legendary Golden Giant heavyweight energy. Made with premium 100% combed cotton, built to withstand any battle."
   },
@@ -79,8 +73,7 @@ const PRODUCTS_CATALOG = {
     badge: "Faction Power Duo Pack",
     badgeClass: "bundle-badge",
     images: [
-      "assets/bundle-duo-new.png",
-      "assets/bundle-duo-2.png"
+      "assets/bundle-duo-new.png"
     ],
     description: "Double the faction power. Get both the custom SUMA and BERRY T-Shirts in one exclusive faction bundle pack. Show your support for the East Emperor's line and command the battlefield."
   }
