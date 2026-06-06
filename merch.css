@@ -62,7 +62,7 @@
 
 .gallery-main {
   position: relative;
-  background: #0D0D15;
+  background: radial-gradient(circle at center, #1c1c2e 0%, #09090f 100%);
   border: var(--border-glass);
   border-radius: 16px;
   overflow: hidden;
@@ -89,7 +89,8 @@
   height: 90%;
   object-fit: contain;
   z-index: 2;
-  transition: var(--transition-smooth);
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.7));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .gallery-thumbnails {
@@ -309,7 +310,13 @@
   transition: var(--transition-bounce);
   display: flex;
   flex-direction: column;
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+.product-card:nth-child(1) { animation-delay: 0.05s; }
+.product-card:nth-child(2) { animation-delay: 0.15s; }
+.product-card:nth-child(3) { animation-delay: 0.25s; }
+.product-card:nth-child(4) { animation-delay: 0.35s; }
 
 .product-card:hover {
   transform: translateY(-10px);
@@ -320,7 +327,7 @@
 .card-img-container {
   position: relative;
   height: 280px;
-  background: #09090F;
+  background: radial-gradient(circle at center, #181825 0%, #06060c 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -329,10 +336,11 @@
 }
 
 .card-product-img {
-  width: 75%;
-  height: 75%;
+  width: 90%;
+  height: 90%;
   object-fit: contain;
-  transition: var(--transition-smooth);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.65));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
 }
 
 /* Specialized image manipulation helper classes for mock diversity */
@@ -344,7 +352,8 @@
 }
 
 .product-card:hover .card-product-img {
-  transform: scale(1.08);
+  transform: scale(1.06);
+  filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.8));
 }
 
 .card-badge {
@@ -1403,11 +1412,232 @@
   box-shadow: 0 0 15px rgba(243, 156, 18, 0.08);
 }
 
-.ruler-badge {
-  background: rgba(0, 229, 255, 0.1);
-  color: var(--color-blue-neon);
-  border: 1px solid rgba(0, 229, 255, 0.25);
-  box-shadow: 0 0 15px rgba(0, 229, 255, 0.08);
+.card-mrp {
+  text-decoration: line-through;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+  font-weight: 400;
+}
+
+.price-mrp {
+  text-decoration: line-through;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 1.1rem;
+  margin-left: 0.75rem;
+  font-weight: 400;
+  vertical-align: middle;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   APPLE BRAND THEME OVERRIDES (MINIMALIST & SLEEK)
+   ========================================================================== */
+
+/* Redefine global properties on .shop-body and all its descendants */
+.shop-body, 
+.cart-drawer, 
+.modal {
+  --bg-obsidian: #000000;
+  --bg-card: #161617;
+  --bg-glass: rgba(22, 22, 23, 0.82);
+  
+  --color-blue-neon: #0071e3;
+  --color-blue-electric: #0071e3;
+  --color-redago: #ff3b30;
+  --color-redago-dark: #ff3b30;
+  
+  --text-primary: #f5f5f7;
+  --text-secondary: #86868b;
+  --text-muted: #6e6e73;
+  
+  --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Display", sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Text", sans-serif;
+  
+  --border-glass: 1px solid rgba(255, 255, 255, 0.08);
+  --border-neon-blue: 1px solid rgba(0, 113, 227, 0.2);
+  --border-neon-red: 1px solid rgba(255, 59, 48, 0.2);
+  
+  --shadow-blue-glow: 0 4px 20px rgba(0, 113, 227, 0.15);
+  --shadow-red-glow: 0 4px 20px rgba(255, 59, 48, 0.15);
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.35);
+  
+  background-color: #000000 !important;
+  background-image: none !important;
+  font-family: var(--font-body) !important;
+}
+
+/* Navbar glassmorphism */
+.shop-body .navbar {
+  background: rgba(0, 0, 0, 0.72) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
+}
+
+/* Button styling overrides to match Apple's clean pills */
+.shop-body .btn,
+.cart-drawer .btn,
+.modal .btn,
+.shop-body .card-btn-add,
+.modal .checkout-form button[type="submit"],
+.cart-drawer .checkout-action-btn {
+  border-radius: 980px !important;
+  font-family: var(--font-display) !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+/* Primary blue Apple-style button */
+.shop-body .btn-primary,
+.cart-drawer .btn-danger,
+.modal .btn-danger,
+.shop-body .card-btn-add {
+  background: #0071e3 !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.shop-body .btn-primary:hover,
+.cart-drawer .btn-danger:hover,
+.modal .btn-danger:hover,
+.shop-body .card-btn-add:hover {
+  background: #147ce5 !important;
+  transform: scale(1.02) !important;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3) !important;
+}
+
+/* Secondary Apple-style button */
+.shop-body .btn-secondary {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #f5f5f7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+.shop-body .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: #FFFFFF !important;
+  transform: scale(1.02) !important;
+  box-shadow: none !important;
+}
+
+/* Card badges */
+.shop-body .card-badge {
+  border-radius: 980px !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  letter-spacing: normal !important;
+  font-size: 0.75rem !important;
+  padding: 4px 10px !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #f5f5f7 !important;
+}
+
+/* Carousel indicators */
+.shop-body .indicator-dot {
+  width: 8px !important;
+  height: 8px !important;
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-radius: 50% !important;
+  border: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.shop-body .indicator-dot.active {
+  background: #FFFFFF !important;
+  transform: scale(1.2) !important;
+}
+
+/* Banner typography */
+.shop-body .video-banner-title {
+  font-family: var(--font-display) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.015em !important;
+  text-transform: none !important;
+  font-size: 3rem !important;
+}
+
+.shop-body .video-banner-lead {
+  font-family: var(--font-body) !important;
+  font-weight: 400 !important;
+  color: #86868b !important;
+  font-size: 1.25rem !important;
+  max-width: 600px;
+  margin: 0.5rem auto 0 !important;
+}
+
+.shop-body .video-banner-badge {
+  font-family: var(--font-display) !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  letter-spacing: normal !important;
+  color: #ff3b30 !important;
+}
+
+/* Custom suggestion banner */
+.shop-body .custom-shirt-banner {
+  background: #161617 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 20px !important;
+  box-shadow: none !important;
+  padding: 3.5rem 2.5rem !important;
+}
+
+.shop-body .custom-shirt-content h3 {
+  font-family: var(--font-display) !important;
+  font-weight: 700 !important;
+  font-size: 2rem !important;
+  letter-spacing: -0.010em !important;
+}
+
+.shop-body .custom-shirt-content p {
+  color: #86868b !important;
+  font-family: var(--font-body) !important;
+  max-width: 700px;
+  margin: 0.5rem auto 1.5rem !important;
+}
+
+/* Size Chips styling */
+.shop-body .size-chip {
+  border-radius: 50% !important;
+  width: 48px !important;
+  height: 48px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: var(--font-display) !important;
+  font-weight: 500 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  transition: all 0.2s ease !important;
+  font-size: 0.9rem !important;
+}
+
+.shop-body .size-chip.active {
+  border-color: #0071e3 !important;
+  background: #0071e3 !important;
+  color: #FFFFFF !important;
+}
+
+.shop-body .size-chip:hover:not(.active) {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
 }
 
 

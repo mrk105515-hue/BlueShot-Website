@@ -24,7 +24,6 @@ const GLOBAL_SEARCH_DB = [
   { name: "REDAGO T-Shirt", category: "merch", desc: "Official Flame Devil Redago Edition heavyweight combed cotton t-shirt (₹899).", link: "product.html?id=redago-tshirt", type: "merch", key: "redago-tshirt" },
   { name: "CURSE GOD T-Shirt", category: "merch", desc: "Official Dark Magic Pink & Metal Curse God Edition t-shirt (₹799).", link: "product.html?id=cursegod-tshirt", type: "merch", key: "cursegod-tshirt" },
   { name: "BERRY T-Shirt", category: "merch", desc: "Official Golden Giant Heavyweight Edition combed cotton t-shirt (₹699).", link: "product.html?id=berry-tshirt", type: "merch", key: "berry-tshirt" },
-  { name: "RULER OF THE WORLD T-Shirt", category: "merch", desc: "Official Ruler of the World Edition T-Shirt with custom compass graphics (₹899).", link: "product.html?id=ruler-tshirt", type: "merch", key: "ruler-tshirt" },
   { name: "SUMA & BERRY Duo Bundle", category: "merch", desc: "Official Suma and Berry Duo T-Shirt Bundle Pack (₹1,499).", link: "product.html?id=suma-berry-bundle", type: "merch", key: "suma-berry-bundle" },
   
   // Behind the Scenes Sections

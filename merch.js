@@ -14,6 +14,7 @@ const PRODUCTS_CATALOG = {
     id: "redago-tshirt",
     name: "REDAGO T-Shirt",
     price: 899,
+    mrp: 1499,
     image: "assets/redago-new-1.png",
     badge: "Season 3 Limited Drop",
     badgeClass: "redago-badge",
@@ -29,6 +30,7 @@ const PRODUCTS_CATALOG = {
     id: "cursegod-tshirt",
     name: "CURSE GOD T-Shirt",
     price: 799,
+    mrp: 1299,
     image: "assets/cursegod-new.png",
     badge: "Dark Magic Pink & Metal Edition",
     badgeClass: "cursegod-badge",
@@ -43,6 +45,7 @@ const PRODUCTS_CATALOG = {
     id: "berry-tshirt",
     name: "BERRY T-Shirt",
     price: 699,
+    mrp: 999,
     image: "assets/merch-berry.png",
     badge: "Golden Heavyweight Drop",
     badgeClass: "berry-badge",
@@ -52,23 +55,11 @@ const PRODUCTS_CATALOG = {
     ],
     description: "Harness the golden heavyweight force. The official BERRY custom graphic t-shirt features the legendary Golden Giant heavyweight energy. Made with premium 100% combed cotton, built to withstand any battle."
   },
-  "ruler-tshirt": {
-    id: "ruler-tshirt",
-    name: "RULER OF THE WORLD T-Shirt",
-    price: 899,
-    image: "assets/ruler-1.png",
-    badge: "The Ruler Season 3 Drop",
-    badgeClass: "ruler-badge",
-    images: [
-      "assets/ruler-1.png",
-      "assets/ruler-2.png"
-    ],
-    description: "Command the battlefield with the official RULER OF THE WORLD custom graphic t-shirt. Featuring the Eren-inspired character portrait and a detailed compass alignment graphic. Engineered with premium heavyweight combed cotton."
-  },
   "suma-berry-bundle": {
     id: "suma-berry-bundle",
     name: "SUMA & BERRY Duo Bundle",
     price: 1499,
+    mrp: 2499,
     image: "assets/bundle-duo-new.png",
     badge: "Faction Power Duo Pack",
     badgeClass: "bundle-badge",
