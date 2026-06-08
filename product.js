@@ -13,7 +13,7 @@ const PRODUCTS_CATALOG = {
   "redago-tshirt": {
     id: "redago-tshirt",
     name: "REDAGO T-Shirt",
-    price: 899,
+    price: 999,
     mrp: 1499,
     image: "assets/redago-new-1.png",
     badge: "Season 3 Limited Drop",
@@ -44,7 +44,7 @@ const PRODUCTS_CATALOG = {
   "berry-tshirt": {
     id: "berry-tshirt",
     name: "BERRY T-Shirt",
-    price: 699,
+    price: 599,
     mrp: 999,
     image: "assets/merch-berry.png",
     badge: "Golden Heavyweight Drop",

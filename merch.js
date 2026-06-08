@@ -13,7 +13,7 @@ const PRODUCTS_CATALOG = {
   "redago-tshirt": {
     id: "redago-tshirt",
     name: "REDAGO T-Shirt",
-    price: 899,
+    price: 999,
     mrp: 1499,
     image: "assets/redago-new-1.png",
     badge: "Season 3 Limited Drop",
@@ -44,7 +44,7 @@ const PRODUCTS_CATALOG = {
   "berry-tshirt": {
     id: "berry-tshirt",
     name: "BERRY T-Shirt",
-    price: 699,
+    price: 599,
     mrp: 999,
     image: "assets/merch-berry.png",
     badge: "Golden Heavyweight Drop",
@@ -330,35 +330,21 @@ window.switchMainImage = function(thumbEl) {
 
 // 4. Grid product selection hook - Redirects to dynamic product.html details page
 function initCollectionGrid() {
-  const gridCards = document.querySelectorAll(".products-grid .product-card");
-  
-  gridCards.forEach(card => {
-    const productId = card.getAttribute("data-id");
-    
-    // Clicking anywhere on the card redirects to product detail page
-    card.style.cursor = "pointer";
-    card.addEventListener("click", (e) => {
+  const shopButtons = document.querySelectorAll(".shop-now-btn[data-id]");
+  const featuredDisplays = document.querySelectorAll(".series-featured-display[data-id]");
+
+  const setupRedirect = (el) => {
+    el.style.cursor = "pointer";
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const productId = el.getAttribute("data-id");
       window.location.href = "product.html?id=" + productId;
     });
+  };
 
-    const addBtn = card.querySelector(".card-btn-add");
-    const quickAdd = card.querySelector(".quick-add-btn");
-
-    if (addBtn) {
-      addBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        window.location.href = "product.html?id=" + productId;
-      });
-    }
-    if (quickAdd) {
-      quickAdd.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        window.location.href = "product.html?id=" + productId;
-      });
-    }
-  });
+  shopButtons.forEach(setupRedirect);
+  featuredDisplays.forEach(setupRedirect);
 }
 
 // ==========================================================================
