@@ -1787,35 +1787,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 380px;
+  width: 100%;
 }
 
-.pedestal-glow-aura {
-  position: absolute;
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--theme-glow-rgb), 0.15) 0%, rgba(var(--theme-glow-rgb), 0) 70%);
-  filter: blur(25px);
-  z-index: 1;
-  pointer-events: none;
-  animation: auraPulse 4s ease-in-out infinite alternate;
-}
-
-.series-featured-img {
-  width: 90%;
-  height: 90%;
-  object-fit: contain;
-  z-index: 2;
-  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.7));
-  transform: translateY(-10px);
-  animation: floatShirt 5s ease-in-out infinite;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
-}
-
-.series-featured-display:hover .series-featured-img {
-  transform: translateY(-20px) scale(1.05);
-  filter: drop-shadow(0 25px 45px rgba(var(--theme-glow-rgb), 0.35));
+.series-featured-display .product-card {
+  width: 100%;
+  max-width: 320px;
+  animation: none !important;
 }
 
 /* Right Column: Locked cards gallery */
@@ -1990,7 +1968,7 @@
   }
   
   .series-featured-display {
-    height: 320px;
+    height: auto;
   }
   
   .series-gallery {
@@ -2008,7 +1986,7 @@
 
 @media (max-width: 480px) {
   .series-featured-display {
-    height: 260px;
+    height: auto;
   }
   
   .series-gallery {
@@ -2024,6 +2002,141 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
     align-items: flex-start;
+  }
+}
+
+/* ==========================================================================
+   6. MINI VARIANT ITEM CARDS
+   ========================================================================== */
+
+.mini-card {
+  background: #161617 !important; /* Space-gray background */
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer;
+  height: 100%;
+  box-shadow: none !important;
+}
+
+.mini-card-img-wrap {
+  height: 150px !important;
+  background: radial-gradient(circle at center, #1c1c2e 0%, #09090f 100%) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  position: relative;
+}
+
+.mini-card-img {
+  width: 80% !important;
+  height: 80% !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.65)) !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.mini-card:hover {
+  transform: translateY(-5px) !important;
+  border-color: var(--theme-color) !important;
+  box-shadow: 0 10px 20px rgba(var(--theme-glow-rgb), 0.12) !important;
+}
+
+.mini-card:hover .mini-card-img {
+  transform: scale(1.06) !important;
+}
+
+.mini-card-info {
+  padding: 0.75rem !important;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+}
+
+.mini-card-info h5 {
+  font-family: var(--font-display) !important;
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+  color: #f5f5f7 !important;
+  margin: 0 0 0.15rem 0 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  text-align: left;
+}
+
+.mini-card-info span {
+  font-family: var(--font-body) !important;
+  font-size: 0.7rem !important;
+  color: #86868b !important;
+  text-align: left;
+}
+
+.mini-card-price {
+  font-family: var(--font-display) !important;
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+  color: var(--theme-color) !important;
+  margin-top: 0.25rem !important;
+  margin-bottom: 0.5rem !important;
+  display: flex !important;
+  align-items: baseline !important;
+}
+
+.mini-card-mrp {
+  font-size: 0.65rem !important;
+  text-decoration: line-through !important;
+  color: #86868b !important;
+  margin-left: 0.35rem !important;
+}
+
+.mini-card-btn {
+  width: 100% !important;
+  background: #0071e3 !important; /* Apple Link Blue */
+  border: none !important;
+  color: #ffffff !important;
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  font-size: 0.7rem !important;
+  padding: 0.35rem 0 !important;
+  border-radius: 20px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  text-align: center !important;
+  margin-top: auto !important;
+}
+
+.mini-card-btn:hover {
+  background: #0077ed !important;
+  transform: scale(1.02) !important;
+}
+
+/* Ensure mini cards layout fits correctly on responsive mobile stacked view */
+@media (max-width: 480px) {
+  .mini-card-img-wrap {
+    height: 110px !important;
+  }
+  .mini-card-info {
+    padding: 0.5rem !important;
+  }
+  .mini-card-info h5 {
+    font-size: 0.75rem !important;
+  }
+  .mini-card-info span {
+    font-size: 0.65rem !important;
+  }
+  .mini-card-price {
+    font-size: 0.75rem !important;
+    margin-bottom: 0.35rem !important;
+  }
+  .mini-card-btn {
+    font-size: 0.65rem !important;
+    padding: 0.25rem 0 !important;
   }
 }
 

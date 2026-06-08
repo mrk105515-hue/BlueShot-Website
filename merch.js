@@ -330,8 +330,8 @@ window.switchMainImage = function(thumbEl) {
 
 // 4. Grid product selection hook - Redirects to dynamic product.html details page
 function initCollectionGrid() {
+  const productCards = document.querySelectorAll(".product-card[data-id]");
   const shopButtons = document.querySelectorAll(".shop-now-btn[data-id]");
-  const featuredDisplays = document.querySelectorAll(".series-featured-display[data-id]");
 
   const setupRedirect = (el) => {
     el.style.cursor = "pointer";
@@ -343,8 +343,8 @@ function initCollectionGrid() {
     });
   };
 
+  productCards.forEach(setupRedirect);
   shopButtons.forEach(setupRedirect);
-  featuredDisplays.forEach(setupRedirect);
 }
 
 // ==========================================================================
