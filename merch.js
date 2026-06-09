@@ -31,13 +31,15 @@ const PRODUCTS_CATALOG = {
     name: "CURSE GOD T-Shirt",
     price: 799,
     mrp: 1299,
-    image: "assets/cursegod-new.png",
+    image: "assets/cursegod-angle-1.png",
     badge: "Dark Magic Pink & Metal Edition",
     badgeClass: "cursegod-badge",
     images: [
-      "assets/cursegod-new.png",
-      "assets/cursegod-3.png",
-      "assets/merch-cursegod.png"
+      "assets/cursegod-angle-1.png",
+      "assets/cursegod-angle-2.png",
+      "assets/cursegod-angle-3.png",
+      "assets/cursegod-angle-4.png",
+      "assets/cursegod-angle-5.png"
     ],
     description: "Embrace the dark power of Curse God Zalta. The official CURSE GOD custom graphic t-shirt features Zalta's dark bull beast aura and signature CG monogram and pink metal metal lettering. Made with heavyweight 100% combed cotton for premium comfort and long-lasting print quality."
   },
@@ -46,12 +48,15 @@ const PRODUCTS_CATALOG = {
     name: "BERRY T-Shirt",
     price: 599,
     mrp: 999,
-    image: "assets/merch-berry.png",
+    image: "assets/berry-angle-1.png",
     badge: "Golden Heavyweight Drop",
     badgeClass: "berry-badge",
     images: [
-      "assets/merch-berry.png",
-      "assets/berry-2.png"
+      "assets/berry-angle-1.png",
+      "assets/berry-angle-2.png",
+      "assets/berry-angle-3.png",
+      "assets/berry-angle-4.png",
+      "assets/berry-angle-5.png"
     ],
     description: "Harness the golden heavyweight force. The official BERRY custom graphic t-shirt features the legendary Golden Giant heavyweight energy. Made with premium 100% combed cotton, built to withstand any battle."
   },

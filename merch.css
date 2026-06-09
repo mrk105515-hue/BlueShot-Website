@@ -3,6 +3,8 @@
    Inherits color variables & fonts from styles.css
    ========================================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,800;6..96,900&display=swap');
+
 /* SHOP BODY BASE */
 .shop-body {
   padding-top: 100px; /* Account for sticky navbar */
@@ -1703,22 +1705,23 @@
 }
 
 .series-title {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 2.8rem;
-  letter-spacing: -0.015em;
+  font-family: 'Bodoni Moda', serif;
+  font-weight: 900;
+  font-size: 3.4rem;
+  letter-spacing: 0.05em;
   color: var(--theme-color);
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.25rem;
   text-transform: uppercase;
+  line-height: 1.1;
 }
 
 .series-subtitle {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
   color: var(--theme-color);
-  opacity: 0.85;
+  opacity: 0.9;
   margin-bottom: 1.5rem;
   text-transform: uppercase;
 }
