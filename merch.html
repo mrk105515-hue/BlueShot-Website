@@ -288,6 +288,60 @@
         </div>
       </div>
 
+      <!-- RARE MARKS COLLECTIBLE SECTION -->
+      <div class="rare-marks-container" id="rare-marks-section">
+        <div class="rare-marks-header">
+          <h2 class="rare-marks-title">Rare Marks</h2>
+          <span class="rare-marks-subtitle">Discover the 7 Great Marks of the Universe</span>
+        </div>
+        
+        <div class="rare-marks-grid">
+          <!-- Active Unlocked Mark -->
+          <div class="mark-card unlocked" id="mark-dominance-trigger">
+            <img src="assets/mark-dominance.png" alt="Mark of Dominance" class="mark-badge-img">
+            <h4 class="mark-name">Dominance Mark</h4>
+            <span class="mark-status unlocked-tag">Unlocked</span>
+          </div>
+
+          <!-- Locked Marks -->
+          <div class="mark-card locked">
+            <div class="mark-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4 class="mark-name">Vanguard Mark</h4>
+            <span class="mark-status locked-tag">Locked</span>
+          </div>
+
+          <div class="mark-card locked">
+            <div class="mark-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4 class="mark-name">Eclipse Mark</h4>
+            <span class="mark-status locked-tag">Locked</span>
+          </div>
+
+          <div class="mark-card locked">
+            <div class="mark-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4 class="mark-name">Abyss Mark</h4>
+            <span class="mark-status locked-tag">Locked</span>
+          </div>
+
+          <div class="mark-card locked">
+            <div class="mark-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4 class="mark-name">Sovereign Mark</h4>
+            <span class="mark-status locked-tag">Locked</span>
+          </div>
+
+          <div class="mark-card locked">
+            <div class="mark-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4 class="mark-name">Genesis Mark</h4>
+            <span class="mark-status locked-tag">Locked</span>
+          </div>
+
+          <div class="mark-card locked">
+            <div class="mark-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4 class="mark-name">Ascendant Mark</h4>
+            <span class="mark-status locked-tag">Locked</span>
+          </div>
+        </div>
+      </div>
+
       <!-- STORE FEATURES BAR -->
       <div class="store-features-bar">
         <div class="feature-item">
@@ -487,6 +541,45 @@
   </div>
 
 
+
+  <!-- RARE MARKS DETAIL MODAL -->
+  <div id="mark-modal" class="modal">
+    <div id="mark-modal-backdrop"></div>
+    <div class="mark-modal-content">
+      <div class="mark-modal-glow"></div>
+      <button class="modal-close-btn" id="mark-modal-close" aria-label="Close Mark Details">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      
+      <div class="modal-mark-badge-wrap">
+        <img src="assets/mark-dominance.png" alt="Dominance Mark" class="modal-mark-badge-img">
+      </div>
+      
+      <span class="modal-mark-rarity">LEGENDARY (1 OF 7)</span>
+      <h3 class="modal-mark-title">Mark of Dominance</h3>
+      
+      <p class="modal-mark-lore">
+        "Forged in the heart of the Danger X Zone, the Mark of Dominance grants its bearer absolute control over the battlefield. Worn by Zalta during the Great Descent, it remains a testament to supreme power."
+      </p>
+      
+      <div class="modal-mark-info-grid">
+        <div class="info-block">
+          <h4>Lore Significance</h4>
+          <p>Represents the eternal spirit of the East Emperor's line.</p>
+        </div>
+        <div class="info-block">
+          <h4>Exclusive Benefit</h4>
+          <p>Lifetime waitlist priority status & 10% discount on next Z-Series drops.</p>
+        </div>
+      </div>
+      
+      <div class="modal-mark-reward-box">
+        <span class="reward-label"><i class="fa-solid fa-gift"></i> Surprise Waitlist Reward</span>
+        <div class="reward-code" id="reward-coupon-trigger" title="Click to copy coupon code">DOMINANCE_WAITLIST_X</div>
+        <p class="reward-note">Click the code above to copy! Use this code during pre-order shipping for priority drops.</p>
+      </div>
+    </div>
+  </div>
 
   <!-- FLOATING FEEDBACK ALERT -->
   <div class="alert-container" id="alert-container"></div>

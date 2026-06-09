@@ -2150,4 +2150,381 @@
   }
 }
 
+/* ==========================================================================
+   7. RARE MARKS SECTION & MODAL STYLES
+   ========================================================================== */
+.rare-marks-container {
+  display: flex;
+  flex-direction: column;
+  background: #09090f;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 3.5rem 2.5rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  margin-top: 4rem;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.rare-marks-container:hover {
+  border-color: rgba(255, 59, 48, 0.2);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 59, 48, 0.04);
+}
+
+.rare-marks-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.rare-marks-title {
+  font-family: 'Bodoni Moda', serif;
+  font-weight: 900;
+  font-size: 3rem;
+  letter-spacing: 0.05em;
+  color: #ff3b30;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.rare-marks-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: #86868b;
+  text-transform: uppercase;
+}
+
+.rare-marks-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+.mark-card {
+  position: relative;
+  background: rgba(10, 10, 15, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 1.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mark-card.unlocked {
+  cursor: pointer;
+  border-color: rgba(255, 59, 48, 0.25);
+  background: rgba(255, 59, 48, 0.02);
+}
+
+.mark-card.unlocked:hover {
+  transform: translateY(-8px) scale(1.03);
+  border-color: #ff3b30;
+  box-shadow: 0 12px 30px rgba(255, 59, 48, 0.22), 0 0 20px rgba(255, 59, 48, 0.12);
+  background: rgba(255, 59, 48, 0.05);
+}
+
+.mark-card.locked {
+  opacity: 0.48;
+}
+
+.mark-card.locked:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.mark-badge-img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(255, 59, 48, 0.15));
+  transition: transform 0.4s ease;
+}
+
+.mark-card.unlocked:hover .mark-badge-img {
+  transform: scale(1.08) rotate(3deg);
+}
+
+.mark-lock-icon {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.25);
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.mark-card.locked:hover .mark-lock-icon {
+  color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.1);
+}
+
+.mark-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #f5f5f7;
+  margin-top: 1.25rem;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.mark-card.locked .mark-name {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.mark-status {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.mark-status.unlocked-tag {
+  color: #ff3b30;
+  background: rgba(255, 59, 48, 0.12);
+  border: 1px solid rgba(255, 59, 48, 0.2);
+}
+
+.mark-status.locked-tag {
+  color: #86868b;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Modal Popup Overlays */
+#mark-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#mark-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#mark-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.mark-modal-content {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 540px;
+  background: #08080c;
+  border: 1px solid rgba(255, 59, 48, 0.25);
+  border-radius: 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 59, 48, 0.15);
+  padding: 3rem 2.5rem;
+  text-align: center;
+  overflow: hidden;
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#mark-modal.active .mark-modal-content {
+  transform: scale(1) translateY(0);
+}
+
+.mark-modal-glow {
+  position: absolute;
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(255, 59, 48, 0.16) 0%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.modal-mark-badge-wrap {
+  width: 130px;
+  height: 130px;
+  margin: 0 auto 1.5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.modal-mark-badge-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(255, 59, 48, 0.45));
+  animation: markShimmer 3s ease-in-out infinite;
+}
+
+@keyframes markShimmer {
+  0% { transform: translateY(0) rotate(0deg); filter: drop-shadow(0 0 15px rgba(255, 59, 48, 0.35)); }
+  50% { transform: translateY(-8px) rotate(2deg); filter: drop-shadow(0 0 25px rgba(255, 59, 48, 0.65)); }
+  100% { transform: translateY(0) rotate(0deg); filter: drop-shadow(0 0 15px rgba(255, 59, 48, 0.35)); }
+}
+
+.modal-mark-rarity {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: #ff3b30;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+  text-shadow: 0 0 8px rgba(255, 59, 48, 0.4);
+}
+
+.modal-mark-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.85rem;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.modal-mark-lore {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #a1a1a6;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 1.5rem;
+}
+
+.modal-mark-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  text-align: left;
+  margin-bottom: 1.75rem;
+}
+
+.info-block h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #ff3b30;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.4rem 0;
+}
+
+.info-block p {
+  font-size: 0.8rem;
+  color: #86868b;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.modal-mark-reward-box {
+  background: rgba(255, 59, 48, 0.04);
+  border: 1px dashed rgba(255, 59, 48, 0.25);
+  padding: 1.25rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  position: relative;
+}
+
+.reward-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.7rem;
+  color: #ff3b30;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.reward-code {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: #fff;
+  letter-spacing: 0.1em;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin: 0.2rem 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: all;
+}
+
+.reward-code:hover {
+  border-color: #ff3b30;
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 10px rgba(255, 59, 48, 0.15);
+}
+
+.reward-note {
+  font-size: 0.65rem;
+  color: #86868b;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .rare-marks-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .rare-marks-container {
+    padding: 2.5rem 1.5rem;
+  }
+  .rare-marks-title {
+    font-size: 2.2rem;
+  }
+  .rare-marks-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .mark-name {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 480px) {
+  .rare-marks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
 

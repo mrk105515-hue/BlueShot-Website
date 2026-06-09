@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initCollectionGrid();
     initCheckoutWizard();
     initBannerCarousel();
+    initRareMarks();
     updateCartUI();
   } catch (e) {
     console.error("Error initializing shop script:", e);
@@ -759,4 +760,78 @@ function initBannerCarousel() {
 
   // Initialize YT Player
   initYTPlayer();
+}
+
+// ==========================================================================
+// RARE MARKS COLLECTIBLE DIALOG LOGIC
+// ==========================================================================
+function initRareMarks() {
+  const trigger = document.getElementById("mark-dominance-trigger");
+  const modal = document.getElementById("mark-modal");
+  const closeBtn = document.getElementById("mark-modal-close");
+  const backdrop = document.getElementById("mark-modal-backdrop");
+  const couponCode = document.getElementById("reward-coupon-trigger");
+
+  if (!modal) return;
+
+  const toggleModal = (open) => {
+    if (open) {
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    } else {
+      modal.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+  };
+
+  if (trigger) {
+    trigger.addEventListener("click", () => toggleModal(true));
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => toggleModal(false));
+  }
+
+  if (backdrop) {
+    backdrop.addEventListener("click", () => toggleModal(false));
+  }
+
+  // Escape closes modal
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("active")) {
+      toggleModal(false);
+    }
+  });
+
+  // Copy coupon code on click (with local fallback)
+  if (couponCode) {
+    couponCode.addEventListener("click", () => {
+      const textToCopy = couponCode.textContent.trim();
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          showNotification("Coupon code copied to clipboard!");
+        }).catch(err => {
+          fallbackCopyText(textToCopy);
+        });
+      } else {
+        fallbackCopyText(textToCopy);
+      }
+    });
+  }
+
+  function fallbackCopyText(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed"; // Avoid scrolling page
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      showNotification("Coupon code copied to clipboard!");
+    } catch (err) {
+      showNotification("Could not copy code. Please copy manually.", true);
+    }
+    document.body.removeChild(textArea);
+  }
 }
