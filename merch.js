@@ -443,30 +443,18 @@ function initCheckoutWizard() {
   if (closeBtn) closeBtn.addEventListener("click", closeCheckout);
   if (backdrop) backdrop.addEventListener("click", closeCheckout);
 
-  // Form submit handles: Pre-order Waitlist directly skips payment and triggers success screen
+  // Form submit handles: Proceed to Payment step (Step 2)
   if (shippingForm) {
     shippingForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const nameVal = document.getElementById("ship-name").value;
-      const emailVal = document.getElementById("ship-email").value;
-      document.getElementById("success-name-text").textContent = nameVal;
-      document.getElementById("success-email-text").textContent = emailVal;
-
-      // Populate waitlist price & ref ID details
+      
+      // Calculate and display pricing preview for Step 2
       let subtotal = 0;
       cart.forEach(item => subtotal += item.price * item.quantity);
-      document.getElementById("success-total-text").textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+      const summaryTotal = document.getElementById("checkout-summary-total");
+      if (summaryTotal) summaryTotal.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
       
-      const randomRef = "PRE-" + Math.floor(100000 + Math.random() * 900000);
-      document.getElementById("success-order-id").textContent = randomRef;
-
-      // Reset cart state
-      shippingForm.reset();
-      cart = [];
-      saveCartToStorage();
-      updateCartUI();
-
-      showStep(3); // Go straight to waitlist confirmation screen
+      showStep(2); // Go to payment step
     });
   }
 

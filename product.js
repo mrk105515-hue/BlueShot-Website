@@ -530,27 +530,100 @@ function initCheckoutWizard() {
   if (closeBtn) closeBtn.addEventListener("click", closeCheckout);
   if (backdrop) backdrop.addEventListener("click", closeCheckout);
 
+  // Form submit handles: Proceed to Payment step (Step 2)
   if (shippingForm) {
     shippingForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const nameVal = document.getElementById("ship-name").value;
-      const emailVal = document.getElementById("ship-email").value;
-      document.getElementById("success-name-text").textContent = nameVal;
-      document.getElementById("success-email-text").textContent = emailVal;
-
+      
+      // Calculate and display pricing preview for Step 2
       let subtotal = 0;
       cart.forEach(item => subtotal += item.price * item.quantity);
-      document.getElementById("success-total-text").textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+      const summaryTotal = document.getElementById("checkout-summary-total");
+      if (summaryTotal) summaryTotal.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
       
-      const randomRef = "PRE-" + Math.floor(100000 + Math.random() * 900000);
-      document.getElementById("success-order-id").textContent = randomRef;
+      showStep(2); // Go to payment step
+    });
+  }
 
-      shippingForm.reset();
-      cart = [];
-      saveCartToStorage();
-      updateCartUI();
+  // Razorpay is the sole payment method — prices are natively in INR
+  const razorpayBtn = document.querySelector(".razorpay-gateway");
+  if (razorpayBtn) {
+    razorpayBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      
+      // Validation: Ensure shipping info was filled out in Step 1
+      const shipName = document.getElementById("ship-name").value.trim();
+      const shipEmail = document.getElementById("ship-email").value.trim();
+      const shipAddress = document.getElementById("ship-address").value.trim();
+      
+      if (!shipName || !shipEmail || !shipAddress) {
+        showNotification("Please complete your shipping address first!", true);
+        showStep(1);
+        return;
+      }
 
-      showStep(3); 
+      // Calculate dynamically for whatever is in the cart (prices are in INR)
+      let subtotal = 0;
+      let itemsList = [];
+      
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+        itemsList.push(`${item.quantity}x ${item.name} (${item.size})`);
+      });
+
+      const amountPaise = Math.round(subtotal * 100);
+
+      // Get address details
+      const city = document.getElementById("ship-city").value;
+      const zip = document.getElementById("ship-zip").value;
+      const country = document.getElementById("ship-country").value;
+
+      // Configure Razorpay checkout options
+      const options = {
+        "key": "rzp_live_T113tFIoQSy60O", // REPLACE WITH YOUR LIVE KEY ID FROM RAZORPAY DASHBOARD
+        "amount": amountPaise,
+        "currency": "INR",
+        "name": "The BlueShot Merch Store",
+        "description": itemsList.join(", "),
+        "image": "https://blueshotwiki.netlify.app/assets/char-bsg.png",
+        "handler": function (response) {
+          // Payment successful!
+          showNotification(`Payment Successful! ID: ${response.razorpay_payment_id}`);
+
+          // Populate success screen receipt
+          document.getElementById("success-total-text").textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+          document.getElementById("success-order-id").textContent = response.razorpay_payment_id;
+          document.getElementById("success-name-text").textContent = shipName;
+          document.getElementById("success-email-text").textContent = shipEmail;
+          
+          // Clear cart state completely
+          shippingForm.reset();
+          cart = [];
+          saveCartToStorage();
+          updateCartUI();
+
+          // Advance to Step 3 (Receipt)
+          showStep(3);
+        },
+        "prefill": {
+          "name": shipName,
+          "email": shipEmail
+        },
+        "notes": {
+          "items_purchased": itemsList.join("; "),
+          "shipping_address": `${shipAddress}, ${city}, Zip: ${zip}, Country: ${country}`
+        },
+        "theme": {
+          "color": "#FF124F" // DXZ Crimson neon brand color
+        }
+      };
+
+      if (typeof Razorpay !== "undefined") {
+        const rzp = new Razorpay(options);
+        rzp.open();
+      } else {
+        showNotification("Razorpay payment window failed to load. Please try again.", true);
+      }
     });
   }
 
