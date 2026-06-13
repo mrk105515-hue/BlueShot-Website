@@ -60,6 +60,22 @@ const PRODUCTS_CATALOG = {
     ],
     description: "Harness the golden heavyweight force. The official BERRY custom graphic t-shirt features the legendary Golden Giant heavyweight energy. Made with premium 100% combed cotton, built to withstand any battle."
   },
+  "berry-lite-tshirt": {
+    id: "berry-lite-tshirt",
+    name: "BERRY Lite T-Shirt",
+    price: 200,
+    mrp: 399,
+    image: "assets/berry-angle-2.png",
+    badge: "D Series Basic Drop",
+    badgeClass: "berry-badge",
+    images: [
+      "assets/berry-angle-2.png",
+      "assets/berry-angle-3.png",
+      "assets/berry-angle-4.png",
+      "assets/berry-angle-5.png"
+    ],
+    description: "Keep it simple and stylish. The BERRY Lite T-Shirt offers the iconic design in a lightweight, everyday fabric. Perfect for casual wear at an unbeatable value."
+  },
   "suma-berry-bundle": {
     id: "suma-berry-bundle",
     name: "SUMA & BERRY Duo Bundle",
@@ -496,7 +512,7 @@ function initCheckoutWizard() {
 
       // Configure Razorpay checkout options
       const options = {
-        "key": "rzp_test_St8tveZSpmHUkX", // REPLACE WITH YOUR LIVE KEY ID FROM RAZORPAY DASHBOARD
+        "key": "rzp_live_T113tFIoQSy60O", // REPLACE WITH YOUR LIVE KEY ID FROM RAZORPAY DASHBOARD
         "amount": amountPaise,
         "currency": "INR",
         "name": "The BlueShot Merch Store",
