@@ -1204,6 +1204,13 @@ textarea.form-input {
 .footer-bottom-links {
   display: flex;
   gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-bottom-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .footer-bottom-links a:hover {
