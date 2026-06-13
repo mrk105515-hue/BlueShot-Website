@@ -374,6 +374,84 @@
         </div>
       </div>
 
+      <!-- PRODUCT PREFERENCE POLL SECTION -->
+      <div class="product-poll-container" id="product-poll-section">
+        <div class="poll-header">
+          <h2 class="poll-title">Next Drop Preference Poll</h2>
+          <span class="poll-subtitle">Help us choose what DXZ gear to release next</span>
+        </div>
+
+        <!-- Voting Grid View -->
+        <div style="position: relative; width: 100%;">
+          <!-- Login blocker overlay -->
+          <div class="poll-login-overlay" id="poll-login-blocker" style="display: none;">
+            <div class="poll-login-overlay-content">
+              <i class="fa-solid fa-lock" style="font-size: 2.2rem; color: #ff3b30; margin-bottom: 1.25rem;"></i>
+              <h3>Authentication Required</h3>
+              <p>You must log in to participate in the product drop preference poll.</p>
+              <a href="hub.html#join-faction" class="btn btn-danger" style="margin-top: 1.25rem; padding: 0.6rem 2rem; font-size: 0.8rem;">Log In to Faction</a>
+            </div>
+          </div>
+
+          <div class="poll-grid" id="poll-voting-grid">
+            <div class="poll-option-card" data-option="keychains">
+              <div class="poll-option-icon"><i class="fa-solid fa-key"></i></div>
+              <span class="poll-option-label">Keychains</span>
+            </div>
+
+            <div class="poll-option-card" data-option="mugs">
+              <div class="poll-option-icon"><i class="fa-solid fa-mug-hot"></i></div>
+              <span class="poll-option-label">Mugs</span>
+            </div>
+
+            <div class="poll-option-card" data-option="hoodies">
+              <div class="poll-option-icon"><i class="fa-solid fa-shirt"></i></div>
+              <span class="poll-option-label">Hoodies</span>
+            </div>
+
+            <div class="poll-option-card" data-option="lowers">
+              <div class="poll-option-icon"><i class="fa-solid fa-socks"></i></div>
+              <span class="poll-option-label">Lowers</span>
+            </div>
+
+            <div class="poll-option-card" data-option="boxers">
+              <div class="poll-option-icon"><i class="fa-solid fa-square"></i></div>
+              <span class="poll-option-label">Boxers</span>
+            </div>
+
+            <div class="poll-option-card" data-option="gym_outfit">
+              <div class="poll-option-icon"><i class="fa-solid fa-dumbbell"></i></div>
+              <span class="poll-option-label">Gym Outfit</span>
+            </div>
+
+            <div class="poll-option-card" data-option="female_clothing">
+              <div class="poll-option-icon"><i class="fa-solid fa-person-dress"></i></div>
+              <span class="poll-option-label">Female Clothing</span>
+            </div>
+
+            <div class="poll-option-card" data-option="dxz_figures">
+              <div class="poll-option-icon"><i class="fa-solid fa-cube"></i></div>
+              <span class="poll-option-label">3D Figures of DXZ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action submit button -->
+        <div class="poll-actions" id="poll-actions-bar">
+          <button id="poll-submit-btn" disabled>Submit Vote</button>
+        </div>
+
+        <!-- Live Results View -->
+        <div class="poll-results-view" id="poll-results-view">
+          <!-- Dynamically populated rows -->
+        </div>
+
+        <!-- Reset Voted State -->
+        <div class="poll-reset-container" id="poll-reset-container" style="display: none;">
+          <button class="poll-reset-btn" id="poll-reset-btn">Change Your Vote</button>
+        </div>
+      </div>
+
       <!-- Custom suggestion banner section -->
       <div class="custom-shirt-banner" style="margin-top: 3rem;">
         <div class="custom-shirt-content">

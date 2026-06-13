@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initCheckoutWizard();
     initBannerCarousel();
     initRareMarks();
+    initProductPoll();
     updateCartUI();
   } catch (e) {
     console.error("Error initializing shop script:", e);
@@ -834,4 +835,259 @@ function initRareMarks() {
     }
     document.body.removeChild(textArea);
   }
+}
+
+// ==========================================================================
+// PRODUCT PREFERENCE POLL DIALOG LOGIC
+// ==========================================================================
+function initProductPoll() {
+  const votingGrid = document.getElementById("poll-voting-grid");
+  const actionsBar = document.getElementById("poll-actions-bar");
+  const submitBtn = document.getElementById("poll-submit-btn");
+  const resultsView = document.getElementById("poll-results-view");
+  const resetContainer = document.getElementById("poll-reset-container");
+  const resetBtn = document.getElementById("poll-reset-btn");
+  const loginBlocker = document.getElementById("poll-login-blocker");
+
+  if (!votingGrid || !submitBtn || !resultsView) return;
+
+  // Initial Poll Base Data (stored locally in localStorage if modified, otherwise starts clean with 0)
+  let pollData = {};
+  // Clean up old cached mock data
+  if (localStorage.getItem("dxz_poll_data")) {
+    localStorage.removeItem("dxz_poll_data");
+  }
+  const savedPollData = localStorage.getItem("dxz_poll_data_v2");
+  if (savedPollData) {
+    try {
+      pollData = JSON.parse(savedPollData);
+    } catch (e) {
+      pollData = getBasePollData();
+    }
+  } else {
+    pollData = getBasePollData();
+  }
+
+  function getBasePollData() {
+    return {
+      "keychains": 0,
+      "mugs": 0,
+      "hoodies": 0,
+      "lowers": 0,
+      "boxers": 0,
+      "gym_outfit": 0,
+      "female_clothing": 0,
+      "dxz_figures": 0
+    };
+  }
+
+  const POLL_LABELS = {
+    "keychains": { label: "Keychains", icon: "fa-solid fa-key" },
+    "mugs": { label: "Mugs", icon: "fa-solid fa-mug-hot" },
+    "hoodies": { label: "Hoodies", icon: "fa-solid fa-shirt" },
+    "lowers": { label: "Lowers", icon: "fa-solid fa-socks" },
+    "boxers": { label: "Boxers", icon: "fa-solid fa-square" },
+    "gym_outfit": { label: "Gym Outfit", icon: "fa-solid fa-dumbbell" },
+    "female_clothing": { label: "Female Clothing", icon: "fa-solid fa-person-dress" },
+    "dxz_figures": { label: "3D Figures of DXZ", icon: "fa-solid fa-cube" }
+  };
+
+  let selectedOption = null;
+  let currentUser = null;
+
+  // Get User Specific Vote Key
+  function getVoteKey(user) {
+    if (!user) return null;
+    const identifier = user.uid || user.email || user.username || "guest";
+    return `dxz_poll_vote_v2_${identifier}`;
+  }
+
+  // Handle Card Selections
+  const cards = votingGrid.querySelectorAll(".poll-option-card");
+  cards.forEach(card => {
+    card.addEventListener("click", () => {
+      if (!currentUser) return; // Prevent selection if not logged in
+      cards.forEach(c => c.classList.remove("selected"));
+      card.classList.add("selected");
+      selectedOption = card.getAttribute("data-option");
+      
+      submitBtn.disabled = false;
+      submitBtn.classList.add("ready");
+    });
+  });
+
+  // Handle Vote Submission
+  submitBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (!selectedOption || !currentUser) return;
+
+    const voteKey = getVoteKey(currentUser);
+    if (!voteKey) return;
+
+    // Save vote state for this user
+    localStorage.setItem(voteKey, selectedOption);
+
+    // Increment vote count and save
+    pollData[selectedOption] += 1;
+    localStorage.setItem("dxz_poll_data_v2", JSON.stringify(pollData));
+
+    showNotification("Thank you for your vote!");
+    renderResults(selectedOption);
+  });
+
+  // Handle Changing/Resetting Vote
+  if (resetBtn) {
+    resetBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const voteKey = getVoteKey(currentUser);
+      if (!voteKey) return;
+
+      const previousVote = localStorage.getItem(voteKey);
+      if (previousVote && pollData[previousVote] > 0) {
+        pollData[previousVote] -= 1;
+        localStorage.setItem("dxz_poll_data_v2", JSON.stringify(pollData));
+      }
+      localStorage.removeItem(voteKey);
+
+      // Reset selection state
+      selectedOption = null;
+      cards.forEach(c => c.classList.remove("selected"));
+      submitBtn.disabled = true;
+      submitBtn.classList.remove("ready");
+
+      // Transition views back
+      resultsView.classList.remove("active");
+      resetContainer.style.display = "none";
+      
+      votingGrid.style.display = "grid";
+      votingGrid.style.opacity = "0";
+      actionsBar.style.display = "flex";
+      actionsBar.style.opacity = "0";
+      setTimeout(() => {
+        votingGrid.style.opacity = "1";
+        actionsBar.style.opacity = "1";
+      }, 50);
+    });
+  }
+
+  // Render Poll Results
+  function renderResults(votedOption) {
+    // Hide Voting Options
+    votingGrid.style.display = "none";
+    actionsBar.style.display = "none";
+    if (loginBlocker) loginBlocker.style.display = "none";
+
+    // Calculate total votes
+    let totalVotes = 0;
+    Object.keys(pollData).forEach(key => {
+      totalVotes += pollData[key];
+    });
+
+    // Generate results html
+    resultsView.innerHTML = "";
+    
+    // Sort options by vote percentage/count descending
+    const sortedOptions = Object.keys(pollData).sort((a, b) => pollData[b] - pollData[a]);
+
+    sortedOptions.forEach(key => {
+      const votes = pollData[key];
+      const percent = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0;
+      const isVoted = key === votedOption;
+      const optionInfo = POLL_LABELS[key];
+
+      const row = document.createElement("div");
+      row.className = `poll-result-row ${isVoted ? 'voted-row' : ''}`;
+      row.innerHTML = `
+        <div class="poll-result-header">
+          <span class="poll-result-label">
+            <i class="${optionInfo.icon}"></i> ${optionInfo.label}
+          </span>
+          <span class="poll-result-percentage">${percent}% <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-muted);">(${votes.toLocaleString()} votes)</span></span>
+        </div>
+        <div class="poll-result-bar-track">
+          <div class="poll-result-bar-fill" data-percent="${percent}"></div>
+        </div>
+      `;
+      resultsView.appendChild(row);
+    });
+
+    // Show Results View and Reset Option
+    resultsView.classList.add("active");
+    if (resetContainer) {
+      resetContainer.style.display = "flex";
+    }
+
+    // Animate the bars
+    setTimeout(() => {
+      const bars = resultsView.querySelectorAll(".poll-result-bar-fill");
+      bars.forEach(bar => {
+        const percent = bar.getAttribute("data-percent");
+        bar.style.width = percent + "%";
+      });
+    }, 100);
+  }
+
+  // Update Poll interface based on user authentication
+  function updatePollAuthUI(user) {
+    currentUser = user;
+
+    if (user) {
+      if (loginBlocker) loginBlocker.style.display = "none";
+      cards.forEach(c => c.style.pointerEvents = "auto");
+
+      // Check if this specific user has voted
+      const voteKey = getVoteKey(user);
+      const userVote = localStorage.getItem(voteKey);
+
+      if (userVote) {
+        renderResults(userVote);
+      } else {
+        // Restore voting interface if they haven't voted
+        resultsView.classList.remove("active");
+        if (resetContainer) resetContainer.style.display = "none";
+        votingGrid.style.display = "grid";
+        actionsBar.style.display = "flex";
+      }
+    } else {
+      // User is not logged in - show blocker overlay
+      if (loginBlocker) loginBlocker.style.display = "flex";
+      cards.forEach(c => c.style.pointerEvents = "none");
+      submitBtn.disabled = true;
+      submitBtn.classList.remove("ready");
+      
+      // Hide results when logged out
+      resultsView.classList.remove("active");
+      if (resetContainer) resetContainer.style.display = "none";
+      votingGrid.style.display = "grid";
+      actionsBar.style.display = "flex";
+    }
+  }
+
+  // 1. Listen to Live Firebase Auth changes
+  if (typeof firebase !== "undefined") {
+    try {
+      if (firebase.apps.length === 0) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      firebase.auth().onAuthStateChanged((user) => {
+        updatePollAuthUI(user);
+      });
+    } catch (e) {
+      console.warn("Firebase Auth listener initialization failed:", e);
+    }
+  }
+
+  // 2. Listen to Local Demo Auth state changes
+  window.addEventListener("dxz_user_changed", () => {
+    const savedUser = localStorage.getItem("dxz_demo_user");
+    const user = savedUser ? JSON.parse(savedUser) : null;
+    updatePollAuthUI(user);
+  });
+
+  // Initial check on load
+  const savedUser = localStorage.getItem("dxz_demo_user");
+  const user = savedUser ? JSON.parse(savedUser) : null;
+  updatePollAuthUI(user);
 }
