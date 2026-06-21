@@ -218,6 +218,19 @@ function handleAuthChange(user) {
   if (user) {
     blocker.style.display = "none";
     listView.style.display = "block";
+
+    // Automatically switch active tab to "My History"
+    const tabGuestBtn = document.getElementById("tab-guest-btn");
+    const tabAccountBtn = document.getElementById("tab-account-btn");
+    const guestPanel = document.getElementById("guest-lookup-panel");
+    const accountPanel = document.getElementById("account-history-panel");
+    if (tabGuestBtn && tabAccountBtn && guestPanel && accountPanel) {
+      tabAccountBtn.classList.add("active");
+      tabGuestBtn.classList.remove("active");
+      guestPanel.style.display = "none";
+      accountPanel.style.display = "block";
+    }
+
     loadAccountOrders();
     
     // Strict Admin Access verification (auth email check only)
@@ -339,6 +352,11 @@ function renderHistoryList(orders) {
     
     container.appendChild(card);
   });
+
+  // Automatically render details for the user's most recent order
+  if (orders.length > 0) {
+    renderOrderDetails(orders[0]);
+  }
 }
 
 // ==========================================================================
