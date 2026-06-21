@@ -474,10 +474,17 @@ function initCheckoutWizard() {
       // Validation: Ensure shipping info was filled out in Step 1
       const shipName = document.getElementById("ship-name").value.trim();
       const shipEmail = document.getElementById("ship-email").value.trim();
+      const shipPhone = document.getElementById("ship-phone").value.trim();
       const shipAddress = document.getElementById("ship-address").value.trim();
       
-      if (!shipName || !shipEmail || !shipAddress) {
-        showNotification("Please complete your shipping address first!", true);
+      if (!shipName || !shipEmail || !shipPhone || !shipAddress) {
+        showNotification("Please complete your shipping address and phone number first!", true);
+        showStep(1);
+        return;
+      }
+
+      if (!/^[0-9]{10}$/.test(shipPhone)) {
+        showNotification("Please enter a valid 10-digit phone number!", true);
         showStep(1);
         return;
       }
@@ -510,6 +517,83 @@ function initCheckoutWizard() {
           // Payment successful!
           showNotification(`Payment Successful! ID: ${response.razorpay_payment_id}`);
 
+          // Capture items before clearing cart
+          const orderedItems = cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            image: item.image,
+            size: item.size,
+            quantity: item.quantity
+          }));
+
+          // 1. Try writing to Firestore if Firebase is available
+          let useLiveFirebase = false;
+          if (typeof firebase !== "undefined" && typeof firebaseConfig !== "undefined" && firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
+            useLiveFirebase = true;
+          }
+
+          if (useLiveFirebase) {
+            try {
+              const db = firebase.firestore();
+              const currentUser = firebase.auth().currentUser;
+              const userId = currentUser ? currentUser.uid : null;
+              
+              db.collection("orders").doc(response.razorpay_payment_id).set({
+                orderId: response.razorpay_payment_id,
+                userId: userId,
+                email: shipEmail,
+                phone: shipPhone,
+                name: shipName,
+                address: shipAddress,
+                city: city,
+                zip: zip,
+                country: country,
+                items: orderedItems,
+                totalAmount: subtotal,
+                status: "Processing",
+                trackingNumber: "",
+                courierPartner: "Shiprocket",
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              }).then(() => {
+                console.log("Order saved to Firestore successfully!");
+              }).catch((err) => {
+                console.error("Error saving order to Firestore:", err);
+              });
+            } catch (e) {
+              console.error("Failed to write order to Firestore:", e);
+            }
+          }
+
+          // 2. Always write to localStorage as well so that the user can test/demo it locally instantly!
+          try {
+            const savedUser = localStorage.getItem("dxz_demo_user");
+            const demoUser = savedUser ? JSON.parse(savedUser) : null;
+            const userId = demoUser ? demoUser.uid : "guest_user";
+            
+            const localOrders = JSON.parse(localStorage.getItem("dxz_demo_orders") || "[]");
+            localOrders.push({
+              orderId: response.razorpay_payment_id,
+              userId: userId,
+              email: shipEmail,
+              phone: shipPhone,
+              name: shipName,
+              address: shipAddress,
+              city: city,
+              zip: zip,
+              country: country,
+              items: orderedItems,
+              totalAmount: subtotal,
+              status: "Processing",
+              trackingNumber: "",
+              courierPartner: "Shiprocket",
+              createdAt: new Date().toISOString()
+            });
+            localStorage.setItem("dxz_demo_orders", JSON.stringify(localOrders));
+          } catch (e) {
+            console.error("Failed to write order to localStorage:", e);
+          }
+
           // Populate success screen receipt
           document.getElementById("success-total-text").textContent = `₹${subtotal.toLocaleString('en-IN')}`;
           document.getElementById("success-order-id").textContent = response.razorpay_payment_id;
@@ -527,11 +611,13 @@ function initCheckoutWizard() {
         },
         "prefill": {
           "name": shipName,
-          "email": shipEmail
+          "email": shipEmail,
+          "contact": shipPhone
         },
         "notes": {
           "items_purchased": itemsList.join("; "),
-          "shipping_address": `${shipAddress}, ${city}, Zip: ${zip}, Country: ${country}`
+          "shipping_address": `${shipAddress}, ${city}, Zip: ${zip}, Country: ${country}`,
+          "shipping_phone": shipPhone
         },
         "theme": {
           "color": "#FF124F" // DXZ Crimson neon brand color

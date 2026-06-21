@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>Order Tracking & History | The BlueShot</title>
+  <meta name="description" content="Track your Danger X Zone merchandise orders. Input your Razorpay Payment ID to trace your shipment timeline and retrieve Shiprocket delivery statuses.">
+  <meta name="keywords" content="Track Order, BlueShot Tracking, Shiprocket Tracker, Razorpay Order Details, Danger X Zone Store">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles.css?v=1.0.2">
+  <link rel="stylesheet" href="merch.css?v=1.0.2">
+</head>
+<body class="shop-body">
+
+  <!-- NAVIGATION HEADER -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="nav-logo">
+        THE BLUESHOT <span class="logo-dot"></span>
+      </a>
+      
+      <nav>
+        <ul class="nav-links" id="nav-links">
+          <li class="nav-link"><a href="index.html#hero">Home</a></li>
+          <li class="nav-link"><a href="index.html#featured-video">Season 3</a></li>
+          <li class="nav-link"><a href="index.html#characters">Characters</a></li>
+          <li class="nav-link"><a href="merch.html">Shop</a></li>
+          <li class="nav-link"><a href="hub.html">Hub</a></li>
+          <li class="nav-link"><a href="game.html">Arena</a></li>
+          <li class="nav-link active"><a href="orders.html">Orders</a></li>
+        </ul>
+      </nav>
+      
+      <div class="nav-actions" style="display: flex; gap: 1rem;">
+        <button class="social-icon global-search-trigger" title="Search site (Press /)" id="nav-search-trigger"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+      
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <section class="orders-section">
+    <div class="container-width">
+      
+      <!-- Back Link -->
+      <div class="shop-back-link">
+        <a href="merch.html"><i class="fa-solid fa-arrow-left"></i> Back to Shop</a>
+      </div>
+      
+      <!-- Header -->
+      <div class="shop-row-header" style="text-align: center; margin-bottom: 3rem;">
+        <h1 class="series-title" style="font-size: 3rem; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(0, 229, 255, 0.25);">TRACK ORDERS</h1>
+        <p class="series-subtitle">Monitor and trace your Danger X Zone apparel drops</p>
+      </div>
+      
+      <!-- Tabs Selector -->
+      <div class="orders-tabs">
+        <button class="orders-tab-btn active" id="tab-guest-btn">
+          <i class="fa-solid fa-magnifying-glass"></i> Guest Lookup
+        </button>
+        <button class="orders-tab-btn" id="tab-account-btn">
+          <i class="fa-solid fa-user"></i> My History
+        </button>
+      </div>
+
+      <!-- Tab 1 Panel: Guest Form -->
+      <div class="order-form-container" id="guest-lookup-panel">
+        <h2>Find Order details</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Enter the details from your payment receipt to fetch tracking info.</p>
+        
+        <form id="guest-lookup-form" onsubmit="event.preventDefault();">
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label for="lookup-order-id" style="display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 700; letter-spacing: 0.05em;">Razorpay Payment ID (Order ID)</label>
+            <input type="text" id="lookup-order-id" placeholder="e.g. pay_P21tFIsQSy60O" required style="width: 100%; padding: 0.8rem; background: rgba(0, 0, 0, 0.4); border: var(--border-glass); border-radius: 8px; color: #FFF;">
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 2rem;">
+            <label for="lookup-email" style="display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 700; letter-spacing: 0.05em;">Email Address</label>
+            <input type="email" id="lookup-email" placeholder="e.g. customer@gmail.com" required style="width: 100%; padding: 0.8rem; background: rgba(0, 0, 0, 0.4); border: var(--border-glass); border-radius: 8px; color: #FFF;">
+          </div>
+          
+          <button type="submit" id="guest-submit-btn" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-weight: 700; border-radius: 30px; border: none; cursor: pointer;">
+            <i class="fa-solid fa-location-crosshairs"></i> Locate Order
+          </button>
+        </form>
+      </div>
+
+      <!-- Tab 2 Panel: Account History -->
+      <div class="order-form-container" id="account-history-panel" style="display: none;">
+        <!-- Auth Blocked screen -->
+        <div id="history-auth-blocker" style="text-align: center; padding: 2rem 0;">
+          <div style="font-size: 3rem; color: var(--color-blue-neon); margin-bottom: 1rem;"><i class="fa-solid fa-lock"></i></div>
+          <h2 style="font-size: 1.35rem; margin-bottom: 0.75rem;">Account Authentication Required</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; max-width: 400px; margin-left: auto; margin-right: auto;">Log in to your faction profile to view all orders linked to your account.</p>
+          <a href="hub.html#join-faction" class="btn btn-primary" style="border-radius: 30px; padding: 0.75rem 2rem;"><i class="fa-solid fa-right-to-bracket"></i> Login / Register</a>
+        </div>
+        
+        <!-- Logged in History view -->
+        <div id="history-list-view" style="display: none;">
+          <h2>Your Orders</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Click on any order below to view full tracking and receipt details.</p>
+          <div class="orders-history-list" id="orders-history-container">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Detail display card -->
+      <div class="order-detail-card" id="order-details-card">
+        <!-- Dynamically injected -->
+      </div>
+    </div>
+  </section>
+
+  <!-- TOAST ALERT CONTAINER -->
+  <div class="alert-container" id="alert-container"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container-width">
+      <div class="footer-top">
+        <a href="index.html#hero" class="footer-logo">
+          THE BLUESHOT <span class="logo-dot"></span>
+        </a>
+        <ul class="footer-nav">
+          <li><a href="index.html#hero">Home</a></li>
+          <li><a href="index.html#featured-video">Season 3</a></li>
+          <li><a href="index.html#characters">Characters</a></li>
+          <li><a href="merch.html">Shop</a></li>
+          <li><a href="hub.html">Hub</a></li>
+          <li><a href="game.html">Arena</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="index.html#hero">Back to Home</a>
+          <a href="https://youtube.com/@BlueShot77" target="_blank">YouTube Channel</a>
+          <a href="terms.html">Terms & Conditions</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="refunds.html">Refund Policy</a>
+          <a href="shipping.html">Shipping Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK Compat Libraries -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  
+  <!-- Configurations & Scripts -->
+  <script src="firebase-config.js"></script>
+  <script src="search.js"></script>
+  <script src="orders.js"></script>
+  <script src="admin.js?v=1.0.2"></script>
+</body>
+</html>
