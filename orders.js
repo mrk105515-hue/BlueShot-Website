@@ -219,9 +219,19 @@ function handleAuthChange(user) {
     blocker.style.display = "none";
     listView.style.display = "block";
     loadAccountOrders();
+    
+    // Strict Admin Access verification (auth email check only)
+    if (user.email && user.email.toLowerCase() === "blueshotconnectx@gmail.com") {
+      displayAdminPanel();
+    } else {
+      const panel = document.getElementById("admin-orders-card");
+      if (panel) panel.classList.remove("active");
+    }
   } else {
     blocker.style.display = "block";
     listView.style.display = "none";
+    const panel = document.getElementById("admin-orders-card");
+    if (panel) panel.classList.remove("active");
   }
 }
 
@@ -484,6 +494,281 @@ function renderOrderDetails(order) {
 
   card.classList.add("active");
 }
+
+// ==========================================================================
+// ADMIN CONTROL PANELS
+// ==========================================================================
+function displayAdminPanel() {
+  const panel = document.getElementById("admin-orders-card");
+  if (!panel) return;
+
+  panel.classList.add("active");
+  loadAdminOrders();
+}
+
+function loadAdminOrders() {
+  const tbody = document.getElementById("admin-orders-tbody");
+  if (!tbody) return;
+
+  tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 2rem;"><i class="fa-solid fa-spinner fa-spin"></i> Fetching client transactions...</td></tr>`;
+
+  if (isDemoMode) {
+    const localOrders = JSON.parse(localStorage.getItem("dxz_demo_orders") || "[]");
+    // Sort descending by date
+    localOrders.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    renderAdminTable(localOrders);
+  } else {
+    db.collection("orders").orderBy("createdAt", "desc").get()
+      .then((snapshot) => {
+        const orders = [];
+        snapshot.forEach(doc => {
+          orders.push({ ...doc.data(), orderId: doc.id });
+        });
+        renderAdminTable(orders);
+      })
+      .catch((err) => {
+        console.error("Firestore Admin load error:", err);
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: var(--color-red-neon);"><i class="fa-solid fa-triangle-exclamation"></i> Error loading Firestore orders database.</td></tr>`;
+      });
+  }
+}
+
+function renderAdminTable(orders) {
+  window.currentLoadedOrders = orders; // Cache orders for checkpoint editing
+  const tbody = document.getElementById("admin-orders-tbody");
+  if (!tbody) return;
+
+  if (orders.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: var(--text-muted);">No orders placed yet.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = "";
+  orders.forEach(order => {
+    const formattedDate = formatDate(order.createdAt);
+    const tr = document.createElement("tr");
+    tr.id = `admin-row-${order.orderId}`;
+    
+    tr.innerHTML = `
+      <td>${formattedDate}</td>
+      <td>
+        <span style="font-family: monospace; font-size: 0.8rem; color:var(--color-blue-neon); font-weight:700;">${order.orderId}</span>
+        <div style="font-size:0.75rem; color:var(--text-muted);">${order.email}</div>
+      </td>
+      <td>
+        <strong>${order.name}</strong>
+        <div style="font-size:0.75rem; color:var(--text-muted);">${order.phone || 'No Phone'}</div>
+      </td>
+      <td style="font-size:0.8rem;">
+        ${order.items.map(it => `${it.quantity}x ${it.name} (${it.size})`).join("<br>")}
+      </td>
+      <td>
+        <span class="order-status-badge ${getStatusClass(order.status)}">${order.status}</span>
+      </td>
+      <td style="font-family: monospace;">${order.trackingNumber || '<span style="color:var(--text-muted)">Unshipped</span>'}</td>
+      <td>
+        <button class="admin-action-btn" onclick="openAdminEditForm('${order.orderId}')">
+          <i class="fa-solid fa-pen-to-square"></i> Edit
+        </button>
+      </td>
+    `;
+    
+    // Append edit form slot with checkpoint controls
+    const formTr = document.createElement("tr");
+    formTr.id = `admin-edit-row-${order.orderId}`;
+    formTr.style.display = "none";
+    formTr.innerHTML = `
+      <td colspan="7" style="background: rgba(255,255,255,0.01); border-bottom: 1px solid rgba(255,18,79,0.15);">
+        <div class="admin-edit-form">
+          <span style="font-weight: 700; color:#FFF;">Update Order #${order.orderId}:</span>
+          
+          <label style="margin-left: 1rem;">Status:</label>
+          <select id="edit-status-${order.orderId}">
+            <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
+            <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+            <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+          </select>
+          
+          <label style="margin-left: 1rem;">Shiprocket AWB:</label>
+          <input type="text" id="edit-awb-${order.orderId}" placeholder="Enter Tracking AWB" value="${order.trackingNumber || ''}">
+          
+          <button class="admin-action-btn" style="margin-left: 1rem; background:rgba(0,229,255,0.1); border-color:var(--color-blue-neon);" onclick="saveAdminEdit('${order.orderId}')">
+            <i class="fa-solid fa-floppy-disk"></i> Save
+          </button>
+          
+          <button class="admin-action-btn" style="margin-left: 0.5rem; background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.15);" onclick="closeAdminEdit('${order.orderId}')">
+            Cancel
+          </button>
+
+          <!-- Checkpoints Section -->
+          <div class="admin-checkpoints-section" style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.06);">
+            <h4 style="color: var(--color-blue-neon); font-size: 0.9rem; margin-bottom: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;"><i class="fa-solid fa-clock-rotate-left"></i> Timeline Checkpoints</h4>
+            <div id="edit-checkpoints-list-${order.orderId}" style="margin-bottom: 1rem;">
+              <!-- Populated dynamically -->
+            </div>
+            
+            <div style="display: flex; gap: 0.5rem; align-items: center; max-width: 700px; flex-wrap: wrap;">
+              <input type="text" id="add-cp-msg-${order.orderId}" placeholder="Checkpoint description (e.g. Order Prepared)" style="flex: 2; min-width: 250px; padding: 0.4rem 0.75rem; background: rgba(0,0,0,0.4); border: var(--border-glass); border-radius: 4px; color: #FFF; font-size: 0.85rem;">
+              <input type="datetime-local" id="add-cp-time-${order.orderId}" style="flex: 1; min-width: 180px; padding: 0.4rem 0.75rem; background: rgba(0,0,0,0.4); border: var(--border-glass); border-radius: 4px; color: #FFF; font-size: 0.85rem;">
+              <button type="button" class="admin-action-btn" style="background: rgba(0,230,118,0.1); border-color:#00E676; color:#00E676; padding: 0.4rem 1rem; font-size: 0.85rem;" onclick="addAdminCheckpointLocal('${order.orderId}')">
+                <i class="fa-solid fa-plus"></i> Add Milestone
+              </button>
+            </div>
+          </div>
+        </div>
+      </td>
+    `;
+    
+    tbody.appendChild(tr);
+    tbody.appendChild(formTr);
+  });
+}
+
+// Global exposes for inline onclick handlers
+window.openAdminEditForm = function(orderId) {
+  const order = window.currentLoadedOrders ? window.currentLoadedOrders.find(o => o.orderId === orderId) : null;
+  window.activeEditCheckpoints = window.activeEditCheckpoints || {};
+  window.activeEditCheckpoints[orderId] = order && order.checkpoints ? [...order.checkpoints] : [];
+  
+  // Sort checkpoints descending by timestamp initially
+  window.activeEditCheckpoints[orderId].sort((a,b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+  // Set datetime-local input default to current local time
+  setTimeout(() => {
+    const timeInput = document.getElementById(`add-cp-time-${orderId}`);
+    if (timeInput) {
+      const now = new Date();
+      const tzOffset = now.getTimezoneOffset() * 60000;
+      timeInput.value = (new Date(now - tzOffset)).toISOString().slice(0, 16);
+    }
+  }, 10);
+
+  document.getElementById(`admin-edit-row-${orderId}`).style.display = "table-row";
+  window.renderAdminCheckpoints(orderId);
+};
+
+window.closeAdminEdit = function(orderId) {
+  document.getElementById(`admin-edit-row-${orderId}`).style.display = "none";
+};
+
+window.renderAdminCheckpoints = function(orderId) {
+  const container = document.getElementById(`edit-checkpoints-list-${orderId}`);
+  if (!container) return;
+
+  const list = window.activeEditCheckpoints[orderId] || [];
+  if (list.length === 0) {
+    container.innerHTML = `<div style="font-size:0.85rem; color:var(--text-muted); font-style:italic; padding-left: 0.5rem;">No checkpoints added yet.</div>`;
+    return;
+  }
+
+  container.innerHTML = list.map((cp, index) => {
+    const formatted = formatDate(cp.timestamp);
+    return `
+      <div class="admin-checkpoint-item" style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); padding:0.4rem 0.75rem; border-radius:4px; margin-bottom:0.4rem; border:1px solid rgba(255,255,255,0.04); max-width: 700px;">
+        <span style="font-size:0.85rem; color:#FFF;">
+          <strong style="color: var(--color-blue-neon);">${cp.message}</strong> 
+          <span style="color:var(--text-muted); margin-left:0.5rem; font-size:0.75rem;">(${formatted})</span>
+        </span>
+        <button type="button" class="admin-delete-cp-btn" style="background:none; border:none; color:var(--color-red-neon); cursor:pointer; padding:0.2rem;" onclick="deleteAdminCheckpointLocal('${orderId}', ${index})" title="Delete Milestone">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </div>
+    `;
+  }).join("");
+};
+
+window.addAdminCheckpointLocal = function(orderId) {
+  const msgInput = document.getElementById(`add-cp-msg-${orderId}`);
+  const timeInput = document.getElementById(`add-cp-time-${orderId}`);
+  
+  const message = msgInput.value.trim();
+  const timestampStr = timeInput.value;
+  
+  if (!message) {
+    showToastNotification("Checkpoint message cannot be empty!", true);
+    return;
+  }
+  
+  if (!timestampStr) {
+    showToastNotification("Please select a date and time!", true);
+    return;
+  }
+  
+  const timestamp = new Date(timestampStr).toISOString();
+  
+  window.activeEditCheckpoints[orderId].push({ message, timestamp });
+  window.activeEditCheckpoints[orderId].sort((a,b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  
+  msgInput.value = "";
+  
+  // Reset time input to now
+  const now = new Date();
+  const tzOffset = now.getTimezoneOffset() * 60000;
+  timeInput.value = (new Date(now - tzOffset)).toISOString().slice(0, 16);
+  
+  window.renderAdminCheckpoints(orderId);
+};
+
+window.deleteAdminCheckpointLocal = function(orderId, index) {
+  window.activeEditCheckpoints[orderId].splice(index, 1);
+  window.renderAdminCheckpoints(orderId);
+};
+
+window.saveAdminEdit = function(orderId) {
+  const status = document.getElementById(`edit-status-${orderId}`).value;
+  const awb = document.getElementById(`edit-awb-${orderId}`).value.trim();
+  const checkpoints = window.activeEditCheckpoints[orderId] || [];
+
+  if (isDemoMode) {
+    const localOrders = JSON.parse(localStorage.getItem("dxz_demo_orders") || "[]");
+    const index = localOrders.findIndex(o => o.orderId === orderId);
+    if (index > -1) {
+      localOrders[index].status = status;
+      localOrders[index].trackingNumber = awb;
+      localOrders[index].checkpoints = checkpoints;
+      localStorage.setItem("dxz_demo_orders", JSON.stringify(localOrders));
+      
+      showToastNotification(`Order ${orderId} updated successfully!`);
+      loadAdminOrders();
+      
+      // Update details card if currently loaded
+      const detailsCard = document.getElementById("order-details-card");
+      if (detailsCard.classList.contains("active")) {
+        const activeDocId = detailsCard.querySelector(".order-id-badge").textContent;
+        if (activeDocId === orderId) {
+          renderOrderDetails(localOrders[index]);
+        }
+      }
+    }
+  } else {
+    // Firestore write
+    db.collection("orders").doc(orderId).update({
+      status: status,
+      trackingNumber: awb,
+      checkpoints: checkpoints
+    })
+    .then(() => {
+      showToastNotification(`Order ${orderId} updated successfully!`);
+      loadAdminOrders();
+      
+      // Update details card if currently loaded
+      const detailsCard = document.getElementById("order-details-card");
+      if (detailsCard.classList.contains("active")) {
+        const activeDocId = detailsCard.querySelector(".order-id-badge").textContent;
+        if (activeDocId === orderId) {
+          // Re-fetch updated document
+          db.collection("orders").doc(orderId).get().then(doc => {
+            renderOrderDetails({ ...doc.data(), orderId: doc.id });
+          });
+        }
+      }
+    })
+    .catch(err => {
+      console.error("Firestore Admin update failed:", err);
+      showToastNotification("Server error updating order.", true);
+    });
+  }
+};
 
 // ==========================================================================
 // UTILITY HELPERS
