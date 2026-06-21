@@ -2050,11 +2050,15 @@ function loadLeaderboardUI() {
           rawScores.push({
             name: data.name,
             character: data.character,
-            score: data.score,
+            score: Number(data.score) || 0,
             timestamp: data.timestamp ? (data.timestamp.seconds * 1000) : Date.now(),
             uid: data.uid
           });
         });
+
+        // Sort descending explicitly in Javascript to ensure correct numeric sorting
+        // even if Firestore returns legacy mixed-type string values at the top of the sort.
+        rawScores.sort((a, b) => b.score - a.score);
 
         // Deduplicate: Keep only the highest score for each unique player (uid or name)
         const uniqueScores = [];
