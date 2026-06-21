@@ -215,18 +215,20 @@ function handleAuthChange(user) {
 
   if (!blocker || !listView) return;
 
+  const tabGuestBtn = document.getElementById("tab-guest-btn");
+  const tabAccountBtn = document.getElementById("tab-account-btn");
+  const guestPanel = document.getElementById("guest-lookup-panel");
+  const accountPanel = document.getElementById("account-history-panel");
+
   if (user) {
     blocker.style.display = "none";
     listView.style.display = "block";
 
-    // Automatically switch active tab to "My History"
-    const tabGuestBtn = document.getElementById("tab-guest-btn");
-    const tabAccountBtn = document.getElementById("tab-account-btn");
-    const guestPanel = document.getElementById("guest-lookup-panel");
-    const accountPanel = document.getElementById("account-history-panel");
+    // Automatically switch active tab to "My History" and hide Guest Lookup button
     if (tabGuestBtn && tabAccountBtn && guestPanel && accountPanel) {
       tabAccountBtn.classList.add("active");
       tabGuestBtn.classList.remove("active");
+      tabGuestBtn.style.display = "none"; // Hide Guest Lookup for logged in users
       guestPanel.style.display = "none";
       accountPanel.style.display = "block";
     }
@@ -243,6 +245,12 @@ function handleAuthChange(user) {
   } else {
     blocker.style.display = "block";
     listView.style.display = "none";
+
+    // Show Guest Lookup tab for unauthenticated guest users
+    if (tabGuestBtn) {
+      tabGuestBtn.style.display = ""; // Show Guest Lookup button
+    }
+
     const panel = document.getElementById("admin-orders-card");
     if (panel) panel.classList.remove("active");
   }
