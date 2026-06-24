@@ -282,10 +282,60 @@ function initNavbarProfileWidget() {
       const displayName = user.displayName || "Member";
       const initials = displayName.split(" ").map(w => w[0]).join("").substring(0, 2).toUpperCase();
       widget.innerHTML = `
-        <a href="hub.html#join-faction" class="nav-profile-avatar" title="Logged in as ${displayName}. Click to view profile.">
+        <button class="nav-profile-avatar-btn" id="nav-profile-avatar-btn" title="Logged in as ${escapeHtml(displayName)}. Click to view profile options.">
           ${initials}
-        </a>
+        </button>
+        <div class="nav-profile-dropdown" id="nav-profile-dropdown">
+          <div class="nav-profile-dropdown-header">
+            <div class="nav-profile-dropdown-initials">${initials}</div>
+            <div class="nav-profile-dropdown-info">
+              <strong class="nav-profile-dropdown-name">${escapeHtml(displayName)}</strong>
+              <span class="nav-profile-dropdown-email">${escapeHtml(user.email || "")}</span>
+            </div>
+          </div>
+          <div class="nav-profile-dropdown-divider"></div>
+          <a href="orders.html" class="nav-profile-dropdown-item">
+            <i class="fa-solid fa-box-open"></i> My Orders
+          </a>
+          <a href="hub.html#join-faction" class="nav-profile-dropdown-item">
+            <i class="fa-solid fa-users"></i> Faction Hub
+          </a>
+          <div class="nav-profile-dropdown-divider"></div>
+          <button class="nav-profile-dropdown-item nav-profile-logout-btn" id="nav-profile-logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Log Out
+          </button>
+        </div>
       `;
+
+      // Dynamic Event Listeners
+      const avatarBtn = widget.querySelector("#nav-profile-avatar-btn");
+      const dropdown = widget.querySelector("#nav-profile-dropdown");
+      const logoutBtn = widget.querySelector("#nav-profile-logout-btn");
+
+      if (avatarBtn && dropdown) {
+        avatarBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          dropdown.classList.toggle("show");
+        });
+        
+        dropdown.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+      }
+
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          if (useLiveFirebase) {
+            firebase.auth().signOut().then(() => {
+              window.location.reload();
+            });
+          } else {
+            localStorage.removeItem("dxz_demo_user");
+            window.dispatchEvent(new Event("dxz_user_changed"));
+            window.location.reload();
+          }
+        });
+      }
     } else {
       widget.innerHTML = `
         <a href="hub.html#join-faction" class="nav-profile-login-btn" title="Log In / Register to participate in polls and comments">
@@ -324,6 +374,21 @@ function initNavbarProfileWidget() {
     window.addEventListener("dxz_user_changed", checkLocalState);
     window.addEventListener("focus", checkLocalState);
   }
+
+  // Global click listener to close the dropdown when clicking outside
+  document.addEventListener("click", () => {
+    const dropdowns = document.querySelectorAll(".nav-profile-dropdown");
+    dropdowns.forEach(d => d.classList.remove("show"));
+  });
+}
+
+function escapeHtml(str) {
+  if (!str) return "";
+  return str.replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(new RegExp('"', 'g'), "&quot;")
+            .replace(new RegExp("'", 'g'), "&#039;");
 }
 
 function initMobileMenuToggle() {
