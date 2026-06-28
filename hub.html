@@ -79,95 +79,82 @@
   <!-- ═══════════════════════════════════════════════════ -->
   <section class="poll-section" id="design-poll">
     <div class="container-width">
-      <div class="section-header">
-        <span class="section-subtitle">Your Voice Matters</span>
-        <h2 class="section-title">Vote for the Next Drop 🗳️</h2>
-        <p class="section-desc">Which T-shirt design should we produce next? Cast your vote and see live demand from the community.</p>
+      <div class="product-poll-container" id="product-poll-section">
+        <div class="poll-header">
+          <h2 class="poll-title">Next Drop Preference Poll</h2>
+          <span class="poll-subtitle">Help us choose what DXZ gear to release next</span>
+        </div>
+
+        <!-- Voting Grid View -->
+        <div style="position: relative; width: 100%;">
+          <!-- Login blocker overlay -->
+          <div class="poll-login-overlay" id="poll-login-blocker" style="display: none;">
+            <div class="poll-login-overlay-content">
+              <i class="fa-solid fa-lock" style="font-size: 2.2rem; color: #ff3b30; margin-bottom: 1.25rem;"></i>
+              <h3>Authentication Required</h3>
+              <p>You must log in to participate in the product drop preference poll.</p>
+              <a href="#join-faction" class="btn btn-danger" style="margin-top: 1.25rem; padding: 0.6rem 2rem; font-size: 0.8rem;">Log In to Faction</a>
+            </div>
+          </div>
+
+          <div class="poll-grid" id="poll-voting-grid">
+            <div class="poll-option-card" data-option="keychains">
+              <div class="poll-option-icon"><i class="fa-solid fa-key"></i></div>
+              <span class="poll-option-label">Keychains</span>
+            </div>
+
+            <div class="poll-option-card" data-option="mugs">
+              <div class="poll-option-icon"><i class="fa-solid fa-mug-hot"></i></div>
+              <span class="poll-option-label">Mugs</span>
+            </div>
+
+            <div class="poll-option-card" data-option="hoodies">
+              <div class="poll-option-icon"><i class="fa-solid fa-shirt"></i></div>
+              <span class="poll-option-label">Hoodies</span>
+            </div>
+
+            <div class="poll-option-card" data-option="lowers">
+              <div class="poll-option-icon"><i class="fa-solid fa-socks"></i></div>
+              <span class="poll-option-label">Lowers</span>
+            </div>
+
+            <div class="poll-option-card" data-option="boxers">
+              <div class="poll-option-icon"><i class="fa-solid fa-square"></i></div>
+              <span class="poll-option-label">Boxers</span>
+            </div>
+
+            <div class="poll-option-card" data-option="gym_outfit">
+              <div class="poll-option-icon"><i class="fa-solid fa-dumbbell"></i></div>
+              <span class="poll-option-label">Gym Outfit</span>
+            </div>
+
+            <div class="poll-option-card" data-option="female_clothing">
+              <div class="poll-option-icon"><i class="fa-solid fa-person-dress"></i></div>
+              <span class="poll-option-label">Female Clothing</span>
+            </div>
+
+            <div class="poll-option-card" data-option="dxz_figures">
+              <div class="poll-option-icon"><i class="fa-solid fa-cube"></i></div>
+              <span class="poll-option-label">3D Figures of DXZ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action submit button -->
+        <div class="poll-actions" id="poll-actions-bar">
+          <button id="poll-submit-btn" disabled>Submit Vote</button>
+        </div>
+
+        <!-- Live Results View -->
+        <div class="poll-results-view" id="poll-results-view">
+          <!-- Dynamically populated rows -->
+        </div>
+
+        <!-- Reset Voted State -->
+        <div class="poll-reset-container" id="poll-reset-container" style="display: none;">
+          <button class="poll-reset-btn" id="poll-reset-btn">Change Your Vote</button>
+        </div>
       </div>
-
-      <!-- Poll Grid -->
-      <div class="poll-grid" id="poll-grid">
-
-        <!-- Design 1: Flame Devil -->
-        <div class="poll-card" data-design="flame-devil">
-          <div class="poll-card-img-wrap">
-            <img src="assets/merch-2.png" alt="Flame Devil Design" class="poll-card-img">
-            <div class="poll-card-badge">Design A</div>
-          </div>
-          <div class="poll-card-info">
-            <h3 class="poll-card-name">Flame Devil</h3>
-            <p class="poll-card-desc">BSG's iconic crimson devil aura — bold, fiery, unstoppable.</p>
-            <button class="btn btn-danger poll-vote-btn" data-design="flame-devil">
-              <i class="fa-solid fa-fire"></i> Vote
-            </button>
-          </div>
-          <div class="poll-result-bar">
-            <div class="poll-bar-fill" data-design="flame-devil"></div>
-            <span class="poll-bar-percent">0%</span>
-          </div>
-        </div>
-
-        <!-- Design 2: Redago Aura -->
-        <div class="poll-card" data-design="redago-aura">
-          <div class="poll-card-img-wrap">
-            <img src="assets/merch-1.png" alt="Redago Aura Design" class="poll-card-img">
-            <div class="poll-card-badge">Design B</div>
-          </div>
-          <div class="poll-card-info">
-            <h3 class="poll-card-name">Redago Aura</h3>
-            <p class="poll-card-desc">The raw, untamed REDAGO power — glowing beast mode energy.</p>
-            <button class="btn btn-danger poll-vote-btn" data-design="redago-aura">
-              <i class="fa-solid fa-bolt"></i> Vote
-            </button>
-          </div>
-          <div class="poll-result-bar">
-            <div class="poll-bar-fill" data-design="redago-aura"></div>
-            <span class="poll-bar-percent">0%</span>
-          </div>
-        </div>
-
-        <!-- Design 3: Obsidian Emperor -->
-        <div class="poll-card" data-design="obsidian-emperor">
-          <div class="poll-card-img-wrap">
-            <img src="assets/merch-2.png" alt="Obsidian Emperor Design" class="poll-card-img emperor-filter">
-            <div class="poll-card-badge">Design C</div>
-          </div>
-          <div class="poll-card-info">
-            <h3 class="poll-card-name">Obsidian Emperor</h3>
-            <p class="poll-card-desc">Jiggo Degan's royal dark dimension — sleek, royal, deadly.</p>
-            <button class="btn btn-danger poll-vote-btn" data-design="obsidian-emperor">
-              <i class="fa-solid fa-crown"></i> Vote
-            </button>
-          </div>
-          <div class="poll-result-bar">
-            <div class="poll-bar-fill" data-design="obsidian-emperor"></div>
-            <span class="poll-bar-percent">0%</span>
-          </div>
-        </div>
-
-        <!-- Design 4: Curse God -->
-        <div class="poll-card" data-design="curse-god">
-          <div class="poll-card-img-wrap">
-            <img src="assets/merch-1.png" alt="Curse God Design" class="poll-card-img cursegod-filter">
-            <div class="poll-card-badge">Design D</div>
-          </div>
-          <div class="poll-card-info">
-            <h3 class="poll-card-name">Curse God Zalta</h3>
-            <p class="poll-card-desc">Zalta's cursed bull transformation — dark, brutal, legendary.</p>
-            <button class="btn btn-danger poll-vote-btn" data-design="curse-god">
-              <i class="fa-solid fa-skull"></i> Vote
-            </button>
-          </div>
-          <div class="poll-result-bar">
-            <div class="poll-bar-fill" data-design="curse-god"></div>
-            <span class="poll-bar-percent">0%</span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Vote Status Message -->
-      <div class="poll-status" id="poll-status"></div>
     </div>
   </section>
 

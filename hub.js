@@ -301,226 +301,289 @@ function saveLocalMembers(arr) {
 }
 
 // ==========================================================================
-// 1. DESIGN POLL SYSTEM
+// 1. PRODUCT PREFERENCE POLL SYSTEM
 // ==========================================================================
-const DESIGNS = ["flame-devil", "redago-aura", "obsidian-emperor", "curse-god"];
+const POLL_OPTIONS = ["keychains", "mugs", "hoodies", "lowers", "boxers", "gym_outfit", "female_clothing", "dxz_figures"];
+
+const POLL_LABELS = {
+  "keychains": { label: "Keychains", icon: "fa-solid fa-key" },
+  "mugs": { label: "Mugs", icon: "fa-solid fa-mug-hot" },
+  "hoodies": { label: "Hoodies", icon: "fa-solid fa-shirt" },
+  "lowers": { label: "Lowers", icon: "fa-solid fa-socks" },
+  "boxers": { label: "Boxers", icon: "fa-solid fa-square" },
+  "gym_outfit": { label: "Gym Outfit", icon: "fa-solid fa-dumbbell" },
+  "female_clothing": { label: "Female Clothing", icon: "fa-solid fa-person-dress" },
+  "dxz_figures": { label: "3D Figures of DXZ", icon: "fa-solid fa-cube" }
+};
 
 function initPoll() {
-  const buttons = document.querySelectorAll(".poll-vote-btn");
+  const votingGrid = document.getElementById("poll-voting-grid");
+  const actionsBar = document.getElementById("poll-actions-bar");
+  const submitBtn = document.getElementById("poll-submit-btn");
+  const resultsView = document.getElementById("poll-results-view");
+  const resetContainer = document.getElementById("poll-reset-container");
+  const resetBtn = document.getElementById("poll-reset-btn");
+  const loginBlocker = document.getElementById("poll-login-blocker");
 
-  // Attach click listeners to vote buttons
-  buttons.forEach(btn => {
-    btn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      
+  if (!votingGrid || !submitBtn || !resultsView) return;
+
+  let selectedOption = null;
+
+  // Handle Card Selections
+  const cards = votingGrid.querySelectorAll(".poll-option-card");
+  cards.forEach(card => {
+    card.addEventListener("click", () => {
       if (!currentUser) {
         showNotification("Please log in or register to cast your vote!", true);
         document.getElementById("join-faction").scrollIntoView({ behavior: "smooth" });
         return;
       }
+      cards.forEach(c => c.classList.remove("selected"));
+      card.classList.add("selected");
+      selectedOption = card.getAttribute("data-option");
+      
+      submitBtn.disabled = false;
+      submitBtn.classList.add("ready");
+    });
+  });
 
-      const design = btn.getAttribute("data-design");
-      if (!design) return;
+  // Handle Vote Submission
+  submitBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (!selectedOption || !currentUser) return;
 
-      const submitBtn = btn;
-      submitBtn.disabled = true;
+    const btn = submitBtn;
+    btn.disabled = true;
+
+    if (isDemoMode) {
+      const localPoll = getLocalPollData();
+      if (localPoll.userVotes && localPoll.userVotes[currentUser.uid]) {
+        showNotification("You've already cast your vote!", true);
+        btn.disabled = false;
+        return;
+      }
+      localPoll.votes[selectedOption] = (localPoll.votes[selectedOption] || 0) + 1;
+      if (!localPoll.userVotes) localPoll.userVotes = {};
+      localPoll.userVotes[currentUser.uid] = selectedOption;
+      saveLocalPollData(localPoll);
+      showNotification("Vote submitted successfully!");
+      refreshPollUI();
+      updateStatsCounters();
+    } else {
+      try {
+        // Check if user already voted in Firestore
+        const voteDoc = await db.collection("votes").doc(currentUser.uid).get();
+        if (voteDoc.exists) {
+          showNotification("You've already cast your vote!", true);
+          btn.disabled = false;
+          return;
+        }
+        await db.collection("votes").doc(currentUser.uid).set({
+          uid: currentUser.uid,
+          option: selectedOption,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        showNotification("Vote submitted successfully!");
+        // UI will auto-update via Firestore listener
+      } catch (err) {
+        console.error("Error saving vote:", err);
+        btn.disabled = false;
+        showNotification("Failed to save vote. Check security rules.", true);
+      }
+    }
+  });
+
+  // Handle Changing/Resetting Vote
+  if (resetBtn) {
+    resetBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const btn = resetBtn;
+      btn.disabled = true;
 
       if (isDemoMode) {
         const localPoll = getLocalPollData();
-        if (localPoll.userVotes && localPoll.userVotes[currentUser.uid]) {
-          showNotification("You've already cast your vote!", true);
-          submitBtn.disabled = false;
-          return;
+        const previousVote = localPoll.userVotes ? localPoll.userVotes[currentUser.uid] : null;
+        if (previousVote && localPoll.votes[previousVote] > 0) {
+          localPoll.votes[previousVote] -= 1;
         }
-
-        // Record vote
-        if (!localPoll.votes[design]) localPoll.votes[design] = 0;
-        localPoll.votes[design] += 1;
-        if (!localPoll.userVotes) localPoll.userVotes = {};
-        localPoll.userVotes[currentUser.uid] = design;
-        
+        if (localPoll.userVotes) delete localPoll.userVotes[currentUser.uid];
         saveLocalPollData(localPoll);
-        showNotification(`Vote cast for ${getDesignLabel(design)}! 🎉`);
+        showNotification("Your vote has been reset.");
+        
+        // Reset selection state
+        selectedOption = null;
+        cards.forEach(c => c.classList.remove("selected"));
+        submitBtn.disabled = true;
+        submitBtn.classList.remove("ready");
+        btn.disabled = false;
         refreshPollUI();
         updateStatsCounters();
       } else {
         try {
-          // Check if user already voted in Firestore
-          const voteDoc = await db.collection("votes").doc(currentUser.uid).get();
-          if (voteDoc.exists) {
-            showNotification("You've already cast your vote!", true);
-            submitBtn.disabled = false;
-            return;
-          }
-
-          // Record vote doc
-          await db.collection("votes").doc(currentUser.uid).set({
-            uid: currentUser.uid,
-            design: design,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          });
-
-          showNotification(`Vote recorded for ${getDesignLabel(design)}! 🎉`);
-          // UI will auto-update via Firestore listener in subscribeToPoll()
+          await db.collection("votes").doc(currentUser.uid).delete();
+          showNotification("Your vote has been reset.");
+          
+          // Reset selection state
+          selectedOption = null;
+          cards.forEach(c => c.classList.remove("selected"));
+          submitBtn.disabled = true;
+          submitBtn.classList.remove("ready");
+          btn.disabled = false;
+          // UI will auto-update via Firestore listener
         } catch (err) {
-          console.error("Voting Error:", err);
-          submitBtn.disabled = false;
-          showNotification("Failed to save vote. Check security rules.", true);
+          console.error("Error resetting vote:", err);
+          btn.disabled = false;
+          showNotification("Failed to reset vote.", true);
         }
       }
     });
-  });
+  }
 }
 
 function refreshPollUI() {
   if (isDemoMode) {
     const localPoll = getLocalPollData();
-    const votedDesign = currentUser && localPoll.userVotes ? localPoll.userVotes[currentUser.uid] : null;
-    
-    if (votedDesign) {
-      showPollResults(localPoll);
-      lockPollCards(votedDesign);
-    } else {
-      unlockPollCards();
-    }
+    const votedOption = currentUser && localPoll.userVotes ? localPoll.userVotes[currentUser.uid] : null;
+    updatePollAuthUI(currentUser, votedOption);
+    showPollResults(localPoll, votedOption);
   } else {
-    // Setup Firestore live poll listener
     subscribeToPoll();
   }
 }
 
 function subscribeToPoll() {
   if (unsubscribeVotes) unsubscribeVotes();
-
-  if (!db) return;
+  
+  if (!db || isDemoMode) return;
 
   unsubscribeVotes = db.collection("votes").onSnapshot(snapshot => {
-    // Tally votes from snapshot
     const tally = { votes: {}, userVotes: {} };
-    DESIGNS.forEach(d => tally.votes[d] = 0);
-
+    POLL_OPTIONS.forEach(opt => tally.votes[opt] = 0);
+    
     snapshot.forEach(doc => {
       const data = doc.data();
-      if (data.design && DESIGNS.includes(data.design)) {
-        tally.votes[data.design] += 1;
+      const option = data.option || data.design; // support both fields
+      if (option && POLL_OPTIONS.includes(option)) {
+        tally.votes[option] += 1;
+        tally.userVotes[doc.id] = option;
       }
-      tally.userVotes[doc.id] = data.design;
     });
 
-    const votedDesign = currentUser ? tally.userVotes[currentUser.uid] : null;
-    
-    showPollResults(tally);
-    if (votedDesign) {
-      lockPollCards(votedDesign);
-    } else {
-      unlockPollCards();
-    }
+    const votedOption = currentUser ? tally.userVotes[currentUser.uid] : null;
+    updatePollAuthUI(currentUser, votedOption);
+    showPollResults(tally, votedOption);
   }, err => {
     console.error("Firestore poll subscribe error:", err);
   });
 }
 
-function showPollResults(pollData) {
-  const totalVotes = Object.values(pollData.votes).reduce((sum, v) => sum + v, 0);
-  const statusEl = document.getElementById("poll-status");
+function updatePollAuthUI(user, votedOption) {
+  const votingGrid = document.getElementById("poll-voting-grid");
+  const actionsBar = document.getElementById("poll-actions-bar");
+  const submitBtn = document.getElementById("poll-submit-btn");
+  const loginBlocker = document.getElementById("poll-login-blocker");
+  const cards = votingGrid.querySelectorAll(".poll-option-card");
 
-  DESIGNS.forEach(design => {
-    const votes = pollData.votes[design] || 0;
-    const percent = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0;
+  if (user) {
+    if (loginBlocker) loginBlocker.style.display = "none";
+    cards.forEach(c => c.style.pointerEvents = "auto");
 
-    const barFill = document.querySelector(`.poll-bar-fill[data-design="${design}"]`);
-    const barPercent = barFill ? barFill.closest(".poll-result-bar").querySelector(".poll-bar-percent") : null;
-
-    if (barFill) {
-      setTimeout(() => {
-        barFill.style.width = percent + "%";
-      }, 100);
+    if (votedOption) {
+      votingGrid.style.display = "none";
+      actionsBar.style.display = "none";
+    } else {
+      votingGrid.style.display = "grid";
+      actionsBar.style.display = "flex";
     }
-    if (barPercent) {
-      barPercent.textContent = `${percent}% (${votes} vote${votes !== 1 ? "s" : ""})`;
-    }
-  });
-
-  if (currentUser && pollData.userVotes && pollData.userVotes[currentUser.uid] && statusEl) {
-    const userVote = pollData.userVotes[currentUser.uid];
-    statusEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #2ECC71; margin-right: 0.5rem;"></i> You voted for <strong>"${getDesignLabel(userVote)}"</strong>. Thanks for participating!`;
-    statusEl.classList.add("visible");
-  } else if (statusEl) {
-    statusEl.classList.remove("visible");
+  } else {
+    if (loginBlocker) loginBlocker.style.display = "flex";
+    cards.forEach(c => c.style.pointerEvents = "none");
+    submitBtn.disabled = true;
+    submitBtn.classList.remove("ready");
+    
+    votingGrid.style.display = "grid";
+    actionsBar.style.display = "flex";
   }
 }
 
-function lockPollCards(votedDesign) {
-  const cards = document.querySelectorAll(".poll-card");
-  cards.forEach(card => {
-    const design = card.getAttribute("data-design");
-    const btn = card.querySelector(".poll-vote-btn");
+function showPollResults(pollData, votedOption) {
+  const resultsView = document.getElementById("poll-results-view");
+  const resetContainer = document.getElementById("poll-reset-container");
 
-    if (design === votedDesign) {
-      card.classList.add("voted");
-      if (btn) {
-        btn.innerHTML = '<i class="fa-solid fa-check"></i> Voted';
-        btn.disabled = true;
-      }
-    } else {
-      if (btn) {
-        btn.disabled = true;
-        btn.style.opacity = "0.3";
-        btn.style.cursor = "not-allowed";
-      }
-    }
-  });
+  if (!resultsView) return;
+
+  if (votedOption) {
+    // Calculate total votes
+    let totalVotes = 0;
+    POLL_OPTIONS.forEach(opt => {
+      totalVotes += (pollData.votes[opt] || 0);
+    });
+
+    resultsView.innerHTML = "";
+    
+    // Sort options by vote percentage/count descending
+    const sortedOptions = [...POLL_OPTIONS].sort((a, b) => {
+      return (pollData.votes[b] || 0) - (pollData.votes[a] || 0);
+    });
+
+    sortedOptions.forEach(key => {
+      const votes = pollData.votes[key] || 0;
+      const percent = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0;
+      const isVoted = key === votedOption;
+      const optionInfo = POLL_LABELS[key];
+
+      const row = document.createElement("div");
+      row.className = `poll-result-row ${isVoted ? 'voted-row' : ''}`;
+      row.innerHTML = `
+        <div class="poll-result-header">
+          <span class="poll-result-label">
+            <i class="${optionInfo.icon}"></i> ${optionInfo.label}
+          </span>
+          <span class="poll-result-percentage">${percent}% <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-muted);">(${votes.toLocaleString()} votes)</span></span>
+        </div>
+        <div class="poll-result-bar-track">
+          <div class="poll-result-bar-fill" data-percent="${percent}"></div>
+        </div>
+      `;
+      resultsView.appendChild(row);
+    });
+
+    resultsView.classList.add("active");
+    if (resetContainer) resetContainer.style.display = "flex";
+
+    // Animate the bars
+    setTimeout(() => {
+      const bars = resultsView.querySelectorAll(".poll-result-bar-fill");
+      bars.forEach(bar => {
+        const percent = bar.getAttribute("data-percent");
+        bar.style.width = percent + "%";
+      });
+    }, 100);
+  } else {
+    resultsView.classList.remove("active");
+    if (resetContainer) resetContainer.style.display = "none";
+  }
 }
 
-function unlockPollCards() {
-  const cards = document.querySelectorAll(".poll-card");
-  cards.forEach(card => {
-    card.classList.remove("voted");
-    const btn = card.querySelector(".poll-vote-btn");
-    const design = card.getAttribute("data-design");
-    if (btn) {
-      btn.disabled = false;
-      btn.style.opacity = "";
-      btn.style.cursor = "";
-      
-      // Restore icons
-      let icon = "fa-fire";
-      if (design === "redago-aura") icon = "fa-bolt";
-      else if (design === "obsidian-emperor") icon = "fa-crown";
-      else if (design === "curse-god") icon = "fa-skull";
-      btn.innerHTML = `<i class="fa-solid ${icon}"></i> Vote`;
-    }
-  });
-}
-
-function getDesignLabel(design) {
-  const labels = {
-    "flame-devil": "Flame Devil",
-    "redago-aura": "Redago Aura",
-    "obsidian-emperor": "Obsidian Emperor",
-    "curse-god": "Curse God Zalta"
-  };
-  return labels[design] || design;
-}
-
-// Local Storage Poll Data structure (fallback)
 function getLocalPollData() {
-  const saved = localStorage.getItem("dxz_poll");
+  const saved = localStorage.getItem("dxz_poll_preference_v2");
   if (saved) {
     try {
       const data = JSON.parse(saved);
+      if (!data.votes) data.votes = {};
       if (!data.userVotes) data.userVotes = {};
       return data;
-    } catch (e) {
-      // Fallback fallback
-    }
+    } catch(e) {}
   }
   const init = { votes: {}, userVotes: {} };
-  DESIGNS.forEach(d => init.votes[d] = 0);
+  POLL_OPTIONS.forEach(opt => init.votes[opt] = 0);
   return init;
 }
+
 function saveLocalPollData(data) {
-  localStorage.setItem("dxz_poll", JSON.stringify(data));
+  localStorage.setItem("dxz_poll_preference_v2", JSON.stringify(data));
 }
 
 // ==========================================================================
