@@ -824,10 +824,16 @@ function initEpisodeCountdown() {
   const timerEl = document.getElementById("top-timer");
   if (!timerEl) return;
 
-  const startTime = Date.now();
+  // Fixed past epoch (June 29, 2026 @ 12:00:00 PM IST) to make it live forever
+  const startTime = new Date("2026-06-29T12:00:00+05:30").getTime();
 
   function updateTimer() {
     const elapsed = Date.now() - startTime;
+    if (elapsed < 0) {
+      timerEl.textContent = "00:00:00";
+      return;
+    }
+    
     const totalSeconds = Math.floor(elapsed / 1000);
     
     const hours = Math.floor(totalSeconds / 3600);
