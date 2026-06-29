@@ -127,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
   try { initImageFallbacks(); } catch(e) { console.error("Error in initImageFallbacks:", e); }
   try { initEpisodeModal(); } catch(e) { console.error("Error in initEpisodeModal:", e); }
   try { initWikiSearch(); } catch(e) { console.error("Error in initWikiSearch:", e); }
+  try { initEpisodeCountdown(); } catch(e) { console.error("Error in initEpisodeCountdown:", e); }
 
   // Handle cross-page query parameters for search modals
   const urlParams = new URLSearchParams(window.location.search);
@@ -814,6 +815,35 @@ function initWikiSearch() {
       searchInput.focus();
     });
   }
+}
+
+// ==========================================================================
+// EPISODE 26 TOP ANNOUNCEMENT TIMER LOGIC (STOPWATCH)
+// ==========================================================================
+function initEpisodeCountdown() {
+  const timerEl = document.getElementById("top-timer");
+  if (!timerEl) return;
+
+  const startTime = Date.now();
+
+  function updateTimer() {
+    const elapsed = Date.now() - startTime;
+    const totalSeconds = Math.floor(elapsed / 1000);
+    
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    const formattedSeconds = seconds.toString().padStart(2, "0");
+
+    timerEl.textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  }
+
+  // Update timer immediately on load, then every second
+  updateTimer();
+  setInterval(updateTimer, 1000);
 }
 
 
