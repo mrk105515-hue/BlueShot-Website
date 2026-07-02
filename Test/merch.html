@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -18,8 +17,13 @@
   <!-- Custom Stylesheets -->
   <link rel="stylesheet" href="styles.css?v=1.0.2">
   <link rel="stylesheet" href="merch.css?v=1.0.2">
-</head>
-<body class="shop-body">
+<script type="text/javascript" id="www-widgetapi-script" src="https://www.youtube.com/s/player/5b27766f/www-widgetapi.vflset/www-widgetapi.js" async=""></script><script src="https://www.youtube.com/iframe_api"></script><script src="https://cdn.razorpay.com/static/cx/razorpay-risk-detection/bundle.js" async=""></script><style id="dxz-custom-theme">
+      :root {
+        --color-blue-neon: #00E5FF !important;
+        --color-redago: #FF124F !important;
+      }
+    </style></head>
+<body class="shop-body" style="overflow: hidden;">
 
   <!-- NAVIGATION HEADER -->
   <header class="navbar scrolled" id="navbar">
@@ -46,7 +50,31 @@
           <i class="fa-solid fa-cart-shopping"></i>
           <span id="cart-count-badge" class="cart-badge">0</span>
         </button>
-      </div>
+      <div id="nav-profile-widget" class="nav-profile-widget">
+        <button class="nav-profile-avatar-btn" id="nav-profile-avatar-btn" title="Logged in as Blueshot99. Click to view profile options.">
+          B
+        </button>
+        <div class="nav-profile-dropdown" id="nav-profile-dropdown">
+          <div class="nav-profile-dropdown-header">
+            <div class="nav-profile-dropdown-initials">B</div>
+            <div class="nav-profile-dropdown-info">
+              <strong class="nav-profile-dropdown-name">Blueshot99</strong>
+              <span class="nav-profile-dropdown-email">neerajsaklani89@gmail.com</span>
+            </div>
+          </div>
+          <div class="nav-profile-dropdown-divider"></div>
+          <a href="orders.html" class="nav-profile-dropdown-item">
+            <i class="fa-solid fa-box-open"></i> My Orders
+          </a>
+          <a href="hub.html#join-faction" class="nav-profile-dropdown-item">
+            <i class="fa-solid fa-users"></i> Faction Hub
+          </a>
+          <div class="nav-profile-dropdown-divider"></div>
+          <button class="nav-profile-dropdown-item nav-profile-logout-btn" id="nav-profile-logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Log Out
+          </button>
+        </div>
+      </div></div>
       
       <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
         <i class="fa-solid fa-bars"></i>
@@ -59,9 +87,9 @@
     <div class="carousel-track" id="carousel-track">
       <!-- Slide 1: Video Banner (Wait till video ends) -->
       <div class="carousel-slide video-slide">
-        <div class="video-banner-bg-wrap" id="shop-yt-bg">
+        <div class="video-banner-bg-wrap" id="shop-yt-bg"><iframe id="shop-yt-player" class="shop-yt-iframe" frameborder="0" allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Sequence 01 realesrgan" width="640" height="360" src="https://www.youtube.com/embed/phKgmmnrFNk?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=phKgmmnrFNk&amp;controls=0&amp;rel=0&amp;fs=0&amp;iv_load_policy=3&amp;disablekb=1&amp;modestbranding=1&amp;enablejsapi=1&amp;origin=https%3A%2F%2Fwww.blueshotwiki.com&amp;widgetid=1&amp;forigin=https%3A%2F%2Fwww.blueshotwiki.com%2Fmerch.html&amp;aoriginsup=1&amp;gporigin=https%3A%2F%2Fwww.blueshotwiki.com%2F&amp;vf=1"></iframe>
           <!-- Fallback image shown before/instead of video -->
-          <img src="assets/design-anime-2.png" alt="Shop Banner Fallback" class="video-banner-el" id="shop-bg-poster" style="opacity: 0.28;">
+          <img src="assets/design-anime-2.png" alt="Shop Banner Fallback" class="video-banner-el" id="shop-bg-poster" style="opacity: 0; transition: opacity 2s;">
           <div class="video-banner-overlay"></div>
         </div>
         <div class="video-banner-content container-width">
@@ -110,13 +138,13 @@
             <h3 class="series-title">D Series</h3>
             <span class="series-subtitle">Affordable. Stylish. Everyday.</span>
             <p class="series-desc">Start your journey with iconic designs at unbeatable prices.</p>
-            <button class="shop-now-btn" data-id="berry-tshirt">
+            <button class="shop-now-btn" data-id="berry-tshirt" style="cursor: pointer;">
               SHOP NOW <i class="fa-solid fa-arrow-right-long"></i>
             </button>
           </div>
           
           <div class="series-featured-display">
-            <div class="product-card" data-id="berry-tshirt">
+            <div class="product-card" data-id="berry-tshirt" style="cursor: pointer;">
               <div class="card-img-container">
                 <div class="card-badge pre-order">Pre-order</div>
                 <img src="assets/berry-angle-1.png" alt="BERRY T-Shirt" class="card-product-img">
@@ -165,13 +193,13 @@
             <h3 class="series-title">X Series</h3>
             <span class="series-subtitle">Bold. Powerful. Unforgettable.</span>
             <p class="series-desc">For those who want more detail, more character, and more attitude.</p>
-            <button class="shop-now-btn" data-id="cursegod-tshirt">
+            <button class="shop-now-btn" data-id="cursegod-tshirt" style="cursor: pointer;">
               SHOP NOW <i class="fa-solid fa-arrow-right-long"></i>
             </button>
           </div>
           
           <div class="series-featured-display">
-            <div class="product-card" data-id="cursegod-tshirt">
+            <div class="product-card" data-id="cursegod-tshirt" style="cursor: pointer;">
               <div class="card-img-container">
                 <div class="card-badge pre-order">Pre-order</div>
                 <img src="assets/cursegod-angle-1.png" alt="CURSE GOD T-Shirt" class="card-product-img">
@@ -179,7 +207,7 @@
               </div>
               <div class="card-info">
                 <h3 class="card-product-name">CURSE GOD T-Shirt</h3>
-                <span class="card-product-theme">Dark Magic Pink & Metal Edition</span>
+                <span class="card-product-theme">Dark Magic Pink &amp; Metal Edition</span>
                 <div class="card-footer">
                   <span class="card-price">₹799 <span class="card-mrp">₹1,299</span></span>
                   <button class="card-btn-add">Pre-order</button>
@@ -226,13 +254,13 @@
             <h3 class="series-title">Z Series</h3>
             <span class="series-subtitle">Premium. Exclusive. Legendary.</span>
             <p class="series-desc">The finest materials and most exclusive designs from the BlueShot universe.</p>
-            <button class="shop-now-btn" data-id="redago-tshirt">
+            <button class="shop-now-btn" data-id="redago-tshirt" style="cursor: pointer;">
               SHOP NOW <i class="fa-solid fa-arrow-right-long"></i>
             </button>
           </div>
           
           <div class="series-featured-display">
-            <div class="product-card" data-id="redago-tshirt">
+            <div class="product-card" data-id="redago-tshirt" style="cursor: pointer;">
               <div class="card-img-container">
                 <div class="card-badge pre-order">Pre-order</div>
                 <img src="assets/redago-new-1.png" alt="REDAGO T-Shirt" class="card-product-img">
@@ -356,7 +384,7 @@
           <i class="fa-solid fa-lock feature-icon"></i>
           <div class="feature-text">
             <h4>SECURE PAYMENT</h4>
-            <p>Safe & Encrypted</p>
+            <p>Safe &amp; Encrypted</p>
           </div>
         </div>
         <div class="feature-item">
@@ -386,22 +414,21 @@
     <div class="cart-drawer-backdrop" id="cart-drawer-backdrop"></div>
     <div class="cart-drawer-container">
       <div class="cart-header">
-        <h3>Your Pre-order List (<span id="cart-drawer-count">0</span>)</h3>
+        <h3>Your Pre-order List (<span id="cart-drawer-count">0 items</span>)</h3>
         <button id="cart-close-btn" class="cart-close-btn" aria-label="Close Cart"><i class="fa-solid fa-xmark"></i></button>
       </div>
       
       <!-- Cart Items list -->
       <div class="cart-items-list" id="cart-items-list">
-        <!-- Dynamically injected items -->
-        <div class="cart-empty-message">
-          <i class="fa-solid fa-cart-shopping"></i>
-          <p>Your pre-order list is empty.</p>
-          <a href="#" class="btn btn-secondary btn-close-drawer">Start Exploring</a>
-        </div>
+      <div class="cart-empty-message">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <p>Your pre-order list is empty.</p>
+        <button class="btn btn-secondary btn-close-drawer" style="padding: 0.6rem 1.5rem; font-size: 0.8rem;">Start Exploring</button>
       </div>
+    </div>
       
       <!-- Cart Footer -->
-      <div class="cart-footer" id="cart-drawer-footer">
+      <div class="cart-footer" id="cart-drawer-footer" style="display: none;">
         <div class="cart-summary-row">
           <span>Subtotal:</span>
           <span class="subtotal-val" id="cart-subtotal">₹0</span>
@@ -456,35 +483,35 @@
               <div class="form-grid-3">
                 <div class="form-group">
                   <label for="ship-name">Full Name *</label>
-                  <input type="text" id="ship-name" required placeholder="John Doe">
+                  <input type="text" id="ship-name" required="" placeholder="John Doe">
                 </div>
                 <div class="form-group">
                   <label for="ship-email">Email Address *</label>
-                  <input type="email" id="ship-email" required placeholder="johndoe@email.com">
+                  <input type="email" id="ship-email" required="" placeholder="johndoe@email.com">
                 </div>
                 <div class="form-group">
                   <label for="ship-phone">Phone Number *</label>
-                  <input type="tel" id="ship-phone" required placeholder="9876543210" pattern="[0-9]{10}">
+                  <input type="tel" id="ship-phone" required="" placeholder="9876543210" pattern="[0-9]{10}">
                 </div>
               </div>
               <div class="form-group">
                 <label for="ship-address">Street Address *</label>
-                <input type="text" id="ship-address" required placeholder="123 Redago Street">
+                <input type="text" id="ship-address" required="" placeholder="123 Redago Street">
               </div>
               <div class="form-grid-3">
                 <div class="form-group">
                   <label for="ship-city">City *</label>
-                  <input type="text" id="ship-city" required placeholder="New York">
+                  <input type="text" id="ship-city" required="" placeholder="New York">
                 </div>
                 <div class="form-group">
                   <label for="ship-zip">Zip / Postal Code *</label>
-                  <input type="text" id="ship-zip" required placeholder="10001">
+                  <input type="text" id="ship-zip" required="" placeholder="10001">
                 </div>
                 <div class="form-group">
                   <label for="ship-country">Country *</label>
-                  <select id="ship-country" required>
+                  <select id="ship-country" required="">
                     <option value="US">United States</option>
-                    <option value="IN" selected>India</option>
+                    <option value="IN" selected="">India</option>
                     <option value="CA">Canada</option>
                     <option value="GB">United Kingdom</option>
                     <option value="AU">Australia</option>
@@ -500,7 +527,7 @@
           <!-- STEP 2: PAYMENT INTEGRATION -->
           <div class="checkout-step-panel" id="checkout-step-2">
             <h3 class="checkout-panel-title">Secure Faction Payment</h3>
-            <p class="payment-subtitle">Review your order and pay securely via Razorpay — UPI, Cards, Wallets & Net Banking.</p>
+            <p class="payment-subtitle">Review your order and pay securely via Razorpay — UPI, Cards, Wallets &amp; Net Banking.</p>
             
             <div class="checkout-order-summary">
               <span>Amount due: <strong id="checkout-summary-total">₹0</strong></span>
@@ -512,7 +539,7 @@
                   <i class="fa-solid fa-shield-halved card-provider-icon" style="font-size: 2rem;"></i>
                 </div>
                 <h4 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem;">Razorpay Secure Checkout</h4>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 2rem;">Supports UPI, Debit/Credit Cards, Net Banking, Paytm, PhonePe & more.</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 2rem;">Supports UPI, Debit/Credit Cards, Net Banking, Paytm, PhonePe &amp; more.</p>
                 
                 <div class="wizard-buttons" style="justify-content: space-between;">
                   <button type="button" class="btn btn-secondary wizard-back-btn" id="payment-back-btn"><i class="fa-solid fa-arrow-left"></i> Shipping</button>
@@ -547,7 +574,7 @@
 
 
   <!-- RARE MARKS DETAIL MODAL -->
-  <div id="mark-modal" class="modal">
+  <div id="mark-modal" class="modal active">
     <div id="mark-modal-backdrop"></div>
     <div class="mark-modal-content">
       <div class="mark-modal-glow"></div>
@@ -562,32 +589,24 @@
       <span class="modal-mark-rarity">LEGENDARY (1 OF 7)</span>
       <h3 class="modal-mark-title">Mark of Dominance</h3>
       
-      <p class="modal-mark-lore">
-        <strong>THE FIRST OF THE 7 GREAT MARKS</strong><br><br>
-        This is <strong>Mark #1</strong> of the legendary <strong>7 Great Marks</strong>.<br><br>
-        If you're lucky enough to receive this mark on your T-shirt, you'll also get an <strong>exclusive QR Code Card</strong>.<br><br>
-        <strong>Scan the QR code</strong> to unlock exclusive rewards, secret content, special benefits, limited-time surprises, and eternal glory.<br><br>
-        <strong>Only the chosen will collect all 7 Great Marks.</strong>
-      </p>
+      <p class="modal-mark-lore"><p class="isSelectedEnd"><strong>THE FIRST OF THE 7 GREAT MARKS</strong></p><p class="isSelectedEnd">This is <strong>Mark #1</strong> of the legendary <strong>7 Great Marks</strong>.</p><p class="isSelectedEnd">If you're lucky enough to receive this mark on your T-shirt, you'll also get an <strong>exclusive QR Code Card</strong>.</p><p class="isSelectedEnd"><strong>Scan the QR code</strong> to unlock exclusive rewards, secret content, special benefits, limited-time surprises, and eternal glory.</p><p><strong>Only the chosen will collect all 7 Great Marks.</strong></p></p>
       
       <div class="modal-mark-info-grid">
         <div class="info-block">
           <h4>Lore Significance</h4>
-          <p>This mark is the <strong>ultimate symbol of dominance and power</strong>.<br><br>
-          It represents the <strong>Curse God</strong>, the <strong>Great Rulers</strong>, and the <strong>most legendary characters</strong> of the DXZ universe.<br><br>
-          Only those worthy of carrying their legacy can bear this mark.</p>
+          <p class=""><p class="isSelectedEnd">This mark is the <strong>ultimate symbol of dominance and power</strong>.</p><p class="isSelectedEnd">It represents the <strong>Curse God</strong>, the <strong>Great Rulers</strong>, and the <strong>most legendary characters</strong> of the DXZ universe.</p><p>Only those worthy of carrying their legacy can bear this mark.</p></p>
         </div>
         <div class="info-block">
           <h4>Exclusive Benefit</h4>
-          <p>⭐ <strong>Get Up to 90% of Your Money Back</strong><br><br>
-          🏆 <strong>Own a Rare Identity Mark</strong><br>A limited collectible that proves you're one of the chosen.<br><br>
-          🎁 <strong>Win a FREE DXZ T-Shirt</strong><br><br>
-          💸 <strong>Exclusive Discount on Your Next T-Shirt Purchase</strong><br><br>
-          🔓 <strong>Unlock Exclusive DXZ Content</strong><br>Secret lore, behind-the-scenes content, and special rewards.<br><br>
-          👑 <strong>Special Access to Reach BlueShot</strong><br>Exclusive opportunities to connect with the creator and become part of the inner DXZ community.</p>
+          <p class=""><p class="isSelectedEnd">⭐ <strong>Get Up to 90% of Your Money Back</strong></p><p class="isSelectedEnd">🏆 <strong>Own a Rare Identity Mark</strong><br>A limited collectible that proves you're one of the chosen.</p><p class="isSelectedEnd">🎁 <strong>Win a FREE DXZ T-Shirt</strong></p><p class="isSelectedEnd">💸 <strong>Exclusive Discount on Your Next T-Shirt Purchase</strong></p><p class="isSelectedEnd">🔓 <strong>Unlock Exclusive DXZ Content</strong><br>Secret lore, behind-the-scenes content, and special rewards.</p><p>👑 <strong>Special Access to Reach BlueShot</strong><br>Exclusive opportunities to connect with the creator and become part of the inner DXZ community.</p></p>
         </div>
       </div>
-
+      
+      <div class="modal-mark-reward-box">
+        <span class="reward-label"><i class="fa-solid fa-gift"></i> Surprise Waitlist Reward</span>
+        <div class="reward-code" id="reward-coupon-trigger" title="Click to copy coupon code">DOMINANCE_WAITLIST_X</div>
+        <p class="reward-note">Click the code above to copy! Use this code during pre-order shipping for priority drops.</p>
+      </div>
     </div>
   </div>
 
@@ -613,12 +632,12 @@
       </div>
       
       <div class="footer-bottom">
-        <p>&copy; 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
+        <p>© 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
         <div class="footer-bottom-links">
           <a href="index.html#hero">Back to Home</a>
           <a href="https://youtube.com/@BlueShot77" target="_blank">YouTube Channel</a>
           <a href="orders.html">Track Order</a>
-          <a href="terms.html">Terms & Conditions</a>
+          <a href="terms.html">Terms &amp; Conditions</a>
           <a href="privacy.html">Privacy Policy</a>
           <a href="refunds.html">Refund Policy</a>
           <a href="shipping.html">Shipping Policy</a>
@@ -633,11 +652,45 @@
   <script src="firebase-config.js"></script>
 
   <!-- Razorpay Web SDK for Dynamic Multi-Item Checkouts -->
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script><div class="razorpay-container" style="z-index: 2147483647; position: fixed; top: 0px; display: none; left: 0px; height: 100%; width: 100%; max-height: 100dvh; backface-visibility: hidden; overflow-y: visible;"><style>@keyframes rzp-rot{to{transform: rotate(360deg);}}@-webkit-keyframes rzp-rot{to{-webkit-transform: rotate(360deg);}} .razorpay-container > iframe {min-height: 100%!important;}</style><div class="razorpay-backdrop" style="min-height: 100%; transition: 0.3s ease-out; position: fixed; top: 0px; left: 0px; width: 100%; height: 100%;"><span style="text-decoration: none; background: rgb(214, 68, 68); border: 1px dashed white; padding: 3px; opacity: 0; transform: rotate(45deg); transition: opacity 0.3s ease-in; font-family: lato, ubuntu, helvetica, sans-serif; color: white; position: absolute; width: 200px; text-align: center; right: -50px; top: 50px;">Test Mode</span></div><iframe allowtransparency="true" frameborder="0" width="100%" height="100%" src="https://api.razorpay.com/v1/checkout/public?traffic_env=canary&amp;build=85ef944abe8eee7faa6c2d06fa838c0c2fe22e5c&amp;build_v1=da4ee3f43a28ad81dba8ed06daf899a4520c691f&amp;checkout_v2=1&amp;new_session=1&amp;rzp_device_id=1.c7c2350edbb6f84fdf45053ae86a346540370799.1779686649669.78691997&amp;unified_session_id=T7VVXAT9RuqqjL" class="razorpay-checkout-frame" allow="otp-credentials; payment; clipboard-write; publickey-credentials-get https://api.razorpay.com; publickey-credentials-create 'self' https://api.razorpay.com; web-share; camera *; local-network-access 'none'; loopback-network 'none';" style="opacity: 1; height: 100%; position: relative; background: none; display: block; border: 0px transparent; margin: 0px; padding: 0px; z-index: 2;"></iframe></div>
   
   <!-- Shop Logic Script -->
   <script src="merch.js?v=1.0.2"></script>
   <script src="search.js?v=1.0.2"></script>
   <script src="admin.js?v=1.0.2"></script>
-</body>
-</html>
+
+
+
+    <div class="global-search-overlay" id="global-search-overlay">
+      <div class="search-overlay-container">
+        <div class="search-overlay-header">
+          <div class="search-overlay-box">
+            <i class="fa-solid fa-magnifying-glass search-overlay-icon"></i>
+            <input type="text" id="global-search-input" placeholder="Search the BlueShot Wiki (e.g. BSG, Hoodie, Episode 1)..." autocomplete="off">
+            <button id="global-search-clear" class="search-overlay-clear"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <button id="global-search-close" class="search-overlay-close-btn"><i class="fa-solid fa-xmark"></i> Close</button>
+        </div>
+        
+        <div class="search-filters-row">
+          <span class="filter-label">Filter:</span>
+          <div class="filter-pills" id="global-search-pills">
+            <button class="filter-pill active" data-filter="all">All</button>
+            <button class="filter-pill" data-filter="characters">Characters</button>
+            <button class="filter-pill" data-filter="episodes">Episodes &amp; Lore</button>
+            <button class="filter-pill" data-filter="merch">Merchandise</button>
+            <button class="filter-pill" data-filter="bts">Behind the Scenes</button>
+          </div>
+        </div>
+        
+        <div class="search-overlay-results" id="global-search-results">
+          <div class="search-start-message">
+            <i class="fa-solid fa-keyboard"></i>
+            <p>Type to search characters, lore, merch, and pipeline steps...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+      
+    </body></html>

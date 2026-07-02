@@ -47,8 +47,8 @@ const CHARACTER_DB = {
   suma: {
     name: "Suma (Tactical Mind)",
     faction: "Tactical Leader",
-    quote: "Suma is older than Berry Cade. She is the sister of Jiggo Degan.",
-    desc: "Described as a genius combining beauty with brains, Suma is the operational leader of the hero group. She has no direct blood connection to Berry but coordinates the alliance with flawless tactical mastery and serves as Jiggo Degan's younger sister.",
+    quote: "Suma is older than Berry Cade. She is the daughter of Jiggo Degan.",
+    desc: "Described as a genius who combines beauty with brilliance, Suma is the operational leader of the group. She is the daughter of Jiggo Degan and the sister of Berry Cade. Renowned for her exceptional intelligence and flawless tactical mastery, she serves as one of the alliance's greatest strategists, leading her team with calm precision and sharp decision-making.",
     weapon: "Chao Tactical Blades & Intel Analysis",
     special: "Absolute Command & Vanguard Strike",
     stats: { strength: 65, speed: 88, power: 75, intellect: 99 },
@@ -821,7 +821,7 @@ function initWikiSearch() {
 // EPISODE 26 TOP ANNOUNCEMENT TIMER LOGIC (STOPWATCH)
 // ==========================================================================
 function initEpisodeCountdown() {
-  const timerEl = document.getElementById("top-timer");
+  const timerEl = document.getElementById("hero-timer");
   if (!timerEl) return;
 
   // Fixed past epoch (June 29, 2026 @ 12:00:00 PM IST) to make it live forever

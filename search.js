@@ -9,7 +9,7 @@ const GLOBAL_SEARCH_DB = [
   { name: "Curse God Zalta", category: "characters", desc: "Cursed Ally in Dark Bull Beast Mode 2nd Form. Escaped Infinity Prison.", link: "index.html#characters", type: "character", key: "zalta" },
   { name: "Emperor Jiggo Degan", category: "characters", desc: "Ruler of the East. Legendary mentor controlling the dark dimension portal.", link: "index.html#characters", type: "character", key: "jiggo" },
   { name: "Eysa (Blind Wielder)", category: "characters", desc: "Mystic Ally surrounded by a roaring emerald energy aura.", link: "index.html#characters", type: "character", key: "eysa" },
-  { name: "Suma (Tactical Mind)", category: "characters", desc: "Tactical leader, sister of Jiggo Degan. Combines beauty with brainpower.", link: "index.html#characters", type: "character", key: "suma" },
+  { name: "Suma (Tactical Mind)", category: "characters", desc: "Tactical leader, daughter of Jiggo Degan. Combines beauty with brilliance.", link: "index.html#characters", type: "character", key: "suma" },
   { name: "Berry Cade (Ogre Blade)", category: "characters", desc: "Adoptive son of Jiggo Degan wielding the heavy Ogre greatsword.", link: "index.html#characters", type: "character", key: "berry" },
   { name: "Hell (Fate Author)", category: "characters", desc: "West Emperor and antagonist wielding the God-Gifted Fate-Eraser Blade.", link: "index.html#characters", type: "character", key: "hell" },
   { name: "Kan (Teleporting Bomber)", category: "characters", desc: "Assassin ally using writing pens as dimensional teleportation anchors.", link: "index.html#characters", type: "character", key: "kan" },
