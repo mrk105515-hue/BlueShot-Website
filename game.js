@@ -1952,15 +1952,15 @@ async function endCombat(isVictory) {
     title.textContent = "Victory Achieved! 🏆";
     desc.textContent = "Your timing was stellar! You conquered your opponent and advanced your Beyond State limits.";
 
-    // Score calculations
-    let scoreHp = playerHP * 15;
-    let scorePerfect = perfectHits * 150;
-    let turnReduction = Math.max(1000 - (totalTurns * 40), 100);
-    let finalScore = scoreHp + scorePerfect + turnReduction;
+    // Score calculations - Max 10 points for Season 1
+    let baseVictoryPoints = 5;
+    let hpBonusPoints = Math.min(3, Math.ceil((playerHP / playerMaxHP) * 3));
+    let perfectBonusPoints = Math.min(2, Math.floor(perfectHits / 2));
+    let finalScore = baseVictoryPoints + hpBonusPoints + perfectBonusPoints;
 
-    document.getElementById("score-hp").textContent = `+${scoreHp} (${playerHP} HP left)`;
-    document.getElementById("score-perfects").textContent = `+${scorePerfect} (${perfectHits} Perfects)`;
-    document.getElementById("score-time").textContent = `+${turnReduction} (${totalTurns} Turns)`;
+    document.getElementById("score-time").textContent = `+${baseVictoryPoints} (Victory)`;
+    document.getElementById("score-hp").textContent = `+${hpBonusPoints} (${playerHP}/${playerMaxHP} HP)`;
+    document.getElementById("score-perfects").textContent = `+${perfectBonusPoints} (${perfectHits} Perfects)`;
     document.getElementById("score-total").textContent = finalScore;
 
     // Submit score to Database
@@ -1972,9 +1972,9 @@ async function endCombat(isVictory) {
     title.textContent = "Defeat in Battle 💀";
     desc.textContent = "You fell in the arena. Recalibrate your mind, practice your timing, and try again.";
 
-    document.getElementById("score-hp").textContent = "+0 (0 HP left)";
+    document.getElementById("score-time").textContent = "+0 (Defeat)";
+    document.getElementById("score-hp").textContent = "+0 (0 HP)";
     document.getElementById("score-perfects").textContent = `+0 (${perfectHits} Perfects)`;
-    document.getElementById("score-time").textContent = `+0 (${totalTurns} Turns)`;
     document.getElementById("score-total").textContent = 0;
   }
 }
@@ -2001,7 +2001,7 @@ async function submitHighScore(score) {
     loadLeaderboardUI();
   } else {
     try {
-      await db.collection("leaderboard").add({
+      await db.collection("leaderboard_s1").add({
         name: currentUser.displayName || "Anonymous",
         uid: currentUser.uid,
         character: charName,
@@ -2040,7 +2040,7 @@ function loadLeaderboardUI() {
     renderLeaderboardRows(uniqueScores);
   } else {
     if (!db) return;
-    db.collection("leaderboard")
+    db.collection("leaderboard_s1")
       .orderBy("score", "desc")
       .limit(100)
       .onSnapshot(snapshot => {
@@ -2115,21 +2115,21 @@ function renderLeaderboardRows(scores) {
 
 // Local Storage high score arrays fallback (Demo Mode)
 function getLocalLeaderboard() {
-  const saved = localStorage.getItem("dxz_leaderboard");
+  const saved = localStorage.getItem("dxz_leaderboard_s1");
   if (saved) {
     try { return JSON.parse(saved); } catch (e) {}
   }
   // Default mock leaderboard scores for beautiful presentation
   const mockScores = [
-    { name: "BSG Creator (Test)", character: "BSG", score: 4850, timestamp: Date.now() - 86400000 * 2, uid: "mock-1" },
-    { name: "West Emperor (AI Bot)", character: "Hell", score: 3900, timestamp: Date.now() - 86400000 * 5, uid: "mock-2" },
-    { name: "Faction Recruit 07", character: "Curse God Zalta", score: 2850, timestamp: Date.now() - 86400000 * 1, uid: "mock-3" }
+    { name: "BSG Creator (Test)", character: "BSG", score: 9, timestamp: Date.now() - 86400000 * 2, uid: "mock-1" },
+    { name: "West Emperor (AI Bot)", character: "Hell", score: 8, timestamp: Date.now() - 86400000 * 5, uid: "mock-2" },
+    { name: "Faction Recruit 07", character: "Curse God Zalta", score: 7, timestamp: Date.now() - 86400000 * 1, uid: "mock-3" }
   ];
   saveLocalLeaderboard(mockScores);
   return mockScores;
 }
 function saveLocalLeaderboard(arr) {
-  localStorage.setItem("dxz_leaderboard", JSON.stringify(arr));
+  localStorage.setItem("dxz_leaderboard_s1", JSON.stringify(arr));
 }
 
 // ==========================================================================
