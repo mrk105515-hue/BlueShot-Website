@@ -818,27 +818,34 @@ function initWikiSearch() {
 }
 
 // ==========================================================================
-// EPISODE 26 TOP ANNOUNCEMENT TIMER LOGIC (STOPWATCH)
+// EPISODE 26 RELEASE COUNTDOWN TIMER LOGIC
 // ==========================================================================
 function initEpisodeCountdown() {
   const timerEl = document.getElementById("hero-timer");
   if (!timerEl) return;
 
-  // Fixed past epoch (June 29, 2026 @ 12:00:00 PM IST) to make it live forever
-  const startTime = new Date("2026-06-29T12:00:00+05:30").getTime();
+  const targetDateStr = "2026-07-06T17:00:00+05:30"; // Target release: Monday 5 PM IST
+  const targetDate = new Date(targetDateStr).getTime();
 
   function updateTimer() {
-    const elapsed = Date.now() - startTime;
-    if (elapsed < 0) {
+    const now = Date.now();
+    const distance = targetDate - now;
+
+    if (distance < 0) {
       timerEl.textContent = "00:00:00";
+      const infoContainer = timerEl.parentElement;
+      if (infoContainer) {
+        const titleEl = infoContainer.querySelector("h3");
+        if (titleEl && titleEl.textContent !== "EP 26 IS NOW LIVE! 🎉") {
+          titleEl.textContent = "EP 26 IS NOW LIVE! 🎉";
+        }
+      }
       return;
     }
-    
-    const totalSeconds = Math.floor(elapsed / 1000);
-    
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
+
+    const hours = Math.floor(distance / 3600000);
+    const minutes = Math.floor((distance % 3600000) / 60000);
+    const seconds = Math.floor((distance % 60000) / 1000);
 
     const formattedHours = hours.toString().padStart(2, "0");
     const formattedMinutes = minutes.toString().padStart(2, "0");
