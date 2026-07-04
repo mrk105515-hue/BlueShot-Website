@@ -344,7 +344,7 @@ function renderHistoryList(orders) {
       </div>
       <div class="history-card-meta">
         <span>Placed on: <strong>${formattedDate}</strong></span>
-        <span style="float: right;">Total: <strong>₹${order.totalAmount.toLocaleString('en-IN')}</strong></span>
+        <span style="float: right;">Total: <strong>\u20B9${order.totalAmount.toLocaleString('en-IN')}</strong></span>
       </div>
       <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-secondary);">
         Items: ${order.items.map(it => `${it.quantity}x ${it.name}`).join(", ")}
@@ -498,13 +498,13 @@ function renderOrderDetails(order) {
               <div class="order-item-name">${item.name}</div>
               <div class="order-item-meta">Size: <strong>${item.size}</strong> | Qty: <strong>${item.quantity}</strong></div>
             </div>
-            <div class="order-item-price">₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
+            <div class="order-item-price">\u20B9${(item.price * item.quantity).toLocaleString('en-IN')}</div>
           </div>
         `).join("")}
       </div>
       <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 1.15rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.25rem; margin-top: 1rem; color:#FFF;">
         <span>Grand Total Paid</span>
-        <span style="color: var(--color-blue-neon);">₹${order.totalAmount.toLocaleString('en-IN')}</span>
+        <span style="color: var(--color-blue-neon);">\u20B9${order.totalAmount.toLocaleString('en-IN')}</span>
       </div>
     </div>
 

@@ -550,8 +550,11 @@ function initEasterEgg() {
     <div class="pgi-egg-card">
       <div class="pgi-egg-title">🌌 SECRET CHAMBER 🌌</div>
       <p class="pgi-egg-message">
-        You clicked the neon dot 7 times and unlocked the most hidden dimension of the website.<br><br>
-        This portal leads to the origins of the BlueShot universe. Thank you for scanning the depths!
+        Congrats on Finding This Easter Egg! 🎉<br><br>
+        Post a screenshot of this screen by tagging <strong>BSG</strong> and <strong>Captain PGI</strong> on YouTube to unlock a Secret Prize!<br><br>
+        <span style="font-size: 0.85rem; color: #ff124f; font-weight: 700; letter-spacing: 0.05em; display: block; margin-top: 1rem;">
+          Note - Only one Lucky winner (First to find) can win.
+        </span>
       </p>
       <div class="pgi-egg-author">Crafted with Brilliance by PGI</div>
       <div style="margin-top: 2rem;">

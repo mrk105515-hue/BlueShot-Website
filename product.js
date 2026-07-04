@@ -145,8 +145,8 @@ function initProductDetail() {
         <h1 class="product-title">${product.name}</h1>
         
         <div class="product-pricing">
-          <span class="price-value">₹${product.price}</span>
-          ${product.mrp ? `<span class="price-mrp">₹${product.mrp}</span>` : ''}
+          <span class="price-value">\u20B9${product.price}</span>
+          ${product.mrp ? `<span class="price-mrp">\u20B9${product.mrp}</span>` : ''}
           <span class="price-tag">Exclusive Pre-order drop</span>
         </div>
         
@@ -294,7 +294,7 @@ function updateCartUI() {
 
   // Update Subtotal
   if (subtotalDisplay) {
-    subtotalDisplay.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+    subtotalDisplay.textContent = `\u20B9${subtotal.toLocaleString('en-IN')}`;
   }
 
   // Render Items List
@@ -340,7 +340,7 @@ function updateCartUI() {
       <div class="cart-item-details">
         <h4 class="cart-item-name">${item.name}</h4>
         <div class="cart-item-meta">Size: ${item.size}</div>
-        <div class="cart-item-price">₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
+        <div class="cart-item-price">\u20B9${(item.price * item.quantity).toLocaleString('en-IN')}</div>
         <div class="cart-item-qty">
           <button class="qty-btn" onclick="changeQty('${item.id}', '${item.size}', -1)">-</button>
           <span class="qty-val">${item.quantity}</span>
@@ -498,7 +498,7 @@ function initCheckoutWizard() {
     let subtotal = 0;
     cart.forEach(item => subtotal += item.price * item.quantity);
     const summaryTotal = document.getElementById("checkout-summary-total");
-    if (summaryTotal) summaryTotal.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+    if (summaryTotal) summaryTotal.textContent = `\u20B9${subtotal.toLocaleString('en-IN')}`;
 
     toggleCartDrawer(false);
     checkoutModal.classList.add("active");
@@ -524,7 +524,7 @@ function initCheckoutWizard() {
       let subtotal = 0;
       cart.forEach(item => subtotal += item.price * item.quantity);
       const summaryTotal = document.getElementById("checkout-summary-total");
-      if (summaryTotal) summaryTotal.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+      if (summaryTotal) summaryTotal.textContent = `\u20B9${subtotal.toLocaleString('en-IN')}`;
       
       showStep(2); // Go to payment step
     });
@@ -660,7 +660,7 @@ function initCheckoutWizard() {
           }
 
           // Populate success screen receipt
-          document.getElementById("success-total-text").textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+          document.getElementById("success-total-text").textContent = `\u20B9${subtotal.toLocaleString('en-IN')}`;
           document.getElementById("success-order-id").textContent = response.razorpay_payment_id;
           document.getElementById("success-name-text").textContent = shipName;
           document.getElementById("success-email-text").textContent = shipEmail;
