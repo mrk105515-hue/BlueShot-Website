@@ -381,6 +381,18 @@ function refreshDesignPollUI() {
     const localPoll = getLocalDesignPollData();
     const votedDesign = currentUser && localPoll.userVotes ? localPoll.userVotes[currentUser.uid] : null;
     
+    // Auto-migrate local storage old vote
+    if (votedDesign && ["flame-devil", "redago-aura", "obsidian-emperor", "curse-god"].includes(votedDesign)) {
+      if (localPoll.votes[votedDesign] > 0) {
+        localPoll.votes[votedDesign] -= 1;
+      }
+      delete localPoll.userVotes[currentUser.uid];
+      saveLocalDesignPollData(localPoll);
+      showNotification("Your previous vote has been refreshed for the new options!");
+      refreshDesignPollUI();
+      return;
+    }
+    
     showDesignPollResults(localPoll);
     if (votedDesign) {
       lockDesignPollCards(votedDesign);
@@ -403,9 +415,20 @@ function subscribeToDesignPoll() {
 
     snapshot.forEach(doc => {
       const data = doc.data();
-      if (data.design && DESIGNS.includes(data.design)) {
-        tally.votes[data.design] += 1;
-        tally.userVotes[doc.id] = data.design;
+      if (data.design) {
+        if (DESIGNS.includes(data.design)) {
+          tally.votes[data.design] += 1;
+          tally.userVotes[doc.id] = data.design;
+        } else if (["flame-devil", "redago-aura", "obsidian-emperor", "curse-god"].includes(data.design)) {
+          // Auto-migrate online Firestore old vote
+          if (currentUser && doc.id === currentUser.uid) {
+            db.collection("votes").doc(currentUser.uid).set({
+              design: firebase.firestore.FieldValue.delete()
+            }, { merge: true }).then(() => {
+              showNotification("Your previous vote has been refreshed for the new options!");
+            }).catch(err => console.error("Error migrating old vote:", err));
+          }
+        }
       }
     });
 
