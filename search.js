@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initGlobalSearch();
   initNavbarProfileWidget();
   initMobileMenuToggle();
+  initEasterEgg();
 });
 
 function initGlobalSearch() {
@@ -424,5 +425,154 @@ function initMobileMenuToggle() {
       });
     });
   }
+}
+
+// ==========================================================================
+// DXZ WIKI PGI EASTER EGG SYSTEM
+// ==========================================================================
+function initEasterEgg() {
+  const logoDot = document.querySelector(".logo-dot");
+  if (!logoDot) return;
+
+  let clickCount = 0;
+  let clickTimeout = null;
+
+  // Make logo dot act as button on hover to invite interaction
+  logoDot.style.cursor = "pointer";
+
+  logoDot.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    clickCount++;
+
+    if (clickTimeout) clearTimeout(clickTimeout);
+
+    if (clickCount >= 7) {
+      clickCount = 0;
+      triggerEasterEgg();
+    } else {
+      clickTimeout = setTimeout(() => {
+        clickCount = 0;
+      }, 2000);
+    }
+  });
+
+  // Inject styles for the Easter Egg modal
+  const styles = `
+    .pgi-easter-egg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(4, 4, 6, 0.95);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      backdrop-filter: blur(15px);
+    }
+    .pgi-easter-egg-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .pgi-egg-card {
+      background: linear-gradient(135deg, rgba(20, 20, 35, 0.8) 0%, rgba(10, 10, 15, 0.9) 100%);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      box-shadow: 0 0 50px rgba(0, 229, 255, 0.25);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      transform: scale(0.85);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .pgi-easter-egg-overlay.active .pgi-egg-card {
+      transform: scale(1);
+    }
+    .pgi-egg-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 2.2rem;
+      color: #00e5ff;
+      text-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+    .pgi-egg-message {
+      font-family: var(--font-body);
+      color: #e5e5ea;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .pgi-egg-author {
+      font-size: 0.8rem;
+      color: #ff124f;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      margin-top: 1.5rem;
+      font-weight: 700;
+      font-family: var(--font-display);
+      text-shadow: 0 0 8px rgba(255, 18, 79, 0.4);
+    }
+    .pgi-egg-btn {
+      background: linear-gradient(90deg, #ff124f 0%, #00e5ff 100%);
+      border: none;
+      color: #fff;
+      padding: 0.8rem 2.5rem;
+      border-radius: 30px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 18, 79, 0.3);
+      transition: all 0.3s ease;
+    }
+    .pgi-egg-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 229, 255, 0.4);
+    }
+  `;
+  const styleEl = document.createElement("style");
+  styleEl.innerHTML = styles;
+  document.head.appendChild(styleEl);
+
+  // Inject overlay markup to body
+  const overlay = document.createElement("div");
+  overlay.className = "pgi-easter-egg-overlay";
+  overlay.id = "pgi-easter-egg-overlay";
+  overlay.innerHTML = `
+    <div class="pgi-egg-card">
+      <div class="pgi-egg-title">🌌 SECRET CHAMBER 🌌</div>
+      <p class="pgi-egg-message">
+        You clicked the neon dot 7 times and unlocked the most hidden dimension of the website.<br><br>
+        This portal leads to the origins of the BlueShot universe. Thank you for scanning the depths!
+      </p>
+      <div class="pgi-egg-author">Crafted with Brilliance by PGI</div>
+      <div style="margin-top: 2rem;">
+        <button class="pgi-egg-btn" id="pgi-egg-close">Return to Reality</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  // Close handler
+  document.getElementById("pgi-egg-close").addEventListener("click", () => {
+    overlay.classList.remove("active");
+  });
+}
+
+function triggerEasterEgg() {
+  const overlay = document.getElementById("pgi-easter-egg-overlay");
+  if (!overlay) return;
+  
+  console.log("%c🌌 EASTER EGG DISCOVERED: Crafted with Brilliance by PGI 🌌", "color: #00e5ff; font-size: 16px; font-weight: 900; text-shadow: 0 0 10px #00e5ff;");
+  
+  overlay.classList.add("active");
 }
 
