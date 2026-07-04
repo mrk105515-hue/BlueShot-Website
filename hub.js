@@ -306,7 +306,7 @@ function saveLocalMembers(arr) {
 // ==========================================================================
 // 1. T-SHIRT DESIGN POLL SYSTEM
 // ==========================================================================
-const DESIGNS = ["flame-devil", "redago-aura", "obsidian-emperor", "curse-god"];
+const DESIGNS = ["redago-tshirt", "cursegod-tshirt", "berry-tshirt"];
 let unsubscribeDesignVotes = null;
 
 function initDesignPoll() {
@@ -525,9 +525,8 @@ function unlockDesignPollCards() {
       btn.style.cursor = "";
       
       let icon = "fa-fire";
-      if (design === "redago-aura") icon = "fa-bolt";
-      else if (design === "obsidian-emperor") icon = "fa-crown";
-      else if (design === "curse-god") icon = "fa-skull";
+      if (design === "cursegod-tshirt") icon = "fa-skull";
+      else if (design === "berry-tshirt") icon = "fa-shirt";
       btn.innerHTML = `<i class="fa-solid ${icon}"></i> Vote`;
     }
   });
@@ -535,10 +534,9 @@ function unlockDesignPollCards() {
 
 function getDesignLabel(design) {
   const labels = {
-    "flame-devil": "Flame Devil",
-    "redago-aura": "Redago Aura",
-    "obsidian-emperor": "Obsidian Emperor",
-    "curse-god": "Curse God Zalta"
+    "redago-tshirt": "REDAGO T-Shirt",
+    "cursegod-tshirt": "CURSE GOD T-Shirt",
+    "berry-tshirt": "BERRY T-Shirt"
   };
   return labels[design] || design;
 }
