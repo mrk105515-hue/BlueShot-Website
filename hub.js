@@ -995,13 +995,13 @@ function subscribeToComments() {
   if (!db) return;
 
   unsubscribeComments = db.collection("comments")
-    .orderBy("timestamp", "desc")
     .onSnapshot(snapshot => {
       const comments = [];
       snapshot.forEach(doc => {
         const data = doc.data();
         comments.push({
           id: doc.id,
+          parentId: data.parentId || null,
           name: data.name,
           authorId: data.authorId,
           text: data.text,
@@ -1021,7 +1021,30 @@ function renderCommentsList(comments) {
 
   container.innerHTML = "";
 
-  if (comments.length === 0) {
+  // Separate top-level comments and replies
+  const topLevelComments = [];
+  const repliesMap = {};
+
+  comments.forEach(c => {
+    if (c.parentId) {
+      if (!repliesMap[c.parentId]) {
+        repliesMap[c.parentId] = [];
+      }
+      repliesMap[c.parentId].push(c);
+    } else {
+      topLevelComments.push(c);
+    }
+  });
+
+  // Sort threads descending (newest first)
+  topLevelComments.sort((a, b) => b.timestamp - a.timestamp);
+
+  // Sort replies ascending (oldest first)
+  Object.keys(repliesMap).forEach(pId => {
+    repliesMap[pId].sort((a, b) => a.timestamp - b.timestamp);
+  });
+
+  if (topLevelComments.length === 0) {
     container.innerHTML = `
       <div class="comments-empty">
         <i class="fa-solid fa-comment-dots"></i>
@@ -1031,33 +1054,81 @@ function renderCommentsList(comments) {
     return;
   }
 
-  comments.forEach(comment => {
-    const card = document.createElement("div");
-    card.className = "comment-card";
+  topLevelComments.forEach(comment => {
+    const threadWrap = document.createElement("div");
+    threadWrap.className = "comment-thread-wrap";
+    threadWrap.style.marginBottom = "1.5rem";
 
     const initials = comment.name ? comment.name.charAt(0).toUpperCase() : "?";
     const timeAgo = getTimeAgo(comment.timestamp);
     const isAuthor = currentUser && currentUser.uid === comment.authorId;
 
-    card.innerHTML = `
-      <div class="comment-card-header">
-        <div class="comment-author">
-          <div class="comment-avatar">${initials}</div>
-          <span class="comment-author-name">${escapeHtml(comment.name)}</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <span class="comment-time">${timeAgo}</span>
-          ${isAuthor ? `
-            <button class="comment-delete-btn" data-id="${comment.id}" title="Delete">
-              <i class="fa-solid fa-trash-can"></i>
+    let html = `
+      <div class="comment-card" data-id="${comment.id}">
+        <div class="comment-card-header">
+          <div class="comment-author">
+            <div class="comment-avatar">${initials}</div>
+            <span class="comment-author-name">${escapeHtml(comment.name)}</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span class="comment-time">${timeAgo}</span>
+            <button class="comment-reply-btn" data-id="${comment.id}">
+              <i class="fa-solid fa-reply"></i> Reply
             </button>
-          ` : ''}
+            ${isAuthor ? `
+              <button class="comment-delete-btn" data-id="${comment.id}" title="Delete">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            ` : ''}
+          </div>
         </div>
+        <div class="comment-body">${escapeHtml(comment.text)}</div>
       </div>
-      <div class="comment-body">${escapeHtml(comment.text)}</div>
+      <div class="comment-reply-form-wrap" id="reply-form-wrap-${comment.id}" style="display: none;"></div>
     `;
 
-    container.appendChild(card);
+    // Render nested replies
+    const replies = repliesMap[comment.id] || [];
+    if (replies.length > 0) {
+      html += `<div class="comment-replies">`;
+      replies.forEach(reply => {
+        const rInitials = reply.name ? reply.name.charAt(0).toUpperCase() : "?";
+        const rTimeAgo = getTimeAgo(reply.timestamp);
+        const rIsAuthor = currentUser && currentUser.uid === reply.authorId;
+
+        html += `
+          <div class="comment-reply-card comment-card" data-id="${reply.id}">
+            <div class="comment-card-header">
+              <div class="comment-author">
+                <div class="comment-avatar">${rInitials}</div>
+                <span class="comment-author-name">${escapeHtml(reply.name)}</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <span class="comment-time">${rTimeAgo}</span>
+                ${rIsAuthor ? `
+                  <button class="comment-delete-btn" data-id="${reply.id}" title="Delete">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+            <div class="comment-body">${escapeHtml(reply.text)}</div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+    }
+
+    threadWrap.innerHTML = html;
+    container.appendChild(threadWrap);
+  });
+
+  // Bind Reply button handlers
+  container.querySelectorAll(".comment-reply-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-id");
+      toggleReplyForm(id);
+    });
   });
 
   // Bind delete button listeners
@@ -1069,10 +1140,98 @@ function renderCommentsList(comments) {
   });
 }
 
+function toggleReplyForm(commentId) {
+  const formWrap = document.getElementById(`reply-form-wrap-${commentId}`);
+  if (!formWrap) return;
+
+  if (formWrap.style.display !== "none") {
+    formWrap.style.display = "none";
+    formWrap.innerHTML = "";
+    return;
+  }
+
+  // Hide any other active reply forms
+  document.querySelectorAll(".comment-reply-form-wrap").forEach(wrap => {
+    wrap.style.display = "none";
+    wrap.innerHTML = "";
+  });
+
+  if (!currentUser) {
+    showNotification("Please log in or register to reply to comments!", true);
+    document.getElementById("join-faction").scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+
+  formWrap.innerHTML = `
+    <form class="comment-reply-form" data-parent-id="${commentId}">
+      <textarea class="comment-reply-textarea" placeholder="Reply to this comment..." maxlength="500" required></textarea>
+      <div class="comment-reply-actions">
+        <button type="button" class="btn-reply-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-reply-submit">
+          <i class="fa-solid fa-reply"></i> Reply
+        </button>
+      </div>
+    </form>
+  `;
+  formWrap.style.display = "block";
+
+  const textarea = formWrap.querySelector(".comment-reply-textarea");
+  if (textarea) textarea.focus();
+
+  // Cancel reply action
+  formWrap.querySelector(".btn-reply-cancel").addEventListener("click", () => {
+    formWrap.style.display = "none";
+    formWrap.innerHTML = "";
+  });
+
+  // Submit reply action
+  formWrap.querySelector(".comment-reply-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const replyText = textarea.value.trim();
+    if (!replyText) return;
+
+    const submitBtn = formWrap.querySelector(".btn-reply-submit");
+    submitBtn.disabled = true;
+
+    if (isDemoMode) {
+      const comments = getLocalComments();
+      const newReply = {
+        id: "local_reply_" + Date.now(),
+        parentId: commentId,
+        name: currentUser.displayName || "BSG Warrior",
+        authorId: currentUser.uid,
+        text: replyText,
+        timestamp: Date.now()
+      };
+      comments.unshift(newReply);
+      saveLocalComments(comments);
+      showNotification("Reply posted! 💬");
+      refreshCommentsUI();
+      updateStatsCounters();
+    } else {
+      try {
+        await db.collection("comments").add({
+          parentId: commentId,
+          name: currentUser.displayName || "BSG Warrior",
+          authorId: currentUser.uid,
+          text: replyText,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        showNotification("Reply posted! 💬");
+      } catch (err) {
+        console.error("Firestore Add Reply Error:", err);
+        showNotification("Failed to post reply.", true);
+        submitBtn.disabled = false;
+      }
+    }
+  });
+}
+
 async function triggerDeleteComment(id) {
   if (isDemoMode) {
     let comments = getLocalComments();
-    comments = comments.filter(c => c.id !== id);
+    // Delete comment and all its replies
+    comments = comments.filter(c => c.id !== id && c.parentId !== id);
     saveLocalComments(comments);
     showNotification("Comment deleted.", true);
     refreshCommentsUI();
@@ -1081,7 +1240,6 @@ async function triggerDeleteComment(id) {
     try {
       await db.collection("comments").doc(id).delete();
       showNotification("Comment deleted.", true);
-      // UI updates via snapshot listener
     } catch (err) {
       console.error("Firestore Delete Comment Error:", err);
       showNotification("Failed to delete comment.", true);
