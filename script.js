@@ -824,7 +824,7 @@ function initEpisodeCountdown() {
   const timerEl = document.getElementById("hero-timer");
   if (!timerEl) return;
 
-  const targetDateStr = "2026-07-06T17:00:00+05:30"; // Target release: Monday 5 PM IST
+  const targetDateStr = "2026-07-07T17:00:00+05:30"; // Target release: Tuesday 5 PM IST
   const targetDate = new Date(targetDateStr).getTime();
 
   function updateTimer() {
