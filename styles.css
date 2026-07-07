@@ -842,15 +842,6 @@ a {
   z-index: 1;
 }
 
-/* Custom alignment & scaling for Kan's card to center his face and make it visible */
-.character-card[data-char="kan"] .character-img {
-  object-position: 40% center;
-  transform: scale(2.1) translateY(-24%);
-}
-
-.character-card[data-char="kan"]:hover .character-img {
-  transform: scale(2.2) translateY(-26%);
-}
 
 .character-card:hover {
   transform: translateY(-8px);
@@ -1345,11 +1336,6 @@ textarea.form-input {
   left: 0;
 }
 
-/* Custom alignment & scaling for Kan's modal portrait to make his face prominent */
-.char-modal-portrait[data-char="kan"] .char-modal-portrait-img {
-  object-position: 40% center;
-  transform: scale(1.8) translateY(-18%);
-}
 
 .char-modal-portrait::after {
   content: '';
