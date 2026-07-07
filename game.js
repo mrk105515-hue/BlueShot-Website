@@ -2026,23 +2026,32 @@ function loadLeaderboardUI() {
 
   if (isDemoMode) {
     const rawScores = getLocalLeaderboard();
-    // Deduplicate: Keep only the highest score for each unique player (uid or name)
-    const uniqueScores = [];
-    const seen = new Set();
+    const aggregated = {};
     for (const item of rawScores) {
       const key = item.uid || item.name;
-      if (key && !seen.has(key)) {
-        seen.add(key);
-        uniqueScores.push(item);
+      if (!key) continue;
+      if (!aggregated[key]) {
+        aggregated[key] = {
+          name: item.name,
+          character: item.character,
+          score: 0,
+          timestamp: item.timestamp,
+          uid: item.uid
+        };
       }
-      if (uniqueScores.length >= 10) break;
+      aggregated[key].score += item.score;
+      if (item.timestamp > aggregated[key].timestamp) {
+        aggregated[key].timestamp = item.timestamp;
+      }
     }
-    renderLeaderboardRows(uniqueScores);
+    const uniqueScores = Object.values(aggregated);
+    uniqueScores.sort((a, b) => b.score - a.score);
+    const top10 = uniqueScores.slice(0, 10);
+    renderLeaderboardRows(top10);
   } else {
     if (!db) return;
     db.collection("leaderboard_s1")
-      .orderBy("score", "desc")
-      .limit(100)
+      .limit(500)
       .onSnapshot(snapshot => {
         const rawScores = [];
         snapshot.forEach(doc => {
@@ -2056,23 +2065,30 @@ function loadLeaderboardUI() {
           });
         });
 
-        // Sort descending explicitly in Javascript to ensure correct numeric sorting
-        // even if Firestore returns legacy mixed-type string values at the top of the sort.
-        rawScores.sort((a, b) => b.score - a.score);
-
-        // Deduplicate: Keep only the highest score for each unique player (uid or name)
-        const uniqueScores = [];
-        const seen = new Set();
+        const aggregated = {};
         for (const item of rawScores) {
           const key = item.uid || item.name;
-          if (key && !seen.has(key)) {
-            seen.add(key);
-            uniqueScores.push(item);
+          if (!key) continue;
+          if (!aggregated[key]) {
+            aggregated[key] = {
+              name: item.name,
+              character: item.character,
+              score: 0,
+              timestamp: item.timestamp,
+              uid: item.uid
+            };
           }
-          if (uniqueScores.length >= 10) break;
+          aggregated[key].score += item.score;
+          if (item.timestamp > aggregated[key].timestamp) {
+            aggregated[key].timestamp = item.timestamp;
+            aggregated[key].character = item.character;
+          }
         }
 
-        renderLeaderboardRows(uniqueScores);
+        const uniqueScores = Object.values(aggregated);
+        uniqueScores.sort((a, b) => b.score - a.score);
+        const top10 = uniqueScores.slice(0, 10);
+        renderLeaderboardRows(top10);
       }, err => {
         console.error("Firestore leaderboard read error:", err);
         container.innerHTML = `<div class="leaderboard-empty">Could not load online ranking. Rules or config issue.</div>`;
