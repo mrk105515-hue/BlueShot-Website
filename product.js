@@ -147,7 +147,7 @@ function initProductDetail() {
         <div class="product-pricing">
           <span class="price-value">\u20B9${product.price}</span>
           ${product.mrp ? `<span class="price-mrp">\u20B9${product.mrp}</span>` : ''}
-          <span class="price-tag">Exclusive Pre-order drop</span>
+          <span class="price-tag">In Stock — Ready to Ship</span>
         </div>
         
         <p class="product-description">
@@ -168,8 +168,8 @@ function initProductDetail() {
         </div>
         
         <div class="product-actions">
-          <button id="add-to-preorder-btn" class="btn btn-danger btn-add-cart" style="width: 100%; max-width: 320px;">
-            <i class="fa-solid fa-cart-plus"></i> Add to Pre-order
+          <button id="add-to-cart-btn" class="btn btn-danger btn-add-cart" style="width: 100%; max-width: 320px;">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
           </button>
         </div>
         
@@ -207,7 +207,7 @@ function initProductDetail() {
   });
 
   // Attach pre-order button listener
-  const preorderBtn = document.getElementById("add-to-preorder-btn");
+  const preorderBtn = document.getElementById("add-to-cart-btn");
   if (preorderBtn) {
     preorderBtn.addEventListener("click", () => {
       window.addToCart(currentProductId, activeSize);
@@ -304,7 +304,7 @@ function updateCartUI() {
     itemsContainer.innerHTML = `
       <div class="cart-empty-message">
         <i class="fa-solid fa-cart-shopping"></i>
-        <p>Your pre-order list is empty.</p>
+        <p>Your shopping cart is empty.</p>
         <button class="btn btn-secondary btn-close-drawer" style="padding: 0.6rem 1.5rem; font-size: 0.8rem;">Start Exploring</button>
       </div>
     `;
@@ -380,7 +380,7 @@ window.addToCart = function(id, size = "N/A") {
 
   saveCartToStorage();
   updateCartUI();
-  showNotification(`Added ${product.name} (${size}) to pre-order list!`);
+  showNotification(`Added ${product.name} (${size}) to cart!`);
   
   setTimeout(() => {
     toggleCartDrawer(true);
@@ -410,7 +410,7 @@ window.removeCartItem = function(id, size) {
 
   saveCartToStorage();
   updateCartUI();
-  showNotification(`Removed ${itemName} from pre-order list.`, true);
+  showNotification(`Removed ${itemName} from cart.`, true);
 };
 
 // Drawer Toggle
@@ -491,7 +491,7 @@ function initCheckoutWizard() {
 
   const openCheckout = () => {
     if (cart.length === 0) {
-      showNotification("Your pre-order list is empty!", true);
+      showNotification("Your cart is empty!", true);
       return;
     }
 

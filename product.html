@@ -86,7 +86,7 @@
     <div class="cart-drawer-backdrop" id="cart-drawer-backdrop"></div>
     <div class="cart-drawer-container">
       <div class="cart-header">
-        <h3>Your Pre-order List (<span id="cart-drawer-count">0</span>)</h3>
+        <h3>Your Shopping Cart (<span id="cart-drawer-count">0</span>)</h3>
         <button id="cart-close-btn" class="cart-close-btn" aria-label="Close Cart"><i class="fa-solid fa-xmark"></i></button>
       </div>
       
@@ -94,7 +94,7 @@
       <div class="cart-items-list" id="cart-items-list">
         <div class="cart-empty-message">
           <i class="fa-solid fa-cart-shopping"></i>
-          <p>Your pre-order list is empty.</p>
+          <p>Your shopping cart is empty.</p>
           <a href="#" class="btn btn-secondary btn-close-drawer">Start Exploring</a>
         </div>
       </div>
@@ -107,10 +107,10 @@
         </div>
         <div class="cart-summary-row shipping-row">
           <span>Shipping:</span>
-          <span class="shipping-val">Free (Pre-order Drop)</span>
+          <span class="shipping-val">Free Shipping</span>
         </div>
         <button id="checkout-btn" class="btn btn-danger checkout-action-btn" style="width:100%; margin-top: 1rem;">
-          <i class="fa-solid fa-file-signature"></i> Apply for Pre-order
+          <i class="fa-solid fa-cart-shopping"></i> Checkout Now
         </button>
       </div>
     </div>
@@ -143,11 +143,11 @@
         <div class="checkout-form-container">
           <!-- STEP 1: PRE-ORDER APPLICATION -->
           <div class="checkout-step-panel active" id="checkout-step-1">
-            <h3 class="checkout-panel-title">DXZ Shop Pre-order Application</h3>
+            <h3 class="checkout-panel-title">Secure Checkout — Shipping Address</h3>
             
-            <div class="alert-banner" style="background: rgba(255, 18, 79, 0.1); border: 1px solid var(--color-redago); border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; color: #FFF; font-size: 0.9rem; display: flex; align-items: center; gap: 0.75rem;">
-              <i class="fa-solid fa-triangle-exclamation" style="color: var(--color-redago); font-size: 1.2rem;"></i>
-              <span><strong>Notice:</strong> Only Pre-order. Shop is under development. Only lucky customers can be first buyers.</span>
+            <div class="alert-banner" style="background: rgba(0, 229, 255, 0.08); border: 1px solid var(--color-blue-neon); border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; color: #FFF; font-size: 0.9rem; display: flex; align-items: center; gap: 0.75rem;">
+              <i class="fa-solid fa-shield-halved" style="color: var(--color-blue-neon); font-size: 1.2rem;"></i>
+              <span><strong>Secure Checkout:</strong> All transactions are processed securely via SSL and encrypted connection.</span>
             </div>
             
             <form id="shipping-form" class="checkout-form">
@@ -190,7 +190,7 @@
                 </div>
               </div>
               <div class="wizard-buttons">
-                <button type="submit" class="btn btn-primary wizard-next-btn">Submit Pre-order Application <i class="fa-solid fa-paper-plane"></i></button>
+                <button type="submit" class="btn btn-primary wizard-next-btn">Proceed to Payment <i class="fa-solid fa-paper-plane"></i></button>
               </div>
             </form>
           </div>
@@ -222,14 +222,14 @@
             <div class="success-icon-wrap">
               <i class="fa-solid fa-circle-check"></i>
             </div>
-            <h3 class="checkout-panel-title success-title">Pre-order Application Received!</h3>
+            <h3 class="checkout-panel-title success-title">Order Placed Successfully! 🎉</h3>
             <p class="success-desc">
-              Your pre-order application has been received. Since the shop is currently under development, only lucky customers will be selected as the first buyers. If selected, a custom purchase link will be sent to <strong id="success-email-text"></strong>.
+              Your order has been placed successfully! Your payment has been received, and we are preparing your package. A confirmation receipt has been sent to your email <strong id="success-email-text"></strong>.
             </p>
             <div class="success-receipt-box">
-              <div class="receipt-row"><span>Application ID:</span> <strong id="success-order-id">DXZ-87629</strong></div>
-              <div class="receipt-row"><span>Applied By:</span> <span id="success-name-text">John Doe</span></div>
-              <div class="receipt-row"><span>Est. Total:</span> <strong id="success-total-text">₹1,999</strong></div>
+              <div class="receipt-row"><span>Order ID:</span> <strong id="success-order-id">DXZ-87629</strong></div>
+              <div class="receipt-row"><span>Customer:</span> <span id="success-name-text">John Doe</span></div>
+              <div class="receipt-row"><span>Paid Total:</span> <strong id="success-total-text">₹1,999</strong></div>
             </div>
             <button id="success-continue-btn" class="btn btn-danger" style="margin-top: 2rem; padding: 0.8rem 2.5rem;">Continue Exploring</button>
           </div>

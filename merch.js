@@ -157,7 +157,7 @@ function updateCartUI() {
     itemsContainer.innerHTML = `
       <div class="cart-empty-message">
         <i class="fa-solid fa-cart-shopping"></i>
-        <p>Your pre-order list is empty.</p>
+        <p>Your shopping cart is empty.</p>
         <button class="btn btn-secondary btn-close-drawer" style="padding: 0.6rem 1.5rem; font-size: 0.8rem;">Start Exploring</button>
       </div>
     `;
@@ -237,7 +237,7 @@ window.addToCart = function(id, size = "N/A") {
 
   saveCartToStorage();
   updateCartUI();
-  showNotification(`Added ${product.name} (${size}) to pre-order list!`);
+  showNotification(`Added ${product.name} (${size}) to cart!`);
   
   // Auto slide open the cart drawer so user sees it added
   setTimeout(() => {
@@ -268,7 +268,7 @@ window.removeCartItem = function(id, size) {
 
   saveCartToStorage();
   updateCartUI();
-  showNotification(`Removed ${itemName} from pre-order list.`, true);
+  showNotification(`Removed ${itemName} from cart.`, true);
 };
 
 // ==========================================================================
@@ -399,7 +399,7 @@ function initCheckoutWizard() {
 
   const openCheckout = () => {
     if (cart.length === 0) {
-      showNotification("Your pre-order list is empty!", true);
+      showNotification("Your cart is empty!", true);
       return;
     }
 
