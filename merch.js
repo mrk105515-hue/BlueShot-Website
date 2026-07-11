@@ -1,7 +1,9 @@
-// ==========================================================================
-// DXZ SHOP SYSTEM (AMAZON-STYLE CART & CHECKOUT)
-// Persistent state with localStorage
-// ==========================================================================
+// Ensure Firebase is initialized
+if (typeof firebase !== "undefined" && typeof firebaseConfig !== "undefined") {
+  if (firebase.apps.length === 0) {
+    firebase.initializeApp(firebaseConfig);
+  }
+}
 
 // Global Cart State
 let cart = [];
@@ -460,9 +462,11 @@ function initCheckoutWizard() {
       const shipEmail = document.getElementById("ship-email").value.trim();
       const shipPhone = document.getElementById("ship-phone").value.trim();
       const shipAddress = document.getElementById("ship-address").value.trim();
+      const shipLandmark = document.getElementById("ship-landmark") ? document.getElementById("ship-landmark").value.trim() : "";
+      const shipState = document.getElementById("ship-state") ? document.getElementById("ship-state").value.trim() : "";
       
-      if (!shipName || !shipEmail || !shipPhone || !shipAddress) {
-        showNotification("Please complete your shipping address and phone number first!", true);
+      if (!shipName || !shipEmail || !shipPhone || !shipAddress || !shipState) {
+        showNotification("Please complete your shipping address, state, and phone number first!", true);
         showStep(1);
         return;
       }
@@ -530,6 +534,8 @@ function initCheckoutWizard() {
                 phone: shipPhone,
                 name: shipName,
                 address: shipAddress,
+                landmark: shipLandmark,
+                state: shipState,
                 city: city,
                 zip: zip,
                 country: country,
@@ -563,6 +569,8 @@ function initCheckoutWizard() {
               phone: shipPhone,
               name: shipName,
               address: shipAddress,
+              landmark: shipLandmark,
+              state: shipState,
               city: city,
               zip: zip,
               country: country,
@@ -576,6 +584,24 @@ function initCheckoutWizard() {
             localStorage.setItem("dxz_demo_orders", JSON.stringify(localOrders));
           } catch (e) {
             console.error("Failed to write order to localStorage:", e);
+          }
+
+          // Trigger Shiprocket order synchronization
+          if (typeof syncOrderWithShiprocket === "function") {
+            syncOrderWithShiprocket({
+              orderId: response.razorpay_payment_id,
+              email: shipEmail,
+              phone: shipPhone,
+              name: shipName,
+              address: shipAddress,
+              landmark: shipLandmark,
+              state: shipState,
+              city: city,
+              zip: zip,
+              country: country,
+              items: orderedItems,
+              totalAmount: subtotal
+            });
           }
 
           // Populate success screen receipt
@@ -607,6 +633,13 @@ function initCheckoutWizard() {
           "color": "#FF124F" // DXZ Crimson neon brand color
         }
       };
+
+      if (amountPaise === 0) {
+        options.handler({
+          razorpay_payment_id: "FREE_TEST_" + Math.random().toString(36).substr(2, 9).toUpperCase()
+        });
+        return;
+      }
 
       if (typeof Razorpay !== "undefined") {
         const rzp = new Razorpay(options);
@@ -911,4 +944,200 @@ function initRareMarks() {
   }
 }
 
+// ==========================================================================
+// SHIPROCKET AUTOMATION INTEGRATION
+// ==========================================================================
+async function syncOrderWithShiprocket(order) {
+  if (typeof shiprocketConfig === "undefined") {
+    console.warn("Shiprocket configuration not found in firebase-config.js. Order sync skipped.");
+    return;
+  }
+
+  // 1. Secure Webhook Integration (Make / Zapier / Pipedream) - RECOMMENDED
+  if (shiprocketConfig.webhookUrl && shiprocketConfig.webhookUrl !== "YOUR_MAKE_OR_ZAPIER_WEBHOOK_URL") {
+    console.log("Sending order details to Shiprocket webhook:", order.orderId);
+    try {
+      const response = await fetch(shiprocketConfig.webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(order)
+      });
+      if (response.ok) {
+        console.log("Order synced with Shiprocket webhook successfully!");
+        showNotification("Order sent to Shiprocket!");
+      } else {
+        console.error("Webhook responded with an error status:", response.status);
+      }
+    } catch (err) {
+      console.error("Failed to post order to Shiprocket webhook:", err);
+    }
+    return;
+  }
+
+  // 2. Direct API Integration (Fallback with CORS proxy)
+  let token = (shiprocketConfig.token && shiprocketConfig.token !== "YOUR_SHIPROCKET_JWT_TOKEN") ? shiprocketConfig.token : null;
+
+  if (!token && shiprocketConfig.email && shiprocketConfig.email !== "YOUR_SHIPROCKET_EMAIL" && shiprocketConfig.password && shiprocketConfig.password !== "YOUR_SHIPROCKET_PASSWORD") {
+    console.log("Authenticating directly with Shiprocket API...", order.orderId);
+    try {
+      const proxyUrl = "https://corsproxy.io/?url=";
+      const targetAuthUrl = encodeURIComponent("https://apiv2.shiprocket.in/v1/external/auth/login");
+
+      const authResponse = await fetch(`${proxyUrl}${targetAuthUrl}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: shiprocketConfig.email,
+          password: shiprocketConfig.password
+        })
+      });
+
+      if (!authResponse.ok) {
+        throw new Error(`Shiprocket auth failed: ${authResponse.status}`);
+      }
+
+      const authData = await authResponse.json();
+      token = authData.token;
+    } catch (err) {
+      console.error("Shiprocket Login Error:", err);
+    }
+  }
+
+  if (token) {
+    console.log("Sending order details directly to Shiprocket API...", order.orderId);
+    try {
+      const proxyUrl = "https://corsproxy.io/?url=";
+      const orderItems = order.items.map(item => ({
+        name: `${item.name} (${item.size})`,
+        sku: `${item.id}-${item.size}`,
+        units: item.quantity,
+        selling_price: item.price
+      }));
+
+      const now = new Date();
+      const formattedDate = now.getFullYear() + "-" +
+        String(now.getMonth() + 1).padStart(2, '0') + "-" +
+        String(now.getDate()).padStart(2, '0') + " " +
+        String(now.getHours()).padStart(2, '0') + ":" +
+        String(now.getMinutes()).padStart(2, '0');
+
+      const payload = {
+        order_id: order.orderId,
+        order_date: formattedDate,
+        pickup_location: shiprocketConfig.pickupLocation || "Primary",
+        channel_id: shiprocketConfig.channelId || "",
+        billing_customer_name: order.name.split(" ")[0] || "Customer",
+        billing_last_name: order.name.split(" ").slice(1).join(" ") || "",
+        billing_address: order.address + (order.landmark ? ", Near " + order.landmark : ""),
+        billing_city: order.city,
+        billing_pincode: order.zip,
+        billing_state: order.state || order.city, // actual state from checkout
+        billing_country: "India",
+        billing_email: order.email,
+        billing_phone: order.phone,
+        shipping_is_billing: true,
+        order_items: orderItems,
+        payment_method: "Prepaid",
+        sub_total: order.totalAmount,
+        length: 10,
+        breadth: 10,
+        height: 5,
+        weight: 0.3
+      };
+
+      const targetOrderUrl = encodeURIComponent("https://apiv2.shiprocket.in/v1/external/orders/create/adhoc");
+      const orderResponse = await fetch(`${proxyUrl}${targetOrderUrl}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!orderResponse.ok) {
+        const errMsg = await orderResponse.text();
+        throw new Error(`Shiprocket order creation failed: ${errMsg}`);
+      }
+
+      const orderData = await orderResponse.json();
+      console.log("Successfully synced order with Shiprocket directly!", orderData);
+      showNotification("Order synced with Shiprocket!");
+    } catch (err) {
+      console.error("Shiprocket Sync Error:", err);
+    }
+    return;
+  }
+
+  console.log("Shiprocket sync skipped: neither webhookUrl nor email/password/token keys configured.");
+}
+
+// Dynamic developer test item for blueshotconnectx@gmail.com
+if (typeof firebase !== "undefined") {
+  firebase.auth().onAuthStateChanged(user => {
+    if (user && user.email === "blueshotconnectx@gmail.com") {
+      activateDeveloperTestItem();
+    }
+  });
+}
+
+function activateDeveloperTestItem() {
+  // Add to catalog
+  PRODUCTS_CATALOG["test-free-tshirt"] = {
+    id: "test-free-tshirt",
+    name: "DXZ TEST T-Shirt (Free)",
+    price: 0,
+    mrp: 999,
+    image: "assets/char-bsg.png",
+    badge: "Free Developer Test Item",
+    badgeClass: "redago-badge",
+    images: ["assets/char-bsg.png"],
+    description: "Only for web testing, not a real sale item."
+  };
+
+  // Inject card into merch.html gallery
+  const gallery = document.querySelector(".series-row.red-theme .series-gallery");
+  if (gallery) {
+    // Replace the first locked card with the test item
+    const firstLocked = gallery.querySelector(".locked-card");
+    if (firstLocked) {
+      const testCard = document.createElement("div");
+      testCard.className = "product-card";
+      testCard.setAttribute("data-id", "test-free-tshirt");
+      testCard.innerHTML = `
+        <div class="card-img-container">
+          <div class="card-badge live" style="background: var(--color-blue-neon) !important; color: #000 !important; font-weight: bold;">FREE TEST</div>
+          <img src="assets/char-bsg.png" alt="DXZ TEST T-Shirt (Free)" class="card-product-img">
+          <button class="quick-add-btn" title="View Options"><i class="fa-solid fa-eye"></i></button>
+        </div>
+        <div class="card-info">
+          <h3 class="card-product-name">DXZ TEST T-Shirt (Free)</h3>
+          <span class="card-product-theme">Developer Verification Drop</span>
+          <div class="card-footer">
+            <span class="card-price">₹0 <span class="card-mrp">₹999</span></span>
+            <button class="card-btn-add">Add to Cart</button>
+          </div>
+        </div>
+      `;
+      gallery.replaceChild(testCard, firstLocked);
+      
+      // Re-run triggers initialization to bind events
+      initCollectionGrid();
+      
+      // Bind direct Add to Cart click on this specific card
+      const addBtn = testCard.querySelector(".card-btn-add");
+      if (addBtn) {
+        addBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          window.addToCart("test-free-tshirt", "M");
+        });
+      }
+    }
+  }
+}
 
