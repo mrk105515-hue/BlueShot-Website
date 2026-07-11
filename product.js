@@ -914,28 +914,5 @@ async function syncOrderWithShiprocket(order) {
   console.log("Shiprocket sync skipped: neither webhookUrl nor email/password/token keys configured.");
 }
 
-// Dynamic developer test item for blueshotconnectx@gmail.com
-if (typeof firebase !== "undefined") {
-  firebase.auth().onAuthStateChanged(user => {
-    if (user && user.email === "blueshotconnectx@gmail.com") {
-      PRODUCTS_CATALOG["test-free-tshirt"] = {
-        id: "test-free-tshirt",
-        name: "DXZ TEST T-Shirt (Free)",
-        price: 0,
-        mrp: 999,
-        image: "assets/char-bsg.png",
-        badge: "Free Developer Test Item",
-        badgeClass: "redago-badge",
-        images: ["assets/char-bsg.png"],
-        description: "Only for web testing, not a real sale item."
-      };
-      // If currently trying to view the test-free-tshirt page, reload the details pane
-      const urlParams = new URLSearchParams(window.location.search);
-      const productId = urlParams.get('id');
-      if (productId === "test-free-tshirt") {
-        initProductDetail();
-      }
-    }
-  });
-}
+
 
