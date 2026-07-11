@@ -1059,6 +1059,7 @@ async function syncOrderWithShiprocket(order) {
       };
 
       const targetOrderUrl = "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc";
+      console.log("Shiprocket Sync Payload:", payload);
       const orderResponse = await fetch(`${proxyUrl}${targetOrderUrl}`, {
         method: "POST",
         headers: {
