@@ -75,6 +75,90 @@ const PRODUCTS_CATALOG = {
       "assets/bundle-duo-new.png"
     ],
     description: "Double the faction power. Get both the custom SUMA and BERRY T-Shirts in one exclusive faction bundle pack. Show your support for the East Emperor's line and command the battlefield."
+  },
+  "cursegod-dominance-tshirt": {
+    id: "cursegod-dominance-tshirt",
+    name: "CURSE GOD DOMINANCE T-Shirt",
+    price: 599,
+    mrp: 999,
+    image: "assets/cursegod-dominance-1.png",
+    badge: "Dominance Faction Edition",
+    badgeClass: "cursegod-badge",
+    images: [
+      "assets/cursegod-dominance-1.png",
+      "assets/cursegod-dominance-2.png",
+      "assets/cursegod-dominance-3.png",
+      "assets/cursegod-dominance-4.png",
+      "assets/cursegod-dominance-5.png"
+    ],
+    description: "Rule the battlefield with supreme authority. The official CURSE GOD DOMINANCE custom graphic t-shirt features the striking white metal typography style on a premium heavyweight obsidian black tee. Built for those who demand power and dominance."
+  },
+  "bloodscar-tshirt": {
+    id: "bloodscar-tshirt",
+    name: "7 BLOODSCAR OF HELL T-Shirt",
+    price: 599,
+    mrp: 999,
+    image: "assets/bloodscar-1.png",
+    badge: "Bloodscar Faction Edition",
+    badgeClass: "berry-badge",
+    images: [
+      "assets/bloodscar-1.png"
+    ],
+    description: "Embrace the underworld fury. The official 7 BLOODSCAR OF HELL custom graphic t-shirt features the raw white metal typography style on a premium heavyweight obsidian black tee. Built for faction legends who command dark power."
+  },
+  "plain-black-tshirt": {
+    id: "plain-black-tshirt",
+    name: "Plain Faction T-Shirt (Black)",
+    price: 499,
+    mrp: 799,
+    image: "assets/bloodscar-3.png",
+    badge: "Plain Faction Edition",
+    badgeClass: "berry-badge",
+    images: [
+      "assets/bloodscar-3.png",
+      "assets/bloodscar-2.png",
+      "assets/bloodscar-4.png"
+    ],
+    description: "Keep it minimal and clean. The official Plain Faction T-Shirt in stealthy Faction Black. Made with 100% premium heavyweight combed cotton for a perfect fit and everyday durability."
+  },
+  "plain-berry-tshirt": {
+    id: "plain-berry-tshirt",
+    name: "Plain Faction T-Shirt (Berry)",
+    price: 499,
+    mrp: 799,
+    image: "assets/berry-5.png",
+    badge: "Plain Faction Edition",
+    badgeClass: "berry-badge",
+    images: [
+      "assets/berry-5.png"
+    ],
+    description: "Keep it minimal and clean. The official Plain Faction T-Shirt in rich Berry Purple. Made with 100% premium heavyweight combed cotton for a perfect fit and everyday durability."
+  },
+  "plain-maroon-tshirt": {
+    id: "plain-maroon-tshirt",
+    name: "Plain Faction T-Shirt (Maroon)",
+    price: 499,
+    mrp: 799,
+    image: "assets/plain-maroon.png",
+    badge: "Plain Faction Edition",
+    badgeClass: "redago-badge",
+    images: [
+      "assets/plain-maroon.png"
+    ],
+    description: "Keep it minimal and clean. The official Plain Faction T-Shirt in bold Faction Maroon. Made with 100% premium heavyweight combed cotton for a perfect fit and everyday durability."
+  },
+  "plain-white-tshirt": {
+    id: "plain-white-tshirt",
+    name: "Plain Faction T-Shirt (White)",
+    price: 499,
+    mrp: 799,
+    image: "assets/plain-white.png",
+    badge: "Plain Faction Edition",
+    badgeClass: "berry-badge",
+    images: [
+      "assets/plain-white.png"
+    ],
+    description: "Keep it minimal and clean. The official Plain Faction T-Shirt in classic White. Made with 100% premium heavyweight combed cotton for a perfect fit and everyday durability."
   }
 };
 
@@ -337,6 +421,29 @@ window.switchMainImage = function(thumbEl) {
   }, 150);
 };
 
+// Accordion focused card slider functionality
+window.focusSeriesCard = function(cardEl) {
+  const row = cardEl.closest('.series-slider-gallery');
+  if (!row) return;
+  
+  // Remove focused-card from all sibling cards
+  row.querySelectorAll('.product-card').forEach(card => {
+    card.classList.remove('focused-card');
+  });
+  
+  // Add focused-card to clicked card
+  cardEl.classList.add('focused-card');
+  
+  // Smoothly scroll the container to center the focused card on mobile/scrollable screens
+  const cardLeft = cardEl.offsetLeft;
+  const cardWidth = cardEl.offsetWidth;
+  const containerWidth = row.offsetWidth;
+  row.scrollTo({
+    left: cardLeft - (containerWidth / 2) + (cardWidth / 2),
+    behavior: 'smooth'
+  });
+};
+
 // 4. Grid product selection hook - Redirects to dynamic product.html details page
 function initCollectionGrid() {
   const productCards = document.querySelectorAll(".product-card[data-id]");
@@ -345,15 +452,43 @@ function initCollectionGrid() {
   const setupRedirect = (el) => {
     el.style.cursor = "pointer";
     el.addEventListener("click", (e) => {
+      // If it's a card in the slider gallery, and not focused yet:
+      if (el.closest('.series-slider-gallery') && !el.classList.contains('focused-card')) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.focusSeriesCard(el);
+        return;
+      }
+      
       e.preventDefault();
       e.stopPropagation();
       const productId = el.getAttribute("data-id");
-      window.location.href = "product.html?id=" + productId;
+      if (productId) {
+        window.location.href = "product.html?id=" + productId;
+      }
     });
   };
 
   productCards.forEach(setupRedirect);
   shopButtons.forEach(setupRedirect);
+  
+  // Handle clicking on locked cards to scroll them into focus center on scrollable screens
+  document.querySelectorAll('.series-slider-gallery .locked-card').forEach(lockedCard => {
+    lockedCard.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const container = lockedCard.closest('.series-slider-gallery');
+      if (container) {
+        const cardLeft = lockedCard.offsetLeft;
+        const cardWidth = lockedCard.offsetWidth;
+        const containerWidth = container.offsetWidth;
+        container.scrollTo({
+          left: cardLeft - (containerWidth / 2) + (cardWidth / 2),
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
 }
 
 // ==========================================================================

@@ -1663,7 +1663,7 @@
 
 .series-row {
   display: grid;
-  grid-template-columns: 28% 30% 42%;
+  grid-template-columns: 25% 75%;
   align-items: center;
   background: #09090f; /* Dark background similar to reference */
   border: 1px solid rgba(255, 255, 255, 0.03);
@@ -1791,27 +1791,138 @@
   transform: translateX(4px);
 }
 
-/* Center Column: Featured Active Display */
-.series-featured-display {
-  position: relative;
+/* Slider Container & Galleries */
+.series-gallery-container {
+  width: 100%;
+  overflow: visible;
+}
+
+.series-slider-gallery {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0;
+}
+
+/* Card Transitions & Sizing */
+.series-slider-gallery .product-card {
+  flex: 0 0 130px;
+  height: 220px;
+  opacity: 0.65;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(10, 10, 15, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  transition: flex 0.4s cubic-bezier(0.25, 1, 0.5, 1), height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.series-slider-gallery .product-card:hover {
+  opacity: 0.95;
+  border-color: rgba(var(--theme-glow-rgb), 0.25);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Locked Card Styling inside Slider */
+.series-slider-gallery .locked-card {
+  flex: 0 0 130px;
+  height: 220px;
+  opacity: 0.35;
+  cursor: default;
+  background: rgba(10, 10, 15, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+/* Active/Focused Big Card State */
+.series-slider-gallery .product-card.focused-card {
+  flex: 0 0 310px;
+  height: 380px;
+  opacity: 1;
+  cursor: default;
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(var(--theme-glow-rgb), 0.4);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(var(--theme-glow-rgb), 0.12);
+}
+
+/* Unfocused Cards Content Toggle */
+.series-slider-gallery .product-card:not(.focused-card) .card-info {
+  opacity: 1;
+  pointer-events: none;
+  padding: 0.5rem 0.4rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.series-slider-gallery .product-card:not(.focused-card) .card-product-name {
+  font-size: 0.68rem;
+  margin: 0 0 0.15rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #eee;
+  font-weight: 500;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.series-slider-gallery .product-card:not(.focused-card) .card-product-theme,
+.series-slider-gallery .product-card:not(.focused-card) .card-mrp,
+.series-slider-gallery .product-card:not(.focused-card) .card-btn-add,
+.series-slider-gallery .product-card:not(.focused-card) .card-footer button {
+  display: none !important;
+}
+
+.series-slider-gallery .product-card:not(.focused-card) .card-footer {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}
+
+.series-slider-gallery .product-card:not(.focused-card) .card-price {
+  font-size: 0.72rem;
+  color: var(--theme-color);
+  font-weight: 600;
+}
+
+.series-slider-gallery .product-card:not(.focused-card) .card-badge,
+.series-slider-gallery .product-card:not(.focused-card) .quick-add-btn {
+  display: none !important;
+}
+
+.series-slider-gallery .product-card:not(.focused-card) .card-img-container {
+  height: 175px;
+  width: 100%;
+  border-bottom: none;
+  background: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
 }
 
-.series-featured-display .product-card {
-  width: 100%;
-  max-width: 320px;
-  animation: none !important;
+.series-slider-gallery .product-card:not(.focused-card) .card-product-img {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+  margin: 0;
+  display: block;
+  transform: scale(0.95);
+  transition: transform 0.4s ease;
 }
 
-/* Right Column: Locked cards gallery */
-.series-gallery {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
-  width: 100%;
+.series-slider-gallery .product-card.focused-card .card-info {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.3s ease 0.15s;
 }
 
 .locked-card {
@@ -1977,15 +2088,20 @@
     margin-right: auto;
   }
   
-  .series-featured-display {
-    height: auto;
+  .series-slider-gallery {
+    overflow-x: auto;
+    padding: 1rem 0.5rem;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
   
-  .series-gallery {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 460px;
-    margin: 0 auto;
-    gap: 1rem;
+  .series-slider-gallery::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .series-slider-gallery .product-card, .series-slider-gallery .locked-card {
+    scroll-snap-align: center;
   }
   
   .store-features-bar {
@@ -1995,14 +2111,6 @@
 }
 
 @media (max-width: 480px) {
-  .series-featured-display {
-    height: auto;
-  }
-  
-  .series-gallery {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.6rem;
-  }
   
   .series-title {
     font-size: 2.3rem;
