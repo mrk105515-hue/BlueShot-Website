@@ -300,12 +300,16 @@ function updateCartUI() {
 // ==========================================================================
 // CART OPERATIONS (ACCESSIBLE IN GLOBAL SCOPE FOR ONCLICK HANDLERS)
 // ==========================================================================
-window.addToCart = function(id, size = "N/A") {
+window.addToCart = function(id, size = "N/A", fit = "Regular") {
   const product = PRODUCTS_CATALOG[id];
   if (!product) return;
 
-  // Search if product already in cart with same size
-  const existingItemIndex = cart.findIndex(item => item.id === id && item.size === size);
+  const isOversized = fit === "Oversized";
+  const itemSizeString = isOversized ? `${size} - Oversized` : `${size} - Regular`;
+  const itemPrice = product.price + (isOversized ? 50 : 0);
+
+  // Search if product already in cart with same size & fit string
+  const existingItemIndex = cart.findIndex(item => item.id === id && item.size === itemSizeString);
 
   if (existingItemIndex > -1) {
     cart[existingItemIndex].quantity += 1;
@@ -313,17 +317,17 @@ window.addToCart = function(id, size = "N/A") {
     cart.push({
       id: id,
       name: product.name,
-      price: product.price,
+      price: itemPrice,
       image: product.image,
       customClass: product.customClass || "",
-      size: size,
+      size: itemSizeString,
       quantity: 1
     });
   }
 
   saveCartToStorage();
   updateCartUI();
-  showNotification(`Added ${product.name} (${size}) to cart!`);
+  showNotification(`Added ${product.name} (${itemSizeString}) to cart!`);
   
   // Auto slide open the cart drawer so user sees it added
   setTimeout(() => {

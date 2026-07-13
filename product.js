@@ -8,6 +8,7 @@ if (typeof firebase !== "undefined" && typeof firebaseConfig !== "undefined") {
 // Global Cart State
 let cart = [];
 let activeSize = "M"; // Default selected size
+let activeFit = "Regular"; // Default selected fit style
 let currentProductId = "redago-tshirt";
 
 // Products Catalog (Consistent with merch.js)
@@ -203,6 +204,7 @@ function initProductDetail() {
   const product = PRODUCTS_CATALOG[id];
   currentProductId = id;
   activeSize = "M"; // Default to Medium
+  activeFit = "Regular"; // Default to Regular fit style
 
   // Update Page Meta
   document.title = `${product.name} | Danger X Zone Merch`;
@@ -241,6 +243,16 @@ function initProductDetail() {
         </p>
         
         <div class="product-options">
+          <!-- Fit Style Selection -->
+          <div class="option-group" style="margin-bottom: 1.5rem;">
+            <label class="option-label">Select Fit Style</label>
+            <div class="fit-chips" id="product-fit-selector">
+              <button class="fit-chip active" data-fit="Regular">Regular Fit</button>
+              <button class="fit-chip" data-fit="Oversized">Oversized Fit (+₹50)</button>
+            </div>
+          </div>
+
+          <!-- Size Selection -->
           <div class="option-group">
             <label class="option-label">Select Size</label>
             <div class="size-chips" id="product-size-selector">
@@ -260,7 +272,7 @@ function initProductDetail() {
         </div>
         
         <div class="product-benefits">
-          <div class="benefit-item"><i class="fa-solid fa-truck-fast"></i> Global Shipping</div>
+          <div class="benefit-item"><i class="fa-solid fa-truck-fast"></i> Delivery Time: 4-7 Days</div>
           <div class="benefit-item"><i class="fa-solid fa-shield-halved"></i> Secure Checkout</div>
           <div class="benefit-item"><i class="fa-solid fa-shirt"></i> Heavyweight 100% Combed Cotton</div>
         </div>
@@ -283,12 +295,34 @@ function initProductDetail() {
   }
 
   // Attach size selector listeners
-  const chips = container.querySelectorAll(".size-chip");
-  chips.forEach(chip => {
+  const sizeChips = container.querySelectorAll("#product-size-selector .size-chip");
+  sizeChips.forEach(chip => {
     chip.addEventListener("click", () => {
-      chips.forEach(c => c.classList.remove("active"));
+      sizeChips.forEach(c => c.classList.remove("active"));
       chip.classList.add("active");
       activeSize = chip.getAttribute("data-size");
+    });
+  });
+
+  // Attach fit selector listeners
+  const fitChips = container.querySelectorAll("#product-fit-selector .fit-chip");
+  fitChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      fitChips.forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      activeFit = chip.getAttribute("data-fit");
+      
+      // Update displayed price dynamically
+      const priceVal = container.querySelector(".price-value");
+      const mrpVal = container.querySelector(".price-mrp");
+      
+      const isOversized = activeFit === "Oversized";
+      const extraPrice = isOversized ? 50 : 0;
+      
+      priceVal.innerHTML = `&#8377;${product.price + extraPrice}`;
+      if (mrpVal && product.mrp) {
+        mrpVal.innerHTML = `&#8377;${product.mrp + extraPrice}`;
+      }
     });
   });
 
@@ -296,7 +330,7 @@ function initProductDetail() {
   const preorderBtn = document.getElementById("add-to-cart-btn");
   if (preorderBtn) {
     preorderBtn.addEventListener("click", () => {
-      window.addToCart(currentProductId, activeSize);
+      window.addToCart(currentProductId, activeSize, activeFit);
     });
   }
 }
