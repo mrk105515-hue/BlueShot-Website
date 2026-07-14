@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
@@ -131,9 +131,14 @@
 
       <!-- Admin Control Panel -->
       <div class="admin-orders-card" id="admin-orders-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,18,79,0.3); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,18,79,0.3); padding-bottom: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
           <h2 style="color: var(--color-red-neon); font-size: 1.6rem; font-weight: 800; text-transform: uppercase;"><i class="fa-solid fa-screwdriver-wrench"></i> Admin Order Manager</h2>
-          <span style="font-size: 0.8rem; background: rgba(255,18,79,0.15); border: 1px solid var(--color-red-neon); color: #ff124f; padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 700;">Admin Mode</span>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="admin-action-btn" style="background: rgba(255,18,79,0.2); border-color: var(--color-red-neon); color: #ff124f; font-weight: 700; padding: 0.4rem 1rem; border-radius: 20px;" onclick="clearAllTestOrders()">
+              <i class="fa-solid fa-trash-can"></i> Clear Test Orders
+            </button>
+            <span style="font-size: 0.8rem; background: rgba(255,18,79,0.15); border: 1px solid var(--color-red-neon); color: #ff124f; padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 700;">Admin Mode</span>
+          </div>
         </div>
         <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">View all client payments, update shipping statuses, and enter Shiprocket AWB tracking numbers.</p>
         

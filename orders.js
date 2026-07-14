@@ -593,9 +593,14 @@ function renderAdminTable(orders) {
       </td>
       <td style="font-family: monospace;">${order.trackingNumber || '<span style="color:var(--text-muted)">Unshipped</span>'}</td>
       <td>
-        <button class="admin-action-btn" onclick="openAdminEditForm('${order.orderId}')">
-          <i class="fa-solid fa-pen-to-square"></i> Edit
-        </button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="admin-action-btn" onclick="openAdminEditForm('${order.orderId}')">
+            <i class="fa-solid fa-pen-to-square"></i> Edit
+          </button>
+          <button class="admin-action-btn" style="background: rgba(255,18,79,0.15); border-color: var(--color-red-neon); color: #ff124f;" onclick="deleteAdminOrder('${order.orderId}')">
+            <i class="fa-solid fa-trash-can"></i> Delete
+          </button>
+        </div>
       </td>
     `;
     
@@ -852,3 +857,94 @@ function showToastNotification(message, isError = false) {
     }, 400);
   }, 4000);
 }
+
+// ==========================================================================
+// ADMIN ORDER DELETION & MAINTENANCE
+// ==========================================================================
+window.deleteAdminOrder = function(orderId) {
+  if (!confirm(`Are you sure you want to permanently delete order #${orderId}? This cannot be undone.`)) {
+    return;
+  }
+
+  if (isDemoMode) {
+    let localOrders = JSON.parse(localStorage.getItem("dxz_demo_orders") || "[]");
+    localOrders = localOrders.filter(o => o.orderId !== orderId);
+    localStorage.setItem("dxz_demo_orders", JSON.stringify(localOrders));
+    showToastNotification(`Order ${orderId} deleted successfully!`);
+    loadAdminOrders();
+  } else {
+    db.collection("orders").doc(orderId).delete()
+      .then(() => {
+        showToastNotification(`Order ${orderId} deleted successfully!`);
+        loadAdminOrders();
+      })
+      .catch(err => {
+        console.error("Firestore Admin delete failed:", err);
+        showToastNotification("Server error deleting order.", true);
+      });
+  }
+};
+
+window.clearAllTestOrders = function() {
+  const isTestOrder = (order) => {
+    const email = (order.email || "").toLowerCase();
+    const name = (order.name || "").toLowerCase();
+    const id = (order.orderId || "");
+    return email.endsWith("@test.com") || 
+           email.endsWith("@example.com") ||
+           email === "guest@gmail.com" ||
+           email === "member@blueshot.com" ||
+           name.includes("test") ||
+           id.startsWith("pay_P21tFIsQSy60O") ||
+           id.startsWith("pay_M99uGKsWTy88L");
+  };
+
+  if (isDemoMode) {
+    let localOrders = JSON.parse(localStorage.getItem("dxz_demo_orders") || "[]");
+    const initialCount = localOrders.length;
+    localOrders = localOrders.filter(o => !isTestOrder(o));
+    localStorage.setItem("dxz_demo_orders", JSON.stringify(localOrders));
+    
+    const cleared = initialCount - localOrders.length;
+    showToastNotification(`Cleared ${cleared} demo test orders!`);
+    loadAdminOrders();
+  } else {
+    // Live Firestore deletion
+    if (!confirm("Are you sure you want to scan and delete all test orders from Firestore? This will permanently delete orders with test domains, 'test' in the name, or default demo IDs.")) {
+      return;
+    }
+    
+    db.collection("orders").get()
+      .then((snapshot) => {
+        const batch = db.batch();
+        let count = 0;
+        
+        snapshot.forEach(doc => {
+          const order = { ...doc.data(), orderId: doc.id };
+          if (isTestOrder(order)) {
+            batch.delete(doc.ref);
+            count++;
+          }
+        });
+        
+        if (count === 0) {
+          showToastNotification("No test orders found in Firestore.");
+          return;
+        }
+        
+        batch.commit()
+          .then(() => {
+            showToastNotification(`Successfully deleted ${count} test orders from Firestore!`);
+            loadAdminOrders();
+          })
+          .catch(err => {
+            console.error("Firestore batch delete failed:", err);
+            showToastNotification("Server error deleting test orders.", true);
+          });
+      })
+      .catch(err => {
+        console.error("Error fetching orders for clean:", err);
+        showToastNotification("Error reading orders database.", true);
+      });
+  }
+};
