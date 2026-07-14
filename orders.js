@@ -862,7 +862,12 @@ function showToastNotification(message, isError = false) {
 // ADMIN ORDER DELETION & MAINTENANCE
 // ==========================================================================
 window.deleteAdminOrder = function(orderId) {
-  if (!confirm(`Are you sure you want to permanently delete order #${orderId}? This cannot be undone.`)) {
+  // Confirmation 1
+  if (!confirm(`Are you sure you want to delete order #${orderId}?`)) {
+    return;
+  }
+  // Confirmation 2
+  if (!confirm(`WARNING: This action is permanent and cannot be undone. Do you really want to delete order #${orderId}?`)) {
     return;
   }
 
@@ -886,6 +891,15 @@ window.deleteAdminOrder = function(orderId) {
 };
 
 window.clearAllTestOrders = function() {
+  // Confirmation 1
+  if (!confirm("Are you sure you want to scan and delete all test orders?")) {
+    return;
+  }
+  // Confirmation 2
+  if (!confirm("WARNING: This will permanently delete ALL client records matching test criteria (domains, test names, demo IDs) from the database. Proceed?")) {
+    return;
+  }
+
   const isTestOrder = (order) => {
     const email = (order.email || "").toLowerCase();
     const name = (order.name || "").toLowerCase();
@@ -910,10 +924,6 @@ window.clearAllTestOrders = function() {
     loadAdminOrders();
   } else {
     // Live Firestore deletion
-    if (!confirm("Are you sure you want to scan and delete all test orders from Firestore? This will permanently delete orders with test domains, 'test' in the name, or default demo IDs.")) {
-      return;
-    }
-    
     db.collection("orders").get()
       .then((snapshot) => {
         const batch = db.batch();
