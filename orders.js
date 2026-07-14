@@ -286,7 +286,10 @@ function loadAccountOrders() {
       .then((snapshot) => {
         const orders = [];
         snapshot.forEach(doc => {
-          orders.push({ ...doc.data(), orderId: doc.id });
+          const data = doc.data();
+          if (data.deleted !== true && data.archived !== true) {
+            orders.push({ ...data, orderId: doc.id });
+          }
         });
         
         // Also search by userId just in case they have a different email now
@@ -295,8 +298,11 @@ function loadAccountOrders() {
           .get()
           .then((snap2) => {
             snap2.forEach(doc => {
-              if (!orders.find(o => o.orderId === doc.id)) {
-                orders.push({ ...doc.data(), orderId: doc.id });
+              const data = doc.data();
+              if (data.deleted !== true && data.archived !== true) {
+                if (!orders.find(o => o.orderId === doc.id)) {
+                  orders.push({ ...data, orderId: doc.id });
+                }
               }
             });
             // Sort by date desc
@@ -548,7 +554,10 @@ function loadAdminOrders() {
       .then((snapshot) => {
         const orders = [];
         snapshot.forEach(doc => {
-          orders.push({ ...doc.data(), orderId: doc.id });
+          const data = doc.data();
+          if (data.deleted !== true && data.archived !== true) {
+            orders.push({ ...data, orderId: doc.id });
+          }
         });
         renderAdminTable(orders);
       })
@@ -878,7 +887,7 @@ window.deleteAdminOrder = function(orderId) {
     showToastNotification(`Order ${orderId} deleted successfully!`);
     loadAdminOrders();
   } else {
-    db.collection("orders").doc(orderId).delete()
+    db.collection("orders").doc(orderId).update({ deleted: true })
       .then(() => {
         showToastNotification(`Order ${orderId} deleted successfully!`);
         loadAdminOrders();
@@ -923,7 +932,7 @@ window.clearAllTestOrders = function() {
     showToastNotification(`Cleared ${cleared} demo test orders!`);
     loadAdminOrders();
   } else {
-    // Live Firestore deletion
+    // Live Firestore deletion (Soft deletion via batch updates)
     db.collection("orders").get()
       .then((snapshot) => {
         const batch = db.batch();
@@ -932,7 +941,7 @@ window.clearAllTestOrders = function() {
         snapshot.forEach(doc => {
           const order = { ...doc.data(), orderId: doc.id };
           if (isTestOrder(order)) {
-            batch.delete(doc.ref);
+            batch.update(doc.ref, { deleted: true });
             count++;
           }
         });
