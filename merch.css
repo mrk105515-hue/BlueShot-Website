@@ -2746,7 +2746,7 @@
   letter-spacing: 0.02em;
 }
 
-.gallery-card-action {
+.plain-card-action {
   font-size: 0.6rem;
   font-weight: 600;
   color: var(--theme-color);
@@ -2756,6 +2756,19 @@
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
+}
+
+/* Plain Blank Cards Hover Glow Effects */
+.plain-blank-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 229, 255, 0.4) !important;
+  background: rgba(255, 255, 255, 0.035) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 229, 255, 0.1);
+}
+
+.plain-blank-card:hover img {
+  transform: scale(1.04);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 
