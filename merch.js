@@ -456,8 +456,9 @@ function initCollectionGrid() {
   const setupRedirect = (el) => {
     el.style.cursor = "pointer";
     el.addEventListener("click", (e) => {
-      // If it's a card in the slider gallery, and not focused yet:
-      if (el.closest('.series-slider-gallery') && !el.classList.contains('focused-card')) {
+      // If it's a card in the slider gallery, and not focused yet (Desktop only):
+      const isMobile = window.innerWidth <= 768;
+      if (!isMobile && el.closest('.series-slider-gallery') && !el.classList.contains('focused-card')) {
         e.preventDefault();
         e.stopPropagation();
         window.focusSeriesCard(el);
