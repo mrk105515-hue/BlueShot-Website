@@ -359,6 +359,37 @@
             
             <div style="height: 1px; width: 100%; background: var(--border-glass); margin: 0.5rem 0;"></div>
             
+            <!-- REFERRAL CARD -->
+            <div class="referral-card" style="width: 100%; text-align: left; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 1rem; box-sizing: border-box; margin: 0.5rem 0;">
+              <h4 style="font-size: 0.9rem; margin: 0 0 0.25rem 0; color: #fff; font-family: 'Outfit', sans-serif;"><i class="fa-solid fa-gift" style="color: var(--color-blue-neon); margin-right: 0.4rem;"></i> Referral Program</h4>
+              <p style="color: var(--text-muted); font-size: 0.78rem; line-height: 1.4; margin: 0 0 0.75rem 0;">Share your link. If 5 people buy using your code, get a **FREE T-Shirt**!</p>
+              
+              <!-- Code Display & Copy -->
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+                <div style="flex: 1; background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 0.4rem; font-family: monospace; font-size: 0.85rem; color: var(--color-blue-neon); text-align: center; font-weight: bold; letter-spacing: 1px;" id="ref-code-display">LOADING...</div>
+                <button class="btn btn-primary" style="padding: 0 0.8rem; font-size: 0.75rem; border-radius: 4px; height: auto;" id="ref-copy-btn" title="Copy Referral Link"><i class="fa-regular fa-copy"></i></button>
+              </div>
+              
+              <!-- Progress Tracker -->
+              <div style="margin-top: 0.5rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #fff; margin-bottom: 0.25rem;">
+                  <span>Sales Count:</span>
+                  <span id="ref-count-text">0 / 5</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.05); height: 6px; border-radius: 3px; overflow: hidden; width: 100%;">
+                  <div style="background: var(--color-blue-neon); height: 100%; width: 0%; transition: width 0.4s ease;" id="ref-progress-bar"></div>
+                </div>
+              </div>
+              
+              <!-- Reward Claim Section -->
+              <div id="ref-claim-wrap" style="display: none; margin-top: 0.75rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.75rem; text-align: center;">
+                <span style="font-size: 0.75rem; color: #2ecc71; font-weight: bold; display: block; margin-bottom: 0.4rem;"><i class="fa-solid fa-circle-check"></i> FREE T-Shirt Unlocked!</span>
+                <button class="btn" style="background: #2ecc71; color: #000; font-weight: bold; width: 100%; padding: 0.4rem; font-size: 0.8rem;" id="ref-claim-btn">Claim Reward</button>
+              </div>
+            </div>
+
+            <div style="height: 1px; width: 100%; background: var(--border-glass); margin: 0.5rem 0;"></div>
+            
             <div class="profile-actions">
               <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.5;">Enable desktop notifications to get live updates on new episodes & merch drops.</p>
               <button class="btn btn-primary notification-btn" id="enable-notif-btn">
@@ -374,9 +405,6 @@
           </div>
           
         </div>
-
-        <!-- Right: Stats & Member Counter -->
-        <div class="join-stats-wrap">
           <div class="stats-card">
             <div class="stats-icon-ring">
               <i class="fa-solid fa-users"></i>

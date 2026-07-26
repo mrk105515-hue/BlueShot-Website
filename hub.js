@@ -276,10 +276,16 @@ function onUserStateChange(user) {
       const name = user.displayName || "F M";
       profileInitials.textContent = name.split(" ").map(w => w[0]).join("").substring(0, 2).toUpperCase();
     }
+
+    // Load referral system details
+    initReferralSystem(user);
   } else {
     // Show signup forms, hide profile
     if (authBox) authBox.style.display = "block";
     if (profilePanel) profilePanel.style.display = "none";
+
+    // Reset referral UI details
+    initReferralSystem(null);
   }
 
   // Refresh comment input states and load appropriate data
@@ -1436,4 +1442,184 @@ function showNotification(message, isError = false) {
       alertCard.remove();
     }, 500);
   }, 3500);
+}
+
+// ==========================================================================
+// REFERRAL SYSTEM MANAGEMENT
+// ==========================================================================
+async function initReferralSystem(user) {
+  const codeDisplay = document.getElementById("ref-code-display");
+  const copyBtn = document.getElementById("ref-copy-btn");
+  const countText = document.getElementById("ref-count-text");
+  const progressBar = document.getElementById("ref-progress-bar");
+  const claimWrap = document.getElementById("ref-claim-wrap");
+  const claimBtn = document.getElementById("ref-claim-btn");
+
+  if (!codeDisplay || !copyBtn || !countText || !progressBar) return;
+
+  if (!user) {
+    // Reset UI
+    codeDisplay.textContent = "LOADING...";
+    countText.textContent = "0 / 5";
+    progressBar.style.width = "0%";
+    if (claimWrap) claimWrap.style.display = "none";
+    return;
+  }
+
+  let referralCode = null;
+
+  try {
+    if (isDemoMode) {
+      // Demo Mode logic: load from local members store or generate
+      let localMembers = JSON.parse(localStorage.getItem("dxz_demo_members") || "[]");
+      let member = localMembers.find(m => m.uid === user.uid);
+      if (!member) {
+        // Create demo member
+        member = {
+          uid: user.uid,
+          name: user.displayName || "Demo User",
+          email: user.email || "demo@dangerxzone.com",
+          joinedAt: new Date().toISOString()
+        };
+        localMembers.push(member);
+      }
+      
+      if (!member.referralCode) {
+        // Generate referral code
+        const namePart = (member.name || "USER").replace(/[^a-zA-Z0-9]/g, "").substring(0, 6).toUpperCase();
+        const randPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+        member.referralCode = `${namePart}-${randPart}`;
+        localStorage.setItem("dxz_demo_members", JSON.stringify(localMembers));
+      }
+      referralCode = member.referralCode;
+    } else {
+      // Live Firestore Mode: load or generate
+      const memberDoc = await db.collection("members").doc(user.uid).get();
+      if (memberDoc.exists && memberDoc.data().referralCode) {
+        referralCode = memberDoc.data().referralCode;
+      } else {
+        // Generate and update/set
+        const namePart = (user.displayName || "USER").replace(/[^a-zA-Z0-9]/g, "").substring(0, 6).toUpperCase();
+        const randPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+        referralCode = `${namePart}-${randPart}`;
+
+        const updateData = { referralCode: referralCode };
+        if (!memberDoc.exists) {
+          updateData.uid = user.uid;
+          updateData.name = user.displayName || "Faction Member";
+          updateData.email = user.email || "";
+          updateData.joinedAt = firebase.firestore.FieldValue.serverTimestamp();
+          await db.collection("members").doc(user.uid).set(updateData);
+        } else {
+          await db.collection("members").doc(user.uid).update({ referralCode: referralCode });
+        }
+      }
+    }
+
+    // Display the code
+    codeDisplay.textContent = referralCode;
+
+    // Configure clipboard copying
+    copyBtn.onclick = () => {
+      const refLink = `${window.location.origin}/merch.html?ref=${referralCode}`;
+      navigator.clipboard.writeText(refLink)
+        .then(() => {
+          showNotification("Referral link copied to clipboard!");
+        })
+        .catch(err => {
+          console.error("Clipboard copy failed:", err);
+          showNotification("Failed to copy link.", true);
+        });
+    };
+
+    // Query and count successful referrals
+    let refCount = 0;
+    if (isDemoMode) {
+      const localOrders = JSON.parse(localStorage.getItem("dxz_demo_orders") || "[]");
+      refCount = localOrders.filter(o => o.referralCode === referralCode).length;
+    } else {
+      const orderSnap = await db.collection("orders").where("referralCode", "==", referralCode).get();
+      refCount = orderSnap.size;
+    }
+
+    // Render stats progress
+    countText.textContent = `${refCount} / 5`;
+    const pct = Math.min(100, Math.floor((refCount / 5) * 100));
+    progressBar.style.width = `${pct}%`;
+
+    // Manage Claim Rewards section
+    if (refCount >= 5) {
+      if (claimWrap) claimWrap.style.display = "block";
+      
+      // Check claim status
+      let claimData = null;
+      if (isDemoMode) {
+        const localClaims = JSON.parse(localStorage.getItem("dxz_demo_claims") || "[]");
+        claimData = localClaims.find(c => c.userId === user.uid);
+      } else {
+        const claimDoc = await db.collection("claims").doc(user.uid).get();
+        if (claimDoc.exists) {
+          claimData = claimDoc.data();
+        }
+      }
+
+      if (claimData) {
+        if (claimWrap) {
+          claimWrap.innerHTML = `
+            <span style="font-size: 0.75rem; color: #2ecc71; font-weight: bold; display: block; margin-bottom: 0.4rem;">
+              <i class="fa-solid fa-circle-check"></i> Claim Status: ${claimData.status.toUpperCase()}
+            </span>
+            <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0; line-height: 1.4;">
+              ${claimData.status === 'pending' 
+                ? 'Your request is registered. We will email you shipping details shortly!' 
+                : 'Your free T-shirt has been shipped! Check your email.'}
+            </p>
+          `;
+        }
+      } else {
+        // Bind Claim Button click
+        if (claimBtn) {
+          claimBtn.disabled = false;
+          claimBtn.innerHTML = "Claim Reward";
+          claimBtn.onclick = async () => {
+            claimBtn.disabled = true;
+            claimBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registering claim...';
+            
+            const claimPayload = {
+              userId: user.uid,
+              email: user.email || "no-email@dangerxzone.com",
+              username: user.displayName || "Faction Member",
+              referralCode: referralCode,
+              referralCount: refCount,
+              status: "pending",
+              claimedAt: isDemoMode ? new Date().toISOString() : firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+              if (isDemoMode) {
+                const localClaims = JSON.parse(localStorage.getItem("dxz_demo_claims") || "[]");
+                localClaims.push(claimPayload);
+                localStorage.setItem("dxz_demo_claims", JSON.stringify(localClaims));
+              } else {
+                await db.collection("claims").doc(user.uid).set(claimPayload);
+              }
+              showNotification("Reward claimed successfully!");
+              initReferralSystem(user); // Reload UI
+            } catch (err) {
+              console.error("Claim error:", err);
+              showNotification("Failed to register claim.", true);
+              claimBtn.disabled = false;
+              claimBtn.innerHTML = "Claim Reward";
+            }
+          };
+        }
+      }
+    } else {
+      if (claimWrap) claimWrap.style.display = "none";
+    }
+
+  } catch (err) {
+    console.error("Referral Init Error:", err);
+    codeDisplay.textContent = "ERROR LOADING";
+  }
 }

@@ -168,6 +168,7 @@ const PRODUCTS_CATALOG = {
 // ==========================================================================
 document.addEventListener("DOMContentLoaded", () => {
   try {
+    captureReferralCode();
     loadCartFromStorage();
     initProductDetail();
     initCartDrawer();
@@ -714,10 +715,12 @@ function initCheckoutWizard() {
             quantity: item.quantity
           }));
 
-          // 1. Try writing to Firestore if Firebase is available
-          let useLiveFirebase = false;
-          if (typeof firebase !== "undefined" && typeof firebaseConfig !== "undefined" && firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
-            useLiveFirebase = true;
+          // Retrieve referral info and prevent self-referral
+          const activeReferral = localStorage.getItem("dxz_active_referral");
+          const userReferral = localStorage.getItem("dxz_user_referral_code");
+          let orderReferral = null;
+          if (activeReferral && activeReferral.trim() !== "" && activeReferral.trim().toUpperCase() !== (userReferral || "").trim().toUpperCase()) {
+            orderReferral = activeReferral.trim().toUpperCase();
           }
 
           if (useLiveFirebase) {
@@ -743,6 +746,7 @@ function initCheckoutWizard() {
                 status: "Processing",
                 trackingNumber: "",
                 courierPartner: "Shiprocket",
+                referralCode: orderReferral,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
               }).then(() => {
                 console.log("Order saved to Firestore successfully!");
@@ -778,9 +782,13 @@ function initCheckoutWizard() {
               status: "Processing",
               trackingNumber: "",
               courierPartner: "Shiprocket",
+              referralCode: orderReferral,
               createdAt: new Date().toISOString()
             });
             localStorage.setItem("dxz_demo_orders", JSON.stringify(localOrders));
+
+            // Clean active referral from storage after checkout
+            localStorage.removeItem("dxz_active_referral");
           } catch (e) {
             console.error("Failed to write order to localStorage:", e);
           }
@@ -1030,6 +1038,18 @@ async function syncOrderWithShiprocket(order) {
   }
 
   console.log("Shiprocket sync skipped: neither webhookUrl nor email/password/token keys configured.");
+}
+
+// ==========================================================================
+// REFERRAL CODE CAPTURE
+// ==========================================================================
+function captureReferralCode() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const refCode = urlParams.get('ref');
+  if (refCode) {
+    localStorage.setItem("dxz_active_referral", refCode.trim().toUpperCase());
+    console.log("Captured active referral code:", refCode.trim().toUpperCase());
+  }
 }
 
 

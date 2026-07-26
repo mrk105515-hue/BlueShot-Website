@@ -1,0 +1,82 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 1. Leaderboard rules (anyone can view high scores, logged-in users can write their own)
+    match /leaderboard/{scoreId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if false;
+    }
+    
+    // Season 1 Leaderboard rules (allows points submissions for Season 1)
+    match /leaderboard_s1/{scoreId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if false;
+    }
+    
+    // 2. 1v1 Matchmaking & Game synchronization rules
+    match /matches/{matchId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update: if request.auth != null && (
+        resource.data.status == 'waiting' ||
+        resource.data.host.uid == request.auth.uid ||
+        (resource.data.opponent != null && resource.data.opponent.uid == request.auth.uid)
+      );
+      allow delete: if request.auth != null && resource.data.host.uid == request.auth.uid;
+    }
+    
+    // 3. Faction Membership rules (anyone can read counts, users can write their own profile)
+    match /members/{memberId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == memberId;
+    }
+    
+    // 4. T-Shirt Design Poll rules (anyone can read percentages, users can submit/update their vote)
+    match /votes/{voteId} {
+      allow read: if true;
+      allow create, update: if request.auth != null && request.auth.uid == voteId;
+      allow delete: if false;
+    }
+    
+    // 5. Community Comments rules (anyone can read comments, logged-in users can post, authors can delete)
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.resource.data.authorId == request.auth.uid;
+      allow delete: if request.auth != null && resource.data.authorId == request.auth.uid;
+      allow update: if false;
+    }
+
+    // 6. Orders & Shipment Tracking rules (anyone can create, guests can track single orders, admin manages statuses)
+    match /orders/{orderId} {
+      // Allow customers (guest or authenticated) to place a new order (but not overwrite existing ones)
+      allow create: if true;
+      
+      // Allow guest lookup of a single order by its random Razorpay Payment ID
+      allow get: if true;
+      
+      // Allow logged-in users to list/query their own history, and allow admin to view all
+      // Also allow users to list orders matching their own unique referral code
+      allow list: if request.auth != null && (
+        resource.data.userId == request.auth.uid || 
+        resource.data.email == request.auth.token.email ||
+        request.auth.token.email == "blueshotconnectx@gmail.com" ||
+        resource.data.referralCode == get(/databases/$(database)/documents/members/$(request.auth.uid)).data.referralCode
+      );
+      
+      // Only allow your Admin account to update order status or assign Shiprocket tracking AWBs
+      allow update: if request.auth != null && request.auth.token.email == "blueshotconnectx@gmail.com";
+      
+      // Prevent deleting orders entirely to ensure transaction logs integrity
+      allow delete: if false;
+    }
+
+    // 7. Referral Reward Claims
+    match /claims/{claimId} {
+      allow read, create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if request.auth != null && request.auth.token.email == "blueshotconnectx@gmail.com";
+    }
+  }
+}
