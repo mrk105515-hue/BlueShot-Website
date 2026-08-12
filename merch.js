@@ -1370,7 +1370,7 @@ function renderShopReferralBar(user, referralCode, refCount, db, isDemoMode) {
 
     <div id="shop-ref-action-wrap" style="display: flex; align-items: center; gap: 0.75rem;">
       ${isUnlocked 
-        ? '<button class="btn" style="background: #2ecc71; color: #000; font-weight: bold; padding: 0.4rem 1rem; font-size: 0.8rem; border-radius: 4px; border: none; cursor: pointer;" id="shop-ref-claim-btn">Claim Free T-Shirt</button>'
+        ? '<button class="btn" style="background: #2ecc71; color: #000; font-weight: bold; padding: 0.4rem 1rem; font-size: 0.8rem; border-radius: 4px; border: none; cursor: pointer;" id="shop-ref-claim-btn">Claim Free Shirt</button>'
         : '<span style="font-size: 0.8rem; color: var(--text-muted);">Unlock at 5 sales</span>'
       }
       <button id="shop-ref-close-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; padding: 0.2rem;"><i class="fa-solid fa-xmark"></i></button>
@@ -1443,7 +1443,7 @@ function renderShopReferralBar(user, referralCode, refCount, db, isDemoMode) {
         console.error(err);
         showNotification("Failed to submit claim.", true);
         claimBtn.disabled = false;
-        claimBtn.innerHTML = "Claim Free T-Shirt";
+        claimBtn.innerHTML = "Claim Free Shirt";
       }
     };
   }

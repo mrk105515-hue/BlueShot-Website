@@ -128,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
   try { initEpisodeModal(); } catch(e) { console.error("Error in initEpisodeModal:", e); }
   try { initWikiSearch(); } catch(e) { console.error("Error in initWikiSearch:", e); }
   try { initEpisodeCountdown(); } catch(e) { console.error("Error in initEpisodeCountdown:", e); }
+  try { initHomeReferralProg(); } catch(e) { console.error("Error in initHomeReferralProg:", e); }
 
   // Handle cross-page query parameters for search modals
   const urlParams = new URLSearchParams(window.location.search);
@@ -857,6 +858,249 @@ function initEpisodeCountdown() {
   // Update timer immediately on load, then every second
   updateTimer();
   setInterval(updateTimer, 1000);
+}
+
+// ==========================================================================
+// HOME REFERRAL BANNER
+// ==========================================================================
+function initHomeReferralProg() {
+  let useLiveFirebase = false;
+  if (typeof firebase !== "undefined" && typeof firebaseConfig !== "undefined" && firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
+    useLiveFirebase = true;
+  }
+
+  if (useLiveFirebase) {
+    try {
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+      
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          try {
+            const memberDoc = await db.collection("members").doc(user.uid).get();
+            if (memberDoc.exists && memberDoc.data().referralCode) {
+              const referralCode = memberDoc.data().referralCode;
+              
+              // Count referrals
+              const orderSnap = await db.collection("orders").where("referralCode", "==", referralCode).get();
+              const refCount = orderSnap.size;
+              
+              renderHomeReferralBar(user, referralCode, refCount, db, false);
+            }
+          } catch (err) {
+            console.error("Error loading referral stats on home:", err);
+          }
+        } else {
+          const existing = document.getElementById("shop-referral-bar");
+          if (existing) {
+            existing.style.transform = "translateY(100%)";
+            setTimeout(() => { existing.remove(); }, 300);
+            document.body.style.paddingBottom = "0";
+          }
+        }
+      });
+    } catch (e) {
+      console.error("Failed to load home referral listener:", e);
+    }
+  } else {
+    // Demo Mode logic: check local storage user
+    try {
+      const savedUser = localStorage.getItem("dxz_demo_user");
+      const demoUser = savedUser ? JSON.parse(savedUser) : null;
+      if (demoUser) {
+        let localMembers = JSON.parse(localStorage.getItem("dxz_demo_members") || "[]");
+        let member = localMembers.find(m => m.uid === demoUser.uid);
+        if (member && member.referralCode) {
+          const localOrders = JSON.parse(localStorage.getItem("dxz_demo_orders") || "[]");
+          const refCount = localOrders.filter(o => o.referralCode === member.referralCode).length;
+          renderHomeReferralBar(demoUser, member.referralCode, refCount, null, true);
+        }
+      }
+    } catch (err) {
+      console.error("Error loading demo referral bar:", err);
+    }
+  }
+}
+
+function renderHomeReferralBar(user, referralCode, refCount, db, isDemoMode) {
+  const existing = document.getElementById("shop-referral-bar");
+  if (existing) existing.remove();
+
+  if (!user || !referralCode) return;
+
+  const bar = document.createElement("div");
+  bar.id = "shop-referral-bar";
+  bar.style.position = "fixed";
+  bar.style.bottom = "0";
+  bar.style.left = "0";
+  bar.style.width = "100%";
+  bar.style.background = "rgba(10, 10, 15, 0.95)";
+  bar.style.borderTop = "2px solid var(--color-blue-neon)";
+  bar.style.backdropFilter = "blur(10px)";
+  bar.style.boxShadow = "0 -10px 30px rgba(0, 0, 0, 0.5)";
+  bar.style.zIndex = "10000";
+  bar.style.padding = "0.75rem 1.5rem";
+  bar.style.boxSizing = "border-box";
+  bar.style.display = "flex";
+  bar.style.alignItems = "center";
+  bar.style.justifyContent = "space-between";
+  bar.style.flexWrap = "wrap";
+  bar.style.gap = "1rem";
+  bar.style.fontFamily = "'Outfit', sans-serif";
+  bar.style.transition = "transform 0.3s ease";
+  bar.style.transform = "translateY(100%)";
+
+  const pct = Math.min(100, Math.floor((refCount / 5) * 100));
+  const isUnlocked = refCount >= 5;
+
+  bar.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 0.75rem; color: #fff; font-size: 0.9rem;">
+      <i class="fa-solid fa-gift" style="color: var(--color-blue-neon); font-size: 1.1rem;"></i>
+      <span>
+        <strong>DXZ Referral Rewards:</strong> Share your code 
+        <span style="color: var(--color-blue-neon); font-family: monospace; font-weight: bold; background: rgba(255,255,255,0.05); padding: 0.15rem 0.4rem; border-radius: 4px; margin: 0 0.25rem;">${referralCode}</span>
+      </span>
+      <button class="btn btn-primary" id="shop-ref-copy-btn" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.3rem; height: auto; min-height: 0;">
+        <i class="fa-regular fa-copy"></i> Copy Link
+      </button>
+    </div>
+    
+    <div style="flex: 1; min-width: 250px; max-width: 500px; display: flex; align-items: center; gap: 0.75rem; color: #fff; font-size: 0.8rem;">
+      <span>Sales Progress:</span>
+      <div style="flex: 1; background: rgba(255,255,255,0.05); height: 8px; border-radius: 4px; overflow: hidden; position: relative;">
+        <div style="background: var(--color-blue-neon); height: 100%; width: ${pct}%; transition: width 0.4s ease; box-shadow: 0 0 8px var(--color-blue-neon);"></div>
+      </div>
+      <span style="font-weight: bold;">${refCount} / 5</span>
+    </div>
+
+    <div id="shop-ref-action-wrap" style="display: flex; align-items: center; gap: 0.75rem;">
+      ${isUnlocked 
+        ? '<button class="btn" style="background: #2ecc71; color: #000; font-weight: bold; padding: 0.4rem 1rem; font-size: 0.8rem; border-radius: 4px; border: none; cursor: pointer;" id="shop-ref-claim-btn">Claim Free Shirt</button>'
+        : '<span style="font-size: 0.8rem; color: var(--text-muted);">Unlock at 5 sales</span>'
+      }
+      <button id="shop-ref-close-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; padding: 0.2rem;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  `;
+
+  document.body.appendChild(bar);
+  document.body.style.paddingBottom = "70px";
+  
+  setTimeout(() => {
+    bar.style.transform = "translateY(0)";
+  }, 50);
+
+  // Bind copy link
+  const copyBtn = document.getElementById("shop-ref-copy-btn");
+  if (copyBtn) {
+    copyBtn.onclick = () => {
+      const refLink = `${window.location.origin}/merch.html?ref=${referralCode}`;
+      navigator.clipboard.writeText(refLink)
+        .then(() => {
+          showNotification("Referral link copied!");
+        })
+        .catch(() => {
+          showNotification("Failed to copy link.", true);
+        });
+    };
+  }
+
+  // Bind claim button
+  const claimBtn = document.getElementById("shop-ref-claim-btn");
+  if (claimBtn) {
+    if (isDemoMode) {
+      const localClaims = JSON.parse(localStorage.getItem("dxz_demo_claims") || "[]");
+      const claimed = localClaims.find(c => c.userId === user.uid);
+      if (claimed) {
+        updateClaimStatusUI(claimed.status);
+      }
+    } else {
+      db.collection("claims").doc(user.uid).get().then(doc => {
+        if (doc.exists) {
+          updateClaimStatusUI(doc.data().status);
+        }
+      });
+    }
+
+    claimBtn.onclick = async () => {
+      claimBtn.disabled = true;
+      claimBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+      const claimPayload = {
+        userId: user.uid,
+        email: user.email || "no-email@dangerxzone.com",
+        username: user.displayName || "Faction Member",
+        referralCode: referralCode,
+        referralCount: refCount,
+        status: "pending",
+        claimedAt: isDemoMode ? new Date().toISOString() : firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        if (isDemoMode) {
+          const localClaims = JSON.parse(localStorage.getItem("dxz_demo_claims") || "[]");
+          localClaims.push(claimPayload);
+          localStorage.setItem("dxz_demo_claims", JSON.stringify(localClaims));
+        } else {
+          await db.collection("claims").doc(user.uid).set(claimPayload);
+        }
+        showNotification("Claim registered successfully!");
+        updateClaimStatusUI("pending");
+      } catch (err) {
+        console.error(err);
+        showNotification("Failed to submit claim.", true);
+        claimBtn.disabled = false;
+        claimBtn.innerHTML = "Claim Free Shirt";
+      }
+    };
+  }
+
+  function updateClaimStatusUI(status) {
+    const actionWrap = document.getElementById("shop-ref-action-wrap");
+    if (actionWrap) {
+      actionWrap.innerHTML = `
+        <span style="font-size: 0.8rem; color: #2ecc71; font-weight: bold; margin-right: 0.5rem;">
+          <i class="fa-solid fa-circle-check"></i> CLAIM: ${status.toUpperCase()}
+        </span>
+        <button id="shop-ref-close-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; padding: 0.2rem;"><i class="fa-solid fa-xmark"></i></button>
+      `;
+      const closeBtn = document.getElementById("shop-ref-close-btn");
+      if (closeBtn) {
+        closeBtn.onclick = () => {
+          bar.style.transform = "translateY(100%)";
+          setTimeout(() => { bar.remove(); }, 300);
+          document.body.style.paddingBottom = "0";
+        };
+      }
+    }
+  }
+
+  const closeBtn = document.getElementById("shop-ref-close-btn");
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      bar.style.transform = "translateY(100%)";
+      setTimeout(() => { bar.remove(); }, 300);
+      document.body.style.paddingBottom = "0";
+    };
+  }
+}
+
+// Helper mock showNotification if not exists
+if (typeof showNotification === "undefined") {
+  window.showNotification = function(message, isError = false) {
+    const alertsContainer = document.getElementById("alert-container");
+    if (!alertsContainer) return;
+    const alertCard = document.createElement("div");
+    alertCard.className = `alert-card ${isError ? 'error' : ''}`;
+    alertCard.innerHTML = `
+      <i class="${isError ? 'fa-solid fa-circle-xmark' : 'fa-solid fa-circle-check'}"></i>
+      <span>${message}</span>
+    `;
+    alertsContainer.appendChild(alertCard);
+    setTimeout(() => { alertCard.classList.add("active"); }, 10);
+    setTimeout(() => {
+      alertCard.classList.remove("active");
+      setTimeout(() => { alertCard.remove(); }, 500);
+    }, 3500);
+  };
 }
 
 
