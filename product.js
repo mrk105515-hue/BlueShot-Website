@@ -1152,7 +1152,7 @@ function renderShopReferralBar(user, referralCode, refCount, db, isDemoMode) {
     <div style="display: flex; align-items: center; gap: 0.75rem; color: #fff; font-size: 0.9rem;">
       <i class="fa-solid fa-gift" style="color: var(--color-blue-neon); font-size: 1.1rem;"></i>
       <span>
-        <strong>DXZ Referral Rewards:</strong> Share your code 
+        <strong>Claim Free Shirt:</strong> Share your code 
         <span style="color: var(--color-blue-neon); font-family: monospace; font-weight: bold; background: rgba(255,255,255,0.05); padding: 0.15rem 0.4rem; border-radius: 4px; margin: 0 0.25rem;">${referralCode}</span>
       </span>
       <button class="btn btn-primary" id="shop-ref-copy-btn" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.3rem; height: auto; min-height: 0;">
