@@ -1103,5 +1103,52 @@ if (typeof showNotification === "undefined") {
   };
 }
 
+// ==========================================================================
+// SMART BACK NAVIGATION HELPER
+// ==========================================================================
+window.handleSmartBack = function() {
+  const currentPath = window.location.pathname;
+  const hasHistory = window.history.length > 1;
+  const isInternalReferrer = document.referrer && (document.referrer.includes(window.location.host) || document.referrer.includes('blueshotwiki.com'));
+
+  if (hasHistory && isInternalReferrer) {
+    window.history.back();
+  } else {
+    // Intelligent fallback routing
+    if (currentPath.includes('char-')) {
+      window.location.href = 'characters.html';
+    } else if (currentPath.includes('product.html')) {
+      window.location.href = 'merch.html';
+    } else if (currentPath.includes('characters.html') || currentPath.includes('universe-lore.html') || currentPath.includes('season-guide.html')) {
+      window.location.href = 'index.html';
+    } else {
+      window.location.href = 'index.html';
+    }
+  }
+};
+
+function initSmartBackButton() {
+  const path = window.location.pathname;
+  const isHome = path.endsWith('index.html') || path === '/' || path.endsWith('/New%20folder%20(4)/') || (path.endsWith('/') && !path.includes('.html'));
+  
+  // Only inject floating back button on subpages if not already present
+  if (!isHome && !document.getElementById('smart-floating-back-btn')) {
+    const btn = document.createElement('button');
+    btn.id = 'smart-floating-back-btn';
+    btn.className = 'floating-back-btn';
+    btn.setAttribute('aria-label', 'Go Back to previous page');
+    btn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Back';
+    btn.onclick = () => window.handleSmartBack();
+    document.body.appendChild(btn);
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSmartBackButton);
+} else {
+  initSmartBackButton();
+}
+
+
 
 
