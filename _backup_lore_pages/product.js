@@ -1,0 +1,1282 @@
+// Ensure Firebase is initialized
+if (typeof firebase !== "undefined" && typeof firebaseConfig !== "undefined") {
+  if (firebase.apps.length === 0) {
+    firebase.initializeApp(firebaseConfig);
+  }
+}
+
+// Global Cart State
+let cart = [];
+let activeSize = "M"; // Default selected size
+let activeFit = "Regular"; // Default selected fit style
+let currentProductId = "redago-tshirt";
+
+// Products Catalog (Consistent with merch.js)
+const PRODUCTS_CATALOG = {
+  "redago-tshirt": {
+    id: "redago-tshirt",
+    name: "REDAGO T-Shirt",
+    price: 999,
+    mrp: 1499,
+    image: "assets/redago-new-1.png",
+    badge: "Season 3 Limited Drop",
+    badgeClass: "redago-badge",
+    images: [
+      "assets/redago-new-1.png",
+      "assets/redago-new-2.png",
+      "assets/redago-new-3.png",
+      "assets/redago-new-4.png"
+    ],
+    description: "Unleash the ultimate cosmic force. The official REDAGO custom graphic t-shirt features BSG's powerful Season 3 aura. Made with heavyweight 100% combed cotton for maximum durability and comfort."
+  },
+  "cursegod-tshirt": {
+    id: "cursegod-tshirt",
+    name: "CURSE GOD T-Shirt",
+    price: 799,
+    mrp: 1299,
+    image: "assets/cursegod-angle-1.png",
+    badge: "Dark Magic Pink & Metal Edition",
+    badgeClass: "cursegod-badge",
+    images: [
+      "assets/cursegod-angle-1.png",
+      "assets/cursegod-angle-2.png",
+      "assets/cursegod-angle-3.png",
+      "assets/cursegod-angle-4.png",
+      "assets/cursegod-angle-5.png"
+    ],
+    description: "Embrace the dark power of Curse God Zalta. The official CURSE GOD custom graphic t-shirt features Zalta's dark bull beast aura and signature CG monogram and pink metal metal lettering. Made with heavyweight 100% combed cotton for premium comfort and long-lasting print quality."
+  },
+  "berry-tshirt": {
+    id: "berry-tshirt",
+    name: "BERRY T-Shirt",
+    price: 599,
+    mrp: 999,
+    image: "assets/berry-angle-1.png",
+    badge: "Golden Heavyweight Drop",
+    badgeClass: "berry-badge",
+    images: [
+      "assets/berry-angle-1.png",
+      "assets/berry-angle-2.png",
+      "assets/berry-angle-3.png",
+      "assets/berry-angle-4.png",
+      "assets/berry-angle-5.png"
+    ],
+    description: "Harness the golden heavyweight force. The official BERRY custom graphic t-shirt features the legendary Golden Giant heavyweight energy. Made with premium 100% combed cotton, built to withstand any battle."
+  },
+
+  "suma-berry-bundle": {
+    id: "suma-berry-bundle",
+    name: "SUMA & BERRY Duo Bundle",
+    price: 1499,
+    mrp: 2499,
+    image: "assets/bundle-duo-new.png",
+    badge: "Faction Power Duo Pack",
+    badgeClass: "bundle-badge",
+    images: [
+      "assets/bundle-duo-new.png"
+    ],
+    description: "Double the faction power. Get both the custom SUMA and BERRY T-Shirts in one exclusive faction bundle pack. Show your support for the East Emperor's line and command the battlefield."
+  },
+  "cursegod-dominance-tshirt": {
+    id: "cursegod-dominance-tshirt",
+    name: "CURSE GOD DOMINANCE T-Shirt",
+    price: 599,
+    mrp: 999,
+    image: "assets/cursegod-dominance-1.png",
+    badge: "Dominance Faction Edition",
+    badgeClass: "cursegod-badge",
+    images: [
+      "assets/cursegod-dominance-1.png",
+      "assets/cursegod-dominance-2.png",
+      "assets/cursegod-dominance-3.png",
+      "assets/cursegod-dominance-4.png",
+      "assets/cursegod-dominance-5.png"
+    ],
+    description: "Rule the battlefield with supreme authority. The official CURSE GOD DOMINANCE custom graphic t-shirt features the striking white metal typography style on a premium heavyweight obsidian black tee. Built for those who demand power and dominance."
+  },
+  "bloodscar-tshirt": {
+    id: "bloodscar-tshirt",
+    name: "7 BLOODSCAR OF HELL T-Shirt",
+    price: 599,
+    mrp: 999,
+    image: "assets/bloodscar-1.png",
+    badge: "Bloodscar Faction Edition",
+    badgeClass: "berry-badge",
+    images: [
+      "assets/bloodscar-1.png"
+    ],
+    description: "Embrace the underworld fury. The official 7 BLOODSCAR OF HELL custom graphic t-shirt features the raw white metal typography style on a premium heavyweight obsidian black tee. Built for faction legends who command dark power."
+  },
+  "plain-black-tshirt": {
+    id: "plain-black-tshirt",
+    name: "Plain Faction T-Shirt (Black)",
+    price: 499,
+    mrp: 799,
+    image: "assets/bloodscar-3.png",
+    badge: "Plain Faction Edition",
+    badgeClass: "berry-badge",
+    images: [
+      "assets/bloodscar-3.png",
+      "assets/bloodscar-2.png",
+      "assets/bloodscar-4.png"
+    ],
+    description: "Keep it minimal and clean. The official Plain Faction T-Shirt in stealthy Faction Black. Made with 100% premium heavyweight combed cotton for a perfect fit and everyday durability."
+  },
+  "plain-berry-tshirt": {
+    id: "plain-berry-tshirt",
+    name: "Plain Faction T-Shirt (Berry)",
+    price: 499,
+    mrp: 799,
+    image: "assets/berry-5.png",
+    badge: "Plain Faction Edition",
+    badgeClass: "berry-badge",
+    images: [
+      "assets/berry-5.png"
+    ],
+    description: "Keep it minimal and clean. The official Plain Faction T-Shirt in rich Berry Purple. Made with 100% premium heavyweight combed cotton for a perfect fit and everyday durability."
+  },
+  "plain-maroon-tshirt": {
+    id: "plain-maroon-tshirt",
+    name: "Plain Faction T-Shirt (Maroon)",
+    price: 499,
+    mrp: 799,
+    image: "assets/plain-maroon.png",
+    badge: "Plain Faction Edition",
+    badgeClass: "redago-badge",
+    images: [
+      "assets/plain-maroon.png"
+    ],
+    description: "Keep it minimal and clean. The official Plain Faction T-Shirt in bold Faction Maroon. Made with 100% premium heavyweight combed cotton for a perfect fit and everyday durability."
+  },
+  "plain-white-tshirt": {
+    id: "plain-white-tshirt",
+    name: "Plain Faction T-Shirt (White)",
+    price: 499,
+    mrp: 799,
+    image: "assets/plain-white.png",
+    badge: "Plain Faction Edition",
+    badgeClass: "berry-badge",
+    images: [
+      "assets/plain-white.png"
+    ],
+    description: "Keep it minimal and clean. The official Plain Faction T-Shirt in classic White. Made with 100% premium heavyweight combed cotton for a perfect fit and everyday durability."
+  }
+};
+
+// ==========================================================================
+// INITIALIZATION
+// ==========================================================================
+document.addEventListener("DOMContentLoaded", () => {
+  try {
+    captureReferralCode();
+    loadCartFromStorage();
+    initProductDetail();
+    initCartDrawer();
+    initCheckoutWizard();
+    updateCartUI();
+    initShopReferralProg();
+  } catch (e) {
+    console.error("Error initializing product page:", e);
+  }
+});
+
+// ==========================================================================
+// DYNAMIC PRODUCT LOADING
+// ==========================================================================
+function initProductDetail() {
+  const container = document.getElementById("product-detail-container");
+  if (!container) return;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get("id");
+  
+  if (!id || !PRODUCTS_CATALOG[id]) {
+    // Render error state if product ID is invalid or missing
+    container.innerHTML = `
+      <div style="text-align: center; padding: 5rem 0; background: var(--bg-card); border: var(--border-glass); border-radius: 16px;">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size: 4rem; color: var(--color-redago); margin-bottom: 1.5rem;"></i>
+        <h2 style="font-size: 2rem; font-family: var(--font-display); margin-bottom: 1rem;">Product Not Found</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">The product you are looking for does not exist or has been removed.</p>
+        <a href="merch.html" class="btn btn-danger" style="padding: 0.8rem 2rem;">Back to Shop Catalog</a>
+      </div>
+    `;
+    return;
+  }
+
+  const product = PRODUCTS_CATALOG[id];
+  currentProductId = id;
+  activeSize = "M"; // Default to Medium
+  activeFit = "Regular"; // Default to Regular fit style
+
+  // Update Page Meta
+  document.title = `${product.name} | Danger X Zone Merch`;
+
+  // Render product details
+  container.innerHTML = `
+    <div class="featured-product-grid product-detail-grid">
+      <!-- Gallery Column -->
+      <div class="product-gallery">
+        <div class="gallery-main">
+          <div class="gallery-glow" id="product-glow"></div>
+          <img id="main-product-img" src="${product.image}" alt="${product.name}" class="gallery-main-img">
+        </div>
+        <div class="gallery-thumbnails">
+          ${product.images.map((img, idx) => `
+            <img class="thumb-img ${idx === 0 ? 'active' : ''}" src="${img}" alt="${product.name} View ${idx + 1}" onclick="switchMainImage(this)">
+          `).join("")}
+        </div>
+      </div>
+      
+      <!-- Info Column -->
+      <div class="product-details">
+        <span class="product-badge ${product.badgeClass}">
+          <i class="fa-solid fa-fire"></i> ${product.badge}
+        </span>
+        <h1 class="product-title">${product.name}</h1>
+        
+        <div class="product-pricing">
+          <span class="price-value">\u20B9${product.price}</span>
+          ${product.mrp ? `<span class="price-mrp">\u20B9${product.mrp}</span>` : ''}
+          <span class="price-tag">In Stock — Ready to Ship</span>
+        </div>
+        
+        <p class="product-description">
+          ${product.description}
+        </p>
+        
+        <div class="product-options">
+          <!-- Fit Style Selection -->
+          <div class="option-group" style="margin-bottom: 1.5rem;">
+            <label class="option-label">Select Fit Style</label>
+            <div class="fit-chips" id="product-fit-selector">
+              <button class="fit-chip active" data-fit="Regular">Regular Fit</button>
+              <button class="fit-chip" data-fit="Oversized">Oversized Fit (+₹50)</button>
+            </div>
+          </div>
+
+          <!-- Size Selection -->
+          <div class="option-group">
+            <label class="option-label">Select Size</label>
+            <div class="size-chips" id="product-size-selector">
+              <button class="size-chip" data-size="S">S</button>
+              <button class="size-chip active" data-size="M">M</button>
+              <button class="size-chip" data-size="L">L</button>
+              <button class="size-chip" data-size="XL">XL</button>
+              <button class="size-chip" data-size="XXL">XXL</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="product-actions">
+          <button id="add-to-cart-btn" class="btn btn-danger btn-add-cart" style="width: 100%; max-width: 320px;">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+        </div>
+        
+        <div class="product-benefits">
+          <div class="benefit-item"><i class="fa-solid fa-truck-fast"></i> Delivery Time: 4-7 Days</div>
+          <div class="benefit-item"><i class="fa-solid fa-shield-halved"></i> Secure Checkout</div>
+          <div class="benefit-item"><i class="fa-solid fa-shirt"></i> Heavyweight 100% Combed Cotton</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Apply Dynamic Theme Glow color
+  const glow = document.getElementById("product-glow");
+  if (glow) {
+    if (product.badgeClass === "redago-badge") {
+      glow.style.background = "radial-gradient(circle, rgba(255, 18, 79, 0.18) 0%, rgba(0, 0, 0, 0) 70%)";
+    } else if (product.badgeClass === "cursegod-badge") {
+      glow.style.background = "radial-gradient(circle, rgba(160, 32, 240, 0.18) 0%, rgba(0, 0, 0, 0) 70%)";
+    } else if (product.badgeClass === "berry-badge") {
+      glow.style.background = "radial-gradient(circle, rgba(255, 215, 0, 0.18) 0%, rgba(0, 0, 0, 0) 70%)";
+    } else if (product.badgeClass === "bundle-badge") {
+      glow.style.background = "radial-gradient(circle, rgba(243, 156, 18, 0.18) 0%, rgba(0, 0, 0, 0) 70%)";
+    }
+  }
+
+  // Attach size selector listeners
+  const sizeChips = container.querySelectorAll("#product-size-selector .size-chip");
+  sizeChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      sizeChips.forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      activeSize = chip.getAttribute("data-size");
+    });
+  });
+
+  // Attach fit selector listeners
+  const fitChips = container.querySelectorAll("#product-fit-selector .fit-chip");
+  fitChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      fitChips.forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      activeFit = chip.getAttribute("data-fit");
+      
+      // Update displayed price dynamically
+      const priceVal = container.querySelector(".price-value");
+      const mrpVal = container.querySelector(".price-mrp");
+      
+      const isOversized = activeFit === "Oversized";
+      const extraPrice = isOversized ? 50 : 0;
+      
+      priceVal.innerHTML = `&#8377;${product.price + extraPrice}`;
+      if (mrpVal && product.mrp) {
+        mrpVal.innerHTML = `&#8377;${product.mrp + extraPrice}`;
+      }
+    });
+  });
+
+  // Attach pre-order button listener
+  const preorderBtn = document.getElementById("add-to-cart-btn");
+  if (preorderBtn) {
+    preorderBtn.addEventListener("click", () => {
+      window.addToCart(currentProductId, activeSize, activeFit);
+    });
+  }
+}
+
+// Image Thumbnail Switcher
+window.switchMainImage = function(thumbEl) {
+  const mainImg = document.getElementById("main-product-img");
+  const thumbnails = document.querySelectorAll(".thumb-img");
+  
+  if (!mainImg || !thumbEl) return;
+  if (mainImg.src === thumbEl.src) return;
+
+  // Toggle active class
+  thumbnails.forEach(t => t.classList.remove("active"));
+  thumbEl.classList.add("active");
+
+  // Premium transition swap
+  mainImg.style.transition = "opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)";
+  mainImg.style.opacity = "0";
+  mainImg.style.transform = "scale(0.95)";
+  
+  setTimeout(() => {
+    mainImg.src = thumbEl.src;
+    // Force reflow
+    mainImg.offsetHeight;
+    mainImg.style.opacity = "1";
+    mainImg.style.transform = "scale(1)";
+  }, 200);
+};
+
+// ==========================================================================
+// STATE MANAGEMENT & LOCALSTORAGE
+// ==========================================================================
+function loadCartFromStorage() {
+  const savedCart = localStorage.getItem("dxz_cart");
+  if (savedCart) {
+    try {
+      cart = JSON.parse(savedCart);
+    } catch (e) {
+      console.error("Failed to parse saved cart:", e);
+      cart = [];
+    }
+  }
+}
+
+function saveCartToStorage() {
+  localStorage.setItem("dxz_cart", JSON.stringify(cart));
+}
+
+// ==========================================================================
+// UI UPDATE ACTIONS
+// ==========================================================================
+function updateCartUI() {
+  const navBadge = document.getElementById("cart-count-badge");
+  const drawerCount = document.getElementById("cart-drawer-count");
+  const itemsContainer = document.getElementById("cart-items-list");
+  const subtotalDisplay = document.getElementById("cart-subtotal");
+  const checkoutFooter = document.getElementById("cart-drawer-footer");
+
+  let totalItems = 0;
+  let subtotal = 0;
+
+  cart.forEach(item => {
+    totalItems += item.quantity;
+    subtotal += item.price * item.quantity;
+  });
+
+  // Update Badges
+  if (navBadge) {
+    navBadge.textContent = totalItems;
+    if (totalItems > 0) {
+      navBadge.classList.add("has-items");
+    } else {
+      navBadge.classList.remove("has-items");
+    }
+  }
+
+  if (drawerCount) {
+    drawerCount.textContent = totalItems + (totalItems === 1 ? " item" : " items");
+  }
+
+  // Update Subtotal
+  if (subtotalDisplay) {
+    subtotalDisplay.textContent = `\u20B9${subtotal.toLocaleString('en-IN')}`;
+  }
+
+  // Render Items List
+  if (!itemsContainer) return;
+
+  if (cart.length === 0) {
+    itemsContainer.innerHTML = `
+      <div class="cart-empty-message">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <p>Your shopping cart is empty.</p>
+        <button class="btn btn-secondary btn-close-drawer" style="padding: 0.6rem 1.5rem; font-size: 0.8rem;">Start Exploring</button>
+      </div>
+    `;
+    if (checkoutFooter) {
+      checkoutFooter.style.display = "none";
+    }
+
+    const closeBtnEmpty = itemsContainer.querySelector(".btn-close-drawer");
+    if (closeBtnEmpty) {
+      closeBtnEmpty.addEventListener("click", (e) => {
+        e.preventDefault();
+        toggleCartDrawer(false);
+      });
+    }
+    return;
+  }
+
+  if (checkoutFooter) {
+    checkoutFooter.style.display = "block";
+  }
+
+  itemsContainer.innerHTML = "";
+  cart.forEach(item => {
+    const itemEl = document.createElement("div");
+    itemEl.className = "cart-item";
+    
+    const customImgClass = item.customClass ? `class="cart-item-img ${item.customClass}"` : `class="cart-item-img"`;
+
+    itemEl.innerHTML = `
+      <div class="cart-item-img-wrap">
+        <img src="${item.image}" alt="${item.name}" ${customImgClass}>
+      </div>
+      <div class="cart-item-details">
+        <h4 class="cart-item-name">${item.name}</h4>
+        <div class="cart-item-meta">Size: ${item.size}</div>
+        <div class="cart-item-price">\u20B9${(item.price * item.quantity).toLocaleString('en-IN')}</div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty('${item.id}', '${item.size}', -1)">-</button>
+          <span class="qty-val">${item.quantity}</span>
+          <button class="qty-btn" onclick="changeQty('${item.id}', '${item.size}', 1)">+</button>
+        </div>
+      </div>
+      <button class="cart-item-remove" onclick="removeCartItem('${item.id}', '${item.size}')" title="Remove Item">
+        <i class="fa-solid fa-trash-can"></i>
+      </button>
+    `;
+    itemsContainer.appendChild(itemEl);
+  });
+}
+
+// ==========================================================================
+// CART OPERATIONS (ACCESSIBLE GLOBALLY)
+// ==========================================================================
+window.addToCart = function(id, size = "N/A") {
+  const product = PRODUCTS_CATALOG[id];
+  if (!product) return;
+
+  const existingItemIndex = cart.findIndex(item => item.id === id && item.size === size);
+
+  if (existingItemIndex > -1) {
+    cart[existingItemIndex].quantity += 1;
+  } else {
+    cart.push({
+      id: id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      customClass: product.customClass || "",
+      size: size,
+      quantity: 1
+    });
+  }
+
+  saveCartToStorage();
+  updateCartUI();
+  showNotification(`Added ${product.name} (${size}) to cart!`);
+  
+  setTimeout(() => {
+    toggleCartDrawer(true);
+  }, 400);
+};
+
+window.changeQty = function(id, size, change) {
+  const itemIndex = cart.findIndex(item => item.id === id && item.size === size);
+  if (itemIndex === -1) return;
+
+  cart[itemIndex].quantity += change;
+
+  if (cart[itemIndex].quantity <= 0) {
+    cart.splice(itemIndex, 1);
+  }
+
+  saveCartToStorage();
+  updateCartUI();
+};
+
+window.removeCartItem = function(id, size) {
+  const itemIndex = cart.findIndex(item => item.id === id && item.size === size);
+  if (itemIndex === -1) return;
+
+  const itemName = cart[itemIndex].name;
+  cart.splice(itemIndex, 1);
+
+  saveCartToStorage();
+  updateCartUI();
+  showNotification(`Removed ${itemName} from cart.`, true);
+};
+
+// Drawer Toggle
+function toggleCartDrawer(open) {
+  const drawer = document.getElementById("cart-drawer");
+  if (!drawer) return;
+
+  if (open) {
+    drawer.classList.add("active");
+    document.body.style.overflow = "hidden";
+  } else {
+    drawer.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+}
+
+function initCartDrawer() {
+  const toggleBtn = document.getElementById("cart-toggle-btn");
+  const closeBtn = document.getElementById("cart-close-btn");
+  const backdrop = document.getElementById("cart-drawer-backdrop");
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => toggleCartDrawer(true));
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => toggleCartDrawer(false));
+  }
+
+  if (backdrop) {
+    backdrop.addEventListener("click", () => toggleCartDrawer(false));
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      toggleCartDrawer(false);
+    }
+  });
+}
+
+// ==========================================================================
+// CHECKOUT WIZARD PROCESS
+// ==========================================================================
+function initCheckoutWizard() {
+  const checkoutBtn = document.getElementById("checkout-btn");
+  const checkoutModal = document.getElementById("checkout-modal");
+  const closeBtn = document.getElementById("checkout-modal-close");
+  const backdrop = document.getElementById("checkout-modal-backdrop");
+  const shippingForm = document.getElementById("shipping-form");
+  const successBtn = document.getElementById("success-continue-btn");
+  const paymentBack = document.getElementById("payment-back-btn");
+
+  if (!checkoutModal) return;
+
+  let currentStep = 1;
+
+  const showStep = (stepNum) => {
+    currentStep = stepNum;
+    
+    document.querySelectorAll(".checkout-step-panel").forEach(panel => {
+      panel.classList.remove("active");
+    });
+    const targetPanel = document.getElementById(`checkout-step-${stepNum}`);
+    if (targetPanel) targetPanel.classList.add("active");
+
+    for (let i = 1; i <= 3; i++) {
+      const stepIndicator = document.getElementById(`step-indicator-${i}`);
+      if (!stepIndicator) continue;
+      
+      stepIndicator.className = "step";
+      if (i === stepNum) {
+        stepIndicator.classList.add("active");
+      } else if (i < stepNum) {
+        stepIndicator.classList.add("completed");
+      }
+    }
+  };
+
+  const openCheckout = () => {
+    if (cart.length === 0) {
+      showNotification("Your cart is empty!", true);
+      return;
+    }
+
+    let subtotal = 0;
+    cart.forEach(item => subtotal += item.price * item.quantity);
+    const summaryTotal = document.getElementById("checkout-summary-total");
+    if (summaryTotal) summaryTotal.textContent = `\u20B9${subtotal.toLocaleString('en-IN')}`;
+
+    toggleCartDrawer(false);
+    checkoutModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+    showStep(1); 
+  };
+
+  const closeCheckout = () => {
+    checkoutModal.classList.remove("active");
+    document.body.style.overflow = "";
+  };
+
+  if (checkoutBtn) checkoutBtn.addEventListener("click", openCheckout);
+  if (closeBtn) closeBtn.addEventListener("click", closeCheckout);
+  if (backdrop) backdrop.addEventListener("click", closeCheckout);
+
+  // Form submit handles: Proceed to Payment step (Step 2)
+  if (shippingForm) {
+    shippingForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      
+      // Calculate and display pricing preview for Step 2
+      let subtotal = 0;
+      cart.forEach(item => subtotal += item.price * item.quantity);
+      const summaryTotal = document.getElementById("checkout-summary-total");
+      if (summaryTotal) summaryTotal.textContent = `\u20B9${subtotal.toLocaleString('en-IN')}`;
+      
+      showStep(2); // Go to payment step
+    });
+  }
+
+  // Razorpay is the sole payment method — prices are natively in INR
+  const razorpayBtn = document.querySelector(".razorpay-gateway");
+  if (razorpayBtn) {
+    razorpayBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      
+      // Validation: Ensure shipping info was filled out in Step 1
+      const shipName = document.getElementById("ship-name").value.trim();
+      const shipEmail = document.getElementById("ship-email").value.trim();
+      const shipPhone = document.getElementById("ship-phone").value.trim();
+      const shipAddress = document.getElementById("ship-address").value.trim();
+      const shipLandmark = document.getElementById("ship-landmark") ? document.getElementById("ship-landmark").value.trim() : "";
+      const shipState = document.getElementById("ship-state") ? document.getElementById("ship-state").value.trim() : "";
+      
+      if (!shipName || !shipEmail || !shipPhone || !shipAddress || !shipState) {
+        showNotification("Please complete your shipping address, state, and phone number first!", true);
+        showStep(1);
+        return;
+      }
+
+      if (!/^[0-9]{10}$/.test(shipPhone)) {
+        showNotification("Please enter a valid 10-digit phone number!", true);
+        showStep(1);
+        return;
+      }
+
+      // Calculate dynamically for whatever is in the cart (prices are in INR)
+      let subtotal = 0;
+      let itemsList = [];
+      
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+        itemsList.push(`${item.quantity}x ${item.name} (${item.size})`);
+      });
+
+      const amountPaise = Math.round(subtotal * 100);
+
+      // Get address details
+      const city = document.getElementById("ship-city").value;
+      const zip = document.getElementById("ship-zip").value;
+      const country = document.getElementById("ship-country").value;
+
+      // Configure Razorpay checkout options
+      const options = {
+        "key": "rzp_live_T113tFIoQSy60O", // REPLACE WITH YOUR LIVE KEY ID FROM RAZORPAY DASHBOARD
+        "amount": amountPaise,
+        "currency": "INR",
+        "name": "The BlueShot Merch Store",
+        "description": itemsList.join(", "),
+        "image": "https://blueshotwiki.netlify.app/assets/char-bsg.png",
+        "handler": function (response) {
+          // Payment successful!
+          showNotification(`Payment Successful! ID: ${response.razorpay_payment_id}`);
+
+          // Capture items before clearing cart
+          const orderedItems = cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            image: item.image,
+            size: item.size,
+            quantity: item.quantity
+          }));
+
+          // Retrieve referral info and prevent self-referral
+          const activeReferral = localStorage.getItem("dxz_active_referral");
+          const userReferral = localStorage.getItem("dxz_user_referral_code");
+          let orderReferral = null;
+          if (activeReferral && activeReferral.trim() !== "" && activeReferral.trim().toUpperCase() !== (userReferral || "").trim().toUpperCase()) {
+            orderReferral = activeReferral.trim().toUpperCase();
+          }
+
+          if (useLiveFirebase) {
+            try {
+              const db = firebase.firestore();
+              const currentUser = firebase.auth().currentUser;
+              const userId = currentUser ? currentUser.uid : null;
+              
+              db.collection("orders").doc(response.razorpay_payment_id).set({
+                orderId: response.razorpay_payment_id,
+                userId: userId,
+                email: shipEmail,
+                phone: shipPhone,
+                name: shipName,
+                address: shipAddress,
+                landmark: shipLandmark,
+                state: shipState,
+                city: city,
+                zip: zip,
+                country: country,
+                items: orderedItems,
+                totalAmount: subtotal,
+                status: "Processing",
+                trackingNumber: "",
+                courierPartner: "Shiprocket",
+                referralCode: orderReferral,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              }).then(() => {
+                console.log("Order saved to Firestore successfully!");
+              }).catch((err) => {
+                console.error("Error saving order to Firestore:", err);
+              });
+            } catch (e) {
+              console.error("Failed to write order to Firestore:", e);
+            }
+          }
+
+          // 2. Always write to localStorage as well so that the user can test/demo it locally instantly!
+          try {
+            const savedUser = localStorage.getItem("dxz_demo_user");
+            const demoUser = savedUser ? JSON.parse(savedUser) : null;
+            const userId = demoUser ? demoUser.uid : "guest_user";
+            
+            const localOrders = JSON.parse(localStorage.getItem("dxz_demo_orders") || "[]");
+            localOrders.push({
+              orderId: response.razorpay_payment_id,
+              userId: userId,
+              email: shipEmail,
+              phone: shipPhone,
+              name: shipName,
+              address: shipAddress,
+              landmark: shipLandmark,
+              state: shipState,
+              city: city,
+              zip: zip,
+              country: country,
+              items: orderedItems,
+              totalAmount: subtotal,
+              status: "Processing",
+              trackingNumber: "",
+              courierPartner: "Shiprocket",
+              referralCode: orderReferral,
+              createdAt: new Date().toISOString()
+            });
+            localStorage.setItem("dxz_demo_orders", JSON.stringify(localOrders));
+
+            // Clean active referral from storage after checkout
+            localStorage.removeItem("dxz_active_referral");
+          } catch (e) {
+            console.error("Failed to write order to localStorage:", e);
+          }
+
+          // Trigger Shiprocket order synchronization
+          if (typeof syncOrderWithShiprocket === "function") {
+            syncOrderWithShiprocket({
+              orderId: response.razorpay_payment_id,
+              email: shipEmail,
+              phone: shipPhone,
+              name: shipName,
+              address: shipAddress,
+              landmark: shipLandmark,
+              state: shipState,
+              city: city,
+              zip: zip,
+              country: country,
+              items: orderedItems,
+              totalAmount: subtotal
+            });
+          }
+
+          // Populate success screen receipt
+          document.getElementById("success-total-text").textContent = `\u20B9${subtotal.toLocaleString('en-IN')}`;
+          document.getElementById("success-order-id").textContent = response.razorpay_payment_id;
+          document.getElementById("success-name-text").textContent = shipName;
+          document.getElementById("success-email-text").textContent = shipEmail;
+          
+          // Clear cart state completely
+          shippingForm.reset();
+          cart = [];
+          saveCartToStorage();
+          updateCartUI();
+
+          // Advance to Step 3 (Receipt)
+          showStep(3);
+        },
+        "prefill": {
+          "name": shipName,
+          "email": shipEmail,
+          "contact": shipPhone
+        },
+        "notes": {
+          "items_purchased": itemsList.join("; "),
+          "shipping_address": `${shipAddress}, ${city}, Zip: ${zip}, Country: ${country}`,
+          "shipping_phone": shipPhone
+        },
+        "theme": {
+          "color": "#FF124F" // DXZ Crimson neon brand color
+        }
+      };
+
+      if (amountPaise === 0) {
+        options.handler({
+          razorpay_payment_id: "FREE_TEST_" + Math.random().toString(36).substr(2, 9).toUpperCase()
+        });
+        return;
+      }
+
+      if (typeof Razorpay !== "undefined") {
+        const rzp = new Razorpay(options);
+        rzp.open();
+      } else {
+        showNotification("Razorpay payment window failed to load. Please try again.", true);
+      }
+    });
+  }
+
+  if (paymentBack) {
+    paymentBack.addEventListener("click", (e) => {
+      e.preventDefault();
+      showStep(1); 
+    });
+  }
+
+  if (successBtn) {
+    successBtn.addEventListener("click", () => {
+      closeCheckout();
+      window.location.href = "merch.html";
+    });
+  }
+}
+
+// Floating Toast Notifications helper
+function showNotification(message, isError = false) {
+  const container = document.getElementById("alert-container");
+  if (!container) return;
+
+  const alert = document.createElement("div");
+  alert.className = `alert-card ${isError ? 'error' : ''}`;
+  alert.innerHTML = `
+    <i class="${isError ? 'fa-solid fa-triangle-exclamation' : 'fa-solid fa-circle-check'}"></i>
+    <span>${message}</span>
+  `;
+
+  container.appendChild(alert);
+
+  setTimeout(() => {
+    alert.classList.add("active");
+  }, 10);
+
+  setTimeout(() => {
+    alert.classList.remove("active");
+    setTimeout(() => {
+      alert.remove();
+    }, 400);
+  }, 3500);
+}
+
+// ==========================================================================
+// SHIPROCKET AUTOMATION INTEGRATION
+// ==========================================================================
+async function syncOrderWithShiprocket(order) {
+  if (typeof shiprocketConfig === "undefined") {
+    console.warn("Shiprocket configuration not found in firebase-config.js. Order sync skipped.");
+    return;
+  }
+
+  // 1. Secure Webhook Integration (Make / Zapier / Pipedream) - RECOMMENDED
+  if (shiprocketConfig.webhookUrl && shiprocketConfig.webhookUrl !== "YOUR_MAKE_OR_ZAPIER_WEBHOOK_URL") {
+    console.log("Sending order details to Shiprocket webhook:", order.orderId);
+    try {
+      const response = await fetch(shiprocketConfig.webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(order)
+      });
+      if (response.ok) {
+        console.log("Order synced with Shiprocket webhook successfully!");
+        showNotification("Order sent to Shiprocket!");
+      } else {
+        console.error("Webhook responded with an error status:", response.status);
+      }
+    } catch (err) {
+      console.error("Failed to post order to Shiprocket webhook:", err);
+    }
+    return;
+  }
+
+  // 2. Direct API Integration (Fallback with CORS proxy)
+  let token = (shiprocketConfig.token && shiprocketConfig.token !== "YOUR_SHIPROCKET_JWT_TOKEN") ? shiprocketConfig.token : null;
+
+  if (!token && shiprocketConfig.email && shiprocketConfig.email !== "YOUR_SHIPROCKET_EMAIL" && shiprocketConfig.password && shiprocketConfig.password !== "YOUR_SHIPROCKET_PASSWORD") {
+    console.log("Authenticating directly with Shiprocket API...", order.orderId);
+    try {
+      const proxyUrl = "https://proxy.cors.sh/";
+      const targetAuthUrl = "https://apiv2.shiprocket.in/v1/external/auth/login";
+
+      const authResponse = await fetch(`${proxyUrl}${targetAuthUrl}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: shiprocketConfig.email,
+          password: shiprocketConfig.password
+        })
+      });
+
+      if (!authResponse.ok) {
+        throw new Error(`Shiprocket auth failed: ${authResponse.status}`);
+      }
+
+      const authData = await authResponse.json();
+      token = authData.token;
+    } catch (err) {
+      console.error("Shiprocket Login Error:", err);
+    }
+  }
+
+  if (token) {
+    console.log("Sending order details directly to Shiprocket API...", order.orderId);
+    try {
+      const proxyUrl = "https://proxy.cors.sh/";
+      const orderItems = order.items.map(item => ({
+        name: `${item.name} (${item.size})`,
+        sku: `${item.id}-${item.size}`,
+        units: item.quantity,
+        selling_price: item.price
+      }));
+
+      const now = new Date();
+      const formattedDate = now.getFullYear() + "-" +
+        String(now.getMonth() + 1).padStart(2, '0') + "-" +
+        String(now.getDate()).padStart(2, '0') + " " +
+        String(now.getHours()).padStart(2, '0') + ":" +
+        String(now.getMinutes()).padStart(2, '0');
+
+      const payload = {
+        order_id: order.orderId,
+        order_date: formattedDate,
+        pickup_location: shiprocketConfig.pickupLocation || "Primary",
+        channel_id: shiprocketConfig.channelId || "",
+        billing_customer_name: order.name.split(" ")[0] || "Customer",
+        billing_last_name: order.name.split(" ").slice(1).join(" ") || "",
+        billing_address: order.address + (order.landmark ? ", Near " + order.landmark : ""),
+        billing_city: order.city,
+        billing_pincode: order.zip,
+        billing_state: order.state || order.city,
+        billing_country: "India",
+        billing_email: order.email,
+        billing_phone: order.phone,
+        shipping_is_billing: true,
+        shipping_customer_name: order.name.split(" ")[0] || "Customer",
+        shipping_last_name: order.name.split(" ").slice(1).join(" ") || "",
+        shipping_address: order.address + (order.landmark ? ", Near " + order.landmark : ""),
+        shipping_city: order.city,
+        shipping_pincode: order.zip,
+        shipping_state: order.state || order.city,
+        shipping_country: "India",
+        shipping_email: order.email,
+        shipping_phone: order.phone,
+        order_items: orderItems,
+        payment_method: "Prepaid",
+        sub_total: order.totalAmount,
+        length: 10,
+        breadth: 10,
+        height: 5,
+        weight: 0.3
+      };
+
+      const targetOrderUrl = "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc";
+      console.log("Shiprocket Sync Payload:", payload);
+      const orderResponse = await fetch(`${proxyUrl}${targetOrderUrl}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!orderResponse.ok) {
+        const errMsg = await orderResponse.text();
+        throw new Error(`Shiprocket order creation failed: ${errMsg}`);
+      }
+
+      const orderData = await orderResponse.json();
+      console.log("Successfully synced order with Shiprocket directly!", orderData);
+      showNotification("Order synced with Shiprocket!");
+    } catch (err) {
+      console.error("Shiprocket Sync Error:", err);
+    }
+    return;
+  }
+
+  console.log("Shiprocket sync skipped: neither webhookUrl nor email/password/token keys configured.");
+}
+
+// ==========================================================================
+// REFERRAL CODE CAPTURE
+// ==========================================================================
+function captureReferralCode() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const refCode = urlParams.get('ref');
+  if (refCode) {
+    localStorage.setItem("dxz_active_referral", refCode.trim().toUpperCase());
+    console.log("Captured active referral code:", refCode.trim().toUpperCase());
+  }
+}
+
+// ==========================================================================
+// SHOP REFERRAL BANNER
+// ==========================================================================
+function initShopReferralProg() {
+  let useLiveFirebase = false;
+  if (typeof firebase !== "undefined" && typeof firebaseConfig !== "undefined" && firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
+    useLiveFirebase = true;
+  }
+
+  const isDemo = !useLiveFirebase;
+
+  if (useLiveFirebase) {
+    try {
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+      
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          try {
+            const memberDoc = await db.collection("members").doc(user.uid).get();
+            if (memberDoc.exists && memberDoc.data().referralCode) {
+              const referralCode = memberDoc.data().referralCode;
+              
+              // Count referrals
+              const orderSnap = await db.collection("orders").where("referralCode", "==", referralCode).get();
+              const refCount = orderSnap.size;
+              
+              renderShopReferralBar(user, referralCode, refCount, db, false);
+            }
+          } catch (err) {
+            console.error("Error loading referral stats in shop:", err);
+          }
+        } else {
+          const existing = document.getElementById("shop-referral-bar");
+          if (existing) {
+            existing.style.transform = "translateY(100%)";
+            setTimeout(() => { existing.remove(); }, 300);
+            document.body.style.paddingBottom = "0";
+          }
+        }
+      });
+    } catch (e) {
+      console.error("Failed to load shop referral listener:", e);
+    }
+  } else {
+    // Demo Mode logic: check local storage user
+    try {
+      const savedUser = localStorage.getItem("dxz_demo_user");
+      const demoUser = savedUser ? JSON.parse(savedUser) : null;
+      if (demoUser) {
+        let localMembers = JSON.parse(localStorage.getItem("dxz_demo_members") || "[]");
+        let member = localMembers.find(m => m.uid === demoUser.uid);
+        if (member && member.referralCode) {
+          const localOrders = JSON.parse(localStorage.getItem("dxz_demo_orders") || "[]");
+          const refCount = localOrders.filter(o => o.referralCode === member.referralCode).length;
+          renderShopReferralBar(demoUser, member.referralCode, refCount, null, true);
+        }
+      }
+    } catch (err) {
+      console.error("Error loading demo referral bar:", err);
+    }
+  }
+}
+
+function renderShopReferralBar(user, referralCode, refCount, db, isDemoMode) {
+  const existing = document.getElementById("shop-referral-bar");
+  if (existing) existing.remove();
+
+  if (!user || !referralCode) return;
+
+  const bar = document.createElement("div");
+  bar.id = "shop-referral-bar";
+  bar.style.position = "fixed";
+  bar.style.bottom = "0";
+  bar.style.left = "0";
+  bar.style.width = "100%";
+  bar.style.background = "rgba(10, 10, 15, 0.95)";
+  bar.style.borderTop = "2px solid var(--color-blue-neon)";
+  bar.style.backdropFilter = "blur(10px)";
+  bar.style.boxShadow = "0 -10px 30px rgba(0, 0, 0, 0.5)";
+  bar.style.zIndex = "10000";
+  bar.style.padding = "0.75rem 1.5rem";
+  bar.style.boxSizing = "border-box";
+  bar.style.display = "flex";
+  bar.style.alignItems = "center";
+  bar.style.justifyContent = "space-between";
+  bar.style.flexWrap = "wrap";
+  bar.style.gap = "1rem";
+  bar.style.fontFamily = "'Outfit', sans-serif";
+  bar.style.transition = "transform 0.3s ease";
+  bar.style.transform = "translateY(100%)";
+
+  const pct = Math.min(100, Math.floor((refCount / 5) * 100));
+  const isUnlocked = refCount >= 5;
+
+  bar.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 0.75rem; color: #fff; font-size: 0.9rem;">
+      <i class="fa-solid fa-gift" style="color: var(--color-blue-neon); font-size: 1.1rem;"></i>
+      <span>
+        <strong>Claim Free Shirt:</strong> Share your code 
+        <span style="color: var(--color-blue-neon); font-family: monospace; font-weight: bold; background: rgba(255,255,255,0.05); padding: 0.15rem 0.4rem; border-radius: 4px; margin: 0 0.25rem;">${referralCode}</span>
+      </span>
+      <button class="btn btn-primary" id="shop-ref-copy-btn" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.3rem; height: auto; min-height: 0;">
+        <i class="fa-regular fa-copy"></i> Copy Link
+      </button>
+    </div>
+    
+    <div style="flex: 1; min-width: 250px; max-width: 500px; display: flex; align-items: center; gap: 0.75rem; color: #fff; font-size: 0.8rem;">
+      <span>Sales Progress:</span>
+      <div style="flex: 1; background: rgba(255,255,255,0.05); height: 8px; border-radius: 4px; overflow: hidden; position: relative;">
+        <div style="background: var(--color-blue-neon); height: 100%; width: ${pct}%; transition: width 0.4s ease; box-shadow: 0 0 8px var(--color-blue-neon);"></div>
+      </div>
+      <span style="font-weight: bold;">${refCount} / 5</span>
+    </div>
+
+    <div id="shop-ref-action-wrap" style="display: flex; align-items: center; gap: 0.75rem;">
+      ${isUnlocked 
+        ? '<button class="btn" style="background: #2ecc71; color: #000; font-weight: bold; padding: 0.4rem 1rem; font-size: 0.8rem; border-radius: 4px; border: none; cursor: pointer;" id="shop-ref-claim-btn">Claim Free Shirt</button>'
+        : '<span style="font-size: 0.8rem; color: var(--text-muted);">Unlock at 5 sales</span>'
+      }
+      <button id="shop-ref-close-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; padding: 0.2rem;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  `;
+
+  document.body.appendChild(bar);
+  document.body.style.paddingBottom = "70px";
+  
+  setTimeout(() => {
+    bar.style.transform = "translateY(0)";
+  }, 50);
+
+  // Bind copy link
+  const copyBtn = document.getElementById("shop-ref-copy-btn");
+  if (copyBtn) {
+    copyBtn.onclick = () => {
+      const refLink = `${window.location.origin}/merch.html?ref=${referralCode}`;
+      navigator.clipboard.writeText(refLink)
+        .then(() => {
+          showNotification("Referral link copied!");
+        })
+        .catch(() => {
+          showNotification("Failed to copy link.", true);
+        });
+    };
+  }
+
+  // Bind claim button
+  const claimBtn = document.getElementById("shop-ref-claim-btn");
+  if (claimBtn) {
+    if (isDemoMode) {
+      const localClaims = JSON.parse(localStorage.getItem("dxz_demo_claims") || "[]");
+      const claimed = localClaims.find(c => c.userId === user.uid);
+      if (claimed) {
+        updateClaimStatusUI(claimed.status);
+      }
+    } else {
+      db.collection("claims").doc(user.uid).get().then(doc => {
+        if (doc.exists) {
+          updateClaimStatusUI(doc.data().status);
+        }
+      });
+    }
+
+    claimBtn.onclick = async () => {
+      claimBtn.disabled = true;
+      claimBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+      const claimPayload = {
+        userId: user.uid,
+        email: user.email || "no-email@dangerxzone.com",
+        username: user.displayName || "Faction Member",
+        referralCode: referralCode,
+        referralCount: refCount,
+        status: "pending",
+        claimedAt: isDemoMode ? new Date().toISOString() : firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        if (isDemoMode) {
+          const localClaims = JSON.parse(localStorage.getItem("dxz_demo_claims") || "[]");
+          localClaims.push(claimPayload);
+          localStorage.setItem("dxz_demo_claims", JSON.stringify(localClaims));
+        } else {
+          await db.collection("claims").doc(user.uid).set(claimPayload);
+        }
+        showNotification("Claim registered successfully!");
+        updateClaimStatusUI("pending");
+      } catch (err) {
+        console.error(err);
+        showNotification("Failed to submit claim.", true);
+        claimBtn.disabled = false;
+        claimBtn.innerHTML = "Claim Free Shirt";
+      }
+    };
+  }
+
+  function updateClaimStatusUI(status) {
+    const actionWrap = document.getElementById("shop-ref-action-wrap");
+    if (actionWrap) {
+      actionWrap.innerHTML = `
+        <span style="font-size: 0.8rem; color: #2ecc71; font-weight: bold; margin-right: 0.5rem;">
+          <i class="fa-solid fa-circle-check"></i> CLAIM: ${status.toUpperCase()}
+        </span>
+        <button id="shop-ref-close-btn" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; padding: 0.2rem;"><i class="fa-solid fa-xmark"></i></button>
+      `;
+      const closeBtn = document.getElementById("shop-ref-close-btn");
+      if (closeBtn) {
+        closeBtn.onclick = () => {
+          bar.style.transform = "translateY(100%)";
+          setTimeout(() => { bar.remove(); }, 300);
+          document.body.style.paddingBottom = "0";
+        };
+      }
+    }
+  }
+
+  const closeBtn = document.getElementById("shop-ref-close-btn");
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      bar.style.transform = "translateY(100%)";
+      setTimeout(() => { bar.remove(); }, 300);
+      document.body.style.paddingBottom = "0";
+    };
+  }
+}
+
+
+

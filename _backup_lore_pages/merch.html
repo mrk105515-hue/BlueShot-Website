@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L6LMYSVPB8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L6LMYSVPB8');
+  </script>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>DXZ Shop | Official Danger X Zone Merchandise</title>
+  <meta name="description" content="Shop official apparel, posters, and limited drops from the Danger X Zone anime series. High-quality obsidian-themed streetwear from The BlueShot.">
+  <meta name="keywords" content="Danger X Zone Merch, DXZ T-Shirt, Redago T-Shirt, The BlueShot Shop, Anime Apparel, Minecraft Anime Merch">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="styles.css?v=1.0.2">
+  <link rel="stylesheet" href="merch.css?v=1.0.2">
+</head>
+<body class="shop-body">
+
+  <!-- NAVIGATION HEADER -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="nav-logo">
+        THE BLUESHOT <span class="logo-dot"></span>
+      </a>
+      
+      <nav>
+                <ul class="nav-links" id="nav-links">
+          <li class="nav-link"><a href="index.html">Home</a></li>
+          <li class="nav-link"><a href="characters.html">Characters</a></li>
+          <li class="nav-link"><a href="universe-lore.html">Lore</a></li>
+          <li class="nav-link active"><a href="merch.html">Shop</a></li>
+          <li class="nav-link "><a href="hub.html">Hub</a></li>
+          <li class="nav-link "><a href="game.html">Arena</a></li>
+          <li class="nav-link"><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+      
+      <div class="nav-actions" style="display: flex; gap: 1rem;">
+        <button class="social-icon global-search-trigger" title="Search site (Press /)" id="nav-search-trigger"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <!-- Floating Cart Toggle Trigger -->
+        <button id="cart-toggle-btn" class="social-icon cart-trigger-btn" title="View Cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-count-badge" class="cart-badge">0</span>
+        </button>
+      </div>
+      
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- CINEMATIC PRE-ORDER BANNER CAROUSEL -->
+  <section class="shop-banner-carousel" id="shop-banner-carousel">
+    <div class="carousel-track" id="carousel-track">
+      <!-- Slide 1: Video Banner (Wait till video ends) -->
+      <div class="carousel-slide video-slide">
+        <div class="video-banner-bg-wrap" id="shop-yt-bg">
+          <!-- Fallback image shown before/instead of video -->
+          <img src="assets/design-anime-2.png" alt="Shop Banner Fallback" class="video-banner-el" id="shop-bg-poster" style="opacity: 0.28;">
+          <div class="video-banner-overlay"></div>
+        </div>
+        <div class="video-banner-content container-width">
+          <span class="video-banner-badge"><i class="fa-solid fa-circle-exclamation"></i> Shop Live Now</span>
+          <h2 class="video-banner-title">DXZ OFFICIAL SHOP IS LIVE</h2>
+          <p class="video-banner-lead">Get exclusive premium heavyweight DXZ gear today. Secure checkout and fast global delivery.</p>
+        </div>
+      </div>
+
+      <!-- Slide 2: Anime Image Banner -->
+      <div class="carousel-slide image-slide">
+        <div class="image-banner-bg-wrap">
+          <img src="assets/design-anime.png" alt="Anime Design Concept" class="image-banner-el">
+          <div class="image-banner-overlay"></div>
+        </div>
+        <div class="video-banner-content container-width">
+          <span class="video-banner-badge"><i class="fa-solid fa-circle-exclamation"></i> Shop Live Now</span>
+          <h2 class="video-banner-title">DXZ OFFICIAL SHOP IS LIVE</h2>
+          <p class="video-banner-lead">Get exclusive premium heavyweight DXZ gear today. Secure checkout and fast global delivery.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation indicators (dots) -->
+    <div class="carousel-indicators">
+      <button class="indicator-dot active" data-slide="0" aria-label="Go to Video Slide"></button>
+      <button class="indicator-dot" data-slide="1" aria-label="Go to Anime Slide"></button>
+    </div>
+  </section>
+
+  <!-- STORE COLLECTION GRID (SERIES ROW LAYOUT) -->
+  <section class="store-collection">
+    <div class="container-width">
+      <div class="shop-back-link" style="margin-bottom: 2rem;">
+        <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Universe</a>
+      </div>
+      <div class="shop-section-header">
+        <h2 class="section-title">Danger X Zone Collection</h2>
+        <p class="section-desc">More drops will be added in future. Click any active shirt or CTA to view details.</p>
+      </div>
+      
+      <div class="series-container">
+        <!-- BERRY (D SERIES) Purple Theme -->
+        <div class="series-row purple-theme" id="series-row-berry">
+          <div class="series-info">
+            <h3 class="series-title">D Series</h3>
+            <span class="series-subtitle">Affordable. Stylish. Everyday.</span>
+            <p class="series-desc">Start your journey with iconic designs at unbeatable prices.</p>
+            <button class="shop-now-btn" data-id="berry-tshirt">
+              SHOP NOW <i class="fa-solid fa-arrow-right-long"></i>
+            </button>
+          </div>
+          
+          <div class="series-gallery-container">
+            <div class="series-slider-gallery">
+              <!-- BERRY T-Shirt -->
+              <div class="product-card focused-card" data-id="berry-tshirt">
+                <div class="card-img-container">
+                  <div class="card-badge live">Live</div>
+                  <img src="assets/berry-angle-1.png" alt="BERRY T-Shirt" class="card-product-img">
+                  <button class="quick-add-btn" title="View Options"><i class="fa-solid fa-eye"></i></button>
+                </div>
+                <div class="card-info">
+                  <h3 class="card-product-name">BERRY T-Shirt</h3>
+                  <span class="card-product-theme">Golden Giant Heavyweight Edition</span>
+                  <div class="card-footer">
+                    <span class="card-price">₹599 <span class="card-mrp">₹999</span></span>
+                    <button class="card-btn-add">Add to Cart</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CURSE GOD DOMINANCE T-Shirt -->
+              <div class="product-card" data-id="cursegod-dominance-tshirt">
+                <div class="card-img-container">
+                  <div class="card-badge live" style="background: #ff007f !important; color: #fff !important;">Live</div>
+                  <img src="assets/cursegod-dominance-1.png" alt="CURSE GOD DOMINANCE T-Shirt" class="card-product-img">
+                  <button class="quick-add-btn" title="View Options"><i class="fa-solid fa-eye"></i></button>
+                </div>
+                <div class="card-info">
+                  <h3 class="card-product-name">CURSE GOD DOMINANCE T-Shirt</h3>
+                  <span class="card-product-theme">Dominance Faction Edition</span>
+                  <div class="card-footer">
+                    <span class="card-price">₹599 <span class="card-mrp">₹999</span></span>
+                    <button class="card-btn-add">Add to Cart</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 7 BLOODSCAR OF HELL T-Shirt -->
+              <div class="product-card" data-id="bloodscar-tshirt">
+                <div class="card-img-container">
+                  <div class="card-badge live" style="background: #9b51e0 !important; color: #fff !important;">Live</div>
+                  <img src="assets/bloodscar-1.png" alt="7 BLOODSCAR OF HELL T-Shirt" class="card-product-img">
+                  <button class="quick-add-btn" title="View Options"><i class="fa-solid fa-eye"></i></button>
+                </div>
+                <div class="card-info">
+                  <h3 class="card-product-name">7 BLOODSCAR OF HELL T-Shirt</h3>
+                  <span class="card-product-theme">Bloodscar Faction Edition</span>
+                  <div class="card-footer">
+                    <span class="card-price">₹599 <span class="card-mrp">₹999</span></span>
+                    <button class="card-btn-add">Add to Cart</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Locked card -->
+              <div class="locked-card">
+                <div class="locked-card-inner">
+                  <i class="fa-solid fa-lock locked-icon"></i>
+                  <img src="assets/berry-angle-1.png" alt="Coming Soon T-Shirt" class="locked-card-shirt-img">
+                  <span class="coming-soon-text">COMING SOON</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CURSE GOD (X SERIES) Pink Theme -->
+        <div class="series-row pink-theme" id="series-row-cursegod">
+          <div class="series-info">
+            <h3 class="series-title">X Series</h3>
+            <span class="series-subtitle">Bold. Powerful. Unforgettable.</span>
+            <p class="series-desc">For those who want more detail, more character, and more attitude.</p>
+            <button class="shop-now-btn" data-id="cursegod-tshirt">
+              SHOP NOW <i class="fa-solid fa-arrow-right-long"></i>
+            </button>
+          </div>
+          
+          <div class="series-gallery-container">
+            <div class="series-slider-gallery">
+              <!-- CURSE GOD T-Shirt -->
+              <div class="product-card focused-card" data-id="cursegod-tshirt">
+                <div class="card-img-container">
+                  <div class="card-badge live">Live</div>
+                  <img src="assets/cursegod-angle-1.png" alt="CURSE GOD T-Shirt" class="card-product-img">
+                  <button class="quick-add-btn" title="View Options"><i class="fa-solid fa-eye"></i></button>
+                </div>
+                <div class="card-info">
+                  <h3 class="card-product-name">CURSE GOD T-Shirt</h3>
+                  <span class="card-product-theme">Dark Magic Pink & Metal Edition</span>
+                  <div class="card-footer">
+                    <span class="card-price">₹799 <span class="card-mrp">₹1,299</span></span>
+                    <button class="card-btn-add">Add to Cart</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Locked card 1 -->
+              <div class="locked-card">
+                <div class="locked-card-inner">
+                  <i class="fa-solid fa-lock locked-icon"></i>
+                  <img src="assets/cursegod-angle-1.png" alt="Coming Soon T-Shirt" class="locked-card-shirt-img">
+                  <span class="coming-soon-text">COMING SOON</span>
+                </div>
+              </div>
+
+              <!-- Locked card 2 -->
+              <div class="locked-card">
+                <div class="locked-card-inner">
+                  <i class="fa-solid fa-lock locked-icon"></i>
+                  <img src="assets/cursegod-angle-1.png" alt="Coming Soon T-Shirt" class="locked-card-shirt-img">
+                  <span class="coming-soon-text">COMING SOON</span>
+                </div>
+              </div>
+
+              <!-- Locked card 3 -->
+              <div class="locked-card">
+                <div class="locked-card-inner">
+                  <i class="fa-solid fa-lock locked-icon"></i>
+                  <img src="assets/cursegod-angle-1.png" alt="Coming Soon T-Shirt" class="locked-card-shirt-img">
+                  <span class="coming-soon-text">COMING SOON</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REDAGO (Z SERIES) Red Theme -->
+        <div class="series-row red-theme" id="series-row-redago">
+          <div class="series-info">
+            <h3 class="series-title">Z Series</h3>
+            <span class="series-subtitle">Premium. Exclusive. Legendary.</span>
+            <p class="series-desc">The finest materials and most exclusive designs from the BlueShot universe.</p>
+            <button class="shop-now-btn" data-id="redago-tshirt">
+              SHOP NOW <i class="fa-solid fa-arrow-right-long"></i>
+            </button>
+          </div>
+          
+          <div class="series-gallery-container">
+            <div class="series-slider-gallery">
+              <!-- REDAGO T-Shirt -->
+              <div class="product-card focused-card" data-id="redago-tshirt">
+                <div class="card-img-container">
+                  <div class="card-badge live">Live</div>
+                  <img src="assets/redago-new-1.png" alt="REDAGO T-Shirt" class="card-product-img">
+                  <button class="quick-add-btn" title="View Options"><i class="fa-solid fa-eye"></i></button>
+                </div>
+                <div class="card-info">
+                  <h3 class="card-product-name">REDAGO T-Shirt</h3>
+                  <span class="card-product-theme">Flame Devil Redago Edition</span>
+                  <div class="card-footer">
+                    <span class="card-price">₹999 <span class="card-mrp">₹1,499</span></span>
+                    <button class="card-btn-add">Add to Cart</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Locked card 1 -->
+              <div class="locked-card">
+                <div class="locked-card-inner">
+                  <i class="fa-solid fa-lock locked-icon"></i>
+                  <img src="assets/redago-new-1.png" alt="Coming Soon T-Shirt" class="locked-card-shirt-img">
+                  <span class="coming-soon-text">COMING SOON</span>
+                </div>
+              </div>
+
+              <!-- Locked card 2 -->
+              <div class="locked-card">
+                <div class="locked-card-inner">
+                  <i class="fa-solid fa-lock locked-icon"></i>
+                  <img src="assets/redago-new-1.png" alt="Coming Soon T-Shirt" class="locked-card-shirt-img">
+                  <span class="coming-soon-text">COMING SOON</span>
+                </div>
+              </div>
+
+              <!-- Locked card 3 -->
+              <div class="locked-card">
+                <div class="locked-card-inner">
+                  <i class="fa-solid fa-lock locked-icon"></i>
+                  <img src="assets/redago-new-1.png" alt="Coming Soon T-Shirt" class="locked-card-shirt-img">
+                  <span class="coming-soon-text">COMING SOON</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRINT ON DEMAND SECTION -->
+      <div class="pod-banner-card" style="margin-top: 4rem; background: rgba(255, 255, 255, 0.02); border: 1px dashed rgba(255, 255, 255, 0.12); border-radius: 12px; padding: 3rem 2rem; text-align: center; backdrop-filter: blur(10px); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); transition: transform 0.3s ease, border-color 0.3s ease;">
+        <div style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--color-blue-neon);"><i class="fa-solid fa-print"></i></div>
+        <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem; color: #fff; font-family: 'Outfit', sans-serif; letter-spacing: 1px; font-weight: 600;">PLAIN FACTION SHIRTS — ₹499</h3>
+        <p style="color: #bbb; max-width: 650px; margin: 0 auto 1.5rem; font-size: 0.95rem; line-height: 1.6;">Get premium heavyweight plain blanks, or contact us for custom graphic print-on-demand orders.</p>
+        
+        <!-- Plain Blanks Showcase Gallery -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.5rem; max-width: 800px; margin: 2rem auto; text-align: center;">
+          <!-- Faction Black Blank (Model) -->
+          <a href="product.html?id=plain-black-tshirt" class="plain-blank-card" style="text-decoration: none; background: rgba(255, 255, 255, 0.015); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 0.8rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease; cursor: pointer;">
+            <div>
+              <img src="assets/bloodscar-2.png" alt="Faction Black Blank Model" style="width: 100%; height: auto; border-radius: 6px; margin-bottom: 0.5rem; background: rgba(0,0,0,0.2);">
+              <h4 style="font-size: 0.85rem; margin: 0 0 0.2rem 0; color: #fff; font-family: 'Outfit', sans-serif; font-weight: 500;">Faction Black</h4>
+              <span style="color: #888; font-size: 0.75rem; display: block; margin-bottom: 0.8rem;">Premium Heavyweight</span>
+            </div>
+            <span class="shop-now-btn" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; text-decoration: none; border-radius: 4px; display: inline-block;">Buy Blank — ₹499</span>
+          </a>
+
+          <!-- Faction Maroon Blank -->
+          <a href="product.html?id=plain-maroon-tshirt" class="plain-blank-card" style="text-decoration: none; background: rgba(255, 255, 255, 0.015); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 0.8rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease; cursor: pointer;">
+            <div>
+              <img src="assets/plain-maroon.png" alt="Faction Maroon Blank" style="width: 100%; height: auto; border-radius: 6px; margin-bottom: 0.5rem; background: rgba(0,0,0,0.2);">
+              <h4 style="font-size: 0.85rem; margin: 0 0 0.2rem 0; color: #fff; font-family: 'Outfit', sans-serif; font-weight: 500;">Faction Maroon</h4>
+              <span style="color: #888; font-size: 0.75rem; display: block; margin-bottom: 0.8rem;">Premium Heavyweight</span>
+            </div>
+            <span class="shop-now-btn" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; text-decoration: none; border-radius: 4px; display: inline-block;">Buy Blank — ₹499</span>
+          </a>
+
+          <!-- Classic White Blank -->
+          <a href="product.html?id=plain-white-tshirt" class="plain-blank-card" style="text-decoration: none; background: rgba(255, 255, 255, 0.015); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 0.8rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease; cursor: pointer;">
+            <div>
+              <img src="assets/plain-white.png" alt="Classic White Blank" style="width: 100%; height: auto; border-radius: 6px; margin-bottom: 0.5rem; background: rgba(0,0,0,0.2);">
+              <h4 style="font-size: 0.85rem; margin: 0 0 0.2rem 0; color: #fff; font-family: 'Outfit', sans-serif; font-weight: 500;">Classic White</h4>
+              <span style="color: #888; font-size: 0.75rem; display: block; margin-bottom: 0.8rem;">Premium Heavyweight</span>
+            </div>
+            <span class="shop-now-btn" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; text-decoration: none; border-radius: 4px; display: inline-block;">Buy Blank — ₹499</span>
+          </a>
+        </div>
+
+        <a href="mailto:blueshotconnectx@gmail.com" class="shop-now-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; padding: 0.8rem 1.8rem;">
+          Contact for Custom Print: blueshotconnectx@gmail.com <i class="fa-solid fa-envelope"></i>
+        </a>
+      </div>
+
+      <!-- RARE MARKS COLLECTIBLE SECTION -->
+      <div class="rare-marks-container" id="rare-marks-section">
+        <div class="rare-marks-header">
+          <h2 class="rare-marks-title">Rare Marks</h2>
+          <span class="rare-marks-subtitle">Discover the 7 Great Marks of the Universe</span>
+        </div>
+        
+        <div class="rare-marks-grid">
+          <!-- Active Unlocked Mark -->
+          <div class="mark-card unlocked" id="mark-dominance-trigger">
+            <img src="assets/mark-dominance.png" alt="Mark of Dominance" class="mark-badge-img">
+            <h4 class="mark-name">Dominance Mark</h4>
+            <span class="mark-status unlocked-tag">Unlocked</span>
+          </div>
+
+          <!-- Locked Marks -->
+          <div class="mark-card locked">
+            <div class="mark-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4 class="mark-name">Vanguard Mark</h4>
+            <span class="mark-status locked-tag">Locked</span>
+          </div>
+
+          <div class="mark-card locked">
+            <div class="mark-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4 class="mark-name">Eclipse Mark</h4>
+            <span class="mark-status locked-tag">Locked</span>
+          </div>
+
+          <div class="mark-card locked">
+            <div class="mark-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4 class="mark-name">Abyss Mark</h4>
+            <span class="mark-status locked-tag">Locked</span>
+          </div>
+
+          <div class="mark-card locked">
+            <div class="mark-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4 class="mark-name">Sovereign Mark</h4>
+            <span class="mark-status locked-tag">Locked</span>
+          </div>
+
+          <div class="mark-card locked">
+            <div class="mark-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4 class="mark-name">Genesis Mark</h4>
+            <span class="mark-status locked-tag">Locked</span>
+          </div>
+
+          <div class="mark-card locked">
+            <div class="mark-lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4 class="mark-name">Ascendant Mark</h4>
+            <span class="mark-status locked-tag">Locked</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STORE FEATURES BAR -->
+      <div class="store-features-bar">
+        <div class="feature-item">
+          <i class="fa-solid fa-shield-halved feature-icon"></i>
+          <div class="feature-text">
+            <h4>PREMIUM QUALITY</h4>
+            <p>100% Heavy Cotton</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i class="fa-solid fa-star feature-icon"></i>
+          <div class="feature-text">
+            <h4>LIMITED DROP</h4>
+            <p>Once gone, it's gone</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i class="fa-solid fa-lock feature-icon"></i>
+          <div class="feature-text">
+            <h4>SECURE PAYMENT</h4>
+            <p>Safe & Encrypted</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i class="fa-solid fa-globe feature-icon"></i>
+          <div class="feature-text">
+            <h4>WORLDWIDE SHIPPING</h4>
+            <p>Delivering power everywhere</p>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Custom suggestion banner section -->
+      <div class="custom-shirt-banner" style="margin-top: 3rem;">
+        <div class="custom-shirt-content">
+          <h3>Custom Series T-Shirt Designs</h3>
+          <p>Have a favorite scene, quote, or character you want to wear? Suggest your customized design ideas in the fan community hub and let the creators know what you want to see next!</p>
+          <a href="hub.html#comments" class="btn btn-primary"><i class="fa-solid fa-comments"></i> Suggest Your Favorite Design in Fan Hub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CART SIDEBAR DRAWER -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-backdrop" id="cart-drawer-backdrop"></div>
+    <div class="cart-drawer-container">
+      <div class="cart-header">
+        <h3>Your Shopping Cart (<span id="cart-drawer-count">0</span>)</h3>
+        <button id="cart-close-btn" class="cart-close-btn" aria-label="Close Cart"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <!-- Cart Items list -->
+      <div class="cart-items-list" id="cart-items-list">
+        <!-- Dynamically injected items -->
+        <div class="cart-empty-message">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <p>Your shopping cart is empty.</p>
+          <a href="#" class="btn btn-secondary btn-close-drawer">Start Exploring</a>
+        </div>
+      </div>
+      
+      <!-- Cart Footer -->
+      <div class="cart-footer" id="cart-drawer-footer">
+        <div class="cart-summary-row">
+          <span>Subtotal:</span>
+          <span class="subtotal-val" id="cart-subtotal">₹0</span>
+        </div>
+        <div class="cart-summary-row shipping-row">
+          <span>Shipping:</span>
+          <span class="shipping-val">Free Shipping</span>
+        </div>
+        <button id="checkout-btn" class="btn btn-danger checkout-action-btn" style="width:100%; margin-top: 1rem;">
+          <i class="fa-solid fa-cart-shopping"></i> Checkout Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT WIZARD MODAL -->
+  <div class="modal" id="checkout-modal">
+    <div class="modal-backdrop" id="checkout-modal-backdrop"></div>
+    <div class="modal-content checkout-modal-content">
+      <button class="modal-close-btn" id="checkout-modal-close" aria-label="Close Checkout"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="checkout-wizard">
+        <!-- Wizard Sidebar Header Progress -->
+        <div class="checkout-progress">
+          <div class="step active" id="step-indicator-1">
+            <span class="step-num">1</span>
+            <span class="step-label">Shipping</span>
+          </div>
+          <div class="step" id="step-indicator-2">
+            <span class="step-num">2</span>
+            <span class="step-label">Payment</span>
+          </div>
+          <div class="step" id="step-indicator-3">
+            <span class="step-num">3</span>
+            <span class="step-label">Receipt</span>
+          </div>
+        </div>
+        
+        <!-- Wizard Form Content -->
+        <div class="checkout-form-container">
+          
+          <!-- STEP 1: PRE-ORDER APPLICATION -->
+          <div class="checkout-step-panel active" id="checkout-step-1">
+            <h3 class="checkout-panel-title">Secure Checkout — Shipping Address</h3>
+            
+            <div class="alert-banner" style="background: rgba(255, 18, 79, 0.1); border: 1px solid var(--color-redago); border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; color: #FFF; font-size: 0.9rem; display: flex; align-items: center; gap: 0.75rem;">
+              <i class="fa-solid fa-triangle-exclamation" style="color: var(--color-redago); font-size: 1.2rem;"></i>
+              <span><strong>Notice:</strong> Get exclusive premium heavyweight DXZ gear today. Secure checkout and fast global delivery.</span>
+            </div>
+            
+            <form id="shipping-form" class="checkout-form">
+              <div class="form-grid-3">
+                <div class="form-group">
+                  <label for="ship-name">Full Name *</label>
+                  <input type="text" id="ship-name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                  <label for="ship-email">Email Address *</label>
+                  <input type="email" id="ship-email" required placeholder="johndoe@email.com">
+                </div>
+                <div class="form-group">
+                  <label for="ship-phone">Phone Number *</label>
+                  <input type="tel" id="ship-phone" required placeholder="9876543210" pattern="[0-9]{10}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="ship-address">Street Address *</label>
+                <input type="text" id="ship-address" required placeholder="123 Redago Street">
+              </div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="ship-landmark">Landmark (Optional)</label>
+                  <input type="text" id="ship-landmark" placeholder="Near Temple / Mall / Metro">
+                </div>
+                <div class="form-group">
+                  <label for="ship-state">State *</label>
+                  <input type="text" id="ship-state" required placeholder="Delhi / Maharashtra">
+                </div>
+              </div>
+              <div class="form-grid-3">
+                <div class="form-group">
+                  <label for="ship-city">City *</label>
+                  <input type="text" id="ship-city" required placeholder="New York">
+                </div>
+                <div class="form-group">
+                  <label for="ship-zip">Zip / Postal Code *</label>
+                  <input type="text" id="ship-zip" required placeholder="10001">
+                </div>
+                <div class="form-group">
+                  <label for="ship-country">Country *</label>
+                  <select id="ship-country" required>
+                    <option value="US">United States</option>
+                    <option value="IN" selected>India</option>
+                    <option value="CA">Canada</option>
+                    <option value="GB">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                  </select>
+                </div>
+              </div>
+              <div class="wizard-buttons">
+                <button type="submit" class="btn btn-primary wizard-next-btn">Proceed to Payment <i class="fa-solid fa-paper-plane"></i></button>
+              </div>
+            </form>
+          </div>
+          
+          <!-- STEP 2: PAYMENT INTEGRATION -->
+          <div class="checkout-step-panel" id="checkout-step-2">
+            <h3 class="checkout-panel-title">Secure Faction Payment</h3>
+            <p class="payment-subtitle">Review your order and pay securely via Razorpay — UPI, Cards, Wallets & Net Banking.</p>
+            
+            <div class="checkout-order-summary">
+              <span>Amount due: <strong id="checkout-summary-total">₹0</strong></span>
+            </div>
+            
+            <div class="payment-options-list">
+              <div class="payment-card-mockup" style="text-align: center; padding: 2.5rem 2rem;">
+                <div class="card-mock-row" style="justify-content: center; border: none; padding: 0; margin-bottom: 1rem;">
+                  <i class="fa-solid fa-shield-halved card-provider-icon" style="font-size: 2rem;"></i>
+                </div>
+                <h4 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem;">Razorpay Secure Checkout</h4>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 2rem;">Supports UPI, Debit/Credit Cards, Net Banking, Paytm, PhonePe & more.</p>
+                
+                <div class="wizard-buttons" style="justify-content: space-between;">
+                  <button type="button" class="btn btn-secondary wizard-back-btn" id="payment-back-btn"><i class="fa-solid fa-arrow-left"></i> Shipping</button>
+                  <button type="button" class="btn btn-danger wizard-next-btn razorpay-gateway"><i class="fa-solid fa-lock"></i> Pay Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- STEP 3: PRE-ORDER SUCCESS -->
+          <div class="checkout-step-panel" id="checkout-step-3" style="text-align: center;">
+            <div class="success-icon-wrap">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="checkout-panel-title success-title">Order Placed Successfully! 🎉</h3>
+            <p class="success-desc">
+              Your order has been placed successfully! Your payment has been received, and we are preparing your package. A confirmation receipt has been sent to your email <strong id="success-email-text"></strong>.
+            </p>
+            <div class="success-receipt-box">
+              <div class="receipt-row"><span>Order ID:</span> <strong id="success-order-id">DXZ-87629</strong></div>
+              <div class="receipt-row"><span>Customer:</span> <span id="success-name-text">John Doe</span></div>
+              <div class="receipt-row"><span>Paid Total:</span> <strong id="success-total-text">₹1,999</strong></div>
+            </div>
+            <button id="success-continue-btn" class="btn btn-danger" style="margin-top: 2rem; padding: 0.8rem 2.5rem;">Continue Exploring</button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- RARE MARKS DETAIL MODAL -->
+  <div id="mark-modal" class="modal">
+    <div id="mark-modal-backdrop"></div>
+    <div class="mark-modal-content">
+      <div class="mark-modal-glow"></div>
+      <button class="modal-close-btn" id="mark-modal-close" aria-label="Close Mark Details">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      
+      <div class="modal-mark-badge-wrap">
+        <img src="assets/mark-dominance.png" alt="Dominance Mark" class="modal-mark-badge-img">
+      </div>
+      
+      <span class="modal-mark-rarity">LEGENDARY (1 OF 7)</span>
+      <h3 class="modal-mark-title">Mark of Dominance</h3>
+      
+      <p class="modal-mark-lore">
+        <strong>THE FIRST OF THE 7 GREAT MARKS</strong><br><br>
+        This is <strong>Mark #1</strong> of the legendary <strong>7 Great Marks</strong>.<br><br>
+        If you're lucky enough to receive this mark on your T-shirt, you'll also get an <strong>exclusive QR Code Card</strong>.<br><br>
+        <strong>Scan the QR code</strong> to unlock exclusive rewards, secret content, special benefits, limited-time surprises, and eternal glory.<br><br>
+        <strong>Only the chosen will collect all 7 Great Marks.</strong>
+      </p>
+      
+      <div class="modal-mark-info-grid">
+        <div class="info-block">
+          <h4>Lore Significance</h4>
+          <p>This mark is the <strong>ultimate symbol of dominance and power</strong>.<br><br>
+          It represents the <strong>Curse God</strong>, the <strong>Great Rulers</strong>, and the <strong>most legendary characters</strong> of the DXZ universe.<br><br>
+          Only those worthy of carrying their legacy can bear this mark.</p>
+        </div>
+        <div class="info-block">
+          <h4>Exclusive Benefit</h4>
+          <p>⭐  <strong>Get Up to 90% of Your Money Back</strong><br><br>
+          🏆 <strong>Own a Rare Identity Mark</strong><br>A limited collectible that proves you're one of the chosen.<br><br>
+          🎁  <strong>Win a FREE DXZ T-Shirt</strong><br><br>
+          💸 <strong>Exclusive Discount on Your Next T-Shirt Purchase</strong><br><br>
+          🔑 <strong>Unlock Exclusive DXZ Content</strong><br>Secret lore, behind-the-scenes content, and special rewards.<br><br>
+          👑 <strong>Special Access to Reach BlueShot</strong><br>Exclusive opportunities to connect with the creator and become part of the inner DXZ community.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FLOATING FEEDBACK ALERT -->
+  <div class="alert-container" id="alert-container"></div>
+
+  <!-- FOOTER -->
+
+      <!-- Sandboxed Display Banner Ad (300x250) -->
+  <div class="dxz-ad-wrapper ad-banner-300">
+    <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
+    <iframe src="ad-300x250.html" width="300" height="250" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 300px; height: 250px; overflow: hidden;"></iframe>
+  </div>
+
+    <!-- Sandboxed Native Grid Ad -->
+  <div class="dxz-ad-wrapper ad-native-grid">
+    <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
+    <iframe src="ad-native.html" width="100%" height="280" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 100%; max-width: 1060px; height: 280px; overflow: hidden;"></iframe>
+  </div>
+
+  <footer class="footer">
+    <div class="container-width">
+      <div class="footer-top">
+        <a href="index.html#hero" class="footer-logo">
+          THE BLUESHOT <span class="logo-dot"></span>
+        </a>
+                <ul class="footer-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="characters.html">Characters</a></li>
+          <li><a href="universe-lore.html">Universe Lore</a></li>
+          <li><a href="season-guide.html">Season Guide</a></li>
+          <li><a href="merch.html">Shop</a></li>
+          <li><a href="hub.html">Hub</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
+                <div class="footer-bottom-links">
+          <a href="index.html">Home</a>
+          <a href="orders.html">Track Order</a>
+          <a href="about.html">About Us</a>
+          <a href="contact.html">Contact & FAQ</a>
+          <a href="disclaimer.html">Disclaimer</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms</a>
+          <a href="refunds.html">Refunds</a>
+          <a href="shipping.html">Shipping</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK Client Libraries (v9 Compat Mode) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <!-- Razorpay Web SDK for Dynamic Multi-Item Checkouts -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  
+  <!-- Shop Logic Script -->
+  <script src="merch.js?v=1.0.2"></script>
+  <script src="search.js?v=1.0.2"></script>
+  <script src="admin.js?v=1.0.2"></script>
+</body>
+</html>
+

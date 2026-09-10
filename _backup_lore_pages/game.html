@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L6LMYSVPB8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L6LMYSVPB8');
+  </script>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>DXZ Battle Arena | The BlueShot — Faction Duel</title>
+  <meta name="description" content="Choose your character card, hit perfect timing strikes, read character chat dialogues, and rise in the global faction leaderboards!">
+  <meta name="keywords" content="DXZ Battle Arena, The BlueShot Mini-game, Danger X Zone Card Game, Anime Combat timing">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="styles.css?v=1.0.2">
+  <link rel="stylesheet" href="game.css?v=1.0.2">
+</head>
+<body class="game-body">
+
+  <!-- NAVIGATION HEADER -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="nav-logo">
+        THE BLUESHOT <span class="logo-dot"></span>
+      </a>
+      
+      <nav>
+                <ul class="nav-links" id="nav-links">
+          <li class="nav-link"><a href="index.html">Home</a></li>
+          <li class="nav-link"><a href="characters.html">Characters</a></li>
+          <li class="nav-link"><a href="universe-lore.html">Lore</a></li>
+          <li class="nav-link "><a href="merch.html">Shop</a></li>
+          <li class="nav-link "><a href="hub.html">Hub</a></li>
+          <li class="nav-link active"><a href="game.html">Arena</a></li>
+          <li class="nav-link"><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+      
+      <div class="nav-socials">
+        <button class="social-icon global-search-trigger" title="Search site (Press /)" id="nav-search-trigger"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <a href="https://youtube.com/@BlueShot77" target="_blank" class="social-icon" title="YouTube" id="nav-yt"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://discord.gg/gfvf46ymng" target="_blank" class="social-icon" title="Discord" id="nav-dc"><i class="fa-brands fa-discord"></i></a>
+      </div>
+      
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- GAME HERO BANNER -->
+  <section class="game-hero">
+    <div class="game-hero-glow"></div>
+    <div class="container-width">
+      <div class="game-back-link">
+        <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Universe</a>
+      </div>
+      <div class="game-hero-content">
+        <span class="game-badge"><i class="fa-solid fa-gamepad"></i> Mini Game</span>
+        <h1 class="game-hero-title">DXZ Battle Arena <span style="font-size: 1.2rem; color: #ff3b30; vertical-align: middle; margin-left: 0.5rem; letter-spacing: 0.05em; font-family: var(--font-display);">SEASON 1</span></h1>
+        <p class="game-hero-desc">Choose your character card, time your attacks on the neon gauge, trash-talk in combat chat dialogues, and dominate the global faction ranks.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN GAME CONTAINER -->
+  <section class="arena-section">
+    <div class="container-width" style="position: relative; min-height: 500px;">
+      
+      <!-- 1. GUEST LOCK SCREEN (Only visible to logged-out users) -->
+      <div class="arena-lock-overlay" id="arena-guest-lock" style="display: none;">
+        <div class="lock-card">
+          <div class="lock-icon-wrap">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h2>Access Restricted</h2>
+          <p>The DXZ Battle Arena and global leaderboard are reserved exclusively for registered members of the faction. Sign up or log in to select your character, use powerful skills, and post high scores!</p>
+          <a href="hub.html#join-faction" class="btn btn-danger btn-lock-login">
+            <i class="fa-solid fa-right-to-bracket"></i> Authenticate at Community Hub
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. GAME LOBBY / CHARACTER SELECT (Visible when logged in) -->
+      <div class="arena-lobby-view" id="arena-lobby" style="display: none;">
+        <div class="lobby-layout">
+          <!-- Selection List -->
+          <div class="lobby-selection">
+            <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+              <span class="section-subtitle">Pick Your Fighter</span>
+              <h2 class="section-title" style="font-size: 1.8rem;">Select a Character Card</h2>
+            </div>
+            
+            <div class="character-select-grid">
+              <!-- Card 1: BSG -->
+              <div class="select-card" data-char="bsg">
+                <div class="select-card-img-wrap">
+                  <img src="assets/char-bsg.png" alt="BSG" class="select-card-img">
+                  <div class="select-card-badge">Flame Devil</div>
+                </div>
+                <h3>BSG</h3>
+                <span class="select-card-subtitle">Redago Active</span>
+              </div>
+              
+              <!-- Card 2: Hell -->
+              <div class="select-card" data-char="hell">
+                <div class="select-card-img-wrap">
+                  <img src="assets/char-hell.png" alt="Hell" class="select-card-img">
+                  <div class="select-card-badge redago-theme">Fate Author</div>
+                </div>
+                <h3>Hell</h3>
+                <span class="select-card-subtitle">West Emperor</span>
+              </div>
+
+              <!-- Card 3: Jiggo Degan -->
+              <div class="select-card" data-char="jiggo">
+                <div class="select-card-img-wrap">
+                  <img src="assets/char-jiggo.png" alt="Jiggo" class="select-card-img">
+                  <div class="select-card-badge">Obsidian Gate</div>
+                </div>
+                <h3>Emperor Jiggo</h3>
+                <span class="select-card-subtitle">Legendary Mentor</span>
+              </div>
+
+              <!-- Card 4: Zalta -->
+              <div class="select-card" data-char="zalta">
+                <div class="select-card-img-wrap">
+                  <img src="assets/char-zalta.png" alt="Zalta" class="select-card-img">
+                  <div class="select-card-badge redago-theme">Curse God</div>
+                </div>
+                <h3>Curse God Zalta</h3>
+                <span class="select-card-subtitle">Dark Bull Beast</span>
+              </div>
+
+              <!-- Card 5: Suma -->
+              <div class="select-card" data-char="suma">
+                <div class="select-card-img-wrap">
+                  <img src="assets/char-suma.png" alt="Suma" class="select-card-img">
+                  <div class="select-card-badge">Emerald Shadow</div>
+                </div>
+                <h3>Suma</h3>
+                <span class="select-card-subtitle">Tactical Guard</span>
+              </div>
+
+              <!-- Card 6: Berry -->
+              <div class="select-card" data-char="berry">
+                <div class="select-card-img-wrap">
+                  <img src="assets/char-berry.png" alt="Berry" class="select-card-img">
+                  <div class="select-card-badge redago-theme">Golden Giant</div>
+                </div>
+                <h3>Berry</h3>
+                <span class="select-card-subtitle">Heavy Impact</span>
+              </div>
+
+              <!-- Card 7: Black Dagger -->
+              <div class="select-card" data-char="scinto">
+                <div class="select-card-img-wrap">
+                  <img src="assets/char-blackdagger.png" alt="Black Dagger" class="select-card-img">
+                  <div class="select-card-badge">Lightning Blade</div>
+                </div>
+                <h3>Black Dagger</h3>
+                <span class="select-card-subtitle">Lightning Speed</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Character Detail Sidebar -->
+          <div class="lobby-details-panel">
+            <div id="lobby-details-placeholder" class="details-placeholder">
+              <i class="fa-solid fa-hand-pointer"></i>
+              <p>Select a fighter card on the left to inspect stats, review attack skills, and enter the arena.</p>
+            </div>
+            
+            <div id="lobby-details-content" class="details-content" style="display: none;">
+              <div class="details-header-card">
+                <div class="details-avatar" id="details-avatar"></div>
+                <div class="details-header-text">
+                  <h3 id="details-name">Character Name</h3>
+                  <span id="details-title" class="faction-badge">Faction Status</span>
+                </div>
+              </div>
+
+              <div class="details-stats">
+                <div class="details-stat-row">
+                  <span>Health Points (HP)</span>
+                  <strong id="details-hp">000</strong>
+                </div>
+                <div class="details-stat-row">
+                  <span>Attack Strength</span>
+                  <strong id="details-attack">000</strong>
+                </div>
+                <div class="details-stat-row">
+                  <span>Speed / Timing Ease</span>
+                  <strong id="details-speed">000</strong>
+                </div>
+              </div>
+
+              <div class="details-moves">
+                <h4>Attacks & Overlay Controls</h4>
+                
+                <div class="move-item">
+                  <span class="move-key">1</span>
+                  <div class="move-info">
+                    <strong id="move1-name">Attack 1</strong>
+                    <p id="move1-desc">Description</p>
+                  </div>
+                </div>
+
+                <div class="move-item">
+                  <span class="move-key">2</span>
+                  <div class="move-info">
+                    <strong id="move2-name">Attack 2</strong>
+                    <p id="move2-desc">Description</p>
+                  </div>
+                </div>
+
+                <div class="move-item">
+                  <span class="move-key">3</span>
+                  <div class="move-info">
+                    <strong id="move3-name">Attack 3</strong>
+                    <p id="move3-desc">Description</p>
+                  </div>
+                </div>
+
+                <div class="move-item">
+                  <span class="move-key">4</span>
+                  <div class="move-info">
+                    <strong id="move4-name">Attack 4</strong>
+                    <p id="move4-desc">Description</p>
+                  </div>
+                </div>
+
+                <div class="move-item">
+                  <span class="move-key">5</span>
+                  <div class="move-info">
+                    <strong id="move5-name">Attack 5</strong>
+                    <p id="move5-desc">Description</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lobby-action-buttons" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
+                <button class="btn btn-danger btn-enter-combat" id="btn-start-fight" style="width: 100%; margin-top: 0; justify-content: center; padding: 0.9rem;">
+                  <i class="fa-solid fa-swords"></i> Find Online Match (1v1) ⚔️
+                </button>
+                <button class="btn btn-outline" id="btn-start-practice" style="width: 100%; justify-content: center; padding: 0.9rem;">
+                  <i class="fa-solid fa-robot"></i> Play Practice Mode (AI) 🤖
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Matchmaking Loading Overlay -->
+      <div class="arena-matchmaking-overlay" id="arena-matchmaking" style="display: none;">
+        <div class="matchmaking-card">
+          <div class="matchmaking-spinner">
+            <div class="spinner-ring"></div>
+            <i class="fa-solid fa-swords matchmaking-center-icon"></i>
+          </div>
+          <h2>Searching for Faction Duel...</h2>
+          <p>Looking for a live opponent. Factions are aligning their warriors.</p>
+          <div class="matchmaking-details">
+            Selected Fighter: <strong id="matchmaking-fighter-name">BSG</strong>
+          </div>
+          <div class="matchmaking-timer" id="matchmaking-timer" style="margin-top: 1.25rem; font-family: var(--font-display); font-size: 0.9rem; color: var(--text-muted);">
+            Finding opponent... (Auto-practice in 60s)
+          </div>
+          <button class="btn btn-outline" id="btn-cancel-matchmaking" style="margin-top: 1.5rem; justify-content: center; width: 100%;">
+            <i class="fa-solid fa-xmark"></i> Cancel Matchmaking
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. BATTLE ARENA AREA (Visible during combat) -->
+      <div class="arena-combat-view" id="arena-combat" style="display: none;">
+        <!-- Combat Header info -->
+        <div class="combat-header">
+          <div class="matchup-banner">
+            <span class="combat-badge-match">Matchup</span>
+            <span id="combat-phase-text">Finding Opponent...</span>
+          </div>
+          <button class="btn btn-outline btn-forfeit" id="btn-forfeit">
+            <i class="fa-solid fa-flag"></i> Forfeit
+          </button>
+        </div>
+
+        <div class="combat-grid">
+          <!-- Left side: Player Card -->
+          <div class="combat-fighter player" id="combat-player-card">
+            <div class="fighter-glow-ring player"></div>
+            <div class="fighter-avatar-wrap">
+              <div class="fighter-avatar" id="player-avatar"></div>
+            </div>
+            <h3 id="player-fighter-name">Player</h3>
+            <span class="faction-badge" id="player-fighter-title">Status</span>
+
+            <div class="fighter-meters">
+              <div class="meter-group">
+                <div class="meter-label"><span>HP</span><span id="player-hp-text">100/100</span></div>
+                <div class="meter-bar-outer"><div class="meter-bar-fill hp" id="player-hp-bar" style="width: 100%;"></div></div>
+              </div>
+              <div class="meter-group">
+                <div class="meter-label"><span>Ultimate Energy</span><span id="player-energy-text">0%</span></div>
+                <div class="meter-bar-outer"><div class="meter-bar-fill energy" id="player-energy-bar" style="width: 0%;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Center Column: Gauge controls and Chat Log -->
+          <div class="combat-arena-controls">
+            <!-- Dynamic Timing Gauge Slider -->
+            <div class="timing-widget">
+              <div class="timing-gauge" id="timing-gauge">
+                <div class="gauge-zone miss-left"></div>
+                <div class="gauge-zone normal-left"></div>
+                <div class="gauge-zone great-left"></div>
+                <div class="gauge-zone perfect"></div>
+                <div class="gauge-zone great-right"></div>
+                <div class="gauge-zone normal-right"></div>
+                <div class="gauge-zone miss-right"></div>
+                <!-- Sliding pointer -->
+                <div class="gauge-pointer" id="gauge-pointer" style="left: 0%;"></div>
+              </div>
+              <div class="timing-feedback" id="timing-feedback">READY</div>
+            </div>
+
+            <!-- Action buttons overlay -->
+            <div class="combat-actions-deck">
+              <!-- Attack 1 button -->
+              <button class="combat-btn" id="btn-attack-1" disabled>
+                <span class="btn-hotkey">1</span>
+                <div class="combat-btn-icon-wrap" id="btn-attack-1-icon">
+                  <i class="fa-solid fa-burst"></i>
+                </div>
+                <span class="btn-attack-name" id="btn-attack1-label">Attack 1</span>
+                <span class="btn-cooldown" id="cooldown-1">READY</span>
+              </button>
+              
+              <!-- Attack 2 button -->
+              <button class="combat-btn" id="btn-attack-2" disabled>
+                <span class="btn-hotkey">2</span>
+                <div class="combat-btn-icon-wrap" id="btn-attack-2-icon">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <span class="btn-attack-name" id="btn-attack2-label">Attack 2</span>
+                <span class="btn-cooldown" id="cooldown-2">READY</span>
+              </button>
+
+              <!-- Attack 3 button -->
+              <button class="combat-btn" id="btn-attack-3" disabled>
+                <span class="btn-hotkey">3</span>
+                <div class="combat-btn-icon-wrap" id="btn-attack-3-icon">
+                  <i class="fa-solid fa-bolt"></i>
+                </div>
+                <span class="btn-attack-name" id="btn-attack3-label">Attack 3</span>
+                <span class="btn-cooldown" id="cooldown-3">READY</span>
+              </button>
+
+              <!-- Attack 4 button (Ultimate 1) -->
+              <button class="combat-btn ult" id="btn-attack-4" disabled>
+                <span class="btn-hotkey">4</span>
+                <div class="combat-btn-icon-wrap" id="btn-attack-4-icon">
+                  <i class="fa-solid fa-fire-flame-curved"></i>
+                </div>
+                <span class="btn-attack-name" id="btn-attack4-label">Attack 4</span>
+                <span class="btn-cooldown" id="cooldown-4">0% CHARGE</span>
+              </button>
+
+              <!-- Attack 5 button (Ultimate 2) -->
+              <button class="combat-btn ult" id="btn-attack-5" disabled>
+                <span class="btn-hotkey">5</span>
+                <div class="combat-btn-icon-wrap" id="btn-attack-5-icon">
+                  <i class="fa-solid fa-dragon"></i>
+                </div>
+                <span class="btn-attack-name" id="btn-attack5-label">Attack 5</span>
+                <span class="btn-cooldown" id="cooldown-5">0% CHARGE</span>
+              </button>
+            </div>
+
+            <!-- Chat Battle Log Console -->
+            <div class="chat-battle-log">
+              <div class="chat-log-header">
+                <i class="fa-solid fa-comments"></i> Combat Chat Log
+              </div>
+              <div class="chat-log-messages" id="chat-messages">
+                <!-- Dialogue pops up dynamically here -->
+                <div class="chat-msg system">Arena matching initiated...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right side: Opponent Card -->
+          <div class="combat-fighter opponent" id="combat-opponent-card">
+            <div class="fighter-glow-ring opponent"></div>
+            <div class="fighter-avatar-wrap">
+              <div class="fighter-avatar" id="opponent-avatar"></div>
+            </div>
+            <h3 id="opponent-fighter-name">Finding Fighter...</h3>
+            <span class="faction-badge redago-theme" id="opponent-fighter-title">Opponent</span>
+
+            <div class="fighter-meters">
+              <div class="meter-group">
+                <div class="meter-label"><span>HP</span><span id="opponent-hp-text">100/100</span></div>
+                <div class="meter-bar-outer"><div class="meter-bar-fill hp" id="opponent-hp-bar" style="width: 100%;"></div></div>
+              </div>
+              <div class="meter-group">
+                <div class="meter-label"><span>Ultimate Energy</span><span id="opponent-energy-text">0%</span></div>
+                <div class="meter-bar-outer"><div class="meter-bar-fill energy" id="opponent-energy-bar" style="width: 0%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. COMBAT RESULTS MODAL PANEL (Shown on win/loss) -->
+      <div class="arena-result-overlay" id="arena-result" style="display: none;">
+        <div class="result-card">
+          <div class="result-header">
+            <span class="game-badge" id="result-badge"><i class="fa-solid fa-trophy"></i> Victory</span>
+            <h2 id="result-title">Victory Achieved!</h2>
+          </div>
+          <p id="result-desc">You timing was perfect! You conquered your opponent and advanced your Beyond State limit.</p>
+          
+          <div class="score-card">
+            <div class="score-row"><span>Victory Base Points:</span><strong id="score-time">+0</strong></div>
+            <div class="score-row"><span>HP Performance Bonus:</span><strong id="score-hp">+0</strong></div>
+            <div class="score-row"><span>Perfect Critical Bonus:</span><strong id="score-perfects">+0</strong></div>
+            <div class="score-divider"></div>
+            <div class="score-row final"><span>Match Points Won (Max 10):</span><strong id="score-total">0</strong></div>
+          </div>
+
+          <div class="result-actions">
+            <button class="btn btn-primary" id="btn-result-lobby">Back to Lobby</button>
+            <button class="btn btn-outline" id="btn-result-leaderboard">View Leaderboard</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LEADERBOARD PANEL SECTION -->
+  <section class="leaderboard-section">
+    <div class="container-width">
+      <div class="section-header">
+        <span class="section-subtitle">Beyond State Hall of Fame</span>
+        <h2 class="section-title">Global Arena Leaderboard (Season 1) 🏆</h2>
+        <p class="section-desc">The strongest warriors who have conquered their dark self and ascended their limits.</p>
+      </div>
+
+      <div class="leaderboard-container">
+        <div class="leaderboard-header-row">
+          <span class="rank-col">Rank</span>
+          <span class="name-col">Warrior / Faction Member</span>
+          <span class="char-col">Preferred Fighter</span>
+          <span class="score-col">Season Points</span>
+          <span class="date-col">Ascension Date</span>
+        </div>
+        <div class="leaderboard-rows" id="leaderboard-rows-container">
+          <!-- Loaded dynamically -->
+          <div class="leaderboard-loading">
+            <i class="fa-solid fa-spinner fa-spin"></i> Loading rankings...
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOATING TOAST FEEDBACK ALERT -->
+  <div class="alert-container" id="alert-container"></div>
+
+  <!-- FOOTER -->
+
+      <!-- Sandboxed Display Banner Ad (300x250) -->
+  <div class="dxz-ad-wrapper ad-banner-300">
+    <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
+    <iframe src="ad-300x250.html" width="300" height="250" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 300px; height: 250px; overflow: hidden;"></iframe>
+  </div>
+
+    <!-- Sandboxed Native Grid Ad -->
+  <div class="dxz-ad-wrapper ad-native-grid">
+    <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
+    <iframe src="ad-native.html" width="100%" height="280" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 100%; max-width: 1060px; height: 280px; overflow: hidden;"></iframe>
+  </div>
+
+  <footer class="footer">
+    <div class="container-width">
+      <div class="footer-top">
+        <a href="index.html#hero" class="footer-logo">
+          THE BLUESHOT <span class="logo-dot"></span>
+        </a>
+                <ul class="footer-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="characters.html">Characters</a></li>
+          <li><a href="universe-lore.html">Universe Lore</a></li>
+          <li><a href="season-guide.html">Season Guide</a></li>
+          <li><a href="merch.html">Shop</a></li>
+          <li><a href="hub.html">Hub</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
+                <div class="footer-bottom-links">
+          <a href="index.html">Home</a>
+          <a href="orders.html">Track Order</a>
+          <a href="about.html">About Us</a>
+          <a href="contact.html">Contact & FAQ</a>
+          <a href="disclaimer.html">Disclaimer</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms</a>
+          <a href="refunds.html">Refunds</a>
+          <a href="shipping.html">Shipping</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK Client Libraries (v9 Compat Mode) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <!-- Game Logic Scripts -->
+  <script src="firebase-config.js?v=1.0.2"></script>
+  <script src="game.js?v=1.0.2"></script>
+  <script src="search.js?v=1.0.2"></script>
+  <script src="admin.js?v=1.0.2"></script>
+</body>
+</html>
+

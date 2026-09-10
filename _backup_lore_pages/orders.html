@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L6LMYSVPB8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L6LMYSVPB8');
+  </script>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>Order Tracking & History | The BlueShot</title>
+  <meta name="description" content="Track your Danger X Zone merchandise orders. Input your Razorpay Payment ID to trace your shipment timeline and retrieve Shiprocket delivery statuses.">
+  <meta name="keywords" content="Track Order, BlueShot Tracking, Shiprocket Tracker, Razorpay Order Details, Danger X Zone Store">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles.css?v=1.0.2">
+  <link rel="stylesheet" href="merch.css?v=1.0.2">
+</head>
+<body class="shop-body">
+
+  <!-- NAVIGATION HEADER -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="nav-logo">
+        THE BLUESHOT <span class="logo-dot"></span>
+      </a>
+      
+      <nav>
+                <ul class="nav-links" id="nav-links">
+          <li class="nav-link"><a href="index.html">Home</a></li>
+          <li class="nav-link"><a href="characters.html">Characters</a></li>
+          <li class="nav-link"><a href="universe-lore.html">Lore</a></li>
+          <li class="nav-link "><a href="merch.html">Shop</a></li>
+          <li class="nav-link "><a href="hub.html">Hub</a></li>
+          <li class="nav-link "><a href="game.html">Arena</a></li>
+          <li class="nav-link"><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+      
+      <div class="nav-actions" style="display: flex; gap: 1rem;">
+        <button class="social-icon global-search-trigger" title="Search site (Press /)" id="nav-search-trigger"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+      
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <section class="orders-section">
+    <div class="container-width">
+      
+      <!-- Back Link -->
+      <div class="shop-back-link">
+        <a href="merch.html"><i class="fa-solid fa-arrow-left"></i> Back to Shop</a>
+      </div>
+      
+      <!-- Header -->
+      <div class="shop-row-header" style="text-align: center; margin-bottom: 3rem;">
+        <h1 class="series-title" style="font-size: 3rem; margin-bottom: 0.5rem; text-shadow: 0 0 15px rgba(0, 229, 255, 0.25);">TRACK ORDERS</h1>
+        <p class="series-subtitle">Monitor and trace your Danger X Zone apparel drops</p>
+      </div>
+      
+      <!-- Tabs Selector -->
+      <div class="orders-tabs">
+        <button class="orders-tab-btn" id="tab-guest-btn">
+          <i class="fa-solid fa-magnifying-glass"></i> Guest Lookup
+        </button>
+        <button class="orders-tab-btn active" id="tab-account-btn">
+          <i class="fa-solid fa-user"></i> My History
+        </button>
+      </div>
+
+      <!-- Tab 1 Panel: Guest Form -->
+      <div class="order-form-container" id="guest-lookup-panel" style="display: none;">
+        <h2>Find Order details</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Enter the details from your payment receipt to fetch tracking info.</p>
+        
+        <form id="guest-lookup-form" onsubmit="event.preventDefault();">
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label for="lookup-order-id" style="display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 700; letter-spacing: 0.05em;">Razorpay Payment ID (Order ID)</label>
+            <input type="text" id="lookup-order-id" placeholder="e.g. pay_P21tFIsQSy60O" required style="width: 100%; padding: 0.8rem; background: rgba(0, 0, 0, 0.4); border: var(--border-glass); border-radius: 8px; color: #FFF;">
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 2rem;">
+            <label for="lookup-email" style="display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 700; letter-spacing: 0.05em;">Email Address</label>
+            <input type="email" id="lookup-email" placeholder="e.g. customer@gmail.com" required style="width: 100%; padding: 0.8rem; background: rgba(0, 0, 0, 0.4); border: var(--border-glass); border-radius: 8px; color: #FFF;">
+          </div>
+          
+          <button type="submit" id="guest-submit-btn" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-weight: 700; border-radius: 30px; border: none; cursor: pointer;">
+            <i class="fa-solid fa-location-crosshairs"></i> Locate Order
+          </button>
+        </form>
+      </div>
+
+      <!-- Tab 2 Panel: Account History -->
+      <div class="order-form-container" id="account-history-panel">
+        <!-- Auth Blocked screen -->
+        <div id="history-auth-blocker" style="text-align: center; padding: 2rem 0;">
+          <div style="font-size: 3rem; color: var(--color-blue-neon); margin-bottom: 1rem;"><i class="fa-solid fa-lock"></i></div>
+          <h2 style="font-size: 1.35rem; margin-bottom: 0.75rem;">Account Authentication Required</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; max-width: 400px; margin-left: auto; margin-right: auto;">Log in to your faction profile to view all orders linked to your account.</p>
+          <a href="hub.html#join-faction" class="btn btn-primary" style="border-radius: 30px; padding: 0.75rem 2rem;"><i class="fa-solid fa-right-to-bracket"></i> Login / Register</a>
+        </div>
+        
+        <!-- Logged in History view -->
+        <div id="history-list-view" style="display: none;">
+          <h2>Your Orders</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Click on any order below to view full tracking and receipt details.</p>
+          <div class="orders-history-list" id="orders-history-container">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Detail display card -->
+      <div class="order-detail-card" id="order-details-card">
+        <!-- Dynamically injected -->
+      </div>
+
+      <!-- Admin Control Panel -->
+      <div class="admin-orders-card" id="admin-orders-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,18,79,0.3); padding-bottom: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+          <h2 style="color: var(--color-red-neon); font-size: 1.6rem; font-weight: 800; text-transform: uppercase;"><i class="fa-solid fa-screwdriver-wrench"></i> Admin Order Manager</h2>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="admin-action-btn" style="background: rgba(255,18,79,0.2); border-color: var(--color-red-neon); color: #ff124f; font-weight: 700; padding: 0.4rem 1rem; border-radius: 20px;" onclick="clearAllTestOrders()">
+              <i class="fa-solid fa-trash-can"></i> Clear Test Orders
+            </button>
+            <span style="font-size: 0.8rem; background: rgba(255,18,79,0.15); border: 1px solid var(--color-red-neon); color: #ff124f; padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 700;">Admin Mode</span>
+          </div>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">View all client payments, update shipping statuses, and enter Shiprocket AWB tracking numbers.</p>
+        
+        <div class="admin-orders-table-wrapper">
+          <table class="admin-orders-table">
+            <thead>
+              <tr>
+                <th>Order Date</th>
+                <th>Order ID / Email</th>
+                <th>Customer Name</th>
+                <th>Items Ordered</th>
+                <th>Status</th>
+                <th>Tracking AWB</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-orders-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TOAST ALERT CONTAINER -->
+  <div class="alert-container" id="alert-container"></div>
+
+  <!-- FOOTER -->
+
+      <!-- Sandboxed Display Banner Ad (300x250) -->
+  <div class="dxz-ad-wrapper ad-banner-300">
+    <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
+    <iframe src="ad-300x250.html" width="300" height="250" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 300px; height: 250px; overflow: hidden;"></iframe>
+  </div>
+
+    <!-- Sandboxed Native Grid Ad -->
+  <div class="dxz-ad-wrapper ad-native-grid">
+    <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
+    <iframe src="ad-native.html" width="100%" height="280" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 100%; max-width: 1060px; height: 280px; overflow: hidden;"></iframe>
+  </div>
+
+  <footer class="footer">
+    <div class="container-width">
+      <div class="footer-top">
+        <a href="index.html#hero" class="footer-logo">
+          THE BLUESHOT <span class="logo-dot"></span>
+        </a>
+                <ul class="footer-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="characters.html">Characters</a></li>
+          <li><a href="universe-lore.html">Universe Lore</a></li>
+          <li><a href="season-guide.html">Season Guide</a></li>
+          <li><a href="merch.html">Shop</a></li>
+          <li><a href="hub.html">Hub</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
+                <div class="footer-bottom-links">
+          <a href="index.html">Home</a>
+          <a href="orders.html">Track Order</a>
+          <a href="about.html">About Us</a>
+          <a href="contact.html">Contact & FAQ</a>
+          <a href="disclaimer.html">Disclaimer</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms</a>
+          <a href="refunds.html">Refunds</a>
+          <a href="shipping.html">Shipping</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK Compat Libraries -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  
+  <!-- Configurations & Scripts -->
+  <script src="firebase-config.js"></script>
+  <script src="search.js"></script>
+  <script src="orders.js"></script>
+  <script src="admin.js?v=1.0.2"></script>
+</body>
+</html>
+

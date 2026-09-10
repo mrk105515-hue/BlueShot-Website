@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L6LMYSVPB8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L6LMYSVPB8');
+  </script>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>Community Hub | The BlueShot — Vote, Comment & Join</title>
+  <meta name="description" content="Vote on your favourite Danger X Zone T-shirt design, drop comments, and join the faction to receive browser notifications on new drops and episodes.">
+  <meta name="keywords" content="DXZ Community, T-Shirt Poll, Danger X Zone Vote, The BlueShot Fan Hub, DXZ Notifications">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="styles.css?v=1.0.2">
+  <link rel="stylesheet" href="hub.css?v=1.0.2">
+</head>
+<body class="hub-body">
+
+  <!-- NAVIGATION HEADER -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="nav-logo">
+        THE BLUESHOT <span class="logo-dot"></span>
+      </a>
+      
+      <nav>
+                <ul class="nav-links" id="nav-links">
+          <li class="nav-link"><a href="index.html">Home</a></li>
+          <li class="nav-link"><a href="characters.html">Characters</a></li>
+          <li class="nav-link"><a href="universe-lore.html">Lore</a></li>
+          <li class="nav-link "><a href="merch.html">Shop</a></li>
+          <li class="nav-link active"><a href="hub.html">Hub</a></li>
+          <li class="nav-link "><a href="game.html">Arena</a></li>
+          <li class="nav-link"><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+      
+      <div class="nav-socials">
+        <button class="social-icon global-search-trigger" title="Search site (Press /)" id="nav-search-trigger"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <a href="https://youtube.com/@BlueShot77" target="_blank" class="social-icon" title="YouTube" id="nav-yt"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://discord.gg/gfvf46ymng" target="_blank" class="social-icon" title="Discord" id="nav-dc"><i class="fa-brands fa-discord"></i></a>
+      </div>
+      
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- DEMO MODE NOTICE BANNER -->
+  <div id="dxz-demo-banner" class="demo-banner" style="display: none;">
+    <div class="demo-banner-content">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <span>Running in <strong>Offline Demo Mode</strong>. Configure API keys in <code>firebase-config.js</code> to enable global user accounts and live comments!</span>
+    </div>
+  </div>
+
+  <!-- HUB HERO BANNER -->
+  <section class="hub-hero">
+    <div class="hub-hero-glow"></div>
+    <div class="container-width">
+      <div class="hub-back-link">
+        <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Universe</a>
+      </div>
+      <div class="hub-hero-content">
+        <span class="hub-badge"><i class="fa-solid fa-users"></i> Fan Zone</span>
+        <h1 class="hub-hero-title">Community Hub</h1>
+        <p class="hub-hero-desc">Vote on upcoming T-shirt designs, share your thoughts in the comments, and join the faction to get instant notifications on new drops & episodes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 1: T-SHIRT DESIGN POLL                      -->
+  <!-- ════════════════════════════════════════════════════════════════════════ -->
+  <section class="poll-section" id="design-poll-section">
+    <div class="container-width">
+      <div class="section-header">
+        <span class="section-subtitle">Your Voice Matters</span>
+        <h2 class="section-title">Vote for the Next Drop 🗳️</h2>
+        <p class="section-desc">Which T-shirt design should we produce next? Cast your vote and see live demand from the community.</p>
+      </div>
+
+      <!-- Poll Grid -->
+      <div class="poll-grid" id="poll-grid">
+
+        <!-- Design 1: REDAGO T-Shirt -->
+        <div class="poll-card" data-design="redago-tshirt">
+          <div class="poll-card-img-wrap">
+            <img src="assets/redago-new-1.png" alt="REDAGO T-Shirt" class="poll-card-img">
+            <div class="poll-card-badge">Design A</div>
+          </div>
+          <div class="poll-card-info">
+            <h3 class="poll-card-name">REDAGO T-Shirt</h3>
+            <p class="poll-card-desc">Official Flame Devil Redago Edition heavyweight combed cotton t-shirt.</p>
+            <button class="btn btn-danger poll-vote-btn" data-design="redago-tshirt">
+              <i class="fa-solid fa-fire"></i> Vote
+            </button>
+          </div>
+          <div class="poll-result-bar">
+            <div class="poll-bar-fill" data-design="redago-tshirt"></div>
+            <span class="poll-bar-percent">0%</span>
+          </div>
+        </div>
+
+        <!-- Design 2: CURSE GOD T-Shirt -->
+        <div class="poll-card" data-design="cursegod-tshirt">
+          <div class="poll-card-img-wrap">
+            <img src="assets/cursegod-angle-1.png" alt="CURSE GOD T-Shirt" class="poll-card-img">
+            <div class="poll-card-badge">Design B</div>
+          </div>
+          <div class="poll-card-info">
+            <h3 class="poll-card-name">CURSE GOD T-Shirt</h3>
+            <p class="poll-card-desc">Official Dark Magic Pink & Metal Curse God Edition t-shirt.</p>
+            <button class="btn btn-danger poll-vote-btn" data-design="cursegod-tshirt">
+              <i class="fa-solid fa-skull"></i> Vote
+            </button>
+          </div>
+          <div class="poll-result-bar">
+            <div class="poll-bar-fill" data-design="cursegod-tshirt"></div>
+            <span class="poll-bar-percent">0%</span>
+          </div>
+        </div>
+
+        <!-- Design 3: BERRY T-Shirt -->
+        <div class="poll-card" data-design="berry-tshirt">
+          <div class="poll-card-img-wrap">
+            <img src="assets/berry-angle-1.png" alt="BERRY T-Shirt" class="poll-card-img">
+            <div class="poll-card-badge">Design C</div>
+          </div>
+          <div class="poll-card-info">
+            <h3 class="poll-card-name">BERRY T-Shirt</h3>
+            <p class="poll-card-desc">Official Golden Giant Heavyweight Edition combed cotton t-shirt.</p>
+            <button class="btn btn-danger poll-vote-btn" data-design="berry-tshirt">
+              <i class="fa-solid fa-shirt"></i> Vote
+            </button>
+          </div>
+          <div class="poll-result-bar">
+            <div class="poll-bar-fill" data-design="berry-tshirt"></div>
+            <span class="poll-bar-percent">0%</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Vote Status Message -->
+      <div class="poll-status" id="poll-status"></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 2: NEXT DROP PREFERENCE POLL                 -->
+  <!-- ════════════════════════════════════════════════════════════════════════ -->
+  <section class="poll-section" id="preference-poll-section">
+    <div class="container-width">
+      <div class="product-poll-container" id="product-poll-section">
+        <div class="poll-header">
+          <h2 class="poll-title">Next Drop Preference Poll</h2>
+          <span class="poll-subtitle">Help us choose what DXZ gear to release next</span>
+        </div>
+
+        <!-- Voting Grid View -->
+        <div style="position: relative; width: 100%;">
+          <div class="poll-login-overlay" id="poll-login-blocker" style="display: none;">
+            <div class="poll-login-overlay-content">
+              <i class="fa-solid fa-lock" style="font-size: 2.2rem; color: #ff3b30; margin-bottom: 1.25rem;"></i>
+              <h3>Authentication Required</h3>
+              <p>You must log in to participate in the product drop preference poll.</p>
+              <a href="#join-faction" class="btn btn-danger" style="margin-top: 1.25rem; padding: 0.6rem 2rem; font-size: 0.8rem;">Log In to Faction</a>
+            </div>
+          </div>
+
+          <div class="poll-grid" id="poll-voting-grid">
+            <div class="poll-option-card" data-option="keychains">
+              <div class="poll-option-icon"><i class="fa-solid fa-key"></i></div>
+              <span class="poll-option-label">Keychains</span>
+            </div>
+
+            <div class="poll-option-card" data-option="mugs">
+              <div class="poll-option-icon"><i class="fa-solid fa-mug-hot"></i></div>
+              <span class="poll-option-label">Mugs</span>
+            </div>
+
+            <div class="poll-option-card" data-option="hoodies">
+              <div class="poll-option-icon"><i class="fa-solid fa-shirt"></i></div>
+              <span class="poll-option-label">Hoodies</span>
+            </div>
+
+            <div class="poll-option-card" data-option="lowers">
+              <div class="poll-option-icon"><i class="fa-solid fa-socks"></i></div>
+              <span class="poll-option-label">Lowers</span>
+            </div>
+
+            <div class="poll-option-card" data-option="boxers">
+              <div class="poll-option-icon"><i class="fa-solid fa-square"></i></div>
+              <span class="poll-option-label">Boxers</span>
+            </div>
+
+            <div class="poll-option-card" data-option="gym_outfit">
+              <div class="poll-option-icon"><i class="fa-solid fa-dumbbell"></i></div>
+              <span class="poll-option-label">Gym Outfit</span>
+            </div>
+
+            <div class="poll-option-card" data-option="female_clothing">
+              <div class="poll-option-icon"><i class="fa-solid fa-person-dress"></i></div>
+              <span class="poll-option-label">Female Clothing</span>
+            </div>
+
+            <div class="poll-option-card" data-option="dxz_figures">
+              <div class="poll-option-icon"><i class="fa-solid fa-cube"></i></div>
+              <span class="poll-option-label">3D Figures of DXZ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action submit button -->
+        <div class="poll-actions" id="poll-actions-bar">
+          <button id="poll-submit-btn" disabled>Submit Vote</button>
+        </div>
+
+        <!-- Live Results View -->
+        <div class="poll-results-view" id="poll-results-view">
+          <!-- Dynamically populated rows -->
+        </div>
+
+        <!-- Reset Voted State -->
+        <div class="poll-reset-container" id="poll-reset-container" style="display: none;">
+          <button class="poll-reset-btn" id="poll-reset-btn">Change Your Vote</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION 2: COMMENT SECTION                          -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="comments-section" id="comments">
+    <div class="container-width">
+      <div class="section-header">
+        <span class="section-subtitle">Community Voices</span>
+        <h2 class="section-title">Drop a Comment 💬</h2>
+        <p class="section-desc">Share your thoughts, theories, or requests. Your comments are visible to all visitors on this page.</p>
+      </div>
+
+      <!-- Comment Input Form -->
+      <div class="comment-form-wrap">
+        <form id="comment-form" class="comment-form">
+          <div class="comment-form-row">
+            <div class="form-group">
+              <label for="comment-name">Your Name *</label>
+              <input type="text" id="comment-name" required placeholder="BSG Fan" maxlength="50">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="comment-text">Your Message *</label>
+            <textarea id="comment-text" required placeholder="I think the Flame Devil design would be 🔥..." maxlength="500" rows="3"></textarea>
+          </div>
+          <div class="comment-form-actions">
+            <span class="comment-char-count" id="char-count">0 / 500</span>
+            <button type="submit" class="btn btn-primary comment-submit-btn">
+              <i class="fa-solid fa-paper-plane"></i> Post Comment
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Comments List -->
+      <div class="comments-list" id="comments-list">
+        <!-- Dynamically rendered -->
+        <div class="comments-empty" id="comments-empty">
+          <i class="fa-solid fa-comment-dots"></i>
+          <p>No comments yet. Be the first to share your thoughts!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION 3: COMMUNITY JOIN + NOTIFICATIONS            -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section class="join-section" id="join-faction">
+    <div class="container-width">
+      <div class="join-grid">
+        <!-- Left: Auth Portal or User Profile -->
+        <div class="join-form-wrap" id="join-form-wrap">
+          
+          <!-- LOBBY (LOGGED OUT): TABBED PORTAL -->
+          <div class="auth-box-wrap" id="auth-box-wrap">
+            <div class="auth-tabs">
+              <button type="button" class="auth-tab active" id="tab-login-btn">Log In</button>
+              <button type="button" class="auth-tab" id="tab-register-btn">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form">
+              <span class="section-subtitle" style="margin-bottom: -5px;">Access Faction</span>
+              <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 0.5rem;">Welcome Back</h2>
+              <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; line-height: 1.5;">Log in to cast your vote and chat in the community comment section.</p>
+              
+              <div class="form-group">
+                <label for="login-email">Email Address</label>
+                <input type="email" id="login-email" required placeholder="fan@dangerxzone.com">
+              </div>
+              <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" required placeholder="••••••••" minlength="6">
+              </div>
+              <button type="submit" class="btn btn-danger auth-submit-btn" id="login-submit-btn">
+                <i class="fa-solid fa-right-to-bracket"></i> Log In
+              </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form" style="display: none;">
+              <span class="section-subtitle" style="margin-bottom: -5px;">Become a Member</span>
+              <h2 class="section-title" style="font-size: 1.8rem; margin-bottom: 0.5rem;">Join The Faction</h2>
+              <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; line-height: 1.5;">Create a profile to unlock global comments and participate in real-time design polls.</p>
+              
+              <div class="form-group">
+                <label for="register-name">Username / Display Name</label>
+                <input type="text" id="register-name" required placeholder="BSG Fan 99" maxlength="30">
+              </div>
+              <div class="form-group">
+                <label for="register-email">Email Address</label>
+                <input type="email" id="register-email" required placeholder="fan@dangerxzone.com">
+              </div>
+              <div class="form-group">
+                <label for="register-password">Password</label>
+                <input type="password" id="register-password" required placeholder="Min 6 characters" minlength="6">
+              </div>
+              <button type="submit" class="btn btn-danger auth-submit-btn" id="register-submit-btn">
+                <i class="fa-solid fa-user-plus"></i> Create Account
+              </button>
+            </form>
+          </div>
+
+          <!-- USER PORTAL (LOGGED IN) -->
+          <div class="profile-panel" id="profile-panel" style="display: none;">
+            <div class="profile-avatar-wrap">
+              <div class="profile-avatar-glow"></div>
+              <div class="profile-avatar" id="profile-avatar-initials">BF</div>
+            </div>
+            <div class="profile-details">
+              <h3 id="profile-display-name">BSG Fan</h3>
+              <p id="profile-email-text">fan@dangerxzone.com</p>
+            </div>
+            
+            <div style="height: 1px; width: 100%; background: var(--border-glass); margin: 0.5rem 0;"></div>
+            
+            <!-- REFERRAL CARD -->
+            <div class="referral-card" style="width: 100%; text-align: left; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 1rem; box-sizing: border-box; margin: 0.5rem 0;">
+              <h4 style="font-size: 0.9rem; margin: 0 0 0.25rem 0; color: #fff; font-family: 'Outfit', sans-serif;"><i class="fa-solid fa-gift" style="color: var(--color-blue-neon); margin-right: 0.4rem;"></i> Referral Program</h4>
+              <p style="color: var(--text-muted); font-size: 0.78rem; line-height: 1.4; margin: 0 0 0.75rem 0;">Share your link. If 5 people buy using your code, get a **FREE T-Shirt**!</p>
+              
+              <!-- Code Display & Copy -->
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+                <div style="flex: 1; background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 0.4rem; font-family: monospace; font-size: 0.85rem; color: var(--color-blue-neon); text-align: center; font-weight: bold; letter-spacing: 1px;" id="ref-code-display">LOADING...</div>
+                <button class="btn btn-primary" style="padding: 0 0.8rem; font-size: 0.75rem; border-radius: 4px; height: auto;" id="ref-copy-btn" title="Copy Referral Link"><i class="fa-regular fa-copy"></i></button>
+              </div>
+              
+              <!-- Progress Tracker -->
+              <div style="margin-top: 0.5rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #fff; margin-bottom: 0.25rem;">
+                  <span>Sales Count:</span>
+                  <span id="ref-count-text">0 / 5</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.05); height: 6px; border-radius: 3px; overflow: hidden; width: 100%;">
+                  <div style="background: var(--color-blue-neon); height: 100%; width: 0%; transition: width 0.4s ease;" id="ref-progress-bar"></div>
+                </div>
+              </div>
+              
+              <!-- Reward Claim Section -->
+              <div id="ref-claim-wrap" style="display: none; margin-top: 0.75rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.75rem; text-align: center;">
+                <span style="font-size: 0.75rem; color: #2ecc71; font-weight: bold; display: block; margin-bottom: 0.4rem;"><i class="fa-solid fa-circle-check"></i> FREE T-Shirt Unlocked!</span>
+                <button class="btn" style="background: #2ecc71; color: #000; font-weight: bold; width: 100%; padding: 0.4rem; font-size: 0.8rem;" id="ref-claim-btn">Claim Reward</button>
+              </div>
+            </div>
+
+            <div style="height: 1px; width: 100%; background: var(--border-glass); margin: 0.5rem 0;"></div>
+            
+            <div class="profile-actions">
+              <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.5;">Enable desktop notifications to get live updates on new episodes & merch drops.</p>
+              <button class="btn btn-primary notification-btn" id="enable-notif-btn">
+                <i class="fa-solid fa-bell"></i> Enable Notifications
+              </button>
+              <button class="btn btn-secondary test-notif-btn" id="test-notif-btn" style="display: none;">
+                <i class="fa-solid fa-paper-plane"></i> Send Test Notification
+              </button>
+              <button class="btn btn-outline" id="logout-btn" style="margin-top: 1rem; width: 100%; justify-content: center; border-color: rgba(255,255,255,0.1); color: var(--text-secondary);">
+                <i class="fa-solid fa-right-from-bracket" style="margin-right: 0.5rem;"></i> Log Out
+              </button>
+            </div>
+          </div>
+          
+        </div>
+          <div class="stats-card">
+            <div class="stats-icon-ring">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="stats-number" id="member-count">0</div>
+            <div class="stats-label">Faction Members</div>
+          </div>
+
+          <div class="stats-card">
+            <div class="stats-icon-ring votes-ring">
+              <i class="fa-solid fa-chart-bar"></i>
+            </div>
+            <div class="stats-number" id="total-votes">0</div>
+            <div class="stats-label">Total Votes Cast</div>
+          </div>
+
+          <div class="stats-card">
+            <div class="stats-icon-ring comments-ring">
+              <i class="fa-solid fa-comments"></i>
+            </div>
+            <div class="stats-number" id="total-comments">0</div>
+            <div class="stats-label">Comments Posted</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOATING FEEDBACK ALERT -->
+  <div class="alert-container" id="alert-container"></div>
+
+  <!-- FOOTER -->
+
+      <!-- Sandboxed Display Banner Ad (300x250) -->
+  <div class="dxz-ad-wrapper ad-banner-300">
+    <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
+    <iframe src="ad-300x250.html" width="300" height="250" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 300px; height: 250px; overflow: hidden;"></iframe>
+  </div>
+
+    <!-- Sandboxed Native Grid Ad -->
+  <div class="dxz-ad-wrapper ad-native-grid">
+    <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
+    <iframe src="ad-native.html" width="100%" height="280" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 100%; max-width: 1060px; height: 280px; overflow: hidden;"></iframe>
+  </div>
+
+  <footer class="footer">
+    <div class="container-width">
+      <div class="footer-top">
+        <a href="index.html#hero" class="footer-logo">
+          THE BLUESHOT <span class="logo-dot"></span>
+        </a>
+                <ul class="footer-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="characters.html">Characters</a></li>
+          <li><a href="universe-lore.html">Universe Lore</a></li>
+          <li><a href="season-guide.html">Season Guide</a></li>
+          <li><a href="merch.html">Shop</a></li>
+          <li><a href="hub.html">Hub</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
+                <div class="footer-bottom-links">
+          <a href="index.html">Home</a>
+          <a href="orders.html">Track Order</a>
+          <a href="about.html">About Us</a>
+          <a href="contact.html">Contact & FAQ</a>
+          <a href="disclaimer.html">Disclaimer</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms</a>
+          <a href="refunds.html">Refunds</a>
+          <a href="shipping.html">Shipping</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK Client Libraries (v9 Compat Mode) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <!-- Hub Logic Script -->
+  <script src="firebase-config.js?v=1.0.2"></script>
+  <script src="hub.js?v=1.0.2"></script>
+  <script src="search.js?v=1.0.2"></script>
+  <script src="admin.js?v=1.0.2"></script>
+</body>
+</html>
+
