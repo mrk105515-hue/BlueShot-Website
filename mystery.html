@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-L6LMYSVPB8"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -9,65 +8,29 @@
     gtag('js', new Date());
     gtag('config', 'G-L6LMYSVPB8');
   </script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- SEO Meta Tags -->
-  <title>Detective NJ: DXZ Mystery Case Files | Danger X Zone Lore Game</title>
-  <meta name="description" content="Team up with Detective NJ to uncover the truth behind major events in the Danger X Zone universe. Solve mysteries, investigate clues, and earn detective bounties!">
-  <meta name="keywords" content="Danger X Zone Lore Game, Detective NJ, DXZ Mysteries, BSG Lore, Emperor Hell, Zygo Degan, Flama Nation War, Minecraft Anime">
-  <link rel="canonical" href="https://blueshotwiki.com/mystery.html">
-
-  <!-- OpenGraph Meta Tags -->
-  <meta property="og:title" content="Detective NJ: DXZ Mystery Case Files">
-  <meta property="og:description" content="Solve mysteries, inspect clues, and unlock the canonical secrets of Danger X Zone with Detective NJ.">
-  <meta property="og:image" content="https://blueshotwiki.com/assets/dxz-poster.jpg">
-  <meta property="og:url" content="https://blueshotwiki.com/mystery.html">
-  <meta property="og:type" content="website">
-
-  <!-- Favicon -->
+  <title>Detective NJ Lore Game | Solve DXZ Universe Mysteries | The BlueShot</title>
+  <meta name="description" content="Team up with Detective NJ at his Cyber Cafe HQ. Interrogate clues, crack canonical cases from the DXZ universe, and earn virtual bounty rewards!">
   <link rel="icon" type="image/png" href="assets/favicon.png">
-  
-  <!-- Fonts & Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="styles.css?v=1.0.3">
-  <link rel="stylesheet" href="wiki.css?v=1.0.3">
-  <link rel="stylesheet" href="mystery.css?v=1.0.0">
-
-  <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Game",
-    "name": "Detective NJ: DXZ Mystery Case Files",
-    "description": "Interactive mystery-solving lore adventure for Danger X Zone by Neeraj Saklani.",
-    "url": "https://blueshotwiki.com/mystery.html",
-    "publisher": {
-      "@type": "Organization",
-      "name": "The BlueShot",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://blueshotwiki.com/assets/favicon.png"
-      }
-    }
-  }
-  </script>
+  <link rel="stylesheet" href="styles.css?v=1.0.2">
+  <link rel="stylesheet" href="mystery.css">
 </head>
 <body>
-
   <!-- NAVIGATION HEADER -->
   <header class="navbar" id="navbar">
     <div class="navbar-container">
-      <a href="index.html#hero" class="nav-logo">
+      <a href="index.html" class="nav-logo">
         THE BLUESHOT <span class="logo-dot"></span>
       </a>
       
       <nav>
         <ul class="nav-links" id="nav-links">
           <li class="nav-link"><a href="index.html">Home</a></li>
-          <li class="nav-link"><a href="characters.html">Characters</a></li>
-          <li class="nav-link active"><a href="mystery.html">Mysteries</a></li>
+          <li class="nav-link"><a href="index.html#featured-video">Season 3</a></li>
+          <li class="nav-link "><a href="characters.html">Characters</a></li>
+          <li class="nav-link active"><a href="mystery.html">Lore Game</a></li>
           <li class="nav-link"><a href="merch.html">Shop</a></li>
           <li class="nav-link"><a href="hub.html">Hub</a></li>
           <li class="nav-link"><a href="game.html">Arena</a></li>
@@ -76,9 +39,10 @@
       </nav>
       
       <div class="nav-socials">
+        <button class="social-icon global-search-trigger" title="Search site (Press /)" id="nav-search-trigger"><i class="fa-solid fa-magnifying-glass"></i></button>
         <a href="https://youtube.com/@BlueShot77" target="_blank" class="social-icon" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://instagram.com/blueshot_x/?__pwa=1" target="_blank" class="social-icon instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
         <a href="https://discord.gg/gfvf46ymng" target="_blank" class="social-icon" title="Discord"><i class="fa-brands fa-discord"></i></a>
-        <a href="orders.html" class="social-icon" title="Track Orders"><i class="fa-solid fa-box"></i></a>
       </div>
       
       <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
@@ -87,139 +51,151 @@
     </div>
   </header>
 
-  <!-- MAIN GAME AREA -->
   <main class="mystery-page">
     <div class="mystery-container">
       
-      <!-- BREADCRUMB & TOP BACK BUTTON BAR -->
-      <div class="wiki-breadcrumb-bar">
-        <div class="wiki-breadcrumb">
-          <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-          <span class="separator">/</span>
-          <span class="current">Detective NJ Case Files</span>
-        </div>
-        <button class="wiki-back-btn" onclick="handleSmartBack()" title="Go Back">
-          <i class="fa-solid fa-arrow-left"></i> Back
-        </button>
-      </div>
-
-      <!-- DETECTIVE HUD / STATUS -->
       <div class="detective-hud">
-        
         <div class="detective-profile">
           <div class="detective-avatar-wrap">
-            <i class="fa-solid fa-user-secret detective-avatar-fallback"></i>
-            <div class="detective-online-badge" title="Detective Online"></div>
+            <img src="assets/profile-avatar.jpg" alt="Detective NJ" class="detective-avatar-img" onerror="this.style.display='none'; document.getElementById('det-fallback').style.display='flex';">
+            <div id="det-fallback" class="detective-avatar-fallback" style="display:none;"><i class="fa-solid fa-user-secret"></i></div>
+            <div class="detective-online-badge" title="Detective NJ Online at Cyber Cafe"></div>
           </div>
           <div class="detective-meta">
-            <h3>Detective NJ <i class="fa-solid fa-certificate" style="color: var(--color-blue-neon); font-size: 0.9rem;"></i></h3>
-            <p><i class="fa-solid fa-mug-hot"></i> Cyber Cafe Headquarters</p>
+            <h3>Detective NJ <span class="badge-cafe">Cyber Cafe HQ</span></h3>
+            <p>DXZ Lore Special Agent &bull; Active Investigation</p>
           </div>
         </div>
 
-        <div class="detective-stats-wrap">
-          <div class="detective-progress-header">
-            <span><i class="fa-solid fa-list-check" style="color: var(--color-blue-neon);"></i> Mysteries Solved: <span id="solved-count-val" style="color: var(--color-blue-neon);">0</span> / <span id="total-count-val">18</span></span>
+        <div class="hud-progress-block">
+          <div class="hud-progress-labels">
+            <span>Mysteries Solved: <strong id="hud-solved-count" style="color: #00e5ff;">0 / 18</strong></span>
+            <span id="hud-progress-text" style="color: #2ecc71;">0% Solved</span>
           </div>
-          <div class="detective-progress-bar-bg">
-            <div class="detective-progress-bar-fill" id="hud-progress-fill"></div>
+          <div class="hud-progress-bar-bg">
+            <div class="hud-progress-bar-fill" id="hud-progress-fill" style="width: 0%;"></div>
           </div>
         </div>
 
-        <div class="detective-cash-badge">
-          <i class="fa-solid fa-sack-dollar"></i>
-          <span id="player-cash-val">$0</span>
-        </div>
-
-      </div>
-
-      <!-- ACTIVE MYSTERY CARD (Populated by mystery.js) -->
-      <div class="mystery-card" id="active-mystery-card">
-        <!-- Injected Dynamically by mystery.js -->
-        <div style="text-align: center; padding: 4rem 0;">
-          <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; color: var(--color-blue-neon);"></i>
-          <p style="margin-top: 1rem; color: var(--text-muted);">Opening Detective NJ Case Dossier...</p>
+        <div class="hud-wallet-block">
+          <div class="wallet-label">Bounty Vault</div>
+          <div class="wallet-amount" id="hud-wallet-balance">$0</div>
+          <button class="btn-reset-vault" id="reset-progress-btn" title="Reset all progress"><i class="fa-solid fa-rotate-left"></i> Reset</button>
         </div>
       </div>
 
-      <!-- ADVERTISEMENT SLOT 1: DISPLAY BANNER -->
-      <div class="dxz-ad-wrapper ad-banner-300">
-        <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
-        <iframe src="ad-300x250.html" width="300" height="250" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 300px; height: 250px; overflow: hidden;"></iframe>
+      <div class="cafe-dialogue-card">
+        <div class="cafe-avatar"><i class="fa-solid fa-mug-hot"></i></div>
+        <div class="cafe-dialogue-text">
+          <strong>Detective NJ:</strong> "Welcome to the Cyber Cafe. Flama Nation is in flames, 150-year-old masterminds are lurking in the shadows, and the 7,999-year Curse God has awakened. Inspect the clue dossiers, link the evidence to the lore pages, and help me crack every case!"
+        </div>
       </div>
 
-      <!-- CASE ARCHIVES & SELECTION GRID -->
-      <section class="case-archive-section">
+      <div class="active-case-card">
+        <div class="case-header">
+          <div class="case-badge-row">
+            <span class="case-number-badge" id="active-mystery-number">Mystery #1</span>
+            <span class="case-reward-badge" id="active-mystery-reward">+$100</span>
+          </div>
+          <h2 class="case-title" id="active-mystery-title">Loading classified case...</h2>
+        </div>
+
+        <div class="case-scene-box">
+          <div class="scene-label"><i class="fa-solid fa-file-lines"></i> Incident Report</div>
+          <p class="scene-text" id="active-mystery-scene">Loading scene details...</p>
+        </div>
+
+        <!-- PROMINENT CLUE ACTION ROW -->
+        <div class="case-clue-bar">
+          <div class="clue-btn-row">
+            <button class="clue-btn" id="clue-modal-trigger">
+              <i class="fa-solid fa-magnifying-glass"></i> Inspect Clue Drawer
+            </button>
+            <div id="active-mystery-clue-link" style="display: inline-block;"></div>
+          </div>
+        </div>
+
+        <div class="case-question-box">
+          <h3 class="question-text" id="active-mystery-question">Question loading...</h3>
+          <div class="choices-grid" id="active-mystery-options">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div class="mystery-feedback" id="active-mystery-feedback"></div>
+      </div>
+
+      <div class="case-archive-section">
         <div class="case-archive-header">
-          <span class="section-subtitle"><i class="fa-solid fa-folder-closed"></i> All Classified Files</span>
-          <h3 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: #FFF; margin-top: 0.25rem;">Case Dossiers Archive</h3>
-          <p style="color: var(--text-secondary); font-size: 0.95rem; max-width: 600px; margin: 0 auto;">Review solved cases or jump directly to any unlocked investigation below.</p>
+          <h3 style="font-family: var(--font-display); font-size: 1.6rem; color: #FFF; margin-bottom: 0.5rem;"><i class="fa-solid fa-folder-tree"></i> Classified Case Archives</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Jump directly between unlocked cases or review solved mysteries.</p>
         </div>
-        
         <div class="case-archive-grid" id="case-archive-grid">
-          <!-- Populated by mystery.js -->
+          <!-- Dynamically populated -->
         </div>
-      </section>
-
-      <!-- ADVERTISEMENT SLOT 2: NATIVE GRID -->
-      <div class="dxz-ad-wrapper ad-native-grid" style="margin-top: 3.5rem;">
-        <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
-        <iframe src="ad-native.html" width="100%" height="280" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 100%; max-width: 1060px; height: 280px; overflow: hidden;"></iframe>
       </div>
 
     </div>
   </main>
 
-  <!-- CLUE INSPECTION MODAL -->
   <div class="clue-modal" id="clue-modal">
-    <div class="clue-modal-backdrop" onclick="closeClueModal()"></div>
+    <div class="clue-modal-backdrop" id="clue-modal-backdrop"></div>
     <div class="clue-modal-content">
       <div class="clue-modal-header">
-        <h3 class="clue-modal-title" id="clue-modal-title-text"><i class="fa-solid fa-magnifying-glass"></i> Detective Clue Dossier</h3>
-        <button class="clue-close-btn" onclick="closeClueModal()" aria-label="Close Clues"><i class="fa-solid fa-xmark"></i></button>
+        <h3 id="clue-modal-title" style="font-family: var(--font-display); color: #00e5ff; margin: 0;"><i class="fa-solid fa-folder-open"></i> Clue Dossier</h3>
+        <button class="clue-close-btn" id="clue-modal-close"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="clue-modal-body" id="clue-modal-body-content">
-        <!-- Populated dynamically by mystery.js -->
+      <div class="clue-modal-body" id="clue-modal-body" style="font-size: 1.05rem; line-height: 1.8; color: #E2E8F0; margin-top: 1rem;">
+        Loading clue text...
       </div>
+      <div id="clue-modal-link-wrap" style="margin-top: 1.5rem; text-align: center;"></div>
     </div>
   </div>
 
-  <!-- FLOATING FEEDBACK ALERT -->
-  <div class="alert-container" id="alert-container"></div>
-
   <!-- FOOTER -->
+  <!-- Sandboxed Display Banner Ad (300x250) -->
+  <div class="dxz-ad-wrapper ad-banner-300">
+    <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
+    <iframe src="ad-300x250.html" width="300" height="250" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 300px; height: 250px; overflow: hidden;"></iframe>
+  </div>
+
+  <!-- Sandboxed Native Grid Ad -->
+  <div class="dxz-ad-wrapper ad-native-grid">
+    <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
+    <iframe src="ad-native.html" width="100%" height="280" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 100%; max-width: 1060px; height: 280px; overflow: hidden;"></iframe>
+  </div>
+
   <footer class="footer">
     <div class="container-width">
       <div class="footer-top">
-        <a href="index.html#hero" class="footer-logo">
-          THE BLUESHOT <span class="logo-dot"></span>
-        </a>
+        <a href="index.html" class="footer-logo">THE BLUESHOT <span class="logo-dot"></span></a>
         <ul class="footer-nav">
           <li><a href="index.html">Home</a></li>
           <li><a href="characters.html">Characters</a></li>
-          <li><a href="mystery.html">Mysteries</a></li>
+          <li><a href="mystery.html">Lore Game</a></li>
+          <li><a href="universe-lore.html">Universe Lore</a></li>
+          <li><a href="season-guide.html">Season Guide</a></li>
           <li><a href="merch.html">Shop</a></li>
           <li><a href="hub.html">Hub</a></li>
           <li><a href="about.html">About</a></li>
         </ul>
       </div>
-      
       <div class="footer-bottom">
         <p>&copy; 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
         <div class="footer-bottom-links">
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="terms.html">Terms & Conditions</a>
-          <a href="disclaimer.html">Disclaimer</a>
-          <a href="contact.html">Contact Us</a>
+          <a href="index.html">Back to Home</a>
+          <a href="mystery.html">Play Lore Game</a>
+          <a href="universe-lore.html">Universe Lore</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="script.js?v=1.0.3"></script>
-  <script src="search.js?v=1.0.3"></script>
-  <script src="admin.js?v=1.0.3"></script>
-  <script src="mystery.js?v=1.0.0"></script>
+  <script src="script.js?v=1.0.2"></script>
+  <script src="search.js?v=1.0.2"></script>
+  <script src="mystery.js"></script>
 </body>
 </html>

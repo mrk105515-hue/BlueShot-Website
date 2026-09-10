@@ -635,3 +635,35 @@
   color: #FFF;
   margin-bottom: 0.25rem;
 }
+
+/* DEEP CLUE LINK BUTTON IN CASE CARD */
+.clue-deep-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(0, 229, 255, 0.12);
+  border: 1.5px solid #00e5ff;
+  color: #00e5ff;
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.7rem 1.4rem;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+  transition: all 0.25s ease;
+}
+
+.clue-deep-link-btn:hover {
+  background: rgba(0, 229, 255, 0.25);
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+  transform: translateY(-2px);
+  color: #FFF;
+}
+
+.case-clue-bar .clue-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}

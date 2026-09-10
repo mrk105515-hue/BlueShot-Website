@@ -1,634 +1,551 @@
-// ==========================================================================
-// DXZ DETECTIVE NJ MYSTERY LORE GAME ENGINE (mystery.js)
-// ==========================================================================
+/**
+ * Danger X Zone (DXZ) - Detective NJ Mystery Lore Game Engine
+ * Canonical dataset derived strictly from the official 12-page DXZ Lore Document.
+ */
 
-const DXZ_MYSTERIES = [
-  {
-    id: 1,
-    caseNumber: "CASE #01",
-    location: "CRIME SCENE: FLAMA NATION",
-    title: "Who Started the Flama Nation Attack?",
-    reward: 100,
-    speaker: "Detective NJ",
-    dialogue: "I was drinking tea at the cyber cafe when emergency sirens started blaring: Flama Nation suffered a catastrophic surprise attack! Reports state 10,000 shadow assassins, the Curse God, Bezrk, and giant monster Dahaka were involved. Who orchestrated this?",
-    clueTitle: "Intelligence Dossier: Flama Nation War",
-    clueText: "Archival records reveal that the mastermind orchestrated a multi-front invasion with 10,000 syndicate assassins and struck a 5 billion cash deal with Bezrk to destabilize the nation.",
-    clueLinkText: "Inspect World Order Lore",
-    clueLinkUrl: "universe-lore.html",
-    question: "Who was responsible for orchestrating the Flama Nation attack plan?",
-    options: [
-      { text: "Hell's Plan", isCorrect: false },
-      { text: "Zygo's Plan", isCorrect: true },
-      { text: "A Mysterious Man", isCorrect: false }
-    ],
-    truth: "Correct! It was Zygo's overarching strategy that triggered the cascading events leading to the Flama Nation confrontation."
-  },
-  {
-    id: 2,
-    caseNumber: "CASE #02",
-    location: "CASE ARCHIVE: THE BROKEN DUO",
-    title: "Why Is Hell Doing Such Destruction?",
-    reward: 100,
-    speaker: "Detective NJ",
-    dialogue: "Sitting across from me, you must wonder: Hell and Zygo were once like brothers—an unstoppable duo greater than the Century Legend himself. Why did they become bitter mortal enemies?",
-    clueTitle: "Historical Records: Zygo & Hell's Past",
-    clueText: "Zygo Degan and Hell lived peacefully for years. But without explanation, Zygo killed Hell's beloved fiancée, Tressa Forst, and even executed the father of his own wife, Koyo. Those unexplained actions turned Hell into a vengeful conqueror.",
-    clueLinkText: "View Emperor Hell's Dossier",
-    clueLinkUrl: "char-hell.html",
-    question: "What tragic event shattered the brotherhood between Hell and Zygo?",
-    options: [
-      { text: "Zygo killed Hell's fiancée Tressa Forst & Koyo's father", isCorrect: true },
-      { text: "Hell went psycho for no reason", isCorrect: false },
-      { text: "A dispute over stolen gold", isCorrect: false }
-    ],
-    truth: "Exactly! Zygo's shocking execution of Tressa Forst and Koyo's father shattered their bond and sparked a multi-decade vendetta."
-  },
-  {
-    id: 3,
-    caseNumber: "CASE #03",
-    location: "CLASSIFIED: 18 YEARS AGO",
-    title: "The 5-Year-Old Boy & The Midnight Fire",
-    reward: 150,
-    speaker: "Detective NJ",
-    dialogue: "I've pulled a sealed file from 18 years ago. A 5-year-old boy named BSG was running terrified through a village. A kind woman named Masa gave him medicine, food, and sang him a lullaby. But at midnight, the nightmare began...",
-    clueTitle: "Tragic Memories: Village Massacre",
-    clueText: "Mysterious men set the entire village on fire. They brought out Masa and placed an axe in young BSG's trembling hands, forcing him into an impossible choice: execute Masa or watch everyone die. Masa smiled and told him to do it, breaking his heart forever.",
-    clueLinkText: "View BSG's Dossier",
-    clueLinkUrl: "char-bsg.html",
-    question: "What cruel dilemma did the mysterious villains force upon young BSG?",
-    options: [
-      { text: "Forced him to execute his caretaker Masa with an axe", isCorrect: true },
-      { text: "Surrender his legendary armor", isCorrect: false },
-      { text: "Abandon the village and run away", isCorrect: false }
-    ],
-    truth: "Heartbreaking truth. Young BSG was forced into executing Masa, leaving him deeply traumatized as the villains slaughtered the villagers anyway."
-  },
-  {
-    id: 4,
-    caseNumber: "CASE #04",
-    location: "BLOODLINE ARCHIVES",
-    title: "The Son of the Century Legend",
-    reward: 150,
-    speaker: "Detective NJ",
-    dialogue: "Why did evil forces relentlessly hunt young BSG across 10 destroyed villages, executing 30+ of his loved ones like Oro and Masa? What was hidden inside that child?",
-    clueTitle: "Bloodline File: Rezok & Redago",
-    clueText: "BSG is the biological son of Century Legend Rezok! He carries the limitless, dormant celestial force of Redago in his DNA. When Rezok and BSG's mother were killed in war, dark forces hunted the boy to control his celestial power.",
-    clueLinkText: "Read Universe Lore",
-    clueLinkUrl: "universe-lore.html",
-    question: "Who is BSG's biological father and what dormant power does he carry?",
-    options: [
-      { text: "Century Legend Rezok & Limitless Redago force", isCorrect: true },
-      { text: "Emperor Hell & Cursed Flame", isCorrect: false },
-      { text: "Doctor Black Dagger & Lightning Arts", isCorrect: false }
-    ],
-    truth: "Correct! BSG is the true biological son of Rezok and the sole carrier of the primordial Redago celestial force."
-  },
-  {
-    id: 5,
-    caseNumber: "CASE #05",
-    location: "PSYCHOLOGICAL INVESTIGATION",
-    title: "The 18-Year Mask of Hatred",
-    reward: 200,
-    speaker: "Detective NJ",
-    dialogue: "For 18 years, BSG lived a hardened life. He started robbing villagers and forcing people to despise him. Why would a traumatized boy intentionally make everyone hate him?",
-    clueTitle: "Psychological Profile: BSG's Burden",
-    clueText: "BSG believed he was a cursed boy—every time he cared for people, dark devils arrived and slaughtered them. To protect innocent people from becoming targets, he intentionally made them hate him so no one would ever grow close.",
-    clueLinkText: "View BSG Profile",
-    clueLinkUrl: "char-bsg.html",
-    question: "Why did BSG intentionally force villagers to hate him?",
-    options: [
-      { text: "To prevent people from getting close and dying", isCorrect: true },
-      { text: "To amass stolen fortune", isCorrect: false },
-      { text: "Because he enjoyed being a thief", isCorrect: false }
-    ],
-    truth: "A tragic protective mechanism! BSG bore the burden of hatred so no innocent person would die because of him."
-  },
-  {
-    id: 6,
-    caseNumber: "CASE #06",
-    location: "SYNDICATE DOSSIER",
-    title: "The 150-Year-Old Scientist",
-    reward: 200,
-    speaker: "Detective NJ",
-    dialogue: "In Episode 1, BSG met an innocent-looking scientist named Doctor Black Dagger in the forest. He seemed like a weak human mentor... but my investigation reveals a terrifying secret!",
-    clueTitle: "Syndicate File: Black Dagger Scinto",
-    clueText: "Doctor Black Dagger (Scinto) is an ancient mastermind over 150 years old. He pretended to be an innocent scientist to secretly observe and eventually steal BSG's limitless Redago power!",
-    clueLinkText: "View Black Dagger Dossier",
-    clueLinkUrl: "char-blackdagger.html",
-    question: "What was Doctor Black Dagger (Scinto's) secret identity and true goal?",
-    options: [
-      { text: "A 150-year-old mastermind seeking to steal Redago from BSG", isCorrect: true },
-      { text: "A regular herbal doctor", isCorrect: false },
-      { text: "An imperial envoy from the South", isCorrect: false }
-    ],
-    truth: "Spot on! Scinto is the 150-year-old mastermind behind the DXZ Syndicate who has been manipulating events from the shadows."
-  },
-  {
-    id: 7,
-    caseNumber: "CASE #07",
-    location: "FORBIDDEN LAB: 40 YEARS AGO",
-    title: "The Genesis of Hell",
-    reward: 250,
-    speaker: "Detective NJ",
-    dialogue: "Forty years ago, Black Dagger searched desperately for a way to defeat Rezok. He concluded: 'The only man capable of defeating Rezok is Rezok himself.' How did he create the ultimate weapon?",
-    clueTitle: "Forbidden Genetic Experiment",
-    clueText: "Black Dagger obtained Rezok's blood and struck a dark pact with Devil King Cobra from another dimension. Through experimental surrogate mothers, a child destined to surpass Rezok was born: Hell!",
-    clueLinkText: "View Hell's Origin",
-    clueLinkUrl: "char-hell.html",
-    question: "How was Hell created by Black Dagger 40 years ago?",
-    options: [
-      { text: "Combining Rezok's blood with Devil King Cobra's pact", isCorrect: true },
-      { text: "Found inside an ancient comet", isCorrect: false },
-      { text: "Trained in a secret monastery", isCorrect: false }
-    ],
-    truth: "Astounding deduction! Hell was artificially created using Rezok's blood and Devil King Cobra's dimensional pact."
-  },
-  {
-    id: 8,
-    caseNumber: "CASE #08",
-    location: "FATE'S CRUELEST JOKE",
-    title: "The Weapon Turned Student",
-    reward: 250,
-    speaker: "Detective NJ",
-    dialogue: "For 14 years, Black Dagger tried to awaken Hell's monster power, but Hell showed no cruelty. Black Dagger abandoned him on the streets as a homeless child. What happened next?",
-    clueTitle: "The Cruel Joke of Destiny",
-    clueText: "Alone and broken, homeless Hell met Rezok. Instead of killing him, Rezok took Hell in, made him his student, and welcomed him as an adopted son into his inner family!",
-    clueLinkText: "Read Season Guide",
-    clueLinkUrl: "season-guide.html",
-    question: "What happened when the abandoned weapon Hell met Rezok?",
-    options: [
-      { text: "He became Rezok's student and adopted son", isCorrect: true },
-      { text: "Hell instantly assassinated Rezok", isCorrect: false },
-      { text: "Rezok locked Hell in prison", isCorrect: false }
-    ],
-    truth: "Indeed! Fate turned the weapon meant to kill Rezok into Rezok's most loyal student and adopted son."
-  },
-  {
-    id: 9,
-    caseNumber: "CASE #09",
-    location: "INNER CIRCLE FAMILY TREE",
-    title: "Rezok's Inner Family Circle",
-    reward: 300,
-    speaker: "Detective NJ",
-    dialogue: "In Rezok's household, love and loyalty mattered far more than blood. Who were the three children raised under Rezok and his wife Oma?",
-    clueTitle: "Rezok Family Hierarchy",
-    clueText: "Rezok and Oma raised three children: biological son BSG, adopted daughter Toko, and adopted son Hell. Hell and Toko grew up together and fell deeply in love.",
-    clueLinkText: "View Character Codex",
-    clueLinkUrl: "characters.html",
-    question: "Who were the three children raised in Rezok's household?",
-    options: [
-      { text: "BSG (Biological), Toko (Adopted), and Hell (Adopted)", isCorrect: true },
-      { text: "Berry, Suma, and Zalta", isCorrect: false },
-      { text: "Kan, Scinto, and Eysa", isCorrect: false }
-    ],
-    truth: "Precisely! BSG, Toko, and Hell grew up as siblings in Rezok's legendary family."
-  },
-  {
-    id: 10,
-    caseNumber: "CASE #10",
-    location: "THE HEROBRINE CLAN",
-    title: "The Truth of Zalta's Bloodline",
-    reward: 300,
-    speaker: "Detective NJ",
-    dialogue: "Zalta saw his father Zabong's corpse 25 years ago and swore vengeance against Rezok. But after meeting BSG in Westo City, everything changed. What did Zalta discover?",
-    clueTitle: "Zalta's Revelation",
-    clueText: "Zalta discovered that his father Zabong was killed because of corrupt deeds, and Emperor Hell had been manipulating him with lies for 25 years. Realizing the truth, Zalta joined BSG!",
-    clueLinkText: "View Curse God Zalta Dossier",
-    clueLinkUrl: "char-zalta.html",
-    question: "What truth caused Zalta to ally with BSG?",
-    options: [
-      { text: "He discovered Emperor Hell had lied to and manipulated him for 25 years", isCorrect: true },
-      { text: "He was paid 10 million in gold", isCorrect: false },
-      { text: "He lost a duel and was forced into slavery", isCorrect: false }
-    ],
-    truth: "Correct! Zalta learned Hell used him as a pawn, leading him to fight alongside BSG."
-  },
-  {
-    id: 11,
-    caseNumber: "CASE #11",
-    location: "EPISODE 24 INCIDENT",
-    title: "The Awakening of the Curse God",
-    reward: 350,
-    speaker: "Detective NJ",
-    dialogue: "Episode 24 marks a terrifying turning point in DXZ history: an ancient entity trapped in Hell for 7,999 years was unleashed through Zalta's bloodline. Who performed this ritual?",
-    clueTitle: "The Devil Priest Ritual",
-    clueText: "Zalta belongs to the ancient Herobrine bloodline. Only a Devil Priest could awaken the Curse God trapped for 7,999 years. In Episode 24, Devil Priest Kraven completed the ritual!",
-    clueLinkText: "Read Season 3 Breakdown",
-    clueLinkUrl: "season-guide.html",
-    question: "Who awakened the Curse God through Zalta in Episode 24?",
-    options: [
-      { text: "Devil Priest Kraven", isCorrect: true },
-      { text: "Emperor Jiggo Degan", isCorrect: false },
-      { text: "Doctor Black Dagger", isCorrect: false }
-    ],
-    truth: "Correct! Kraven the Devil Priest broke the 7,999-year seal to awaken the Curse God."
-  },
-  {
-    id: 12,
-    caseNumber: "CASE #12",
-    location: "SPECIAL WEAPONS DIVISION",
-    title: "The Assassin Who Never Smiles",
-    reward: 350,
-    speaker: "Detective NJ",
-    dialogue: "Kan is an assassin who lost one eye long ago and never smiles. His weapons look like ordinary writing pens, but they are deadly instruments. What do they do?",
-    clueTitle: "Kan's Combat Arsenal",
-    clueText: "Kan uses only two types of pens in battle: Blue Pens allow instant spatial teleportation, while Red Pens detonate high-yield explosive blasts.",
-    clueLinkText: "View Kan's Dossier",
-    clueLinkUrl: "char-kan.html",
-    question: "What are the exact functions of Kan's Blue and Red pens?",
-    options: [
-      { text: "Blue Pens = Teleportation, Red Pens = Explosives", isCorrect: true },
-      { text: "Blue Pens = Forcefields, Red Pens = Poison", isCorrect: false },
-      { text: "Blue Pens = Mind Control, Red Pens = Lasers", isCorrect: false }
-    ],
-    truth: "Spot on! Blue pens for teleportation and Red pens for explosives—Kan's signature tactical style."
-  },
-  {
-    id: 13,
-    caseNumber: "CASE #13",
-    location: "TACTICAL INTELLIGENCE",
-    title: "Suma's Tectonic Weak Point",
-    reward: 400,
-    speaker: "Detective NJ",
-    dialogue: "Suma is an unpredictable leader whose greatest weapon is her brain. But in physical combat, she possesses a terrifying ground-shaking ability. What is it called?",
-    clueTitle: "Suma's Unique Ability",
-    clueText: "Suma's unique power is called 'Weak Point'. By touching stress fracture points beneath the ground, she can shake tectonic plates, create earthquakes, and trigger subterranean explosions.",
-    clueLinkText: "View Suma's Dossier",
-    clueLinkUrl: "char-suma.html",
-    question: "What is Suma's signature ground-shattering ability?",
-    options: [
-      { text: "Weak Point (earthquakes and underground explosions)", isCorrect: true },
-      { text: "Meteor Strike", isCorrect: false },
-      { text: "Sonic Wave", isCorrect: false }
-    ],
-    truth: "Excellent deduction! Suma uses 'Weak Point' to manipulate tectonic plates with surgical precision."
-  },
-  {
-    id: 14,
-    caseNumber: "CASE #14",
-    location: "THE GAMBLER'S CRISIS",
-    title: "The Gambler with the World's Strongest Blade",
-    reward: 400,
-    speaker: "Detective NJ",
-    dialogue: "Berry Cade has extreme speed, loves to gamble, and fought the Curse God just for fun. What is the name of the world's most powerful sword in his hands?",
-    clueTitle: "Legendary Weapon: Ogre",
-    clueText: "Berry Cade wields the world's most powerful heavy sword: 'Ogre'. Following his reckless duel against the Curse God, Berry is currently fighting for his life in a critical crisis.",
-    clueLinkText: "View Berry Cade's Dossier",
-    clueLinkUrl: "char-berry.html",
-    question: "What is the name of Berry Cade's world-cleaving greatsword?",
-    options: [
-      { text: "Ogre", isCorrect: true },
-      { text: "Dragon Slayer", isCorrect: false },
-      { text: "Fate Eraser", isCorrect: false }
-    ],
-    truth: "Correct! The legendary greatsword 'Ogre' is Berry Cade's iconic weapon."
-  },
-  {
-    id: 15,
-    caseNumber: "CASE #15",
-    location: "DEVIL PRIEST CLAN",
-    title: "The Sister of the Devil Priest",
-    reward: 450,
-    speaker: "Detective NJ",
-    dialogue: "Eysa recently joined the alliance. She has never known true happiness and carries a terrifying past as one of the last two survivors of her clan. What is her secret power?",
-    clueTitle: "Eysa's Mystical Authority",
-    clueText: "Eysa is Kraven's sister. Her unique ability allows her to possess people's minds for a few seconds with her voice, and her sacred mantra can even seal the Curse God!",
-    clueLinkText: "View Eysa's Dossier",
-    clueLinkUrl: "char-eysa.html",
-    question: "What is Eysa's relationship to Kraven and what can her mantra do?",
-    options: [
-      { text: "Kraven's sister; possesses minds and can seal the Curse God", isCorrect: true },
-      { text: "Hell's general; commands the dragon army", isCorrect: false },
-      { text: "Suma's student; heals wounds", isCorrect: false }
-    ],
-    truth: "Spot on! Eysa is Kraven's sister with the rare ability to command minds and seal the Curse God."
-  },
-  {
-    id: 16,
-    caseNumber: "CASE #16",
-    location: "ALLIANCE VANGUARD",
-    title: "The Enforcers Known as The Three Shades",
-    reward: 450,
-    speaker: "Detective NJ",
-    dialogue: "Kan has brought old friends into the coalition: Shane, Gain, and Fin, known as The Three Shades. Which of them is a multi-talented fighter who plays guitar?",
-    clueTitle: "The Three Shades Profile",
-    clueText: "Shane is the Gunman, Gain has monster-like strength, and Fin is the multi-talented fighter with countless skills including guitar, capable of killing with almost anything.",
-    clueLinkText: "Read Character Roster",
-    clueLinkUrl: "characters.html",
-    question: "Which member of The Three Shades is a guitarist and multi-talented combatant?",
-    options: [
-      { text: "Fin", isCorrect: true },
-      { text: "Shane", isCorrect: false },
-      { text: "Gain", isCorrect: false }
-    ],
-    truth: "Correct! Fin is the guitarist and multi-talented operative in The Three Shades."
-  },
-  {
-    id: 17,
-    caseNumber: "CASE #17",
-    location: "PLANETARY GOVERNANCE",
-    title: "The World Order of Five",
-    reward: 500,
-    speaker: "Detective NJ",
-    dialogue: "Earth is governed by Four Sovereign Emperors: Zigo Degan (East), Ice King (North), Marcle (South), and Hell (West). But who rules above all four as the supreme Earth King?",
-    clueTitle: "The Supreme Sovereign",
-    clueText: "The World Order places four emperors across the quadrants, with Eric (The Earth King) sitting above them all as the supreme central authority.",
-    clueLinkText: "View Universe Lore",
-    clueLinkUrl: "universe-lore.html",
-    question: "Who is the Earth King ruling above all Four Emperors?",
-    options: [
-      { text: "Eric (Earth King)", isCorrect: true },
-      { text: "Century Legend Rezok", isCorrect: false },
-      { text: "Doctor Black Dagger", isCorrect: false }
-    ],
-    truth: "Precisely! Eric is the supreme Earth King presiding above the four sovereign rulers."
-  },
-  {
-    id: 18,
-    caseNumber: "CASE #18",
-    location: "THE STRATEGIST OF AN ERA",
-    title: "The Grandpa Figure & Mastermind Strategist",
-    reward: 500,
-    speaker: "Detective NJ",
-    dialogue: "Our final case closes on Rezok's Inner Circle. Alongside Rezok, Zabong, Zygo, Hell, and Koyo, who was the revered grandpa figure known as 'The Genius Strategist'?",
-    clueTitle: "The Six Who Ruled An Era",
-    clueText: "Bordo served as the chief strategist and grandpa figure of Rezok's family, orchestrating the legendary battle formations that secured their era.",
-    clueLinkText: "Review Final Chronicles",
-    clueLinkUrl: "characters.html",
-    question: "Who was the Chief Strategist and grandpa figure of Rezok's inner circle?",
-    options: [
-      { text: "Bordo ('The Genius Strategist')", isCorrect: true },
-      { text: "Scinto", isCorrect: false },
-      { text: "Kraven", isCorrect: false }
-    ],
-    truth: "Master Detective! Bordo was the legendary Chief Strategist whose tactical genius guided the era."
-  }
-];
+(function () {
+  'use strict';
 
-// ==========================================================================
-// STATE ENGINE & PERSISTENCE
-// ==========================================================================
-const SAVE_KEY = "dxz_mystery_game_save_v1";
+  const STORAGE_KEY = 'dxz_detective_nj_game_state_v1';
 
-let gameState = {
-  activeCaseIndex: 0,
-  solvedCases: [],
-  playerCash: 0
-};
-
-function loadGameState() {
-  try {
-    const saved = localStorage.getItem(SAVE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      gameState = { ...gameState, ...parsed };
+  // 18 Canonical Case Files with explicit Clue Links pointing to character & lore pages
+  const MYSTERIES_DATA = [
+    {
+      id: 1,
+      title: "Who Started the Flama Nation Attack?",
+      bounty: 100,
+      scene: "Detective NJ was drinking tea at his cyber cafe table when breaking news flashed across the monitors: Flama Nation got a massive surprise assault. Over 10,000 assassins, the Curse God, Bjerk, and giant monster Dahaka were deployed in a coordinated blitz.",
+      clueLink: "universe-lore.html#hell-zygo",
+      clueLinkText: "👉 Read the World Order & Flama Conflict Page",
+      clueDetails: "According to imperial intelligence files on the World Order and Flama Nation conflict, Hell engineered this war and formed an alliance with Devil Priest Kraven to execute his long-awaited vengeance against Zygo.",
+      question: "Who was the ultimate mastermind behind planning the Flama Nation attack?",
+      options: [
+        { label: "A", text: "Hell's Master Plan" },
+        { label: "B", text: "Zygo's Plan" },
+        { label: "C", text: "A Mysterious Lone Bandit" }
+      ],
+      correctAnswer: "A",
+      explanation: "Hell spent years constructing a grand plan to destroy Zygo by orchestrating the complete devastation of Flama Nation and awakening the Curse God with Kraven."
+    },
+    {
+      id: 2,
+      title: "Why is Hell Doing Such Destruction?",
+      bounty: 150,
+      scene: "Professor NJ sits at his cafe table deeply pondering the files: 'Why did Hell turn from Rezok's loyal family member into the bringer of apocalyptic war? What drove him to this madness?'",
+      clueLink: "universe-lore.html#hell-zygo",
+      clueLinkText: "👉 Read Zygo and Hell History",
+      clueDetails: "Hell and Zygo were once like brothers. But their bond shattered when Zygo unexpectedly killed Hell's beloved fiancée, Tressa Forst, and killed Koyo's father.",
+      question: "What drove Emperor Hell to seek the total destruction of Zygo's realm?",
+      options: [
+        { label: "A", text: "Zygo killed Hell's fiancée, Tressa Forst" },
+        { label: "B", text: "Hell is naturally psycho" },
+        { label: "C", text: "Because Earth King Eric ordered it" }
+      ],
+      correctAnswer: "A",
+      explanation: "Hell lived happily with his fiancée Tressa Forst until Zygo Degan inexplicably murdered her, turning the unstoppable brothers into bitter mortal enemies."
+    },
+    {
+      id: 3,
+      title: "The Tragedy of Five-Year-Old BSG",
+      bounty: 250,
+      scene: "Detective NJ examines a confidential dossier from BSG's early childhood. A 5-year-old boy was found trembling, running through a village where a kind woman named Masa gave him food and sang lullabies.",
+      clueLink: "char-bsg.html",
+      clueLinkText: "👉 Read BSG's Childhood Story",
+      clueDetails: "When mysterious villains burned the village, they held an axe to 5-year-old BSG's shaking hands and forced him to make an unthinkable choice to save the others.",
+      question: "What horrific act were mysterious villains forcing 5-year-old BSG to commit with an axe?",
+      options: [
+        { label: "A", text: "Chop down the sacred village tree" },
+        { label: "B", text: "Decapitate his caretaker, Masa" },
+        { label: "C", text: "Break the golden prison gates" }
+      ],
+      correctAnswer: "B",
+      explanation: "The villains forced 5-year-old BSG to cut off Masa's head with an axe under the false promise of sparing the village, only to slaughter everyone afterward."
+    },
+    {
+      id: 4,
+      title: "Why Did BSG Rob Villagers for 18 Years?",
+      bounty: 350,
+      scene: "Police records across 10 destroyed villages indicate that for 18 years, BSG lived a harsh, isolated life wearing a mask and actively robbing villagers.",
+      clueLink: "char-bsg.html",
+      clueLinkText: "👉 Read BSG's 18-Year Mask Dossier",
+      clueDetails: "Every time BSG loved someone (Masa, Oro, and 30 others), the evil forces hunting him killed them. BSG wore a mask and robbed villagers so everyone would despise him and keep their distance.",
+      question: "Why did BSG intentionally wear a mask and rob villagers for 18 years?",
+      options: [
+        { label: "A", text: "To hoard gold for a private army" },
+        { label: "B", text: "So people would hate him and stay away, keeping them safe from the devils hunting his blood" },
+        { label: "C", text: "He was under Black Dagger's mind control" }
+      ],
+      correctAnswer: "B",
+      explanation: "BSG hardened his heart and made villagers hate him so no one would befriend him, preventing the evil demons hunting his bloodline from killing more innocent people."
+    },
+    {
+      id: 5,
+      title: "The Lineage of the Redago Force",
+      bounty: 500,
+      scene: "Detective NJ runs genetic spectral analysis on BSG's boundless crimson aura. The power output defies all known scales in the imperial database.",
+      clueLink: "char-bsg.html",
+      clueLinkText: "👉 Read BSG's Bloodline Dossier",
+      clueDetails: "BSG is not an orphan of unknown origin. He is the biological son of the Century Legend who ruled an era, inheriting limitless energy from his direct bloodline.",
+      question: "Who is BSG's biological father from whom he inherited limitless Redago?",
+      options: [
+        { label: "A", text: "Century Legend Rezok" },
+        { label: "B", text: "Emperor Hell" },
+        { label: "C", text: "Devil King Cobra" }
+      ],
+      correctAnswer: "A",
+      explanation: "BSG is the biological son of Century Legend Rezok and his wife Oma, carrying an inexhaustible, limitless reservoir of Redago in his veins."
+    },
+    {
+      id: 6,
+      title: "The 150-Year Impostor",
+      bounty: 500,
+      scene: "A seemingly innocent, weak human doctor named Scinto has been traveling with BSG as a mentor since Episode 1. But classified medical records tell a horrifying truth.",
+      clueLink: "char-blackdagger.html",
+      clueLinkText: "👉 Read Black Dagger Scinto's Dossier",
+      clueDetails: "Scinto is actually Black Dagger, an evil mastermind who has lived for over 150 years. He pretends to be a frail physician to observe BSG and steal his limitless Redago.",
+      question: "What is Black Dagger Scinto's true age and secret motive regarding BSG?",
+      options: [
+        { label: "A", text: "He is 30 years old seeking to cure diseases" },
+        { label: "B", text: "He is over 150 years old seeking to steal BSG's limitless Redago" },
+        { label: "C", text: "He is BSG's long-lost uncle" }
+      ],
+      correctAnswer: "B",
+      explanation: "Black Dagger Scinto has lived for over 150 years. He feigns weakness as a humble doctor to stay close to BSG until he can extract and steal BSG's limitless Redago."
+    },
+    {
+      id: 7,
+      title: "Birth of the Living Weapon",
+      bounty: 600,
+      scene: "Forty years ago, Scinto studied Century Legend Rezok from the shadows and realized no weapon could defeat him except another Rezok.",
+      clueLink: "char-blackdagger.html",
+      clueLinkText: "👉 Read The Creation of Hell Dossier",
+      clueDetails: "Scinto stole Rezok's blood and struck an unholy pact with Devil King Cobra from another dimension to create a living weapon.",
+      question: "How was Emperor Hell engineered 40 years ago by Black Dagger Scinto?",
+      options: [
+        { label: "A", text: "Rezok's blood combined with a deal with Devil King Cobra" },
+        { label: "B", text: "Forged in a volcanic forge in Flama Nation" },
+        { label: "C", text: "Created from ancient Herobrine magic alone" }
+      ],
+      correctAnswer: "A",
+      explanation: "Scinto obtained Rezok's blood and made a dangerous deal with Devil King Cobra (a multidimensional entity), resulting in the birth of Hell."
+    },
+    {
+      id: 8,
+      title: "The Abandoned Child & The Cruel Irony",
+      bounty: 400,
+      scene: "For 14 years, Scinto raised young Hell to awaken his monstrous power to slay Rezok. When Hell failed to become a monster, Scinto threw him onto the streets.",
+      clueLink: "char-hell.html",
+      clueLinkText: "👉 Read Hell's Adoption Dossier",
+      clueDetails: "The homeless 14-year-old boy created specifically to assassinate Rezok crossed paths with Rezok himself on the street.",
+      question: "What happened when homeless 14-year-old Hell met Century Legend Rezok?",
+      options: [
+        { label: "A", text: "Rezok executed him on the spot" },
+        { label: "B", text: "Rezok adopted him as a son and student into his family" },
+        { label: "C", text: "Hell attacked and wounded Rezok" }
+      ],
+      correctAnswer: "B",
+      explanation: "Instead of becoming Rezok's killer, homeless Hell was taken in by Rezok, became his loyal student, and was adopted into the Rezok family alongside BSG and Toko."
+    },
+    {
+      id: 9,
+      title: "The Rezok Family Hierarchy",
+      bounty: 550,
+      scene: "Detective NJ uncovers the ancient family tree of Rezok's household where love and loyalty counted more than blood ties.",
+      clueLink: "universe-lore.html#rezok-family",
+      clueLinkText: "👉 Read Rezok's Family Tree",
+      clueDetails: "Rezok and his wife Oma raised three children: biological son BSG, adopted daughter Toko, and adopted son Hell.",
+      question: "Who are the three children raised in Century Legend Rezok's family?",
+      options: [
+        { label: "A", text: "BSG (Biological), Toko (Adopted), Hell (Adopted)" },
+        { label: "B", text: "Kan, Berry, Suma" },
+        { label: "C", text: "Zalta, Scinto, Kraven" }
+      ],
+      correctAnswer: "A",
+      explanation: "Rezok's children were BSG (biological son), Toko (adopted daughter), and Hell (adopted son)."
+    },
+    {
+      id: 10,
+      title: "Rezok's Left-Hand Succession",
+      bounty: 600,
+      scene: "Twenty-five years ago, Rezok's former Left-Hand Man Zabong was slain. The Inner Circle required a new champion.",
+      clueLink: "universe-lore.html#rezok-family",
+      clueLinkText: "👉 Read Rezok's Inner Circle Dossier",
+      clueDetails: "After Zabong's death, an elite fighter from the family rose to take his place as Rezok's official Left-Hand Man.",
+      question: "Who succeeded Zabong as Rezok's official Left-Hand Man?",
+      options: [
+        { label: "A", text: "Hell" },
+        { label: "B", text: "Ziggo Degan" },
+        { label: "C", text: "Bordo" }
+      ],
+      correctAnswer: "A",
+      explanation: "Following Zabong's demise, Hell proved his elite combat supremacy and became Rezok's new Left-Hand Man."
+    },
+    {
+      id: 11,
+      title: "The 5-Billion Cash Heist of Flama",
+      bounty: 650,
+      scene: "Flama Nation treasury reports confirm that Hell contracted the warlord Bezrk to steal an astronomical sum of 5 Billion in cash.",
+      clueLink: "universe-lore.html#hell-zygo",
+      clueLinkText: "👉 Read Flama War & Heist File",
+      clueDetails: "While the public thought Hell was after wealth, intelligence reveals the 5-billion heist was merely a tactical distraction.",
+      question: "What was Hell's true, overarching objective behind the 5-billion heist in Flama Nation?",
+      options: [
+        { label: "A", text: "To buy an island in the North" },
+        { label: "B", text: "The complete devastation and destruction of Flama Nation" },
+        { label: "C", text: "To bribe Earth King Eric" }
+      ],
+      correctAnswer: "B",
+      explanation: "The 5-billion cash heist with Bezrk was merely a minor diversion; Hell's true goal was the complete devastation of Flama Nation."
+    },
+    {
+      id: 12,
+      title: "The 7,999-Year Awakening in Episode 24",
+      bounty: 750,
+      scene: "In Episode 24, a catastrophic cosmic seal was ruptured. An apocalyptic entity trapped in Hell for 7,999 years was released through an ancient bloodline.",
+      clueLink: "universe-lore.html#curse-god",
+      clueLinkText: "👉 Read Curse God Ritual Dossier",
+      clueDetails: "Devil Priest Kraven conducted the forbidden ritual by exploiting Zalta's ancient Herobrine Clan bloodline to unseal the Curse God.",
+      question: "Who awakened the 7,999-year Curse God through Zalta in Episode 24?",
+      options: [
+        { label: "A", text: "Devil Priest Kraven" },
+        { label: "B", text: "Doctor Scinto" },
+        { label: "C", text: "Ziggo Degan" }
+      ],
+      correctAnswer: "A",
+      explanation: "Devil Priest Kraven used Zalta's Herobrine bloodline to awaken the Curse God, who had been trapped in Hell for nearly 7,999 years."
+    },
+    {
+      id: 13,
+      title: "Kan's Spatial Arsenal",
+      bounty: 450,
+      scene: "Detective NJ inspects the tactical gear of Kan, the one-eyed warrior who never smiles. Kan carries no swords or guns.",
+      clueLink: "char-kan.html",
+      clueLinkText: "👉 Read Kan's Weapons Dossier",
+      clueDetails: "Kan fights strictly with two types of specialized pens: Blue Pens for spatial shifting and Red Pens for heavy thermal blasts.",
+      question: "What are the exact functions of Kan's Blue Pens and Red Pens?",
+      options: [
+        { label: "A", text: "Blue = Teleportation, Red = Explosives" },
+        { label: "B", text: "Blue = Ice, Red = Fire" },
+        { label: "C", text: "Blue = Writing, Red = Poison" }
+      ],
+      correctAnswer: "A",
+      explanation: "Kan only ever uses two types of pens: Blue Pens for instant spatial teleportation and Red Pens for massive explosives."
+    },
+    {
+      id: 14,
+      title: "Suma's Tectonic Secret",
+      bounty: 500,
+      scene: "Seismic monitors show that Suma can trigger massive earthquakes and underground explosions without using explosives or heavy machinery.",
+      clueLink: "char-suma.html",
+      clueLinkText: "👉 Read Suma's Ability Dossier",
+      clueDetails: "Suma uses her brilliant brain to calculate subterranean stress lines and utilizes her signature 'Weak Point' ability directly on the earth.",
+      question: "How does Suma trigger tectonic earthquakes and underground explosions?",
+      options: [
+        { label: "A", text: "By planting Redago nuclear cores" },
+        { label: "B", text: "By using her 'Weak Point' ability to touch subterranean tectonic stress points" },
+        { label: "C", text: "By summoning the earth elemental beast" }
+      ],
+      correctAnswer: "B",
+      explanation: "Suma calculates and physically touches weak points beneath the earth's surface to shift tectonic plates and trigger massive underground explosions."
+    },
+    {
+      id: 15,
+      title: "The Gambler's Life-and-Death Crisis",
+      bounty: 550,
+      scene: "Medical monitors at the vanguard camp reveal that Berry, the wielder of the Ogre blade, is suffering through an extreme life-and-death crisis.",
+      clueLink: "char-berry.html",
+      clueLinkText: "👉 Read Berry's Dossier",
+      clueDetails: "Berry is an insanely fearless gambler who loves risk. He threw himself into a duel against the newly awakened Curse God purely for fun.",
+      question: "Why is Berry currently in a critical life-and-death crisis?",
+      options: [
+        { label: "A", text: "He poisoned himself by accident" },
+        { label: "B", text: "He fought the Curse God just for fun despite knowing he could die" },
+        { label: "C", text: "He was betrayed by Kan" }
+      ],
+      correctAnswer: "B",
+      explanation: "Berry's reckless love for gambling led him to fight the Curse God for fun, leaving him gravely wounded in a life-and-death struggle."
+    },
+    {
+      id: 16,
+      title: "Eysa's Ancient Mantra",
+      bounty: 600,
+      scene: "Eysa, Kraven's sister and one of the last two survivors of the Devil Priest Clan, holds the ultimate trump card to save the world from the Curse God.",
+      clueLink: "char-eysa.html",
+      clueLinkText: "👉 Read Eysa's Sacred Mantra Dossier",
+      clueDetails: "In addition to possessing people's minds with her spoken words for a few seconds, Eysa holds a sacred incantation.",
+      question: "What is Eysa's ultimate sacred power regarding the Curse God?",
+      options: [
+        { label: "A", text: "She can completely absorb and consume the Curse God" },
+        { label: "B", text: "She holds a powerful sacred mantra capable of sealing the Curse God" },
+        { label: "C", text: "She can transform the Curse God into human form" }
+      ],
+      correctAnswer: "B",
+      explanation: "Eysa holds the ancestral mantra of the Devil Priest Clan, which is the only force capable of binding and sealing the Curse God."
+    },
+    {
+      id: 17,
+      title: "The Three Shades of Discord",
+      bounty: 650,
+      scene: "Kan's old mercenary allies, the Three Shades, have arrived to reinforce BSG's squad against Hell's armies. Detective NJ inspects their roster.",
+      clueLink: "universe-lore.html#three-shades",
+      clueLinkText: "👉 Read The Three Shades Dossier",
+      clueDetails: "The Three Shades consist of Shane (The Gunman), Gain (Monster Strength), and Fin (the multi-talented fighter who plays guitar).",
+      question: "What unique skillset does Fin of the Three Shades possess?",
+      options: [
+        { label: "A", text: "A multi-talented fighter and guitarist who can kill with almost anything" },
+        { label: "B", text: "He is a submarine engineer" },
+        { label: "C", text: "He only uses poison blowdarts" }
+      ],
+      correctAnswer: "A",
+      explanation: "Fin is a multi-talented combatant who plays guitar, fights with countless versatile skills, and can kill an enemy with almost anything."
+    },
+    {
+      id: 18,
+      title: "The Supreme Sovereign of Earth",
+      bounty: 1000,
+      scene: "Detective NJ reviews the complete planetary governance archive of Danger X Zone. Four regional emperors rule the cardinal directions.",
+      clueLink: "universe-lore.html#world-order",
+      clueLinkText: "👉 Read The World Order Page",
+      clueDetails: "While Ziggo Degan rules the East, Ice King rules the North, Marcle rules the South, and Hell rules the West, one supreme central judge stands above all four.",
+      question: "Who is the supreme Earth King who stands above all four regional emperors in the World Order?",
+      options: [
+        { label: "A", text: "Eric (Earth King)" },
+        { label: "B", text: "Bordo" },
+        { label: "C", text: "Sage Monk" }
+      ],
+      correctAnswer: "A",
+      explanation: "Eric is the supreme Earth King, acting as the ultimate central judge and sovereign positioned above all four regional emperors."
     }
-  } catch (e) {
-    console.warn("Could not load mystery save:", e);
+  ];
+
+  // Application State
+  let gameState = {
+    solvedCount: 0,
+    walletBalance: 0,
+    currentMysteryIndex: 0,
+    solvedMysteries: []
+  };
+
+  function loadState() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        gameState = Object.assign(gameState, parsed);
+      }
+    } catch (e) {
+      console.warn('Could not load game state from localStorage:', e);
+    }
   }
-}
 
-function saveGameState() {
-  try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
-  } catch (e) {
-    console.warn("Could not save mystery state:", e);
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+    } catch (e) {
+      console.warn('Could not save game state to localStorage:', e);
+    }
   }
-}
 
-// ==========================================================================
-// UI RENDERING ENGINE
-// ==========================================================================
-function initMysteryGame() {
-  loadGameState();
-  renderHUD();
-  renderActiveMystery();
-  renderCaseArchives();
-  setupClueModal();
-}
+  function renderHUD() {
+    const solvedCountEl = document.getElementById('hud-solved-count');
+    const walletBalanceEl = document.getElementById('hud-wallet-balance');
+    const progressBarEl = document.getElementById('hud-progress-fill');
+    const progressTextEl = document.getElementById('hud-progress-text');
 
-function renderHUD() {
-  const cashEl = document.getElementById("player-cash-val");
-  const solvedCountEl = document.getElementById("solved-count-val");
-  const totalCountEl = document.getElementById("total-count-val");
-  const progressFill = document.getElementById("hud-progress-fill");
+    const total = MYSTERIES_DATA.length;
+    const solved = gameState.solvedMysteries.length;
+    const percent = Math.round((solved / total) * 100);
 
-  const total = DXZ_MYSTERIES.length;
-  const solved = gameState.solvedCases.length;
-  const percentage = Math.round((solved / total) * 100);
+    if (solvedCountEl) solvedCountEl.textContent = `${solved} / ${total}`;
+    if (walletBalanceEl) walletBalanceEl.textContent = `$${gameState.walletBalance.toLocaleString()}`;
+    if (progressBarEl) progressBarEl.style.width = `${percent}%`;
+    if (progressTextEl) progressTextEl.textContent = `${percent}% Solved`;
+  }
 
-  if (cashEl) cashEl.textContent = `$${gameState.playerCash.toLocaleString()}`;
-  if (solvedCountEl) solvedCountEl.textContent = solved;
-  if (totalCountEl) totalCountEl.textContent = total;
-  if (progressFill) progressFill.style.width = `${percentage}%`;
-}
+  function renderMystery(index) {
+    const mystery = MYSTERIES_DATA[index];
+    if (!mystery) return;
 
-function renderActiveMystery() {
-  const current = DXZ_MYSTERIES[gameState.activeCaseIndex];
-  if (!current) return;
+    gameState.currentMysteryIndex = index;
+    const isSolved = gameState.solvedMysteries.includes(mystery.id);
 
-  const card = document.getElementById("active-mystery-card");
-  if (!card) return;
+    const titleEl = document.getElementById('active-mystery-title');
+    const numEl = document.getElementById('active-mystery-number');
+    const rewardEl = document.getElementById('active-mystery-reward');
+    const sceneEl = document.getElementById('active-mystery-scene');
+    const questionEl = document.getElementById('active-mystery-question');
+    const optionsContainer = document.getElementById('active-mystery-options');
+    const clueBtn = document.getElementById('clue-modal-trigger');
+    const feedbackEl = document.getElementById('active-mystery-feedback');
+    const clueLinkDirect = document.getElementById('active-mystery-clue-link');
 
-  const isSolved = gameState.solvedCases.includes(current.id);
+    if (numEl) numEl.textContent = `Mystery #${mystery.id}`;
+    if (titleEl) titleEl.textContent = mystery.title;
+    if (rewardEl) rewardEl.textContent = `+$${mystery.bounty}`;
+    if (sceneEl) sceneEl.textContent = mystery.scene;
+    if (questionEl) questionEl.textContent = mystery.question;
 
-  card.innerHTML = `
-    <div class="mystery-header-row">
-      <span class="mystery-case-badge"><i class="fa-solid fa-folder-open"></i> ${current.caseNumber} &bull; ${current.location}</span>
-      <span class="mystery-reward-badge"><i class="fa-solid fa-coins"></i> BOUNTY: +$${current.reward}</span>
-    </div>
-
-    <h2 class="mystery-title">${current.title}</h2>
-
-    <!-- CAFE DIALOGUE BOX -->
-    <div class="cafe-dialogue-box">
-      <div class="cafe-icon"><i class="fa-solid fa-mug-hot"></i></div>
-      <div>
-        <span class="cafe-speaker">${current.speaker} (At the Cafe Table)</span>
-        <p class="cafe-text">"${current.dialogue}"</p>
-      </div>
-    </div>
-
-    <!-- CLUE INSPECTION TRIGGER -->
-    <div class="clue-trigger-wrap">
-      <button class="btn-clue" id="open-clue-btn" onclick="openClueModal()">
-        <i class="fa-solid fa-magnifying-glass"></i> Inspect Detective Clues
-      </button>
-    </div>
-
-    <!-- MULTIPLE CHOICE QUESTION -->
-    <div class="mystery-question-box">
-      <h3 class="mystery-question-title"><i class="fa-solid fa-circle-question" style="color: var(--color-blue-neon);"></i> ${current.question}</h3>
-      <div class="mystery-options-grid">
-        ${current.options.map((opt, idx) => {
-          const letter = String.fromCharCode(65 + idx); // A, B, C
-          return `
-            <button class="mystery-option-btn" data-index="${idx}" onclick="handleOptionSelect(${idx})" ${isSolved ? 'disabled' : ''}>
-              <span class="option-letter">${letter}</span>
-              <span class="option-text">${opt.text}</span>
-            </button>
-          `;
-        }).join('')}
-      </div>
-    </div>
-
-    <!-- FEEDBACK & NEXT UNLOCK BANNER -->
-    <div class="mystery-feedback-card ${isSolved ? 'success' : ''}" id="mystery-feedback">
-      ${isSolved ? `
-        <div class="feedback-header"><i class="fa-solid fa-circle-check"></i> MYSTERY SOLVED!</div>
-        <p class="feedback-body">${current.truth}</p>
-        ${gameState.activeCaseIndex < DXZ_MYSTERIES.length - 1 ? `
-          <button class="btn-next-mystery" onclick="goToNextMystery()">
-            Proceed to Next Mystery <i class="fa-solid fa-arrow-right"></i>
-          </button>
-        ` : `
-          <div style="font-weight: 800; color: #ffb703; font-size: 1.1rem;"><i class="fa-solid fa-trophy"></i> CONGRATULATIONS! ALL 18 DXZ MYSTERIES SOLVED!</div>
-        `}
-      ` : ''}
-    </div>
-  `;
-}
-
-function handleOptionSelect(optionIndex) {
-  const current = DXZ_MYSTERIES[gameState.activeCaseIndex];
-  if (!current) return;
-
-  const buttons = document.querySelectorAll(".mystery-option-btn");
-  const selectedBtn = buttons[optionIndex];
-  const feedbackCard = document.getElementById("mystery-feedback");
-
-  const isCorrect = current.options[optionIndex].isCorrect;
-
-  if (isCorrect) {
-    // Mark Correct
-    selectedBtn.classList.add("correct");
-    buttons.forEach(b => b.disabled = true);
-
-    // Update state if not already solved
-    if (!gameState.solvedCases.includes(current.id)) {
-      gameState.solvedCases.push(current.id);
-      gameState.playerCash += current.reward;
-      saveGameState();
-      renderHUD();
-      renderCaseArchives();
+    // Render prominent clue reference link directly in the card
+    if (clueLinkDirect) {
+      clueLinkDirect.innerHTML = `<a href="${mystery.clueLink}" target="_blank" class="clue-deep-link-btn" title="Open canonical lore dossier"><i class="fa-solid fa-book-open"></i> ${mystery.clueLinkText} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
     }
 
-    // Show Success UI
-    feedbackCard.className = "mystery-feedback-card success";
-    feedbackCard.innerHTML = `
-      <div class="feedback-header"><i class="fa-solid fa-circle-check"></i> DEDUCTION VERIFIED! +$${current.reward}</div>
-      <p class="feedback-body">${current.truth}</p>
-      ${gameState.activeCaseIndex < DXZ_MYSTERIES.length - 1 ? `
-        <button class="btn-next-mystery" onclick="goToNextMystery()">
-          Proceed to Next Mystery <i class="fa-solid fa-arrow-right"></i>
-        </button>
-      ` : `
-        <div style="font-weight: 800; color: #ffb703; font-size: 1.1rem;"><i class="fa-solid fa-trophy"></i> MASTER DETECTIVE! ALL 18 DXZ LORE MYSTERIES SOLVED!</div>
-      `}
-    `;
-
-    // Trigger Notification
-    if (typeof showNotification === "function") {
-      showNotification(`Mystery Solved! Bounty: +$${current.reward}`);
+    if (feedbackEl) {
+      feedbackEl.className = 'mystery-feedback';
+      if (isSolved) {
+        feedbackEl.classList.add('success', 'show');
+        feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Case Solved!</strong> ${mystery.explanation}`;
+      } else {
+        feedbackEl.innerHTML = '';
+        feedbackEl.classList.remove('show');
+      }
     }
-  } else {
-    // Mark Wrong
-    selectedBtn.classList.add("wrong");
-    setTimeout(() => { selectedBtn.classList.remove("wrong"); }, 800);
 
-    feedbackCard.className = "mystery-feedback-card error";
-    feedbackCard.innerHTML = `
-      <div class="feedback-header"><i class="fa-solid fa-circle-xmark"></i> INCORRECT DEDUCTION</div>
-      <p class="feedback-body">Detective NJ suggests: "That lead doesn't match the evidence. Click 'Inspect Detective Clues' above to re-evaluate the archives, then try again!"</p>
-    `;
+    if (optionsContainer) {
+      optionsContainer.innerHTML = '';
+      mystery.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        if (isSolved && opt.label === mystery.correctAnswer) {
+          btn.classList.add('correct');
+        }
+        btn.innerHTML = `<span class="choice-tag">${opt.label}</span> <span class="choice-text">${opt.text}</span>`;
+        btn.addEventListener('click', () => handleOptionClick(mystery, opt.label, btn));
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    // Update modal clue content
+    const modalTitle = document.getElementById('clue-modal-title');
+    const modalBody = document.getElementById('clue-modal-body');
+    const modalLink = document.getElementById('clue-modal-link-wrap');
+
+    if (modalTitle) modalTitle.textContent = `Clue Dossier: Case #${mystery.id}`;
+    if (modalBody) modalBody.textContent = mystery.clueDetails;
+    if (modalLink) {
+      modalLink.innerHTML = `<a href="${mystery.clueLink}" target="_blank" class="btn btn-primary" style="margin-top: 1rem; display: inline-flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-book-open"></i> ${mystery.clueLinkText} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+    }
+
+    renderArchives();
   }
-}
 
-function goToNextMystery() {
-  if (gameState.activeCaseIndex < DXZ_MYSTERIES.length - 1) {
-    gameState.activeCaseIndex++;
-    saveGameState();
-    renderActiveMystery();
-    renderCaseArchives();
-    window.scrollTo({ top: document.getElementById("active-mystery-card").offsetTop - 120, behavior: "smooth" });
+  function handleOptionClick(mystery, chosenLabel, buttonElement) {
+    const feedbackEl = document.getElementById('active-mystery-feedback');
+    const isAlreadySolved = gameState.solvedMysteries.includes(mystery.id);
+
+    if (chosenLabel === mystery.correctAnswer) {
+      buttonElement.classList.add('correct');
+      if (!isAlreadySolved) {
+        gameState.solvedMysteries.push(mystery.id);
+        gameState.walletBalance += mystery.bounty;
+        saveState();
+        renderHUD();
+      }
+
+      if (feedbackEl) {
+        feedbackEl.className = 'mystery-feedback success show';
+        feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Correct Deduction! +$${mystery.bounty}</strong><p style="margin: 0.4rem 0 0 0; font-size: 0.95rem;">${mystery.explanation}</p>`;
+      }
+
+      // Auto advance after 2 seconds if next mystery exists
+      if (gameState.currentMysteryIndex < MYSTERIES_DATA.length - 1) {
+        setTimeout(() => {
+          renderMystery(gameState.currentMysteryIndex + 1);
+        }, 1800);
+      }
+    } else {
+      buttonElement.classList.add('wrong');
+      if (feedbackEl) {
+        feedbackEl.className = 'mystery-feedback error show';
+        feedbackEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <strong>Incorrect Deduction.</strong> Inspect the clue link above to find the answer!`;
+      }
+      setTimeout(() => {
+        buttonElement.classList.remove('wrong');
+      }, 1200);
+    }
   }
-}
 
-function selectCase(caseIndex) {
-  // Allow selecting any case up to the furthest unlocked
-  const maxUnlocked = gameState.solvedCases.length;
-  if (caseIndex <= maxUnlocked) {
-    gameState.activeCaseIndex = caseIndex;
-    renderActiveMystery();
-    renderCaseArchives();
-    window.scrollTo({ top: document.getElementById("active-mystery-card").offsetTop - 120, behavior: "smooth" });
-  }
-}
+  function renderArchives() {
+    const grid = document.getElementById('case-archive-grid');
+    if (!grid) return;
 
-// ==========================================================================
-// CASE ARCHIVES GRID
-// ==========================================================================
-function renderCaseArchives() {
-  const container = document.getElementById("case-archive-grid");
-  if (!container) return;
+    grid.innerHTML = '';
+    MYSTERIES_DATA.forEach((m, idx) => {
+      const isSolved = gameState.solvedMysteries.includes(m.id);
+      const isUnlocked = idx === 0 || gameState.solvedMysteries.includes(MYSTERIES_DATA[idx - 1].id) || isSolved;
+      const isActive = idx === gameState.currentMysteryIndex;
 
-  const maxUnlocked = gameState.solvedCases.length;
-
-  container.innerHTML = DXZ_MYSTERIES.map((m, idx) => {
-    const isSolved = gameState.solvedCases.includes(m.id);
-    const isCurrent = gameState.activeCaseIndex === idx;
-    const isLocked = idx > maxUnlocked;
-
-    return `
-      <div class="case-archive-card ${isCurrent ? 'active' : ''} ${isLocked ? 'locked' : ''}" onclick="selectCase(${idx})">
+      const card = document.createElement('div');
+      card.className = `case-archive-card ${isActive ? 'active' : ''} ${!isUnlocked ? 'locked' : ''} ${isSolved ? 'solved' : ''}`;
+      card.innerHTML = `
         <div class="archive-card-status">
-          <span style="color: var(--color-blue-neon);">${m.caseNumber}</span>
-          <span>${isSolved ? '<i class="fa-solid fa-check" style="color: #2ecc71;"></i> SOLVED' : (isLocked ? '<i class="fa-solid fa-lock"></i> LOCKED' : '<i class="fa-solid fa-hourglass-start" style="color: #ffb703;"></i> ACTIVE')}</span>
+          <span>CASE #${m.id}</span>
+          <span style="color: ${isSolved ? '#2ecc71' : isUnlocked ? '#00e5ff' : '#64748B'};">${isSolved ? 'SOLVED (+$' + m.bounty + ')' : isUnlocked ? 'UNLOCKED' : 'LOCKED'}</span>
         </div>
-        <h4 class="archive-card-title">${m.title}</h4>
-        <div style="font-size: 0.75rem; color: var(--text-muted);">Bounty: +$${m.reward}</div>
-      </div>
-    `;
-  }).join('');
-}
+        <div class="archive-card-title">${m.title}</div>
+      `;
 
-// ==========================================================================
-// CLUES MODAL DRAWER
-// ==========================================================================
-function setupClueModal() {
-  // Global modal handlers
-}
+      if (isUnlocked) {
+        card.addEventListener('click', () => renderMystery(idx));
+      }
+      grid.appendChild(card);
+    });
+  }
 
-function openClueModal() {
-  const current = DXZ_MYSTERIES[gameState.activeCaseIndex];
-  if (!current) return;
+  function initModals() {
+    const clueBtn = document.getElementById('clue-modal-trigger');
+    const modal = document.getElementById('clue-modal');
+    const closeBtn = document.getElementById('clue-modal-close');
+    const backdrop = document.getElementById('clue-modal-backdrop');
 
-  const modal = document.getElementById("clue-modal");
-  const modalTitle = document.getElementById("clue-modal-title-text");
-  const modalBody = document.getElementById("clue-modal-body-content");
+    if (clueBtn && modal) {
+      clueBtn.addEventListener('click', () => {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    }
 
-  if (!modal) return;
+    const closeModal = () => {
+      if (modal) modal.classList.remove('active');
+      document.body.style.overflow = '';
+    };
 
-  modalTitle.textContent = current.clueTitle;
-  modalBody.innerHTML = `
-    <p style="margin-bottom: 1.25rem;">${current.clueText}</p>
-    ${current.clueLinkUrl ? `
-      <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between;">
-        <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-book-bookmark"></i> External Dossier Archive</span>
-        <a href="${current.clueLinkUrl}" target="_blank" style="color: var(--color-blue-neon); font-weight: 700; text-decoration: none; font-size: 0.9rem;">
-          ${current.clueLinkText} <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
-      </div>
-    ` : ''}
-  `;
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (backdrop) backdrop.addEventListener('click', closeModal);
 
-  modal.classList.add("active");
-}
+    const resetBtn = document.getElementById('reset-progress-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to reset your Detective NJ bounty cash and solved mysteries?')) {
+          localStorage.removeItem(STORAGE_KEY);
+          gameState = {
+            solvedCount: 0,
+            walletBalance: 0,
+            currentMysteryIndex: 0,
+            solvedMysteries: []
+          };
+          renderHUD();
+          renderMystery(0);
+        }
+      });
+    }
+  }
 
-function closeClueModal() {
-  const modal = document.getElementById("clue-modal");
-  if (modal) modal.classList.remove("active");
-}
+  document.addEventListener('DOMContentLoaded', () => {
+    loadState();
+    renderHUD();
 
-// Initialize on Load
-document.addEventListener("DOMContentLoaded", initMysteryGame);
+    // Default to first unsolved mystery or mystery 0
+    let startIdx = 0;
+    for (let i = 0; i < MYSTERIES_DATA.length; i++) {
+      if (!gameState.solvedMysteries.includes(MYSTERIES_DATA[i].id)) {
+        startIdx = i;
+        break;
+      }
+    }
+
+    renderMystery(startIdx);
+    initModals();
+  });
+
+})();
