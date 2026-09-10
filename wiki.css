@@ -684,3 +684,85 @@
   width: 100%;
 }
 
+
+/* ADDITIONAL DXZ CHARACTER ACCENT THEMES */
+:root {
+  --color-hell: #FF5722;
+  --color-zalta: #AB47BC;
+  --color-jiggo: #FFA000;
+  --color-kan: #00E5FF;
+  --color-suma: #00E676;
+  --color-berry: #FFD600;
+  --color-eysa: #E040FB;
+}
+
+/* Badge variations */
+.wiki-badge.hell { background: rgba(255, 87, 34, 0.15); border-color: var(--color-hell); color: var(--color-hell); }
+.wiki-badge.zalta { background: rgba(171, 71, 188, 0.15); border-color: var(--color-zalta); color: var(--color-zalta); }
+.wiki-badge.jiggo { background: rgba(255, 160, 0, 0.15); border-color: var(--color-jiggo); color: var(--color-jiggo); }
+.wiki-badge.kan { background: rgba(0, 229, 255, 0.15); border-color: var(--color-kan); color: var(--color-kan); }
+.wiki-badge.suma { background: rgba(0, 230, 118, 0.15); border-color: var(--color-suma); color: var(--color-suma); }
+.wiki-badge.berry { background: rgba(255, 214, 0, 0.15); border-color: var(--color-berry); color: var(--color-berry); }
+.wiki-badge.eysa { background: rgba(224, 64, 251, 0.15); border-color: var(--color-eysa); color: var(--color-eysa); }
+
+/* Quotes */
+.wiki-quote.hell { background: rgba(255, 87, 34, 0.04); border-left-color: var(--color-hell); }
+.wiki-quote.zalta { background: rgba(171, 71, 188, 0.04); border-left-color: var(--color-zalta); }
+.wiki-quote.jiggo { background: rgba(255, 160, 0, 0.04); border-left-color: var(--color-jiggo); }
+.wiki-quote.kan { background: rgba(0, 229, 255, 0.04); border-left-color: var(--color-kan); }
+.wiki-quote.suma { background: rgba(0, 230, 118, 0.04); border-left-color: var(--color-suma); }
+.wiki-quote.berry { background: rgba(255, 214, 0, 0.04); border-left-color: var(--color-berry); }
+.wiki-quote.eysa { background: rgba(224, 64, 251, 0.04); border-left-color: var(--color-eysa); }
+
+/* Card theme hovers & badges */
+.wiki-card.hell:hover { border-color: rgba(255, 87, 34, 0.5); box-shadow: 0 10px 30px rgba(255, 87, 34, 0.2); }
+.wiki-card.hell .wiki-card-badge, .wiki-card.hell .wiki-card-link { color: var(--color-hell); }
+
+.wiki-card.zalta:hover { border-color: rgba(171, 71, 188, 0.5); box-shadow: 0 10px 30px rgba(171, 71, 188, 0.2); }
+.wiki-card.zalta .wiki-card-badge, .wiki-card.zalta .wiki-card-link { color: var(--color-zalta); }
+
+.wiki-card.jiggo:hover { border-color: rgba(255, 160, 0, 0.5); box-shadow: 0 10px 30px rgba(255, 160, 0, 0.2); }
+.wiki-card.jiggo .wiki-card-badge, .wiki-card.jiggo .wiki-card-link { color: var(--color-jiggo); }
+
+.wiki-card.kan:hover { border-color: rgba(0, 229, 255, 0.5); box-shadow: 0 10px 30px rgba(0, 229, 255, 0.2); }
+.wiki-card.kan .wiki-card-badge, .wiki-card.kan .wiki-card-link { color: var(--color-kan); }
+
+.wiki-card.suma:hover { border-color: rgba(0, 230, 118, 0.5); box-shadow: 0 10px 30px rgba(0, 230, 118, 0.2); }
+.wiki-card.suma .wiki-card-badge, .wiki-card.suma .wiki-card-link { color: var(--color-suma); }
+
+.wiki-card.berry:hover { border-color: rgba(255, 214, 0, 0.5); box-shadow: 0 10px 30px rgba(255, 214, 0, 0.2); }
+.wiki-card.berry .wiki-card-badge, .wiki-card.berry .wiki-card-link { color: var(--color-berry); }
+
+.wiki-card.eysa:hover { border-color: rgba(224, 64, 251, 0.5); box-shadow: 0 10px 30px rgba(224, 64, 251, 0.2); }
+.wiki-card.eysa .wiki-card-badge, .wiki-card.eysa .wiki-card-link { color: var(--color-eysa); }
+
+/* Infobox Headers */
+.infobox-header.hell { background: linear-gradient(135deg, rgba(255, 87, 34, 0.25) 0%, rgba(191, 54, 12, 0.2) 100%); }
+.infobox-header.hell .infobox-subtitle { color: var(--color-hell); }
+
+.infobox-header.zalta { background: linear-gradient(135deg, rgba(171, 71, 188, 0.25) 0%, rgba(106, 27, 154, 0.2) 100%); }
+.infobox-header.zalta .infobox-subtitle { color: var(--color-zalta); }
+
+.infobox-header.jiggo { background: linear-gradient(135deg, rgba(255, 160, 0, 0.25) 0%, rgba(230, 81, 0, 0.2) 100%); }
+.infobox-header.jiggo .infobox-subtitle { color: var(--color-jiggo); }
+
+.infobox-header.kan { background: linear-gradient(135deg, rgba(0, 229, 255, 0.2) 0%, rgba(0, 82, 255, 0.2) 100%); }
+.infobox-header.kan .infobox-subtitle { color: var(--color-kan); }
+
+.infobox-header.suma { background: linear-gradient(135deg, rgba(0, 230, 118, 0.2) 0%, rgba(0, 105, 92, 0.2) 100%); }
+.infobox-header.suma .infobox-subtitle { color: var(--color-suma); }
+
+.infobox-header.berry { background: linear-gradient(135deg, rgba(255, 214, 0, 0.2) 0%, rgba(245, 127, 23, 0.2) 100%); }
+.infobox-header.berry .infobox-subtitle { color: var(--color-berry); }
+
+.infobox-header.eysa { background: linear-gradient(135deg, rgba(224, 64, 251, 0.2) 0%, rgba(142, 36, 170, 0.2) 100%); }
+.infobox-header.eysa .infobox-subtitle { color: var(--color-eysa); }
+
+/* Stat Bar Fills */
+.infobox-stat-bar-fill.hell { background: var(--color-hell); box-shadow: 0 0 8px var(--color-hell); }
+.infobox-stat-bar-fill.zalta { background: var(--color-zalta); box-shadow: 0 0 8px var(--color-zalta); }
+.infobox-stat-bar-fill.jiggo { background: var(--color-jiggo); box-shadow: 0 0 8px var(--color-jiggo); }
+.infobox-stat-bar-fill.kan { background: var(--color-kan); box-shadow: 0 0 8px var(--color-kan); }
+.infobox-stat-bar-fill.suma { background: var(--color-suma); box-shadow: 0 0 8px var(--color-suma); }
+.infobox-stat-bar-fill.berry { background: var(--color-berry); box-shadow: 0 0 8px var(--color-berry); }
+.infobox-stat-bar-fill.eysa { background: var(--color-eysa); box-shadow: 0 0 8px var(--color-eysa); }
