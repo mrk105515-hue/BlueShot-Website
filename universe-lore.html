@@ -10,27 +10,27 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Universe Lore & World Order Database | Danger X Zone Wiki</title>
-  <meta name="description" content="Official DXZ Canon World Building: The 4 Emperors & Earth King Eric, Rezok's Dynasty & The Six Who Ruled An Era, Hell & Zygo Conflict, Flama Nation War, and the Curse God.">
+  <title>Universe Lore &amp; World Order | The BlueShot — Official Danger X Zone Codex</title>
+  <meta name="description" content="Explore the official canonical lore of Danger X Zone: Century Legend Rezok's Dynasty, the 4 Emperors & Earth King Eric, Hell vs. Zygo's war, and the 7,999-year Curse God.">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css?v=1.0.2">
-  <link rel="stylesheet" href="wiki.css?v=1.0.2">
+  <link rel="stylesheet" href="wiki.css?v=1.0.3">
 </head>
-<body>
+<body class="wiki-body">
   <!-- NAVIGATION HEADER -->
   <header class="navbar" id="navbar">
     <div class="navbar-container">
-      <a href="index.html#hero" class="nav-logo">
+      <a href="index.html" class="nav-logo">
         THE BLUESHOT <span class="logo-dot"></span>
       </a>
       
       <nav>
         <ul class="nav-links" id="nav-links">
           <li class="nav-link"><a href="index.html">Home</a></li>
-          <li class="nav-link"><a href="index.html#featured-video">Season 3</a></li>
-          <li class="nav-link "><a href="characters.html">Characters</a></li>
-          <li class="nav-link active"><a href="mystery.html">Lore Game</a></li>
+          <li class="nav-link"><a href="characters.html">Characters</a></li>
+          <li class="nav-link active"><a href="universe-lore.html">Lore</a></li>
+          <li class="nav-link"><a href="mystery.html">Lore Game</a></li>
           <li class="nav-link"><a href="merch.html">Shop</a></li>
           <li class="nav-link"><a href="hub.html">Hub</a></li>
           <li class="nav-link"><a href="game.html">Arena</a></li>
@@ -41,7 +41,6 @@
       <div class="nav-socials">
         <button class="social-icon global-search-trigger" title="Search site (Press /)" id="nav-search-trigger"><i class="fa-solid fa-magnifying-glass"></i></button>
         <a href="https://youtube.com/@BlueShot77" target="_blank" class="social-icon" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-        <a href="https://instagram.com/blueshot_x/?__pwa=1" target="_blank" class="social-icon instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
         <a href="https://discord.gg/gfvf46ymng" target="_blank" class="social-icon" title="Discord"><i class="fa-brands fa-discord"></i></a>
       </div>
       
@@ -51,21 +50,12 @@
     </div>
   </header>
 
-  <main class="wiki-page">
-    <div class="wiki-container">
+  <!-- MAIN WIKI CONTAINER -->
+  <main class="wiki-main">
+    <div class="container-width">
       
-      <!-- BREADCRUMB -->
-      <div class="wiki-breadcrumb-bar">
-        <div class="wiki-breadcrumb">
-          <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-          <span class="separator">/</span>
-          <a href="mystery.html">Lore Game</a>
-          <span class="separator">/</span>
-          <span class="current">Universe Lore</span>
-        </div>
-        <button class="wiki-back-btn" onclick="handleSmartBack()" title="Go Back">
-          <i class="fa-solid fa-arrow-left"></i> Back
-        </button>
+      <div class="wiki-breadcrumb">
+        <a href="index.html">Home</a> &gt; <a href="universe-lore.html">World Codex</a> &gt; <span>Universe Lore</span>
       </div>
 
       <!-- HEADER -->
@@ -104,28 +94,96 @@
             Forty years ago, <strong>Century Legend Rezok</strong> was feared and respected by every empire on Earth. Rezok built a household where deep bonds superseded blood ties:
           </p>
           
-          <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255, 18, 79, 0.3); border-radius: 10px; padding: 1.25rem; margin: 1.5rem 0; font-family: monospace; font-size: 0.95rem; color: #E2E8F0; overflow-x: auto; line-height: 1.6;">
-REZOK "THE LEADER"
-  │
-  Wife: OMA
-  │
-  CHILDREN
-  ┌───────────┼───────────┐
-  │           │           │
- BSG         TOKO        HELL
-(Biological) (Adopted)   (Adopted)
+          <!-- VISUAL DYNASTY TREE -->
+          <div class="dynasty-tree-wrap">
+            <!-- LEVEL 1: LEADER & SPOUSE -->
+            <div class="dynasty-level leader-level">
+              <div class="dynasty-node leader-node">
+                <div class="dynasty-badge"><i class="fa-solid fa-crown"></i> Century Legend / Leader</div>
+                <div class="dynasty-name">Rezok</div>
+                <div class="dynasty-sub">Wife: <strong>Oma</strong></div>
+              </div>
+            </div>
 
-LEFT-HAND MAN                 RIGHT-HAND MAN
-─────────────                 ──────────────
-ZABONG                        ZIGGO DEGAN
-  │                             │
-  ├─ Wife: Unknown              ├─ Wife: KOYO
-  └─ Son: ZALTA                 └─ Adopted Children:
-                                     • BERRY
-                                     • SUMA
+            <!-- CONNECTOR LINE -->
+            <div class="dynasty-connector-v"></div>
 
-GRANDPA FIGURE & CHIEF STRATEGIST:
-BORDO "The Genius Strategist"
+            <!-- LEVEL 2: CHILDREN -->
+            <div class="dynasty-section-title"><i class="fa-solid fa-children"></i> Household Children</div>
+            <div class="dynasty-level children-level">
+              <div class="dynasty-node child-node biological">
+                <div class="dynasty-tag bio-tag">Biological Son</div>
+                <div class="dynasty-name">BSG</div>
+                <div class="dynasty-sub">Limitless Redago Heir</div>
+                <a href="char-bsg.html" class="dynasty-link">Dossier <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+
+              <div class="dynasty-node child-node adopted">
+                <div class="dynasty-tag adopt-tag">Adopted Daughter</div>
+                <div class="dynasty-name">Toko</div>
+                <div class="dynasty-sub">Raised in Household</div>
+              </div>
+
+              <div class="dynasty-node child-node weapon">
+                <div class="dynasty-tag weapon-tag">Adopted Son &amp; Student</div>
+                <div class="dynasty-name">Hell</div>
+                <div class="dynasty-sub">Living Anti-Rezok Weapon &bull; Later Left Hand</div>
+                <a href="char-hell.html" class="dynasty-link">Dossier <i class="fa-solid fa-arrow-right"></i></a>
+              </div>
+            </div>
+
+            <!-- LEVEL 3: COMMAND PILLARS -->
+            <div class="dynasty-section-title"><i class="fa-solid fa-shield-halved"></i> The Two Command Pillars</div>
+            <div class="dynasty-level pillars-level">
+              <!-- LEFT PILLAR -->
+              <div class="dynasty-pillar-card left-pillar">
+                <div class="pillar-header">
+                  <span class="pillar-tag">Left-Hand Man</span>
+                  <h4 class="pillar-name">Zabong</h4>
+                  <span class="pillar-sub">Died 25 yrs ago &bull; Succeeded by Hell</span>
+                </div>
+                <div class="pillar-branches">
+                  <div class="branch-item">
+                    <span class="branch-relation">Wife:</span> Unknown
+                  </div>
+                  <div class="branch-item">
+                    <span class="branch-relation">Biological Son:</span> 
+                    <a href="char-zalta.html" class="branch-highlight"><strong>Zalta</strong> <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RIGHT PILLAR -->
+              <div class="dynasty-pillar-card right-pillar">
+                <div class="pillar-header">
+                  <span class="pillar-tag">Right-Hand Man</span>
+                  <h4 class="pillar-name">Ziggo Degan (Zygo)</h4>
+                  <span class="pillar-sub">Mastermind &amp; East Emperor</span>
+                </div>
+                <div class="pillar-branches">
+                  <div class="branch-item">
+                    <span class="branch-relation">Wife:</span> <strong>Koyo</strong>
+                  </div>
+                  <div class="branch-item">
+                    <span class="branch-relation">Adopted Children:</span>
+                    <div class="branch-chips">
+                      <a href="char-berry.html" class="chip-link">Berry</a>
+                      <a href="char-suma.html" class="chip-link">Suma</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LEVEL 4: CHIEF STRATEGIST -->
+            <div class="dynasty-section-title"><i class="fa-solid fa-chess-knight"></i> Supreme Council</div>
+            <div class="dynasty-level strategist-level">
+              <div class="dynasty-node strategist-node">
+                <div class="dynasty-badge strategist-badge"><i class="fa-solid fa-chess-knight"></i> Chief Strategist &amp; Grandpa Figure</div>
+                <div class="dynasty-name">Bordo "The Genius Strategist"</div>
+                <div class="dynasty-sub">Mastermind Advisor to the Six Who Ruled An Era</div>
+              </div>
+            </div>
           </div>
 
           <h3>The Succession &amp; Inner Circle</h3>
@@ -235,12 +293,12 @@ BORDO "The Genius Strategist"
                 <td>Marcle</td>
               </tr>
               <tr>
-                <th>Century Legend</th>
-                <td>Rezok (The Leader)</td>
+                <th>Golden Era Leader</th>
+                <td>Century Legend Rezok</td>
               </tr>
               <tr>
-                <th>Current Conflict</th>
-                <td>Flama War ($5B Heist)</td>
+                <th>Primal Entity</th>
+                <td>7,999-Yr Curse God</td>
               </tr>
             </table>
           </div>
@@ -248,10 +306,10 @@ BORDO "The Genius Strategist"
         </aside>
 
       </div>
+
     </div>
   </main>
 
-  <!-- FOOTER -->
   <!-- Sandboxed Display Banner Ad (300x250) -->
   <div class="dxz-ad-wrapper ad-banner-300">
     <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
@@ -264,28 +322,32 @@ BORDO "The Genius Strategist"
     <iframe src="ad-native.html" width="100%" height="280" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 100%; max-width: 1060px; height: 280px; overflow: hidden;"></iframe>
   </div>
 
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="container-width">
       <div class="footer-top">
-        <a href="index.html#hero" class="footer-logo">THE BLUESHOT <span class="logo-dot"></span></a>
+        <a href="index.html#hero" class="footer-logo">
+          THE BLUESHOT <span class="logo-dot"></span>
+        </a>
         <ul class="footer-nav">
           <li><a href="index.html">Home</a></li>
           <li><a href="characters.html">Characters</a></li>
           <li><a href="mystery.html">Lore Game</a></li>
-          <li><a href="universe-lore.html">Universe Lore</a></li>
           <li><a href="season-guide.html">Season Guide</a></li>
           <li><a href="merch.html">Shop</a></li>
           <li><a href="hub.html">Hub</a></li>
           <li><a href="about.html">About</a></li>
         </ul>
       </div>
+      
       <div class="footer-bottom">
         <p>&copy; 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
         <div class="footer-bottom-links">
-          <a href="index.html">Back to Top</a>
-          <a href="mystery.html">Play Lore Game</a>
-          <a href="universe-lore.html">Universe Lore</a>
-          <a href="contact.html">Contact & FAQ</a>
+          <a href="index.html">Home</a>
+          <a href="orders.html">Track Order</a>
+          <a href="about.html">About Us</a>
+          <a href="contact.html">Contact &amp; FAQ</a>
+          <a href="disclaimer.html">Disclaimer</a>
           <a href="privacy.html">Privacy Policy</a>
           <a href="terms.html">Terms</a>
         </div>

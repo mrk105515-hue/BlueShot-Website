@@ -766,3 +766,307 @@
 .infobox-stat-bar-fill.suma { background: var(--color-suma); box-shadow: 0 0 8px var(--color-suma); }
 .infobox-stat-bar-fill.berry { background: var(--color-berry); box-shadow: 0 0 8px var(--color-berry); }
 .infobox-stat-bar-fill.eysa { background: var(--color-eysa); box-shadow: 0 0 8px var(--color-eysa); }
+
+/* ==========================================================================
+   DYNASTY & FAMILY TREE COMPONENT (universe-lore.html)
+   ========================================================================== */
+.dynasty-tree-wrap {
+  background: rgba(10, 12, 20, 0.75);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 229, 255, 0.08);
+}
+
+@media (max-width: 640px) {
+  .dynasty-tree-wrap {
+    padding: 1.25rem 1rem;
+  }
+}
+
+.dynasty-section-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-blue-neon);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 1.5rem 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.4rem;
+}
+
+.dynasty-level {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  position: relative;
+}
+
+.dynasty-node {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 1.25rem;
+  text-align: center;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.dynasty-node:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Leader Node */
+.leader-node {
+  max-width: 380px;
+  width: 100%;
+  background: linear-gradient(135deg, rgba(255, 18, 79, 0.15) 0%, rgba(20, 20, 32, 0.8) 100%);
+  border-color: var(--color-redago);
+  box-shadow: 0 0 25px rgba(255, 18, 79, 0.2);
+}
+
+.dynasty-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  margin-bottom: 0.6rem;
+  background: rgba(255, 18, 79, 0.2);
+  color: var(--color-redago);
+  border: 1px solid var(--color-redago);
+}
+
+.dynasty-name {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #FFF;
+  margin-bottom: 0.25rem;
+}
+
+.dynasty-sub {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.dynasty-connector-v {
+  width: 2px;
+  height: 24px;
+  background: linear-gradient(to bottom, var(--color-redago), var(--color-blue-neon));
+  margin: 0.5rem auto 1rem;
+}
+
+/* Children Grid */
+.children-level {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .children-level {
+    grid-template-columns: 1fr;
+  }
+}
+
+.child-node.biological {
+  border-color: var(--color-redago);
+  background: rgba(255, 18, 79, 0.06);
+}
+
+.child-node.adopted {
+  border-color: var(--color-blue-neon);
+  background: rgba(0, 229, 255, 0.06);
+}
+
+.child-node.weapon {
+  border-color: #ff6b35;
+  background: rgba(255, 107, 53, 0.06);
+}
+
+.dynasty-tag {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.bio-tag {
+  background: rgba(255, 18, 79, 0.2);
+  color: var(--color-redago);
+  border: 1px solid var(--color-redago);
+}
+
+.adopt-tag {
+  background: rgba(0, 229, 255, 0.2);
+  color: var(--color-blue-neon);
+  border: 1px solid var(--color-blue-neon);
+}
+
+.weapon-tag {
+  background: rgba(255, 107, 53, 0.2);
+  color: #ff6b35;
+  border: 1px solid #ff6b35;
+}
+
+.dynasty-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-blue-neon);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.dynasty-link:hover {
+  color: #FFF;
+}
+
+/* Command Pillars Grid */
+.pillars-level {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .pillars-level {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dynasty-pillar-card {
+  background: rgba(18, 20, 32, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.25rem 1.4rem;
+  transition: all 0.25s ease;
+}
+
+.left-pillar {
+  border-left: 3px solid #2ecc71;
+}
+
+.right-pillar {
+  border-left: 3px solid #00e5ff;
+}
+
+.pillar-header {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pillar-tag {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.25rem;
+}
+
+.pillar-name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #FFF;
+  margin: 0 0 0.2rem 0;
+}
+
+.pillar-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.pillar-branches {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  color: #CBD5E1;
+}
+
+.branch-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.branch-relation {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.branch-highlight {
+  color: var(--color-blue-neon);
+  text-decoration: none;
+}
+
+.branch-highlight:hover {
+  text-decoration: underline;
+}
+
+.branch-chips {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.chip-link {
+  display: inline-block;
+  background: rgba(0, 229, 255, 0.12);
+  border: 1px solid var(--color-blue-neon);
+  color: var(--color-blue-neon);
+  padding: 0.15rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.chip-link:hover {
+  background: var(--color-blue-neon);
+  color: #0A0C14;
+}
+
+/* Strategist Node */
+.strategist-node {
+  max-width: 480px;
+  width: 100%;
+  background: rgba(255, 183, 3, 0.06);
+  border-color: #ffb703;
+  margin: 0 auto;
+}
+
+.strategist-badge {
+  background: rgba(255, 183, 3, 0.2);
+  color: #ffb703;
+  border-color: #ffb703;
+}
