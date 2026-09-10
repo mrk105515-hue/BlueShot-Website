@@ -13,7 +13,9 @@
     smirk: 'assets/detective-nj-smirk.png', // Ideal / Default Pose
     coffee: 'assets/detective-nj-coffee.png', // Relaxed coffee sipping
     thinking: 'assets/detective-nj-thinking.png', // Investigating & analyzing
-    serious: 'assets/detective-nj-serious.png', // Shadowed eyes / dark interrogation & wrong answer
+    serious: 'assets/detective-nj-serious.png', // Shadowed eyes with glowing eye
+    hatSmirk: 'assets/detective-nj-hat-smirk.png', // Hat down hidden eyes smirk
+    hatSerious: 'assets/detective-nj-hat-serious.png', // Hat down hidden eyes grim thought
     shadow: 'assets/detective-nj-serious.png'
   };
 
@@ -61,7 +63,7 @@
       id: 2,
       title: "Why is Hell Doing Such Destruction?",
       bounty: 150,
-      defaultEmote: "thinking",
+      defaultEmote: "hatSerious",
       scene: "Professor NJ sits at his cafe table thinking: 'Why did Hell turn from Rezok's loyal family member into the bringer of apocalyptic war? What drove him to this madness?'",
       clueLink: "universe-lore.html#hell-zygo",
       clueLinkText: "👉 Read Zygo and Hell History",
@@ -79,7 +81,7 @@
       id: 3,
       title: "The Tragedy of 5-Year-Old BSG",
       bounty: 250,
-      defaultEmote: "smirk",
+      defaultEmote: "serious",
       scene: "A 5-year-old boy was found scared and running through a village. A kind woman named Masa gave him medicine, food, and sang him a lullaby (Lori) until he fell asleep.",
       clueLink: "char-bsg.html",
       clueLinkText: "👉 Read BSG's Childhood Story",
@@ -115,7 +117,7 @@
       id: 5,
       title: "The Lineage of the Redago Force",
       bounty: 500,
-      defaultEmote: "smirk",
+      defaultEmote: "serious",
       scene: "The devils relentlessly chased BSG from village to village because of the boundless crimson energy in his veins.",
       clueLink: "char-bsg.html",
       clueLinkText: "👉 Read BSG's Bloodline Dossier",
@@ -133,7 +135,7 @@
       id: 6,
       title: "The 150-Year Impostor",
       bounty: 500,
-      defaultEmote: "coffee",
+      defaultEmote: "hatSmirk",
       scene: "In Episode 1, BSG meets an innocent scientist and doctor named Black Dagger (Scinto), who becomes his mentor.",
       clueLink: "char-blackdagger.html",
       clueLinkText: "👉 Read Black Dagger Scinto's Dossier",
@@ -187,7 +189,7 @@
       id: 9,
       title: "Rezok's Inner Circle",
       bounty: 450,
-      defaultEmote: "coffee",
+      defaultEmote: "smirk",
       scene: "In Rezok's household, love and friendship mattered more than blood relations.",
       clueLink: "universe-lore.html#rezok-family",
       clueLinkText: "👉 Read The Six Who Ruled An Era",
@@ -205,7 +207,7 @@
       id: 10,
       title: "Zalta's Heritage & Zabong's Death",
       bounty: 400,
-      defaultEmote: "smirk",
+      defaultEmote: "hatSerious",
       scene: "Zalta is the last survivor of the Herobrine Clan, wiped out by Sage Monk and Rezok. 25 years ago, Rezok also killed Zalta's father.",
       clueLink: "char-zalta.html",
       clueLinkText: "👉 Read Zalta's Dossier",
@@ -241,7 +243,7 @@
       id: 12,
       title: "The Awakening in Episode 24",
       bounty: 600,
-      defaultEmote: "smirk",
+      defaultEmote: "serious",
       scene: "In Episode 24, Devil Priest Kraven carried out an apocalyptic ritual using an ancient bloodline.",
       clueLink: "universe-lore.html#curse-god",
       clueLinkText: "👉 Read Curse God Awakening",
@@ -277,7 +279,7 @@
       id: 14,
       title: "Suma's Brain & Weak Point",
       bounty: 400,
-      defaultEmote: "thinking",
+      defaultEmote: "hatSmirk",
       scene: "Suma is an unpredictable woman who does everything for a purpose, using her brain as her greatest weapon.",
       clueLink: "char-suma.html",
       clueLinkText: "👉 Read Suma's Ability Dossier",
@@ -313,7 +315,7 @@
       id: 16,
       title: "Eysa's Mantra & Mind Possession",
       bounty: 500,
-      defaultEmote: "smirk",
+      defaultEmote: "hatSerious",
       scene: "Eysa is the sister of Kraven and one of the last two survivors of the Devil Priest Clan.",
       clueLink: "char-eysa.html",
       clueLinkText: "👉 Read Eysa's Dossier",
@@ -349,7 +351,7 @@
       id: 18,
       title: "The Supreme Ruler of Earth",
       bounty: 500,
-      defaultEmote: "thinking",
+      defaultEmote: "hatSmirk",
       scene: "Earth is governed by Four Regional Emperors: Zigo Degan (East), Ice King (North), Marcle (South), and Hell (West).",
       clueLink: "universe-lore.html#world-order",
       clueLinkText: "👉 Read World Order Codex",
