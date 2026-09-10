@@ -345,7 +345,19 @@ html, body.mystery-fullscreen-body {
   width: 100%;
   pointer-events: none;
   z-index: 5;
-  overflow: visible;
+  overflow: hidden; /* Sinks bottom crop completely */
+}
+
+.stage-character-col::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: linear-gradient(to top, rgba(4, 6, 11, 0.8) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 4;
 }
 
 @media (max-width: 860px) {
@@ -382,18 +394,20 @@ html, body.mystery-fullscreen-body {
   display: flex;
   align-items: flex-end;
   justify-content: flex-start; /* Anchored to bottom-left corner */
+  margin-bottom: -22px; /* Sunk 22px into floor so cropped edge is 100% hidden */
 }
 
 @media (max-width: 860px) {
   .character-img-frame {
     justify-content: center;
+    margin-bottom: -15px;
   }
 }
 
 /* MASSIVE TOWERING DETECTIVE NJ (MATCHING RED SKETCH) */
 .detective-character-hero {
-  height: 100%;
-  max-height: calc(100vh - 105px);
+  height: calc(100% + 22px);
+  max-height: calc(100vh - 85px);
   width: auto;
   max-width: 100%;
   object-fit: contain;
@@ -407,7 +421,7 @@ html, body.mystery-fullscreen-body {
 
 @media (max-width: 860px) {
   .detective-character-hero {
-    max-height: 310px;
+    max-height: 320px;
     object-position: bottom center;
     transform-origin: bottom center;
   }
@@ -418,7 +432,7 @@ html, body.mystery-fullscreen-body {
     transform: translateY(0) scale(1);
   }
   50% {
-    transform: translateY(-6px) scale(1.01);
+    transform: translateY(-5px) scale(1.012);
   }
 }
 
