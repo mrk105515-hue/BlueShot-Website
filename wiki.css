@@ -1,3 +1,12 @@
+/* MAIN WIKI WRAPPER WITH NAVBAR CLEARANCE */
+.wiki-main {
+  padding-top: 100px;
+  padding-bottom: 80px;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
 /* ==========================================================================
    DXZ WIKI & LORE SYSTEM STYLESHEET (wiki.css)
    ========================================================================== */
@@ -1069,4 +1078,176 @@
   background: rgba(255, 183, 3, 0.2);
   color: #ffb703;
   border-color: #ffb703;
+}
+
+/* ==========================================================================
+   WIKI CHARACTER CARDS GRID & CARD SYSTEM
+   ========================================================================== */
+.wiki-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.75rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 680px) {
+  .wiki-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+.wiki-card {
+  background: rgba(14, 17, 28, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.wiki-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--color-blue-neon);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 229, 255, 0.2);
+}
+
+.wiki-card-header {
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.wiki-card-header.redago {
+  border-top: 3px solid var(--color-redago);
+}
+
+.wiki-card-header.hell {
+  border-top: 3px solid #ff6b35;
+}
+
+.wiki-card-header.zalta {
+  border-top: 3px solid #00e5ff;
+}
+
+.wiki-card-header.kan {
+  border-top: 3px solid #f1c40f;
+}
+
+.wiki-card-header.suma {
+  border-top: 3px solid #9b59b6;
+}
+
+.wiki-card-header.berry {
+  border-top: 3px solid #e67e22;
+}
+
+.wiki-card-header.eysa {
+  border-top: 3px solid #3498db;
+}
+
+.wiki-card-badge {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  color: var(--color-blue-neon);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  margin-bottom: 0.2rem;
+}
+
+.wiki-card-header.redago .wiki-card-badge { color: var(--color-redago); }
+.wiki-card-header.hell .wiki-card-badge { color: #ff6b35; }
+.wiki-card-header.kan .wiki-card-badge { color: #f1c40f; }
+.wiki-card-header.suma .wiki-card-badge { color: #9b59b6; }
+.wiki-card-header.berry .wiki-card-badge { color: #e67e22; }
+.wiki-card-header.eysa .wiki-card-badge { color: #3498db; }
+
+.wiki-card-title {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.wiki-card-role {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.wiki-card-body {
+  padding: 1.25rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 1.15rem;
+}
+
+.wiki-card-body p {
+  font-size: 0.92rem;
+  color: #CBD5E1;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.wiki-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: auto;
+}
+
+.wiki-tag {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  color: var(--color-blue-neon);
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.wiki-card-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 229, 255, 0.1);
+  border: 1.5px solid var(--color-blue-neon);
+  color: var(--color-blue-neon);
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.wiki-card-btn:hover {
+  background: var(--color-blue-neon);
+  color: #070912;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+  transform: translateY(-2px);
 }
