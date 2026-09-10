@@ -11,13 +11,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detective NJ Lore Game | Solve DXZ Universe Mysteries | The BlueShot</title>
-  <meta name="description" content="Team up with Detective NJ at his Cyber Cafe HQ in an Akinator-style interrogation game. Interrogate clues, crack canonical cases from the DXZ universe, and earn bounty rewards!">
+  <meta name="description" content="Interrogate clues with Detective NJ live at his Cyber Cafe HQ. Crack canonical cases from the DXZ universe, and earn bounty rewards!">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css?v=1.0.3">
-  <link rel="stylesheet" href="mystery.css?v=1.1.0">
+  <link rel="stylesheet" href="mystery.css?v=1.2.0">
 </head>
-<body>
+<body class="mystery-body">
   <!-- NAVIGATION HEADER -->
   <header class="navbar" id="navbar">
     <div class="navbar-container">
@@ -51,126 +51,127 @@
     </div>
   </header>
 
-  <main class="mystery-page">
-    <div class="mystery-container">
+  <main class="mystery-main">
+    
+    <!-- FULLSCREEN GAME STAGE -->
+    <section class="game-viewport-stage">
       
-      <!-- TOP DETECTIVE HUD -->
-      <div class="detective-hud">
-        <div class="detective-profile">
-          <div class="detective-avatar-wrap">
-            <img src="assets/detective-nj.png" alt="Detective NJ" class="detective-avatar-img">
-            <div class="detective-online-badge" title="Detective NJ Active at Cyber Cafe"></div>
+      <!-- TOP HUD OVERLAY BAR -->
+      <div class="game-hud-bar">
+        <div class="hud-character-tag">
+          <div class="hud-avatar-ring">
+            <img src="assets/detective-nj.png" alt="Detective NJ Avatar">
+            <span class="hud-status-dot" title="Detective NJ Online"></span>
           </div>
-          <div class="detective-meta">
-            <h3>Detective NJ <span class="badge-cafe"><i class="fa-solid fa-mug-hot"></i> Cyber Cafe HQ</span></h3>
-            <p>DXZ Lore Special Agent &bull; Interrogation Terminal</p>
-          </div>
-        </div>
-
-        <div class="hud-progress-block">
-          <div class="hud-progress-labels">
-            <span>Cases Solved: <strong id="hud-solved-count" style="color: #00e5ff;">0 / 18</strong></span>
-            <span id="hud-progress-text" style="color: #2ecc71;">0% Solved</span>
-          </div>
-          <div class="hud-progress-bar-bg">
-            <div class="hud-progress-bar-fill" id="hud-progress-fill" style="width: 0%;"></div>
+          <div class="hud-character-info">
+            <span class="hud-agent-name">Detective NJ</span>
+            <span class="hud-agent-location"><i class="fa-solid fa-mug-hot"></i> Cyber Cafe Interrogation HQ</span>
           </div>
         </div>
 
-        <div class="hud-wallet-block">
-          <div class="wallet-label"><i class="fa-solid fa-vault"></i> Bounty Vault</div>
-          <div class="wallet-amount" id="hud-wallet-balance">$0</div>
-          <button class="btn-reset-vault" id="reset-progress-btn" title="Reset all progress"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+        <div class="hud-progress-container">
+          <div class="hud-progress-info">
+            <span>DXZ Case Files: <strong id="hud-solved-count">0 / 18</strong></span>
+            <span id="hud-progress-text">0% Complete</span>
+          </div>
+          <div class="hud-progress-track">
+            <div class="hud-progress-fill" id="hud-progress-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div class="hud-bounty-container">
+          <div class="bounty-pill">
+            <i class="fa-solid fa-vault"></i>
+            <span class="bounty-title">Vault:</span>
+            <span class="bounty-cash" id="hud-wallet-balance">$0</span>
+          </div>
+          <button class="btn-hud-reset" id="reset-progress-btn" title="Reset all solved cases and bounty"><i class="fa-solid fa-rotate-left"></i></button>
         </div>
       </div>
 
-      <!-- AKINATOR STAGE LAYOUT -->
-      <div class="akinator-stage">
+      <!-- MAIN CHARACTER & SPEECH BALLOON STAGE (CLASH OF CLANS / AKINATOR STYLE) -->
+      <div class="dialogue-stage-wrap">
         
-        <!-- LEFT: 3D DETECTIVE NJ AVATAR & PEDESTAL -->
-        <div class="detective-stage-col">
-          <div class="detective-thought-bubble" id="detective-thought-bubble">
-            <div class="thought-dots"><span></span><span></span><span></span></div>
-            <p class="thought-text" id="detective-thought-text">"Welcome to my Cyber Cafe. Flama Nation is in flames and the 7,999-year Curse God has awakened. Think you can solve this case?"</p>
+        <!-- LEFT: FULLSCREEN 3D DETECTIVE NJ CHARACTER -->
+        <div class="character-full-col">
+          <div class="character-ambient-light"></div>
+          <div class="character-img-wrap">
+            <img src="assets/detective-nj.png" alt="Detective NJ" class="detective-nj-fullbody" id="detective-nj-figure">
           </div>
-
-          <div class="detective-figure-stage">
-            <div class="detective-figure-glow"></div>
-            <img src="assets/detective-nj.png" alt="Detective NJ - Danger X Zone" class="detective-nj-figure" id="detective-nj-figure">
-            <div class="cyber-pedestal">
-              <div class="pedestal-ring ring-outer"></div>
-              <div class="pedestal-ring ring-inner"></div>
-              <div class="pedestal-core"></div>
-            </div>
-          </div>
-
-          <div class="detective-badge-tag">
-            <span class="badge-title">DETECTIVE NJ</span>
-            <span class="badge-sub">MASTER INVESTIGATOR</span>
+          <div class="character-ground-shadow"></div>
+          <div class="character-name-plate">
+            <span class="np-title">DETECTIVE NJ</span>
+            <span class="np-subtitle"><i class="fa-solid fa-shield-halved"></i> MASTER INVESTIGATOR</span>
           </div>
         </div>
 
-        <!-- RIGHT: AKINATOR DIALOGUE & INTERROGATION BUBBLE -->
-        <div class="akinator-dialogue-col">
-          <div class="akinator-speech-bubble" id="akinator-speech-bubble">
-            <div class="bubble-tail"></div>
+        <!-- RIGHT: PROMINENT GAME SPEECH BALLOON -->
+        <div class="dialogue-balloon-col">
+          <div class="dialogue-balloon" id="dialogue-balloon">
             
-            <!-- CASE META HEADER -->
-            <div class="case-header">
-              <div class="case-badge-row">
-                <span class="case-number-badge" id="active-mystery-number">Mystery #1</span>
-                <span class="case-reward-badge" id="active-mystery-reward"><i class="fa-solid fa-sack-dollar"></i> +$100</span>
-                <span class="case-status-badge" id="active-mystery-status"><i class="fa-solid fa-magnifying-glass"></i> Under Investigation</span>
+            <!-- Speech Tail pointing directly from Detective NJ's mouth -->
+            <div class="balloon-pointer-left"></div>
+
+            <!-- Header with Badges -->
+            <div class="balloon-header">
+              <div class="balloon-badges">
+                <span class="badge-case-id" id="active-mystery-number">Case #1</span>
+                <span class="badge-reward" id="active-mystery-reward"><i class="fa-solid fa-sack-dollar"></i> +$100</span>
+                <span class="badge-status" id="active-mystery-status"><i class="fa-solid fa-magnifying-glass"></i> Interrogation Active</span>
               </div>
-              <h2 class="case-title" id="active-mystery-title">Loading classified case...</h2>
+              <h1 class="case-main-title" id="active-mystery-title">Loading Classified Case...</h1>
             </div>
 
-            <!-- INCIDENT REPORT / SCENE -->
-            <div class="case-scene-box">
-              <div class="scene-label"><i class="fa-solid fa-file-waveform"></i> Incident Report</div>
-              <p class="scene-text" id="active-mystery-scene">Loading scene details...</p>
+            <!-- Incident Briefing -->
+            <div class="balloon-incident-card">
+              <div class="incident-card-label"><i class="fa-solid fa-file-waveform"></i> Incident Briefing</div>
+              <p class="incident-card-text" id="active-mystery-scene">Loading scene details...</p>
             </div>
 
-            <!-- CLUE DRAWER & LORE ACTIONS -->
-            <div class="case-clue-bar">
-              <div class="clue-btn-row">
-                <button class="clue-btn" id="clue-modal-trigger" title="Inspect hidden clue details">
-                  <i class="fa-solid fa-folder-open"></i> Inspect Clue Drawer
-                </button>
-                <div id="active-mystery-clue-link" class="clue-link-container"></div>
+            <!-- Clue Drawer Trigger & Direct Lore Link -->
+            <div class="balloon-clue-actions">
+              <button class="btn-clue-drawer" id="clue-modal-trigger">
+                <i class="fa-solid fa-folder-open"></i> Inspect Clue Drawer
+              </button>
+              <div id="active-mystery-clue-link" class="lore-link-slot"></div>
+            </div>
+
+            <!-- Big Question & Akinator Choice Options -->
+            <div class="balloon-interrogation-card">
+              <div class="interrogation-header">
+                <i class="fa-solid fa-circle-question"></i> Detective NJ Asks:
+              </div>
+              <h2 class="interrogation-question" id="active-mystery-question">Question loading...</h2>
+              
+              <!-- Choice Buttons [A], [B], [C] -->
+              <div class="choices-stack" id="active-mystery-options">
+                <!-- Dynamically injected choices -->
               </div>
             </div>
 
-            <!-- AKINATOR QUESTION & CHOICES -->
-            <div class="case-question-box">
-              <div class="question-header">
-                <i class="fa-solid fa-circle-question"></i> Interrogation Question:
-              </div>
-              <h3 class="question-text" id="active-mystery-question">Question loading...</h3>
-              <div class="choices-grid" id="active-mystery-options">
-                <!-- Dynamically populated choices [A], [B], [C] -->
-              </div>
-            </div>
+            <!-- Feedback Banner -->
+            <div class="mystery-feedback-bar" id="active-mystery-feedback"></div>
 
-            <!-- FEEDBACK BANNER -->
-            <div class="mystery-feedback" id="active-mystery-feedback"></div>
           </div>
         </div>
 
       </div>
 
-      <!-- BOTTOM CASE ARCHIVES -->
-      <div class="case-archive-section">
-        <div class="case-archive-header">
-          <h3><i class="fa-solid fa-folder-tree"></i> Classified Case Archives</h3>
-          <p>Jump directly between unlocked cases or review your solved mysteries across the DXZ Universe.</p>
+    </section>
+
+    <!-- CASE ARCHIVES DRAWER / GRID SECTION -->
+    <section class="archives-section">
+      <div class="container-width">
+        <div class="archives-section-header">
+          <h2><i class="fa-solid fa-folder-tree"></i> Classified DXZ Case Archives</h2>
+          <p>Click any unlocked case below to jump directly into the interrogation room.</p>
         </div>
         <div class="case-archive-grid" id="case-archive-grid">
           <!-- Dynamically populated 18 cases -->
         </div>
       </div>
+    </section>
 
-    </div>
   </main>
 
   <!-- CLUE MODAL DRAWER -->
@@ -232,6 +233,6 @@
 
   <script src="script.js?v=1.0.2"></script>
   <script src="search.js?v=1.0.2"></script>
-  <script src="mystery.js?v=1.1.0"></script>
+  <script src="mystery.js?v=1.2.0"></script>
 </body>
 </html>
