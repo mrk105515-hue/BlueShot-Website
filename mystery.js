@@ -510,12 +510,10 @@
       }
 
       if (figureEl) {
-        figureEl.style.transform = 'scale(1.05) translateY(-8px)';
-        figureEl.style.filter = 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 45px rgba(46, 204, 113, 0.8))';
+        figureEl.style.transform = 'scale(1.03) translateY(-4px)';
         setTimeout(() => {
           figureEl.style.transform = '';
-          figureEl.style.filter = '';
-        }, 1400);
+        }, 1200);
       }
 
       if (feedbackEl) {
@@ -539,11 +537,9 @@
       setDetectiveEmote('serious'); // Stern serious stare on wrong answer
 
       if (figureEl) {
-        figureEl.style.transform = 'rotate(-1.5deg) scale(0.98)';
-        figureEl.style.filter = 'drop-shadow(0 20px 40px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 35px rgba(255, 18, 79, 0.7))';
+        figureEl.style.transform = 'rotate(-1deg)';
         setTimeout(() => {
           figureEl.style.transform = '';
-          figureEl.style.filter = '';
         }, 800);
       }
 
