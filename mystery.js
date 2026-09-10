@@ -8,12 +8,41 @@
 
   const STORAGE_KEY = 'dxz_detective_nj_game_state_v1';
 
+  // Detective NJ Dynamic Emotes
+  const EMOTES = {
+    coffee: 'assets/detective-nj-coffee.png',
+    thinking: 'assets/detective-nj-thinking.png',
+    smirk: 'assets/detective-nj-smirk.png',
+    serious: 'assets/detective-nj.png'
+  };
+
+  function preloadEmotes() {
+    Object.values(EMOTES).forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }
+
+  function setDetectiveEmote(emoteKey) {
+    const figureEl = document.getElementById('detective-nj-figure');
+    if (!figureEl) return;
+    const targetSrc = EMOTES[emoteKey] || EMOTES.coffee;
+    if (figureEl.getAttribute('src') === targetSrc) return;
+
+    figureEl.classList.add('emote-swapping');
+    setTimeout(() => {
+      figureEl.src = targetSrc;
+      figureEl.classList.remove('emote-swapping');
+    }, 120);
+  }
+
   // 18 Canonical Case Files strictly from the 12-page PDF
   const MYSTERIES_DATA = [
     {
       id: 1,
       title: "Who Started the Flama Nation Attack?",
       bounty: 100,
+      defaultEmote: "coffee",
       scene: "Detective NJ was drinking tea at a cafe when he suddenly heard news that Flama Nation suffered a massive attack. 10,000 assassins, the Curse God, Bjerk, and giant monster Dahaka were involved.",
       clueLink: "universe-lore.html#curse-god",
       clueLinkText: "👉 Read the World Order & Flama Nation Page",
@@ -31,6 +60,7 @@
       id: 2,
       title: "Why is Hell Doing Such Destruction?",
       bounty: 150,
+      defaultEmote: "thinking",
       scene: "Professor NJ sits at his cafe table thinking: 'Why did Hell turn from Rezok's loyal family member into the bringer of apocalyptic war? What drove him to this madness?'",
       clueLink: "universe-lore.html#hell-zygo",
       clueLinkText: "👉 Read Zygo and Hell History",
@@ -48,6 +78,7 @@
       id: 3,
       title: "The Tragedy of 5-Year-Old BSG",
       bounty: 250,
+      defaultEmote: "serious",
       scene: "A 5-year-old boy was found scared and running through a village. A kind woman named Masa gave him medicine, food, and sang him a lullaby (Lori) until he fell asleep.",
       clueLink: "char-bsg.html",
       clueLinkText: "👉 Read BSG's Childhood Story",
@@ -65,6 +96,7 @@
       id: 4,
       title: "Why Did BSG Rob Villagers for 18 Years?",
       bounty: 350,
+      defaultEmote: "thinking",
       scene: "For 18 years, BSG lived a harsh life wearing a mask and actively robbing villagers wherever he went.",
       clueLink: "char-bsg.html",
       clueLinkText: "👉 Read BSG's 18-Year Mask Dossier",
@@ -82,6 +114,7 @@
       id: 5,
       title: "The Lineage of the Redago Force",
       bounty: 500,
+      defaultEmote: "serious",
       scene: "The devils relentlessly chased BSG from village to village because of the boundless crimson energy in his veins.",
       clueLink: "char-bsg.html",
       clueLinkText: "👉 Read BSG's Bloodline Dossier",
@@ -99,6 +132,7 @@
       id: 6,
       title: "The 150-Year Impostor",
       bounty: 500,
+      defaultEmote: "coffee",
       scene: "In Episode 1, BSG meets an innocent scientist and doctor named Black Dagger (Scinto), who becomes his mentor.",
       clueLink: "char-blackdagger.html",
       clueLinkText: "👉 Read Black Dagger Scinto's Dossier",
@@ -116,6 +150,7 @@
       id: 7,
       title: "Birth of the Living Weapon",
       bounty: 600,
+      defaultEmote: "thinking",
       scene: "Forty years ago, Scinto studied Century Legend Rezok and discovered: 'The only man capable of defeating Rezok... is Rezok himself.'",
       clueLink: "char-blackdagger.html",
       clueLinkText: "👉 Read The Creation of Hell Dossier",
@@ -133,6 +168,7 @@
       id: 8,
       title: "The Abandoned Child & Rezok",
       bounty: 400,
+      defaultEmote: "coffee",
       scene: "For 14 years, Scinto tried to turn Hell into a monster to slay Rezok. When Hell failed to become a monster, Scinto abandoned him.",
       clueLink: "char-hell.html",
       clueLinkText: "👉 Read Hell's Adoption Dossier",
@@ -150,6 +186,7 @@
       id: 9,
       title: "Rezok's Inner Circle",
       bounty: 450,
+      defaultEmote: "coffee",
       scene: "In Rezok's household, love and friendship mattered more than blood relations.",
       clueLink: "universe-lore.html#rezok-family",
       clueLinkText: "👉 Read The Six Who Ruled An Era",
@@ -167,6 +204,7 @@
       id: 10,
       title: "Zalta's Heritage & Zabong's Death",
       bounty: 400,
+      defaultEmote: "serious",
       scene: "Zalta is the last survivor of the Herobrine Clan, wiped out by Sage Monk and Rezok. 25 years ago, Rezok also killed Zalta's father.",
       clueLink: "char-zalta.html",
       clueLinkText: "👉 Read Zalta's Dossier",
@@ -184,6 +222,7 @@
       id: 11,
       title: "The Battle of Westo City",
       bounty: 350,
+      defaultEmote: "thinking",
       scene: "Zalta became a criminal manipulated by Emperor Hell. Twenty-five years later, his fate took a dramatic turn.",
       clueLink: "char-zalta.html",
       clueLinkText: "👉 Read Westo City Battle",
@@ -201,6 +240,7 @@
       id: 12,
       title: "The Awakening in Episode 24",
       bounty: 600,
+      defaultEmote: "serious",
       scene: "In Episode 24, Devil Priest Kraven carried out an apocalyptic ritual using an ancient bloodline.",
       clueLink: "universe-lore.html#curse-god",
       clueLinkText: "👉 Read Curse God Awakening",
@@ -218,6 +258,7 @@
       id: 13,
       title: "Kan's Iconic Arsenal",
       bounty: 300,
+      defaultEmote: "coffee",
       scene: "Kan is a one-eyed warrior in BSG's vanguard who never smiles.",
       clueLink: "char-kan.html",
       clueLinkText: "👉 Read Kan's Weapon Dossier",
@@ -235,6 +276,7 @@
       id: 14,
       title: "Suma's Brain & Weak Point",
       bounty: 400,
+      defaultEmote: "thinking",
       scene: "Suma is an unpredictable woman who does everything for a purpose, using her brain as her greatest weapon.",
       clueLink: "char-suma.html",
       clueLinkText: "👉 Read Suma's Ability Dossier",
@@ -252,6 +294,7 @@
       id: 15,
       title: "Berry's Gamble & The Ogre Sword",
       bounty: 450,
+      defaultEmote: "smirk",
       scene: "Berry has no fear and loves to gamble. He fought the Curse God just for fun, even though he knew he could die.",
       clueLink: "char-berry.html",
       clueLinkText: "👉 Read Berry's Crisis Dossier",
@@ -269,6 +312,7 @@
       id: 16,
       title: "Eysa's Mantra & Mind Possession",
       bounty: 500,
+      defaultEmote: "serious",
       scene: "Eysa is the sister of Kraven and one of the last two survivors of the Devil Priest Clan.",
       clueLink: "char-eysa.html",
       clueLinkText: "👉 Read Eysa's Dossier",
@@ -286,6 +330,7 @@
       id: 17,
       title: "The Three Shades",
       bounty: 350,
+      defaultEmote: "coffee",
       scene: "Kan's old mercenary friends have joined as allies of BSG's team to help stop Hell's war.",
       clueLink: "universe-lore.html#three-shades",
       clueLinkText: "👉 Read The Three Shades File",
@@ -303,6 +348,7 @@
       id: 18,
       title: "The Supreme Ruler of Earth",
       bounty: 500,
+      defaultEmote: "thinking",
       scene: "Earth is governed by Four Regional Emperors: Zigo Degan (East), Ice King (North), Marcle (South), and Hell (West).",
       clueLink: "universe-lore.html#world-order",
       clueLinkText: "👉 Read World Order Codex",
@@ -366,6 +412,13 @@
 
     const mystery = MYSTERIES_DATA[index];
     const isSolved = gameState.solvedMysteries.includes(mystery.id);
+
+    // Update Detective NJ Emote
+    if (isSolved) {
+      setDetectiveEmote('smirk');
+    } else {
+      setDetectiveEmote(mystery.defaultEmote || 'coffee');
+    }
 
     const numEl = document.getElementById('active-mystery-number');
     const titleEl = document.getElementById('active-mystery-title');
@@ -447,6 +500,8 @@
 
     if (chosenLabel === mystery.correctAnswer) {
       buttonElement.classList.add('correct');
+      setDetectiveEmote('smirk'); // Confident triumphant smirk on correct answer
+
       if (!isAlreadySolved) {
         gameState.solvedMysteries.push(mystery.id);
         gameState.walletBalance += mystery.bounty;
@@ -455,12 +510,12 @@
       }
 
       if (figureEl) {
-        figureEl.style.transform = 'scale(1.06) translateY(-14px)';
+        figureEl.style.transform = 'scale(1.05) translateY(-8px)';
         figureEl.style.filter = 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 45px rgba(46, 204, 113, 0.8))';
         setTimeout(() => {
           figureEl.style.transform = '';
           figureEl.style.filter = '';
-        }, 1200);
+        }, 1400);
       }
 
       if (feedbackEl) {
@@ -477,10 +532,11 @@
       } else if (gameState.currentMysteryIndex < MYSTERIES_DATA.length - 1) {
         setTimeout(() => {
           renderMystery(gameState.currentMysteryIndex + 1);
-        }, 1800);
+        }, 1900);
       }
     } else {
       buttonElement.classList.add('wrong');
+      setDetectiveEmote('serious'); // Stern serious stare on wrong answer
 
       if (figureEl) {
         figureEl.style.transform = 'rotate(-1.5deg) scale(0.98)';
@@ -540,6 +596,7 @@
 
     if (clueBtn && clueModal) {
       clueBtn.addEventListener('click', () => {
+        setDetectiveEmote('thinking'); // Thinking emote when inspecting clues
         clueModal.classList.add('active');
       });
     }
@@ -590,6 +647,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    preloadEmotes();
     loadState();
     renderHUD();
 

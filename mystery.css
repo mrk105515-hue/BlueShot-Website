@@ -415,8 +415,13 @@ html, body.mystery-fullscreen-body {
   filter: drop-shadow(0 25px 55px rgba(0, 0, 0, 0.98)) drop-shadow(0 0 45px rgba(0, 229, 255, 0.45));
   animation: heroIdle 5s infinite ease-in-out;
   transform-origin: bottom left;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.15s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
   display: block;
+}
+
+.detective-character-hero.emote-swapping {
+  opacity: 0.82;
+  transform: scale(0.99);
 }
 
 @media (max-width: 860px) {
