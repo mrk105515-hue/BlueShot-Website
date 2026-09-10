@@ -10,10 +10,9 @@
 
   // Detective NJ Dynamic Emotes
   const EMOTES = {
+    smirk: 'assets/detective-nj-smirk.png', // Ideal / Default Pose
     coffee: 'assets/detective-nj-coffee.png',
-    thinking: 'assets/detective-nj-thinking.png',
-    smirk: 'assets/detective-nj-smirk.png',
-    serious: 'assets/detective-nj.png'
+    thinking: 'assets/detective-nj-thinking.png'
   };
 
   function preloadEmotes() {
@@ -26,7 +25,7 @@
   function setDetectiveEmote(emoteKey) {
     const figureEl = document.getElementById('detective-nj-figure');
     if (!figureEl) return;
-    const targetSrc = EMOTES[emoteKey] || EMOTES.coffee;
+    const targetSrc = EMOTES[emoteKey] || EMOTES.smirk;
     if (figureEl.getAttribute('src') === targetSrc) return;
 
     figureEl.classList.add('emote-swapping');
@@ -78,7 +77,7 @@
       id: 3,
       title: "The Tragedy of 5-Year-Old BSG",
       bounty: 250,
-      defaultEmote: "serious",
+      defaultEmote: "smirk",
       scene: "A 5-year-old boy was found scared and running through a village. A kind woman named Masa gave him medicine, food, and sang him a lullaby (Lori) until he fell asleep.",
       clueLink: "char-bsg.html",
       clueLinkText: "👉 Read BSG's Childhood Story",
@@ -114,7 +113,7 @@
       id: 5,
       title: "The Lineage of the Redago Force",
       bounty: 500,
-      defaultEmote: "serious",
+      defaultEmote: "smirk",
       scene: "The devils relentlessly chased BSG from village to village because of the boundless crimson energy in his veins.",
       clueLink: "char-bsg.html",
       clueLinkText: "👉 Read BSG's Bloodline Dossier",
@@ -204,7 +203,7 @@
       id: 10,
       title: "Zalta's Heritage & Zabong's Death",
       bounty: 400,
-      defaultEmote: "serious",
+      defaultEmote: "smirk",
       scene: "Zalta is the last survivor of the Herobrine Clan, wiped out by Sage Monk and Rezok. 25 years ago, Rezok also killed Zalta's father.",
       clueLink: "char-zalta.html",
       clueLinkText: "👉 Read Zalta's Dossier",
@@ -240,7 +239,7 @@
       id: 12,
       title: "The Awakening in Episode 24",
       bounty: 600,
-      defaultEmote: "serious",
+      defaultEmote: "smirk",
       scene: "In Episode 24, Devil Priest Kraven carried out an apocalyptic ritual using an ancient bloodline.",
       clueLink: "universe-lore.html#curse-god",
       clueLinkText: "👉 Read Curse God Awakening",
@@ -312,7 +311,7 @@
       id: 16,
       title: "Eysa's Mantra & Mind Possession",
       bounty: 500,
-      defaultEmote: "serious",
+      defaultEmote: "smirk",
       scene: "Eysa is the sister of Kraven and one of the last two survivors of the Devil Priest Clan.",
       clueLink: "char-eysa.html",
       clueLinkText: "👉 Read Eysa's Dossier",
@@ -417,7 +416,7 @@
     if (isSolved) {
       setDetectiveEmote('smirk');
     } else {
-      setDetectiveEmote(mystery.defaultEmote || 'coffee');
+      setDetectiveEmote(mystery.defaultEmote || 'smirk');
     }
 
     const numEl = document.getElementById('active-mystery-number');
@@ -534,7 +533,7 @@
       }
     } else {
       buttonElement.classList.add('wrong');
-      setDetectiveEmote('serious'); // Stern serious stare on wrong answer
+      setDetectiveEmote('thinking'); // Stern serious stare on wrong answer
 
       if (figureEl) {
         figureEl.style.transform = 'rotate(-1deg)';
