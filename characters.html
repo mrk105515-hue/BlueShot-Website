@@ -10,204 +10,217 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Character Codex & Lore Database | Danger X Zone Wiki</title>
-  <meta name="description" content="Explore official Danger X Zone character dossiers: BSG, Emperor Hell, Curse God Zalta, Ziggo Degan, Black Dagger Scinto, Kan, Suma, Berry, and Eysa.">
+  <title>Characters &bull; Danger X Zone | The BlueShot</title>
+  <meta name="description" content="Official canonical character profiles from Danger X Zone: BSG, Emperor Hell, Black Dagger Scinto, Zalta, Kan, Suma, Berry, Eysa, and the Three Shades.">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css?v=1.0.2">
-  <link rel="stylesheet" href="wiki.css?v=1.0.2">
+  <link rel="stylesheet" href="wiki.css?v=1.0.3">
 </head>
-<body>
-  <!-- NAVIGATION HEADER -->
+<body class="wiki-body">
   <header class="navbar" id="navbar">
     <div class="navbar-container">
-      <a href="index.html#hero" class="nav-logo">
-        THE BLUESHOT <span class="logo-dot"></span>
-      </a>
-      
+      <a href="index.html" class="nav-logo">THE BLUESHOT <span class="logo-dot"></span></a>
       <nav>
         <ul class="nav-links" id="nav-links">
           <li class="nav-link"><a href="index.html">Home</a></li>
-          <li class="nav-link"><a href="index.html#featured-video">Season 3</a></li>
           <li class="nav-link active"><a href="characters.html">Characters</a></li>
-          <li class="nav-link "><a href="mystery.html">Lore Game</a></li>
+          <li class="nav-link"><a href="universe-lore.html">Lore</a></li>
+          <li class="nav-link"><a href="mystery.html">Lore Game</a></li>
           <li class="nav-link"><a href="merch.html">Shop</a></li>
           <li class="nav-link"><a href="hub.html">Hub</a></li>
           <li class="nav-link"><a href="game.html">Arena</a></li>
           <li class="nav-link"><a href="about.html">About</a></li>
         </ul>
       </nav>
-      
       <div class="nav-socials">
         <button class="social-icon global-search-trigger" title="Search site (Press /)" id="nav-search-trigger"><i class="fa-solid fa-magnifying-glass"></i></button>
         <a href="https://youtube.com/@BlueShot77" target="_blank" class="social-icon" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-        <a href="https://instagram.com/blueshot_x/?__pwa=1" target="_blank" class="social-icon instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
         <a href="https://discord.gg/gfvf46ymng" target="_blank" class="social-icon" title="Discord"><i class="fa-brands fa-discord"></i></a>
       </div>
-      
-      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
-        <i class="fa-solid fa-bars"></i>
-      </button>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu"><i class="fa-solid fa-bars"></i></button>
     </div>
   </header>
 
-  <main class="wiki-page">
-    <div class="wiki-container">
-      
-      <!-- BREADCRUMB -->
-      <div class="wiki-breadcrumb-bar">
-        <div class="wiki-breadcrumb">
-          <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-          <span class="separator">/</span>
-          <span class="current">Character Codex</span>
-        </div>
-        <button class="wiki-back-btn" onclick="handleSmartBack()" title="Go Back">
-          <i class="fa-solid fa-arrow-left"></i> Back
-        </button>
+  <main class="wiki-main">
+    <div class="container-width">
+      <div class="wiki-breadcrumb">
+        <a href="index.html">Home</a> &gt; <span>Characters</span>
       </div>
 
-      <!-- HEADER -->
-      <div class="wiki-header" style="text-align: center; max-width: 800px; margin: 0 auto 3rem auto;">
-        <div class="wiki-badge"><i class="fa-solid fa-database"></i> DXZ Canonical Database</div>
-        <h1 class="wiki-title">Character Codex</h1>
-        <p class="wiki-subtitle" style="margin: 0 auto;">Select any character below to explore their authentic canonical story, origins, lineages, and abilities from the official 12-page DXZ lore archives.</p>
+      <div class="wiki-header">
+        <div class="wiki-badge"><i class="fa-solid fa-users"></i> Official Character Profiles</div>
+        <h1 class="wiki-title">Danger X Zone Characters</h1>
+        <p class="wiki-subtitle">Explore the verified dossiers of the warriors, masterminds, and emperors from the canonical DXZ dataset.</p>
       </div>
 
-      <!-- CARDS GRID -->
       <div class="wiki-cards-grid">
-        
         <!-- 1. BSG -->
-        <a href="char-bsg.html" class="wiki-card redago">
-          <div style="height: 180px; width: 100%; position: relative; overflow: hidden; background: #0c0c14; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/char-bsg.png" alt="BSG" class="wiki-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(255, 18, 79, 0.15) 0%, #12121A 100%); font-size: 2rem; font-weight: 800; color: #FFF; font-family: var(--font-display);">BSG</div>
-          </div>
-          <div class="wiki-card-body">
-            <span class="wiki-card-badge">Son of Rezok &bull; Limitless Redago</span>
+        <div class="wiki-card">
+          <div class="wiki-card-header redago">
+            <span class="wiki-card-badge">Son of Rezok</span>
             <h3 class="wiki-card-title">BSG</h3>
-            <p class="wiki-card-desc">Biological son of Rezok and Oma. Forced to execute Masa with an axe at age 5, wore an 18-year robber mask to protect innocents from the devils hunting his blood.</p>
-            <span class="wiki-card-link">View Full Lore Dossier <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-        </a>
-
-        <!-- 2. BLACK DAGGER SCINTO -->
-        <a href="char-blackdagger.html" class="wiki-card redago">
-          <div style="height: 180px; width: 100%; position: relative; overflow: hidden; background: #0c0c14; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/char-blackdagger.png" alt="Black Dagger Scinto" class="wiki-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(255, 18, 79, 0.15) 0%, #12121A 100%); font-size: 2rem; font-weight: 800; color: #FFF; font-family: var(--font-display);">BDS</div>
+            <span class="wiki-card-role">Limitless Redago Heir</span>
           </div>
           <div class="wiki-card-body">
-            <span class="wiki-card-badge">150-Year Mastermind &bull; False Doctor</span>
-            <h3 class="wiki-card-title">Black Dagger (Scinto)</h3>
-            <p class="wiki-card-desc">150-year-old schemer posing as a weak doctor in Ep 1 to steal BSG's Redago. Created Hell 40 years ago using Rezok's blood and Devil King Cobra.</p>
-            <span class="wiki-card-link">View Full Lore Dossier <i class="fa-solid fa-arrow-right"></i></span>
+            <p>Biological son of Century Legend Rezok and Oma. Hunted after Masa's tragedy, he wore a mask for 18 years to protect others, on a quest for revenge against the masterminds.</p>
+            <div class="wiki-card-tags">
+              <span class="wiki-tag">Limitless Redago</span>
+              <span class="wiki-tag">Son of Rezok</span>
+              <span class="wiki-tag">Masa's Legacy</span>
+            </div>
+            <a href="char-bsg.html" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 1rem;">View Dossier</a>
           </div>
-        </a>
+        </div>
 
-        <!-- 3. EMPEROR HELL -->
-        <a href="char-hell.html" class="wiki-card hell">
-          <div style="height: 180px; width: 100%; position: relative; overflow: hidden; background: #0c0c14; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/char-hell.png" alt="Emperor Hell" class="wiki-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(255, 87, 34, 0.15) 0%, #12121A 100%); font-size: 2rem; font-weight: 800; color: #FFF; font-family: var(--font-display);">HELL</div>
-          </div>
-          <div class="wiki-card-body">
-            <span class="wiki-card-badge">West Ruler &bull; Living Anti-Rezok Weapon</span>
+        <!-- 2. HELL -->
+        <div class="wiki-card">
+          <div class="wiki-card-header hell">
+            <span class="wiki-card-badge">West Ruler</span>
             <h3 class="wiki-card-title">Emperor Hell</h3>
-            <p class="wiki-card-desc">Adopted by Rezok, in love with Toko. Succeeded Zabong as Left Hand. Initiated the Flama Nation War ($5B heist) after Zygo killed his fiancée Tressa.</p>
-            <span class="wiki-card-link">View Full Lore Dossier <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-        </a>
-
-        <!-- 4. CURSE GOD ZALTA -->
-        <a href="char-zalta.html" class="wiki-card zalta">
-          <div style="height: 180px; width: 100%; position: relative; overflow: hidden; background: #0c0c14; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/char-zalta.png" alt="Curse God Zalta" class="wiki-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(171, 71, 188, 0.15) 0%, #12121A 100%); font-size: 2rem; font-weight: 800; color: #FFF; font-family: var(--font-display);">ZALTA</div>
+            <span class="wiki-card-role">Living Anti-Rezok Weapon</span>
           </div>
           <div class="wiki-card-body">
-            <span class="wiki-card-badge">Last Herobrine &bull; Curse God Vessel</span>
-            <h3 class="wiki-card-title">Curse God Zalta</h3>
-            <p class="wiki-card-desc">Son of Zabong. Manipulated by Hell for 25 years until joining BSG. Awakened as the 7,999-year Curse God in Episode 24 by Devil Priest Kraven.</p>
-            <span class="wiki-card-link">View Full Lore Dossier <i class="fa-solid fa-arrow-right"></i></span>
+            <p>Created by Scinto using Rezok's blood and Devil King Cobra. Adopted into Rezok's family, he became West Ruler and launched the Flama Nation War after Zygo killed his fiancée, Tressa.</p>
+            <div class="wiki-card-tags">
+              <span class="wiki-tag">West Ruler</span>
+              <span class="wiki-tag">Anti-Rezok Weapon</span>
+              <span class="wiki-tag">Flama War</span>
+            </div>
+            <a href="char-hell.html" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 1rem;">View Dossier</a>
           </div>
-        </a>
+        </div>
 
-        <!-- 5. ZIGGO DEGAN -->
-        <a href="char-jiggo.html" class="wiki-card jiggo">
-          <div style="height: 180px; width: 100%; position: relative; overflow: hidden; background: #0c0c14; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/char-jiggo.png" alt="Ziggo Degan" class="wiki-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(255, 160, 0, 0.15) 0%, #12121A 100%); font-size: 2rem; font-weight: 800; color: #FFF; font-family: var(--font-display);">ZYGO</div>
+        <!-- 3. BLACK DAGGER SCINTO -->
+        <div class="wiki-card">
+          <div class="wiki-card-header">
+            <span class="wiki-card-badge">150-Year Mastermind</span>
+            <h3 class="wiki-card-title">Black Dagger Scinto</h3>
+            <span class="wiki-card-role">The False Doctor</span>
           </div>
           <div class="wiki-card-body">
-            <span class="wiki-card-badge">East Ruler &bull; Rezok's Right Hand</span>
-            <h3 class="wiki-card-title">Ziggo Degan</h3>
-            <p class="wiki-card-desc">Husband to Koyo and adoptive father to Berry and Suma. Former unstoppable partner of Hell whose killing of Tressa Forst sparked a global war.</p>
-            <span class="wiki-card-link">View Full Lore Dossier <i class="fa-solid fa-arrow-right"></i></span>
+            <p>A 150-year-old mastermind who created Hell to kill Rezok. He poses as an innocent physician mentoring BSG to secretly steal his limitless Redago power.</p>
+            <div class="wiki-card-tags">
+              <span class="wiki-tag">150+ Years Old</span>
+              <span class="wiki-tag">Creator of Hell</span>
+              <span class="wiki-tag">Doctor Disguise</span>
+            </div>
+            <a href="char-blackdagger.html" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 1rem;">View Dossier</a>
           </div>
-        </a>
+        </div>
 
-        <!-- 6. KAN -->
-        <a href="char-kan.html" class="wiki-card kan">
-          <div style="height: 180px; width: 100%; position: relative; overflow: hidden; background: #0c0c14; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/char-kan.png" alt="Kan" class="wiki-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, #12121A 100%); font-size: 2rem; font-weight: 800; color: #FFF; font-family: var(--font-display);">KAN</div>
+        <!-- 4. ZALTA -->
+        <div class="wiki-card">
+          <div class="wiki-card-header zalta">
+            <span class="wiki-card-badge">Herobrine Clan</span>
+            <h3 class="wiki-card-title">Zalta</h3>
+            <span class="wiki-card-role">Son of Zabong</span>
           </div>
           <div class="wiki-card-body">
-            <span class="wiki-card-badge">One-Eyed Scribe &bull; Pens Master</span>
+            <p>Last survivor of the Herobrine Clan. Son of Zabong, manipulated by Hell for 25 years until joining BSG after the Westo City battle. Used in Ep 24 to awaken the Curse God.</p>
+            <div class="wiki-card-tags">
+              <span class="wiki-tag">Herobrine Bloodline</span>
+              <span class="wiki-tag">Son of Zabong</span>
+              <span class="wiki-tag">Curse God Key</span>
+            </div>
+            <a href="char-zalta.html" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 1rem;">View Dossier</a>
+          </div>
+        </div>
+
+        <!-- 5. KAN -->
+        <div class="wiki-card">
+          <div class="wiki-card-header kan">
+            <span class="wiki-card-badge">Pen Master</span>
             <h3 class="wiki-card-title">Kan</h3>
-            <p class="wiki-card-desc">Never smiles, lost one eye long ago. Wields Blue Pens for spatial teleportation and Red Pens for massive explosives. Ally of the Three Shades.</p>
-            <span class="wiki-card-link">View Full Lore Dossier <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-        </a>
-
-        <!-- 7. SUMA -->
-        <a href="char-suma.html" class="wiki-card suma">
-          <div style="height: 180px; width: 100%; position: relative; overflow: hidden; background: #0c0c14; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/char-suma.png" alt="Suma" class="wiki-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(0, 230, 118, 0.15) 0%, #12121A 100%); font-size: 2rem; font-weight: 800; color: #FFF; font-family: var(--font-display);">SUMA</div>
+            <span class="wiki-card-role">BSG Vanguard</span>
           </div>
           <div class="wiki-card-body">
-            <span class="wiki-card-badge">Tectonic Brain &bull; Weak Point</span>
+            <p>A one-eyed warrior who never smiles. Wields only two types of pens in combat: Blue Pens for instant teleportation and Red Pens for massive explosions.</p>
+            <div class="wiki-card-tags">
+              <span class="wiki-tag">Blue Pen: Teleport</span>
+              <span class="wiki-tag">Red Pen: Explosive</span>
+              <span class="wiki-tag">One-Eyed</span>
+            </div>
+            <a href="char-kan.html" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 1rem;">View Dossier</a>
+          </div>
+        </div>
+
+        <!-- 6. SUMA -->
+        <div class="wiki-card">
+          <div class="wiki-card-header suma">
+            <span class="wiki-card-badge">Weak Point</span>
             <h3 class="wiki-card-title">Suma</h3>
-            <p class="wiki-card-desc">Unpredictable strategist whose greatest weapon is her brain. Touches subterranean weak points to shake tectonic plates and trigger massive explosions.</p>
-            <span class="wiki-card-link">View Full Lore Dossier <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-        </a>
-
-        <!-- 8. BERRY -->
-        <a href="char-berry.html" class="wiki-card berry">
-          <div style="height: 180px; width: 100%; position: relative; overflow: hidden; background: #0c0c14; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/char-berry.png" alt="Berry" class="wiki-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(255, 214, 0, 0.15) 0%, #12121A 100%); font-size: 2rem; font-weight: 800; color: #FFF; font-family: var(--font-display);">BERRY</div>
+            <span class="wiki-card-role">Unpredictable Strategist</span>
           </div>
           <div class="wiki-card-body">
-            <span class="wiki-card-badge">Speed Gambler &bull; Ogre Blade</span>
+            <p>Adopted daughter of Zigo Degan and Koyo. Does everything for a reason using her genius brain. Wields Weak Point to shake tectonic plates and cause underground explosions.</p>
+            <div class="wiki-card-tags">
+              <span class="wiki-tag">Weak Point</span>
+              <span class="wiki-tag">Tectonic Explosions</span>
+              <span class="wiki-tag">Zigo's Daughter</span>
+            </div>
+            <a href="char-suma.html" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 1rem;">View Dossier</a>
+          </div>
+        </div>
+
+        <!-- 7. BERRY -->
+        <div class="wiki-card">
+          <div class="wiki-card-header berry">
+            <span class="wiki-card-badge">Wielder of Ogre</span>
             <h3 class="wiki-card-title">Berry</h3>
-            <p class="wiki-card-desc">Fearless gambling fanatic who fought the Curse God for fun and is now in a life-and-death crisis. Wields the world's most powerful sword, Ogre.</p>
-            <span class="wiki-card-link">View Full Lore Dossier <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-        </a>
-
-        <!-- 9. EYSA -->
-        <a href="char-eysa.html" class="wiki-card eysa">
-          <div style="height: 180px; width: 100%; position: relative; overflow: hidden; background: #0c0c14; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/char-eysa.png" alt="Eysa" class="wiki-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(224, 64, 251, 0.15) 0%, #12121A 100%); font-size: 2rem; font-weight: 800; color: #FFF; font-family: var(--font-display);">EYSA</div>
+            <span class="wiki-card-role">Fearless Gambler</span>
           </div>
           <div class="wiki-card-body">
-            <span class="wiki-card-badge">Devil Priest Survivor &bull; Mind Sealer</span>
-            <h3 class="wiki-card-title">Eysa</h3>
-            <p class="wiki-card-desc">Sister of Kraven and survivor of the Devil Priest Clan. Commands minds with spoken words and holds the sacred mantra capable of sealing the Curse God.</p>
-            <span class="wiki-card-link">View Full Lore Dossier <i class="fa-solid fa-arrow-right"></i></span>
+            <p>Adopted son of Zigo Degan. An insane warrior with extreme speed wielding the world's most powerful sword, Ogre. In a life-and-death crisis after fighting the Curse God for fun.</p>
+            <div class="wiki-card-tags">
+              <span class="wiki-tag">Ogre Sword</span>
+              <span class="wiki-tag">Extreme Speed</span>
+              <span class="wiki-tag">Curse God Fight</span>
+            </div>
+            <a href="char-berry.html" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 1rem;">View Dossier</a>
           </div>
-        </a>
+        </div>
 
+        <!-- 8. EYSA -->
+        <div class="wiki-card">
+          <div class="wiki-card-header eysa">
+            <span class="wiki-card-badge">Devil Priest Clan</span>
+            <h3 class="wiki-card-title">Eysa</h3>
+            <span class="wiki-card-role">Sealer of Curse God</span>
+          </div>
+          <div class="wiki-card-body">
+            <p>Sister of Kraven and survivor of the Devil Priest Clan. Possesses the power to control minds with her words and holds the sacred mantra capable of sealing the Curse God.</p>
+            <div class="wiki-card-tags">
+              <span class="wiki-tag">Mind Control</span>
+              <span class="wiki-tag">Sealing Mantra</span>
+              <span class="wiki-tag">Kraven's Sister</span>
+            </div>
+            <a href="char-eysa.html" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 1rem;">View Dossier</a>
+          </div>
+        </div>
+
+        <!-- 9. THREE SHADES -->
+        <div class="wiki-card">
+          <div class="wiki-card-header">
+            <span class="wiki-card-badge">Vanguard Allies</span>
+            <h3 class="wiki-card-title">The Three Shades</h3>
+            <span class="wiki-card-role">Shane, Gain &amp; Fin</span>
+          </div>
+          <div class="wiki-card-body">
+            <p>Old friends of Kan: Shane the Gunman, Gain with monster-like strength, and Fin the multi-talented fighting guitarist who can kill with almost anything.</p>
+            <div class="wiki-card-tags">
+              <span class="wiki-tag">Shane (Gunman)</span>
+              <span class="wiki-tag">Gain (Strength)</span>
+              <span class="wiki-tag">Fin (Guitarist)</span>
+            </div>
+            <a href="universe-lore.html#three-shades" class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 1rem;">View Dossier</a>
+          </div>
+        </div>
       </div>
     </div>
   </main>
 
-  <!-- FOOTER -->
-  <!-- Sandboxed Display Banner Ad (300x250) -->
+    <!-- Sandboxed Display Banner Ad (300x250) -->
   <div class="dxz-ad-wrapper ad-banner-300">
     <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
     <iframe src="ad-300x250.html" width="300" height="250" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 300px; height: 250px; overflow: hidden;"></iframe>
@@ -226,9 +239,8 @@
         <ul class="footer-nav">
           <li><a href="index.html">Home</a></li>
           <li><a href="characters.html">Characters</a></li>
+          <li><a href="universe-lore.html">Lore</a></li>
           <li><a href="mystery.html">Lore Game</a></li>
-          <li><a href="universe-lore.html">Universe Lore</a></li>
-          <li><a href="season-guide.html">Season Guide</a></li>
           <li><a href="merch.html">Shop</a></li>
           <li><a href="hub.html">Hub</a></li>
           <li><a href="about.html">About</a></li>
@@ -236,18 +248,9 @@
       </div>
       <div class="footer-bottom">
         <p>&copy; 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
-        <div class="footer-bottom-links">
-          <a href="index.html">Back to Top</a>
-          <a href="mystery.html">Play Lore Game</a>
-          <a href="universe-lore.html">Universe Lore</a>
-          <a href="contact.html">Contact & FAQ</a>
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="terms.html">Terms</a>
-        </div>
       </div>
     </div>
   </footer>
-
   <script src="script.js?v=1.0.2"></script>
   <script src="search.js?v=1.0.2"></script>
 </body>
