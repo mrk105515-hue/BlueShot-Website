@@ -9,17 +9,18 @@
     gtag('config', 'G-L6LMYSVPB8');
   </script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Detective NJ Lore Game | Solve DXZ Universe Mysteries | The BlueShot</title>
-  <meta name="description" content="Interrogate clues with Detective NJ live at his Cyber Cafe HQ. Crack canonical cases from the DXZ universe, and earn bounty rewards!">
+  <meta name="description" content="Interrogate clues with Detective NJ live at his Cyber Cafe HQ in an immersive fullscreen game screen. Crack canonical cases from the DXZ universe!">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css?v=1.0.3">
-  <link rel="stylesheet" href="mystery.css?v=1.2.0">
+  <link rel="stylesheet" href="mystery.css?v=1.3.0">
 </head>
-<body class="mystery-body">
-  <!-- NAVIGATION HEADER -->
-  <header class="navbar" id="navbar">
+<body class="mystery-fullscreen-body">
+  
+  <!-- COMPACT TOP NAVBAR -->
+  <header class="navbar compact-nav" id="navbar">
     <div class="navbar-container">
       <a href="index.html" class="nav-logo">
         THE BLUESHOT <span class="logo-dot"></span>
@@ -51,101 +52,105 @@
     </div>
   </header>
 
-  <main class="mystery-main">
+  <!-- 100VH ZERO-SCROLL GAME APP VIEWPORT -->
+  <div class="game-screen-app">
     
-    <!-- FULLSCREEN GAME STAGE -->
-    <section class="game-viewport-stage">
-      
-      <!-- TOP HUD OVERLAY BAR -->
-      <div class="game-hud-bar">
-        <div class="hud-character-tag">
-          <div class="hud-avatar-ring">
-            <img src="assets/detective-nj.png" alt="Detective NJ Avatar">
-            <span class="hud-status-dot" title="Detective NJ Online"></span>
-          </div>
-          <div class="hud-character-info">
-            <span class="hud-agent-name">Detective NJ</span>
-            <span class="hud-agent-location"><i class="fa-solid fa-mug-hot"></i> Cyber Cafe Interrogation HQ</span>
-          </div>
+    <!-- TOP GAME HUD BAR -->
+    <div class="hud-top-bar">
+      <div class="hud-left-profile">
+        <div class="hud-avatar-circle">
+          <img src="assets/detective-nj.png" alt="Detective NJ Avatar">
+          <span class="hud-online-dot"></span>
         </div>
-
-        <div class="hud-progress-container">
-          <div class="hud-progress-info">
-            <span>DXZ Case Files: <strong id="hud-solved-count">0 / 18</strong></span>
-            <span id="hud-progress-text">0% Complete</span>
-          </div>
-          <div class="hud-progress-track">
-            <div class="hud-progress-fill" id="hud-progress-fill" style="width: 0%;"></div>
-          </div>
-        </div>
-
-        <div class="hud-bounty-container">
-          <div class="bounty-pill">
-            <i class="fa-solid fa-vault"></i>
-            <span class="bounty-title">Vault:</span>
-            <span class="bounty-cash" id="hud-wallet-balance">$0</span>
-          </div>
-          <button class="btn-hud-reset" id="reset-progress-btn" title="Reset all solved cases and bounty"><i class="fa-solid fa-rotate-left"></i></button>
+        <div class="hud-name-group">
+          <span class="hud-title">Detective NJ</span>
+          <span class="hud-cafe-badge"><i class="fa-solid fa-mug-hot"></i> Cyber Cafe HQ</span>
         </div>
       </div>
 
-      <!-- MAIN CHARACTER & SPEECH BALLOON STAGE (CLASH OF CLANS / AKINATOR STYLE) -->
-      <div class="dialogue-stage-wrap">
-        
-        <!-- LEFT: FULLSCREEN 3D DETECTIVE NJ CHARACTER -->
-        <div class="character-full-col">
-          <div class="character-ambient-light"></div>
-          <div class="character-img-wrap">
-            <img src="assets/detective-nj.png" alt="Detective NJ" class="detective-nj-fullbody" id="detective-nj-figure">
-          </div>
-          <div class="character-ground-shadow"></div>
-          <div class="character-name-plate">
-            <span class="np-title">DETECTIVE NJ</span>
-            <span class="np-subtitle"><i class="fa-solid fa-shield-halved"></i> MASTER INVESTIGATOR</span>
-          </div>
+      <div class="hud-center-progress">
+        <div class="hud-progress-labels">
+          <span>Case Files: <strong id="hud-solved-count">0 / 18</strong></span>
+          <span id="hud-progress-text">0% Solved</span>
         </div>
+        <div class="hud-progress-track">
+          <div class="hud-progress-fill" id="hud-progress-fill" style="width: 0%;"></div>
+        </div>
+      </div>
 
-        <!-- RIGHT: PROMINENT GAME SPEECH BALLOON -->
-        <div class="dialogue-balloon-col">
-          <div class="dialogue-balloon" id="dialogue-balloon">
+      <div class="hud-right-actions">
+        <div class="hud-bounty-box">
+          <i class="fa-solid fa-vault"></i>
+          <span class="bounty-lbl">Vault:</span>
+          <span class="bounty-val" id="hud-wallet-balance">$0</span>
+        </div>
+        <button class="btn-open-archives" id="open-archives-btn" title="Open 18 Case Archives">
+          <i class="fa-solid fa-folder-tree"></i> Cases (18)
+        </button>
+        <button class="btn-hud-reset" id="reset-progress-btn" title="Reset all progress"><i class="fa-solid fa-rotate-left"></i></button>
+      </div>
+    </div>
+
+    <!-- MAIN INTERACTIVE STAGE (CHARACTER ON LEFT + DIALOGUE BALLOON ON RIGHT) -->
+    <main class="game-main-stage">
+      
+      <!-- DETECTIVE NJ FULLSCREEN CHARACTER (LEFT) -->
+      <div class="stage-character-col">
+        <div class="character-aura-glow"></div>
+        <div class="character-img-frame">
+          <img src="assets/detective-nj.png" alt="Detective NJ" class="detective-character-hero" id="detective-nj-figure">
+        </div>
+        <div class="character-floor-pedestal">
+          <div class="pedestal-glow-ring"></div>
+        </div>
+        <div class="character-name-badge">
+          <span class="char-name">DETECTIVE NJ</span>
+          <span class="char-role"><i class="fa-solid fa-shield-halved"></i> MASTER INVESTIGATOR</span>
+        </div>
+      </div>
+
+      <!-- GAME SPEECH BALLOON (RIGHT) -->
+      <div class="stage-dialogue-col">
+        <div class="game-speech-balloon" id="game-speech-balloon">
+          
+          <!-- Balloon Pointer pointing left directly to Detective NJ -->
+          <div class="balloon-pointer-left"></div>
+
+          <div class="balloon-scroll-body">
             
-            <!-- Speech Tail pointing directly from Detective NJ's mouth -->
-            <div class="balloon-pointer-left"></div>
-
-            <!-- Header with Badges -->
-            <div class="balloon-header">
-              <div class="balloon-badges">
+            <!-- Header Badges & Title -->
+            <div class="balloon-header-row">
+              <div class="balloon-badge-stack">
                 <span class="badge-case-id" id="active-mystery-number">Case #1</span>
-                <span class="badge-reward" id="active-mystery-reward"><i class="fa-solid fa-sack-dollar"></i> +$100</span>
+                <span class="badge-bounty" id="active-mystery-reward"><i class="fa-solid fa-sack-dollar"></i> +$100</span>
                 <span class="badge-status" id="active-mystery-status"><i class="fa-solid fa-magnifying-glass"></i> Interrogation Active</span>
               </div>
-              <h1 class="case-main-title" id="active-mystery-title">Loading Classified Case...</h1>
+              <h1 class="case-heading" id="active-mystery-title">Loading Classified Case...</h1>
             </div>
 
-            <!-- Incident Briefing -->
-            <div class="balloon-incident-card">
-              <div class="incident-card-label"><i class="fa-solid fa-file-waveform"></i> Incident Briefing</div>
-              <p class="incident-card-text" id="active-mystery-scene">Loading scene details...</p>
+            <!-- Incident Report Narrative -->
+            <div class="incident-report-card">
+              <div class="incident-header"><i class="fa-solid fa-file-waveform"></i> Incident Briefing</div>
+              <p class="incident-content" id="active-mystery-scene">Loading scene details...</p>
             </div>
 
-            <!-- Clue Drawer Trigger & Direct Lore Link -->
-            <div class="balloon-clue-actions">
-              <button class="btn-clue-drawer" id="clue-modal-trigger">
+            <!-- Clue Inspection & Lore Deep Link -->
+            <div class="clue-action-row">
+              <button class="btn-clue-trigger" id="clue-modal-trigger">
                 <i class="fa-solid fa-folder-open"></i> Inspect Clue Drawer
               </button>
-              <div id="active-mystery-clue-link" class="lore-link-slot"></div>
+              <div id="active-mystery-clue-link" class="lore-slot-wrap"></div>
             </div>
 
-            <!-- Big Question & Akinator Choice Options -->
-            <div class="balloon-interrogation-card">
-              <div class="interrogation-header">
+            <!-- Interrogation Question & Choice Cards -->
+            <div class="interrogation-box">
+              <div class="question-callout">
                 <i class="fa-solid fa-circle-question"></i> Detective NJ Asks:
               </div>
-              <h2 class="interrogation-question" id="active-mystery-question">Question loading...</h2>
-              
-              <!-- Choice Buttons [A], [B], [C] -->
-              <div class="choices-stack" id="active-mystery-options">
-                <!-- Dynamically injected choices -->
+              <h2 class="question-title" id="active-mystery-question">Question loading...</h2>
+
+              <div class="choices-button-list" id="active-mystery-options">
+                <!-- Dynamically populated choices [A], [B], [C] -->
               </div>
             </div>
 
@@ -153,28 +158,36 @@
             <div class="mystery-feedback-bar" id="active-mystery-feedback"></div>
 
           </div>
-        </div>
 
-      </div>
-
-    </section>
-
-    <!-- CASE ARCHIVES DRAWER / GRID SECTION -->
-    <section class="archives-section">
-      <div class="container-width">
-        <div class="archives-section-header">
-          <h2><i class="fa-solid fa-folder-tree"></i> Classified DXZ Case Archives</h2>
-          <p>Click any unlocked case below to jump directly into the interrogation room.</p>
-        </div>
-        <div class="case-archive-grid" id="case-archive-grid">
-          <!-- Dynamically populated 18 cases -->
         </div>
       </div>
-    </section>
 
-  </main>
+    </main>
 
-  <!-- CLUE MODAL DRAWER -->
+  </div>
+
+  <!-- CASE ARCHIVES SLIDE-UP MODAL (ACCESSED WITHOUT SCREEN SCROLLING) -->
+  <div class="archives-modal" id="archives-modal">
+    <div class="archives-backdrop" id="archives-modal-backdrop"></div>
+    <div class="archives-content">
+      <div class="archives-header">
+        <h3><i class="fa-solid fa-folder-tree"></i> Classified DXZ Case Archives (18 Cases)</h3>
+        <button class="archives-close-btn" id="archives-modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p class="archives-subtitle">Select any unlocked case file to start interrogating clues with Detective NJ.</p>
+      <div class="case-archive-grid" id="case-archive-grid">
+        <!-- Dynamically populated 18 cases -->
+      </div>
+      
+      <!-- Sandboxed Native Grid Ad Inside Archives Modal -->
+      <div class="dxz-ad-wrapper ad-native-grid" style="margin-top: 1.5rem;">
+        <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
+        <iframe src="ad-native.html" width="100%" height="280" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 100%; max-width: 1060px; height: 280px; overflow: hidden;"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLUE DRAWER MODAL -->
   <div class="clue-modal" id="clue-modal">
     <div class="clue-modal-backdrop" id="clue-modal-backdrop"></div>
     <div class="clue-modal-content">
@@ -185,54 +198,18 @@
       <div class="clue-modal-body" id="clue-modal-body">
         Loading clue text...
       </div>
-      <div id="clue-modal-link-wrap" style="margin-top: 1.5rem; text-align: center;"></div>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <!-- Sandboxed Display Banner Ad (300x250) -->
-  <div class="dxz-ad-wrapper ad-banner-300">
-    <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
-    <iframe src="ad-300x250.html" width="300" height="250" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 300px; height: 250px; overflow: hidden;"></iframe>
-  </div>
-
-  <!-- Sandboxed Native Grid Ad -->
-  <div class="dxz-ad-wrapper ad-native-grid">
-    <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
-    <iframe src="ad-native.html" width="100%" height="280" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 100%; max-width: 1060px; height: 280px; overflow: hidden;"></iframe>
-  </div>
-
-  <footer class="footer">
-    <div class="container-width">
-      <div class="footer-top">
-        <a href="index.html" class="footer-logo">THE BLUESHOT <span class="logo-dot"></span></a>
-        <ul class="footer-nav">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="characters.html">Characters</a></li>
-          <li><a href="mystery.html">Lore Game</a></li>
-          <li><a href="universe-lore.html">Universe Lore</a></li>
-          <li><a href="season-guide.html">Season Guide</a></li>
-          <li><a href="merch.html">Shop</a></li>
-          <li><a href="hub.html">Hub</a></li>
-          <li><a href="about.html">About</a></li>
-        </ul>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 The BlueShot. Danger X Zone created by Neeraj Saklani. All rights reserved.</p>
-        <div class="footer-bottom-links">
-          <a href="index.html">Back to Home</a>
-          <a href="mystery.html">Play Lore Game</a>
-          <a href="universe-lore.html">Universe Lore</a>
-          <a href="contact.html">Contact</a>
-          <a href="privacy.html">Privacy</a>
-          <a href="terms.html">Terms</a>
-        </div>
+      <div id="clue-modal-link-wrap" style="margin-top: 1.25rem; text-align: center;"></div>
+      
+      <!-- Sandboxed Display Banner Ad (300x250) Inside Clue Modal -->
+      <div class="dxz-ad-wrapper ad-banner-300" style="margin: 1.5rem auto 0 auto; text-align: center;">
+        <span class="dxz-ad-label"><i class="fa-solid fa-rectangle-ad"></i> Advertisement</span>
+        <iframe src="ad-300x250.html" width="300" height="250" frameborder="0" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups" style="border: none; width: 300px; height: 250px; overflow: hidden;"></iframe>
       </div>
     </div>
-  </footer>
+  </div>
 
   <script src="script.js?v=1.0.2"></script>
   <script src="search.js?v=1.0.2"></script>
-  <script src="mystery.js?v=1.2.0"></script>
+  <script src="mystery.js?v=1.3.0"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 /**
- * Danger X Zone (DXZ) - Detective NJ Fullscreen Character Dialogue Game Engine
+ * Danger X Zone (DXZ) - Detective NJ 100vh Zero-Scroll Character Game Engine
  * Strictly derived from the official 12-page DXZ PDF Document with only grammar corrections.
  */
 
@@ -355,7 +355,7 @@
     const pct = Math.round((solved / total) * 100);
 
     if (solvedEl) solvedEl.textContent = solved + ' / ' + total;
-    if (progText) progText.textContent = pct + '% Complete';
+    if (progText) progText.textContent = pct + '% Solved';
     if (fillEl) fillEl.style.width = pct + '%';
     if (walletEl) walletEl.textContent = '$' + gameState.walletBalance;
   }
@@ -376,7 +376,6 @@
     const optionsContainer = document.getElementById('active-mystery-options');
     const feedbackEl = document.getElementById('active-mystery-feedback');
     const clueLinkDirect = document.getElementById('active-mystery-clue-link');
-    const figureEl = document.getElementById('detective-nj-figure');
 
     if (numEl) numEl.textContent = 'Case #' + mystery.id;
     if (titleEl) titleEl.textContent = mystery.title;
@@ -456,7 +455,7 @@
       }
 
       if (figureEl) {
-        figureEl.style.transform = 'scale(1.06) translateY(-18px)';
+        figureEl.style.transform = 'scale(1.06) translateY(-14px)';
         figureEl.style.filter = 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 45px rgba(46, 204, 113, 0.8))';
         setTimeout(() => {
           figureEl.style.transform = '';
@@ -466,7 +465,7 @@
 
       if (feedbackEl) {
         feedbackEl.className = 'mystery-feedback-bar success show';
-        feedbackEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> <strong>Spot On! Deduction Verified (+$' + mystery.bounty + ')</strong><p style="margin: 0.4rem 0 0 0; font-size: 0.95rem;">' + mystery.explanation + '</p>';
+        feedbackEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> <strong>Spot On! Deduction Verified (+$' + mystery.bounty + ')</strong><p style="margin: 0.35rem 0 0 0; font-size: 0.92rem;">' + mystery.explanation + '</p>';
       }
 
       if (gameState.solvedMysteries.length === MYSTERIES_DATA.length) {
@@ -524,7 +523,8 @@
       if (isUnlocked) {
         card.addEventListener('click', () => {
           renderMystery(idx);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          const archivesModal = document.getElementById('archives-modal');
+          if (archivesModal) archivesModal.classList.remove('active');
         });
       }
       grid.appendChild(card);
@@ -532,26 +532,45 @@
   }
 
   function initModals() {
+    // Clue Modal
     const clueBtn = document.getElementById('clue-modal-trigger');
-    const modal = document.getElementById('clue-modal');
-    const closeBtn = document.getElementById('clue-modal-close');
-    const backdrop = document.getElementById('clue-modal-backdrop');
+    const clueModal = document.getElementById('clue-modal');
+    const clueClose = document.getElementById('clue-modal-close');
+    const clueBackdrop = document.getElementById('clue-modal-backdrop');
 
-    if (clueBtn && modal) {
+    if (clueBtn && clueModal) {
       clueBtn.addEventListener('click', () => {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        clueModal.classList.add('active');
       });
     }
 
-    const closeModal = () => {
-      if (modal) modal.classList.remove('active');
-      document.body.style.overflow = '';
+    const closeClue = () => {
+      if (clueModal) clueModal.classList.remove('active');
     };
 
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    if (backdrop) backdrop.addEventListener('click', closeModal);
+    if (clueClose) clueClose.addEventListener('click', closeClue);
+    if (clueBackdrop) clueBackdrop.addEventListener('click', closeClue);
 
+    // Archives Slide-in Modal
+    const openArchivesBtn = document.getElementById('open-archives-btn');
+    const archivesModal = document.getElementById('archives-modal');
+    const archivesClose = document.getElementById('archives-modal-close');
+    const archivesBackdrop = document.getElementById('archives-modal-backdrop');
+
+    if (openArchivesBtn && archivesModal) {
+      openArchivesBtn.addEventListener('click', () => {
+        archivesModal.classList.add('active');
+      });
+    }
+
+    const closeArchives = () => {
+      if (archivesModal) archivesModal.classList.remove('active');
+    };
+
+    if (archivesClose) archivesClose.addEventListener('click', closeArchives);
+    if (archivesBackdrop) archivesBackdrop.addEventListener('click', closeArchives);
+
+    // Reset Progress
     const resetBtn = document.getElementById('reset-progress-btn');
     if (resetBtn) {
       resetBtn.addEventListener('click', () => {
