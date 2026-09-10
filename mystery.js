@@ -11,8 +11,10 @@
   // Detective NJ Dynamic Emotes
   const EMOTES = {
     smirk: 'assets/detective-nj-smirk.png', // Ideal / Default Pose
-    coffee: 'assets/detective-nj-coffee.png',
-    thinking: 'assets/detective-nj-thinking.png'
+    coffee: 'assets/detective-nj-coffee.png', // Relaxed coffee sipping
+    thinking: 'assets/detective-nj-thinking.png', // Investigating & analyzing
+    serious: 'assets/detective-nj-serious.png', // Shadowed eyes / dark interrogation & wrong answer
+    shadow: 'assets/detective-nj-serious.png'
   };
 
   function preloadEmotes() {
@@ -533,7 +535,7 @@
       }
     } else {
       buttonElement.classList.add('wrong');
-      setDetectiveEmote('thinking'); // Stern serious stare on wrong answer
+      setDetectiveEmote('serious'); // Shadowed eye serious emote on wrong answer!
 
       if (figureEl) {
         figureEl.style.transform = 'rotate(-1deg)';
