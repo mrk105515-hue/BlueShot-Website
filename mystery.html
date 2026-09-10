@@ -11,11 +11,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detective NJ Lore Game | Solve DXZ Universe Mysteries | The BlueShot</title>
-  <meta name="description" content="Team up with Detective NJ at his Cyber Cafe HQ. Interrogate clues, crack canonical cases from the DXZ universe, and earn virtual bounty rewards!">
+  <meta name="description" content="Team up with Detective NJ at his Cyber Cafe HQ in an Akinator-style interrogation game. Interrogate clues, crack canonical cases from the DXZ universe, and earn bounty rewards!">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="styles.css?v=1.0.2">
-  <link rel="stylesheet" href="mystery.css?v=1.0.3">
+  <link rel="stylesheet" href="styles.css?v=1.0.3">
+  <link rel="stylesheet" href="mystery.css?v=1.1.0">
 </head>
 <body>
   <!-- NAVIGATION HEADER -->
@@ -29,7 +29,7 @@
         <ul class="nav-links" id="nav-links">
           <li class="nav-link"><a href="index.html">Home</a></li>
           <li class="nav-link"><a href="index.html#featured-video">Season 3</a></li>
-          <li class="nav-link "><a href="characters.html">Characters</a></li>
+          <li class="nav-link"><a href="characters.html">Characters</a></li>
           <li class="nav-link active"><a href="mystery.html">Lore Game</a></li>
           <li class="nav-link"><a href="merch.html">Shop</a></li>
           <li class="nav-link"><a href="hub.html">Hub</a></li>
@@ -54,22 +54,22 @@
   <main class="mystery-page">
     <div class="mystery-container">
       
+      <!-- TOP DETECTIVE HUD -->
       <div class="detective-hud">
         <div class="detective-profile">
           <div class="detective-avatar-wrap">
-            <img src="assets/profile-avatar.jpg" alt="Detective NJ" class="detective-avatar-img" onerror="this.style.display='none'; document.getElementById('det-fallback').style.display='flex';">
-            <div id="det-fallback" class="detective-avatar-fallback" style="display:none;"><i class="fa-solid fa-user-secret"></i></div>
-            <div class="detective-online-badge" title="Detective NJ Online at Cyber Cafe"></div>
+            <img src="assets/detective-nj.png" alt="Detective NJ" class="detective-avatar-img">
+            <div class="detective-online-badge" title="Detective NJ Active at Cyber Cafe"></div>
           </div>
           <div class="detective-meta">
-            <h3>Detective NJ <span class="badge-cafe">Cyber Cafe HQ</span></h3>
-            <p>DXZ Lore Special Agent &bull; Active Investigation</p>
+            <h3>Detective NJ <span class="badge-cafe"><i class="fa-solid fa-mug-hot"></i> Cyber Cafe HQ</span></h3>
+            <p>DXZ Lore Special Agent &bull; Interrogation Terminal</p>
           </div>
         </div>
 
         <div class="hud-progress-block">
           <div class="hud-progress-labels">
-            <span>Mysteries Solved: <strong id="hud-solved-count" style="color: #00e5ff;">0 / 18</strong></span>
+            <span>Cases Solved: <strong id="hud-solved-count" style="color: #00e5ff;">0 / 18</strong></span>
             <span id="hud-progress-text" style="color: #2ecc71;">0% Solved</span>
           </div>
           <div class="hud-progress-bar-bg">
@@ -78,74 +78,110 @@
         </div>
 
         <div class="hud-wallet-block">
-          <div class="wallet-label">Bounty Vault</div>
+          <div class="wallet-label"><i class="fa-solid fa-vault"></i> Bounty Vault</div>
           <div class="wallet-amount" id="hud-wallet-balance">$0</div>
           <button class="btn-reset-vault" id="reset-progress-btn" title="Reset all progress"><i class="fa-solid fa-rotate-left"></i> Reset</button>
         </div>
       </div>
 
-      <div class="cafe-dialogue-card">
-        <div class="cafe-avatar"><i class="fa-solid fa-mug-hot"></i></div>
-        <div class="cafe-dialogue-text">
-          <strong>Detective NJ:</strong> "Welcome to the Cyber Cafe. Flama Nation is in flames, 150-year-old masterminds are lurking in the shadows, and the 7,999-year Curse God has awakened. Inspect the clue dossiers, link the evidence to the lore pages, and help me crack every case!"
+      <!-- AKINATOR STAGE LAYOUT -->
+      <div class="akinator-stage">
+        
+        <!-- LEFT: 3D DETECTIVE NJ AVATAR & PEDESTAL -->
+        <div class="detective-stage-col">
+          <div class="detective-thought-bubble" id="detective-thought-bubble">
+            <div class="thought-dots"><span></span><span></span><span></span></div>
+            <p class="thought-text" id="detective-thought-text">"Welcome to my Cyber Cafe. Flama Nation is in flames and the 7,999-year Curse God has awakened. Think you can solve this case?"</p>
+          </div>
+
+          <div class="detective-figure-stage">
+            <div class="detective-figure-glow"></div>
+            <img src="assets/detective-nj.png" alt="Detective NJ - Danger X Zone" class="detective-nj-figure" id="detective-nj-figure">
+            <div class="cyber-pedestal">
+              <div class="pedestal-ring ring-outer"></div>
+              <div class="pedestal-ring ring-inner"></div>
+              <div class="pedestal-core"></div>
+            </div>
+          </div>
+
+          <div class="detective-badge-tag">
+            <span class="badge-title">DETECTIVE NJ</span>
+            <span class="badge-sub">MASTER INVESTIGATOR</span>
+          </div>
         </div>
+
+        <!-- RIGHT: AKINATOR DIALOGUE & INTERROGATION BUBBLE -->
+        <div class="akinator-dialogue-col">
+          <div class="akinator-speech-bubble" id="akinator-speech-bubble">
+            <div class="bubble-tail"></div>
+            
+            <!-- CASE META HEADER -->
+            <div class="case-header">
+              <div class="case-badge-row">
+                <span class="case-number-badge" id="active-mystery-number">Mystery #1</span>
+                <span class="case-reward-badge" id="active-mystery-reward"><i class="fa-solid fa-sack-dollar"></i> +$100</span>
+                <span class="case-status-badge" id="active-mystery-status"><i class="fa-solid fa-magnifying-glass"></i> Under Investigation</span>
+              </div>
+              <h2 class="case-title" id="active-mystery-title">Loading classified case...</h2>
+            </div>
+
+            <!-- INCIDENT REPORT / SCENE -->
+            <div class="case-scene-box">
+              <div class="scene-label"><i class="fa-solid fa-file-waveform"></i> Incident Report</div>
+              <p class="scene-text" id="active-mystery-scene">Loading scene details...</p>
+            </div>
+
+            <!-- CLUE DRAWER & LORE ACTIONS -->
+            <div class="case-clue-bar">
+              <div class="clue-btn-row">
+                <button class="clue-btn" id="clue-modal-trigger" title="Inspect hidden clue details">
+                  <i class="fa-solid fa-folder-open"></i> Inspect Clue Drawer
+                </button>
+                <div id="active-mystery-clue-link" class="clue-link-container"></div>
+              </div>
+            </div>
+
+            <!-- AKINATOR QUESTION & CHOICES -->
+            <div class="case-question-box">
+              <div class="question-header">
+                <i class="fa-solid fa-circle-question"></i> Interrogation Question:
+              </div>
+              <h3 class="question-text" id="active-mystery-question">Question loading...</h3>
+              <div class="choices-grid" id="active-mystery-options">
+                <!-- Dynamically populated choices [A], [B], [C] -->
+              </div>
+            </div>
+
+            <!-- FEEDBACK BANNER -->
+            <div class="mystery-feedback" id="active-mystery-feedback"></div>
+          </div>
+        </div>
+
       </div>
 
-      <div class="active-case-card">
-        <div class="case-header">
-          <div class="case-badge-row">
-            <span class="case-number-badge" id="active-mystery-number">Mystery #1</span>
-            <span class="case-reward-badge" id="active-mystery-reward">+$100</span>
-          </div>
-          <h2 class="case-title" id="active-mystery-title">Loading classified case...</h2>
-        </div>
-
-        <div class="case-scene-box">
-          <div class="scene-label"><i class="fa-solid fa-file-lines"></i> Incident Report</div>
-          <p class="scene-text" id="active-mystery-scene">Loading scene details...</p>
-        </div>
-
-        <!-- PROMINENT CLUE ACTION ROW -->
-        <div class="case-clue-bar">
-          <div class="clue-btn-row">
-            <button class="clue-btn" id="clue-modal-trigger">
-              <i class="fa-solid fa-magnifying-glass"></i> Inspect Clue Drawer
-            </button>
-            <div id="active-mystery-clue-link" style="display: inline-block;"></div>
-          </div>
-        </div>
-
-        <div class="case-question-box">
-          <h3 class="question-text" id="active-mystery-question">Question loading...</h3>
-          <div class="choices-grid" id="active-mystery-options">
-            <!-- Dynamically populated -->
-          </div>
-        </div>
-
-        <div class="mystery-feedback" id="active-mystery-feedback"></div>
-      </div>
-
+      <!-- BOTTOM CASE ARCHIVES -->
       <div class="case-archive-section">
         <div class="case-archive-header">
-          <h3 style="font-family: var(--font-display); font-size: 1.6rem; color: #FFF; margin-bottom: 0.5rem;"><i class="fa-solid fa-folder-tree"></i> Classified Case Archives</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">Jump directly between unlocked cases or review solved mysteries.</p>
+          <h3><i class="fa-solid fa-folder-tree"></i> Classified Case Archives</h3>
+          <p>Jump directly between unlocked cases or review your solved mysteries across the DXZ Universe.</p>
         </div>
         <div class="case-archive-grid" id="case-archive-grid">
-          <!-- Dynamically populated -->
+          <!-- Dynamically populated 18 cases -->
         </div>
       </div>
 
     </div>
   </main>
 
+  <!-- CLUE MODAL DRAWER -->
   <div class="clue-modal" id="clue-modal">
     <div class="clue-modal-backdrop" id="clue-modal-backdrop"></div>
     <div class="clue-modal-content">
       <div class="clue-modal-header">
-        <h3 id="clue-modal-title" style="font-family: var(--font-display); color: #00e5ff; margin: 0;"><i class="fa-solid fa-folder-open"></i> Clue Dossier</h3>
-        <button class="clue-close-btn" id="clue-modal-close"><i class="fa-solid fa-xmark"></i></button>
+        <h3 id="clue-modal-title"><i class="fa-solid fa-folder-open"></i> Clue Dossier</h3>
+        <button class="clue-close-btn" id="clue-modal-close" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="clue-modal-body" id="clue-modal-body" style="font-size: 1.05rem; line-height: 1.8; color: #E2E8F0; margin-top: 1rem;">
+      <div class="clue-modal-body" id="clue-modal-body">
         Loading clue text...
       </div>
       <div id="clue-modal-link-wrap" style="margin-top: 1.5rem; text-align: center;"></div>
@@ -196,6 +232,6 @@
 
   <script src="script.js?v=1.0.2"></script>
   <script src="search.js?v=1.0.2"></script>
-  <script src="mystery.js?v=1.0.3"></script>
+  <script src="mystery.js?v=1.1.0"></script>
 </body>
 </html>

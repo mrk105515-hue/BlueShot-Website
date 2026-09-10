@@ -1,5 +1,5 @@
 /**
- * Danger X Zone (DXZ) - Detective NJ Mystery Lore Game Engine
+ * Danger X Zone (DXZ) - Detective NJ Akinator-Style Mystery Lore Game Engine
  * Strictly derived from the official 12-page DXZ PDF Document with only grammar corrections.
  */
 
@@ -354,10 +354,24 @@
     const solved = gameState.solvedMysteries.length;
     const pct = Math.round((solved / total) * 100);
 
-    if (solvedEl) solvedEl.textContent = `${solved} / ${total}`;
-    if (progText) progText.textContent = `${pct}% Solved`;
-    if (fillEl) fillEl.style.width = `${pct}%`;
-    if (walletEl) walletEl.textContent = `$${gameState.walletBalance}`;
+    if (solvedEl) solvedEl.textContent = solved + ' / ' + total;
+    if (progText) progText.textContent = pct + '% Solved';
+    if (fillEl) fillEl.style.width = pct + '%';
+    if (walletEl) walletEl.textContent = '$' + gameState.walletBalance;
+  }
+
+  function updateDetectiveDialogue(text, mood) {
+    const thoughtEl = document.getElementById('detective-thought-text');
+    const figureEl = document.getElementById('detective-nj-figure');
+    if (thoughtEl) {
+      thoughtEl.textContent = '"' + text + '"';
+    }
+    if (figureEl && mood === 'correct') {
+      figureEl.style.transform = 'scale(1.05) translateY(-15px)';
+      setTimeout(() => {
+        figureEl.style.transform = '';
+      }, 1000);
+    }
   }
 
   function renderMystery(index) {
@@ -370,27 +384,50 @@
     const numEl = document.getElementById('active-mystery-number');
     const titleEl = document.getElementById('active-mystery-title');
     const rewardEl = document.getElementById('active-mystery-reward');
+    const statusEl = document.getElementById('active-mystery-status');
     const sceneEl = document.getElementById('active-mystery-scene');
     const questionEl = document.getElementById('active-mystery-question');
     const optionsContainer = document.getElementById('active-mystery-options');
     const feedbackEl = document.getElementById('active-mystery-feedback');
     const clueLinkDirect = document.getElementById('active-mystery-clue-link');
 
-    if (numEl) numEl.textContent = `Mystery #${mystery.id}`;
+    if (numEl) numEl.textContent = 'Mystery #' + mystery.id;
     if (titleEl) titleEl.textContent = mystery.title;
-    if (rewardEl) rewardEl.textContent = `+$${mystery.bounty}`;
+    if (rewardEl) rewardEl.innerHTML = '<i class="fa-solid fa-sack-dollar"></i> +$' + mystery.bounty;
+    
+    if (statusEl) {
+      if (isSolved) {
+        statusEl.style.borderColor = '#2ecc71';
+        statusEl.style.color = '#2ecc71';
+        statusEl.style.background = 'rgba(46, 204, 113, 0.15)';
+        statusEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Solved';
+      } else {
+        statusEl.style.borderColor = '#00e5ff';
+        statusEl.style.color = '#00e5ff';
+        statusEl.style.background = 'rgba(0, 229, 255, 0.12)';
+        statusEl.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Under Investigation';
+      }
+    }
+
     if (sceneEl) sceneEl.textContent = mystery.scene;
     if (questionEl) questionEl.textContent = mystery.question;
 
     if (clueLinkDirect) {
-      clueLinkDirect.innerHTML = `<a href="${mystery.clueLink}" target="_blank" class="clue-deep-link-btn" title="Open canonical lore dossier"><i class="fa-solid fa-book-open"></i> ${mystery.clueLinkText} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+      clueLinkDirect.innerHTML = '<a href="' + mystery.clueLink + '" target="_blank" class="clue-deep-link-btn" title="Open canonical lore dossier"><i class="fa-solid fa-book-open"></i> ' + mystery.clueLinkText + ' <i class="fa-solid fa-arrow-up-right-from-square"></i></a>';
+    }
+
+    // Update Detective NJ thought
+    if (isSolved) {
+      updateDetectiveDialogue('Case #' + mystery.id + ' is already solved! ' + mystery.explanation, 'idle');
+    } else {
+      updateDetectiveDialogue('Case #' + mystery.id + ': ' + mystery.title + '. Analyze the clues carefully and tell me the answer.', 'idle');
     }
 
     if (feedbackEl) {
       feedbackEl.className = 'mystery-feedback';
       if (isSolved) {
         feedbackEl.classList.add('success', 'show');
-        feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Case Solved!</strong> ${mystery.explanation}`;
+        feedbackEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> <strong>Case Solved!</strong> ' + mystery.explanation;
       } else {
         feedbackEl.innerHTML = '';
         feedbackEl.classList.remove('show');
@@ -405,7 +442,7 @@
         if (isSolved && opt.label === mystery.correctAnswer) {
           btn.classList.add('correct');
         }
-        btn.innerHTML = `<span class="choice-tag">${opt.label}</span> <span class="choice-text">${opt.text}</span>`;
+        btn.innerHTML = '<span class="choice-tag">' + opt.label + '</span> <span class="choice-text">' + opt.text + '</span>';
         btn.addEventListener('click', () => handleOptionClick(mystery, opt.label, btn));
         optionsContainer.appendChild(btn);
       });
@@ -415,10 +452,10 @@
     const modalBody = document.getElementById('clue-modal-body');
     const modalLink = document.getElementById('clue-modal-link-wrap');
 
-    if (modalTitle) modalTitle.textContent = `Clue Dossier: Case #${mystery.id}`;
+    if (modalTitle) modalTitle.innerHTML = '<i class="fa-solid fa-folder-open"></i> Clue Dossier: Case #' + mystery.id;
     if (modalBody) modalBody.textContent = mystery.clueDetails;
     if (modalLink) {
-      modalLink.innerHTML = `<a href="${mystery.clueLink}" target="_blank" class="btn btn-primary" style="margin-top: 1rem; display: inline-flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-book-open"></i> ${mystery.clueLinkText} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+      modalLink.innerHTML = '<a href="' + mystery.clueLink + '" target="_blank" class="btn btn-primary" style="margin-top: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #00e5ff, #0077b6); color: #000; font-weight: 800; padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none;"><i class="fa-solid fa-book-open"></i> ' + mystery.clueLinkText + ' <i class="fa-solid fa-arrow-up-right-from-square"></i></a>';
     }
 
     renderArchives();
@@ -437,21 +474,29 @@
         renderHUD();
       }
 
+      updateDetectiveDialogue('🎯 Exceptional deduction! +$' + mystery.bounty + ' added to your Bounty Vault. ' + mystery.explanation, 'correct');
+
       if (feedbackEl) {
         feedbackEl.className = 'mystery-feedback success show';
-        feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Correct Deduction! +$${mystery.bounty}</strong><p style="margin: 0.4rem 0 0 0; font-size: 0.95rem;">${mystery.explanation}</p>`;
+        feedbackEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> <strong>Correct Deduction! +$' + mystery.bounty + '</strong><p style="margin: 0.4rem 0 0 0; font-size: 0.95rem;">' + mystery.explanation + '</p>';
       }
 
-      if (gameState.currentMysteryIndex < MYSTERIES_DATA.length - 1) {
+      if (gameState.solvedMysteries.length === MYSTERIES_DATA.length) {
+        setTimeout(() => {
+          updateDetectiveDialogue('🏆 Incredible work! You have solved all 18 classified DXZ universe cases! You are officially a Master Investigator.', 'correct');
+        }, 2000);
+      } else if (gameState.currentMysteryIndex < MYSTERIES_DATA.length - 1) {
         setTimeout(() => {
           renderMystery(gameState.currentMysteryIndex + 1);
         }, 1800);
       }
     } else {
       buttonElement.classList.add('wrong');
+      updateDetectiveDialogue('⚠️ That does not match the evidence! Inspect the Clue Drawer or read the lore page to find the real answer.', 'wrong');
+      
       if (feedbackEl) {
         feedbackEl.className = 'mystery-feedback error show';
-        feedbackEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <strong>Incorrect Deduction.</strong> Inspect the clue link above to find the answer!`;
+        feedbackEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <strong>Incorrect Deduction.</strong> Inspect the clue link above to find the answer!';
       }
       setTimeout(() => {
         buttonElement.classList.remove('wrong');
@@ -470,14 +515,13 @@
       const isActive = idx === gameState.currentMysteryIndex;
 
       const card = document.createElement('div');
-      card.className = `case-archive-card ${isActive ? 'active' : ''} ${!isUnlocked ? 'locked' : ''} ${isSolved ? 'solved' : ''}`;
-      card.innerHTML = `
-        <div class="archive-card-status">
-          <span>CASE #${m.id}</span>
-          <span style="color: ${isSolved ? '#2ecc71' : isUnlocked ? '#00e5ff' : '#64748B'};">${isSolved ? 'SOLVED (+$' + m.bounty + ')' : isUnlocked ? 'UNLOCKED' : 'LOCKED'}</span>
-        </div>
-        <div class="archive-card-title">${m.title}</div>
-      `;
+      card.className = 'case-archive-card ' + (isActive ? 'active' : '') + ' ' + (!isUnlocked ? 'locked' : '') + ' ' + (isSolved ? 'solved' : '');
+      card.innerHTML = 
+        '<div class="archive-card-status">' +
+          '<span>CASE #' + m.id + '</span>' +
+          '<span style="color: ' + (isSolved ? '#2ecc71' : isUnlocked ? '#00e5ff' : '#64748B') + ';">' + (isSolved ? 'SOLVED (+$' + m.bounty + ')' : isUnlocked ? 'UNLOCKED' : 'LOCKED') + '</span>' +
+        '</div>' +
+        '<div class="archive-card-title">' + m.title + '</div>';
 
       if (isUnlocked) {
         card.addEventListener('click', () => renderMystery(idx));
