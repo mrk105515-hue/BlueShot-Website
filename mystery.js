@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  const STORAGE_KEY = 'dxz_detective_nj_game_state_v1';
+  const STORAGE_KEY = 'dxz_detective_nj_game_state_v2.6.0';
 
   // Detective NJ Dynamic Emotes
   const EMOTES = {
@@ -62,7 +62,7 @@
     {
       id: 2,
       title: "Why is Hell Doing Such Destruction?",
-      bounty: 150,
+      bounty: 100,
       defaultEmote: "hatSerious",
       scene: "Professor NJ sits at his cafe table thinking: 'Why did Hell turn from Rezok's loyal family member into the bringer of apocalyptic war? What drove him to this madness?'",
       clueLink: "universe-lore.html#hell-zygo",
@@ -80,7 +80,7 @@
     {
       id: 3,
       title: "The Tragedy of 5-Year-Old BSG",
-      bounty: 250,
+      bounty: 100,
       defaultEmote: "serious",
       scene: "A 5-year-old boy was found scared and running through a village. A kind woman named Masa gave him medicine, food, and sang him a lullaby (Lori) until he fell asleep.",
       clueLink: "char-bsg.html",
@@ -98,7 +98,7 @@
     {
       id: 4,
       title: "Why Did BSG Rob Villagers for 18 Years?",
-      bounty: 350,
+      bounty: 100,
       defaultEmote: "thinking",
       scene: "For 18 years, BSG lived a harsh life wearing a mask and actively robbing villagers wherever he went.",
       clueLink: "char-bsg.html",
@@ -116,7 +116,7 @@
     {
       id: 5,
       title: "The Lineage of the Redago Force",
-      bounty: 500,
+      bounty: 100,
       defaultEmote: "serious",
       scene: "The devils relentlessly chased BSG from village to village because of the boundless crimson energy in his veins.",
       clueLink: "char-bsg.html",
@@ -134,7 +134,7 @@
     {
       id: 6,
       title: "The 150-Year Impostor",
-      bounty: 500,
+      bounty: 100,
       defaultEmote: "hatSmirk",
       scene: "In Episode 1, BSG meets an innocent scientist and doctor named Black Dagger (Scinto), who becomes his mentor.",
       clueLink: "char-blackdagger.html",
@@ -152,7 +152,7 @@
     {
       id: 7,
       title: "Birth of the Living Weapon",
-      bounty: 600,
+      bounty: 100,
       defaultEmote: "thinking",
       scene: "Forty years ago, Scinto studied Century Legend Rezok and discovered: 'The only man capable of defeating Rezok... is Rezok himself.'",
       clueLink: "char-blackdagger.html",
@@ -170,7 +170,7 @@
     {
       id: 8,
       title: "The Abandoned Child & Rezok",
-      bounty: 400,
+      bounty: 100,
       defaultEmote: "coffee",
       scene: "For 14 years, Scinto tried to turn Hell into a monster to slay Rezok. When Hell failed to become a monster, Scinto abandoned him.",
       clueLink: "char-hell.html",
@@ -188,7 +188,7 @@
     {
       id: 9,
       title: "Rezok's Inner Circle",
-      bounty: 450,
+      bounty: 100,
       defaultEmote: "smirk",
       scene: "In Rezok's household, love and friendship mattered more than blood relations.",
       clueLink: "universe-lore.html#rezok-family",
@@ -206,7 +206,7 @@
     {
       id: 10,
       title: "Zalta's Heritage & Zabong's Death",
-      bounty: 400,
+      bounty: 100,
       defaultEmote: "hatSerious",
       scene: "Zalta is the last survivor of the Herobrine Clan, wiped out by Sage Monk and Rezok. 25 years ago, Rezok also killed Zalta's father.",
       clueLink: "char-zalta.html",
@@ -224,7 +224,7 @@
     {
       id: 11,
       title: "The Battle of Westo City",
-      bounty: 350,
+      bounty: 100,
       defaultEmote: "thinking",
       scene: "Zalta became a criminal manipulated by Emperor Hell. Twenty-five years later, his fate took a dramatic turn.",
       clueLink: "char-zalta.html",
@@ -242,7 +242,7 @@
     {
       id: 12,
       title: "The Awakening in Episode 24",
-      bounty: 600,
+      bounty: 100,
       defaultEmote: "serious",
       scene: "In Episode 24, Devil Priest Kraven carried out an apocalyptic ritual using an ancient bloodline.",
       clueLink: "universe-lore.html#curse-god",
@@ -260,7 +260,7 @@
     {
       id: 13,
       title: "Kan's Iconic Arsenal",
-      bounty: 300,
+      bounty: 100,
       defaultEmote: "coffee",
       scene: "Kan is a one-eyed warrior in BSG's vanguard who never smiles.",
       clueLink: "char-kan.html",
@@ -278,7 +278,7 @@
     {
       id: 14,
       title: "Suma's Brain & Weak Point",
-      bounty: 400,
+      bounty: 100,
       defaultEmote: "hatSmirk",
       scene: "Suma is an unpredictable woman who does everything for a purpose, using her brain as her greatest weapon.",
       clueLink: "char-suma.html",
@@ -296,7 +296,7 @@
     {
       id: 15,
       title: "Berry's Gamble & The Ogre Sword",
-      bounty: 450,
+      bounty: 100,
       defaultEmote: "smirk",
       scene: "Berry has no fear and loves to gamble. He fought the Curse God just for fun, even though he knew he could die.",
       clueLink: "char-berry.html",
@@ -314,7 +314,7 @@
     {
       id: 16,
       title: "Eysa's Mantra & Mind Possession",
-      bounty: 500,
+      bounty: 100,
       defaultEmote: "hatSerious",
       scene: "Eysa is the sister of Kraven and one of the last two survivors of the Devil Priest Clan.",
       clueLink: "char-eysa.html",
@@ -332,7 +332,7 @@
     {
       id: 17,
       title: "The Three Shades",
-      bounty: 350,
+      bounty: 100,
       defaultEmote: "coffee",
       scene: "Kan's old mercenary friends have joined as allies of BSG's team to help stop Hell's war.",
       clueLink: "universe-lore.html#three-shades",
@@ -350,7 +350,7 @@
     {
       id: 18,
       title: "The Supreme Ruler of Earth",
-      bounty: 500,
+      bounty: 100,
       defaultEmote: "hatSmirk",
       scene: "Earth is governed by Four Regional Emperors: Zigo Degan (East), Ice King (North), Marcle (South), and Hell (West).",
       clueLink: "universe-lore.html#world-order",
@@ -444,10 +444,10 @@
         statusEl.style.background = 'rgba(46, 204, 113, 0.16)';
         statusEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Case Solved';
       } else {
-        statusEl.style.borderColor = '#00e5ff';
-        statusEl.style.color = '#00e5ff';
-        statusEl.style.background = 'rgba(0, 229, 255, 0.12)';
-        statusEl.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Interrogation Active';
+        statusEl.style.borderColor = '#F6C75A';
+        statusEl.style.color = '#FFF6D6';
+        statusEl.style.background = 'rgba(246, 199, 90, 0.14)';
+        statusEl.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Investigation Active';
       }
     }
 
@@ -490,7 +490,7 @@
     if (modalTitle) modalTitle.innerHTML = '<i class="fa-solid fa-folder-open"></i> Clue Dossier: Case #' + mystery.id;
     if (modalBody) modalBody.textContent = mystery.clueDetails;
     if (modalLink) {
-      modalLink.innerHTML = '<a href="' + mystery.clueLink + '" target="_blank" class="btn btn-primary" style="margin-top: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #00e5ff, #0077b6); color: #000; font-weight: 800; padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none;"><i class="fa-solid fa-book-open"></i> ' + mystery.clueLinkText + ' <i class="fa-solid fa-arrow-up-right-from-square"></i></a>';
+      modalLink.innerHTML = '<a href="' + mystery.clueLink + '" target="_blank" class="btn btn-primary" style="margin-top: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #FFF6D6 0%, #F6C75A 45%, #FFB300 100%); color: #000; font-weight: 800; padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none;"><i class="fa-solid fa-book-open"></i> ' + mystery.clueLinkText + ' <i class="fa-solid fa-arrow-up-right-from-square"></i></a>';
     }
 
     renderArchives();
@@ -499,6 +499,7 @@
   function handleOptionClick(mystery, chosenLabel, buttonElement) {
     const feedbackEl = document.getElementById('active-mystery-feedback');
     const figureEl = document.getElementById('detective-nj-figure');
+    const walletValEl = document.getElementById('hud-wallet-balance');
     const isAlreadySolved = gameState.solvedMysteries.includes(mystery.id);
 
     if (chosenLabel === mystery.correctAnswer) {
@@ -507,9 +508,15 @@
 
       if (!isAlreadySolved) {
         gameState.solvedMysteries.push(mystery.id);
-        gameState.walletBalance += mystery.bounty;
+        gameState.walletBalance += 100; // +$100 on correct answer
         saveState();
         renderHUD();
+
+        if (walletValEl) {
+          walletValEl.classList.remove('bounty-gain', 'penalty-loss');
+          void walletValEl.offsetWidth; // Trigger reflow
+          walletValEl.classList.add('bounty-gain');
+        }
       }
 
       if (figureEl) {
@@ -521,7 +528,7 @@
 
       if (feedbackEl) {
         feedbackEl.className = 'mystery-feedback-bar success show';
-        feedbackEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> <strong>Spot On! Deduction Verified (+$' + mystery.bounty + ')</strong><p style="margin: 0.35rem 0 0 0; font-size: 0.92rem;">' + mystery.explanation + '</p>';
+        feedbackEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> <strong>Spot On! Deduction Verified (+$100 Cash)</strong><p style="margin: 0.35rem 0 0 0; font-size: 0.92rem;">' + mystery.explanation + '</p>';
       }
 
       if (gameState.solvedMysteries.length === MYSTERIES_DATA.length) {
@@ -539,6 +546,17 @@
       buttonElement.classList.add('wrong');
       setDetectiveEmote('serious'); // Shadowed eye serious emote on wrong answer!
 
+      // PENALTY: Deduct -$200 on wrong answer (floor at 0)
+      gameState.walletBalance = Math.max(0, gameState.walletBalance - 200);
+      saveState();
+      renderHUD();
+
+      if (walletValEl) {
+        walletValEl.classList.remove('bounty-gain', 'penalty-loss');
+        void walletValEl.offsetWidth; // Trigger reflow
+        walletValEl.classList.add('penalty-loss');
+      }
+
       if (figureEl) {
         figureEl.style.transform = 'rotate(-1deg)';
         setTimeout(() => {
@@ -548,7 +566,7 @@
 
       if (feedbackEl) {
         feedbackEl.className = 'mystery-feedback-bar error show';
-        feedbackEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <strong>Incorrect Deduction.</strong> Inspect the Clue Drawer or click the lore link to verify!';
+        feedbackEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <strong>Incorrect Deduction (-$200 Penalty).</strong> Inspect the Clue Drawer or read the lore dossier to verify!';
       }
       setTimeout(() => {
         buttonElement.classList.remove('wrong');
@@ -571,7 +589,7 @@
       card.innerHTML = 
         '<div class="archive-card-status">' +
           '<span>CASE #' + m.id + '</span>' +
-          '<span style="color: ' + (isSolved ? '#2ecc71' : isUnlocked ? '#00e5ff' : '#64748B') + ';">' + (isSolved ? 'SOLVED (+$' + m.bounty + ')' : isUnlocked ? 'UNLOCKED' : 'LOCKED') + '</span>' +
+          '<span style="color: ' + (isSolved ? '#2ecc71' : isUnlocked ? '#F6C75A' : '#64748B') + ';">' + (isSolved ? 'SOLVED (+$' + m.bounty + ')' : isUnlocked ? 'UNLOCKED' : 'LOCKED') + '</span>' +
         '</div>' +
         '<div class="archive-card-title">' + m.title + '</div>';
 

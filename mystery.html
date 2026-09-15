@@ -11,11 +11,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Detective NJ Lore Game | Solve DXZ Universe Mysteries | The BlueShot</title>
-  <meta name="description" content="Interrogate clues with Detective NJ live at his Cyber Cafe HQ in an immersive fullscreen game screen. Crack canonical cases from the DXZ universe!">
+  <meta name="description" content="Deduce canonical mysteries with Detective NJ live in his Private Detective Lounge. Experience an ultra-luxury investigation stage with interactive clues and golden bounty rewards. Crack canonical cases from the DXZ universe!">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css?v=1.0.3">
-  <link rel="stylesheet" href="mystery.css?v=1.8.0">
+  <link rel="stylesheet" href="mystery.css?v=2.6.0">
 </head>
 <body class="mystery-fullscreen-body">
   
@@ -55,6 +55,15 @@
   <!-- 100VH ZERO-SCROLL GAME APP VIEWPORT -->
   <div class="game-screen-app">
     
+    <!-- AMBIENT WARM BOKEH LIGHTS -->
+    <div class="cafe-ambient-bokeh" aria-hidden="true">
+      <div class="bokeh-orb bokeh-1"></div>
+      <div class="bokeh-orb bokeh-2"></div>
+      <div class="bokeh-orb bokeh-3"></div>
+      <div class="bokeh-orb bokeh-4"></div>
+      <div class="bokeh-orb bokeh-5"></div>
+    </div>
+    
     <!-- TOP GAME HUD BAR -->
     <div class="hud-top-bar">
       <div class="hud-left-profile">
@@ -64,7 +73,7 @@
         </div>
         <div class="hud-name-group">
           <span class="hud-title">Detective NJ</span>
-          <span class="hud-cafe-badge"><i class="fa-solid fa-mug-hot"></i> Cyber Cafe HQ</span>
+          <span class="hud-cafe-badge"><i class="fa-solid fa-mug-hot"></i> Grand Detective Lounge</span>
         </div>
       </div>
 
@@ -98,6 +107,11 @@
       <div class="stage-character-col">
         <div class="character-aura-glow"></div>
         <div class="character-img-frame">
+          <div class="coffee-steam-wrap" aria-hidden="true">
+            <span class="steam-particle steam-1"></span>
+            <span class="steam-particle steam-2"></span>
+            <span class="steam-particle steam-3"></span>
+          </div>
           <img src="assets/detective-nj-smirk.png" alt="Detective NJ" class="detective-character-hero" id="detective-nj-figure">
         </div>
       </div>
@@ -116,7 +130,7 @@
               <div class="balloon-badge-stack">
                 <span class="badge-case-id" id="active-mystery-number">Case #1</span>
                 <span class="badge-bounty" id="active-mystery-reward"><i class="fa-solid fa-sack-dollar"></i> +$100</span>
-                <span class="badge-status" id="active-mystery-status"><i class="fa-solid fa-magnifying-glass"></i> Interrogation Active</span>
+                <span class="badge-status" id="active-mystery-status"><i class="fa-solid fa-magnifying-glass"></i> Investigation Active</span>
               </div>
               <h1 class="case-heading" id="active-mystery-title">Loading Classified Case...</h1>
             </div>
@@ -129,8 +143,10 @@
 
             <!-- Clue Inspection & Lore Deep Link -->
             <div class="clue-action-row">
-              <button class="btn-clue-trigger" id="clue-modal-trigger">
-                <i class="fa-solid fa-folder-open"></i> Inspect Clue Drawer
+              <button class="btn-clue-trigger" id="clue-modal-trigger" title="Inspect Confidential Clue Dossier">
+                <span class="btn-clue-icon-wrap"><i class="fa-solid fa-magnifying-glass-chart"></i></span>
+                <span class="btn-clue-text">Inspect Clue Drawer</span>
+                <span class="btn-clue-sparkle"><i class="fa-solid fa-gem"></i></span>
               </button>
               <div id="active-mystery-clue-link" class="lore-slot-wrap"></div>
             </div>
@@ -203,6 +219,6 @@
 
   <script src="script.js?v=1.0.2"></script>
   <script src="search.js?v=1.0.2"></script>
-  <script src="mystery.js?v=1.9.0"></script>
+  <script src="mystery.js?v=2.6.0"></script>
 </body>
 </html>
