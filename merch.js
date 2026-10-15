@@ -45,6 +45,23 @@ const PRODUCTS_CATALOG = {
     ],
     description: "Embrace the dark power of Curse God Zalta. The official CURSE GOD custom graphic t-shirt features Zalta's dark bull beast aura and signature CG monogram and pink metal metal lettering. Made with heavyweight 100% combed cotton for premium comfort and long-lasting print quality."
   },
+  "ruler-tshirt": {
+    id: "ruler-tshirt",
+    name: "THE RULER T-Shirt",
+    price: 799,
+    mrp: 1299,
+    image: "assets/ruler-world-1.png",
+    badge: "The Ruler of the World Edition",
+    badgeClass: "cursegod-badge",
+    images: [
+      "assets/ruler-world-1.png",
+      "assets/ruler-world-2.png",
+      "assets/ruler-world-3.png",
+      "assets/ruler-world-4.png",
+      "assets/ruler-world-5.png"
+    ],
+    description: "Claim supreme dominion over the realm. The official THE RULER OF THE WORLD custom graphic t-shirt features the iconic imperial compass rose with high-contrast noir character artwork and crimson gothic calligraphy. Made with heavyweight 100% combed cotton for premium comfort, everyday durability, and uncompromising streetwear dominance."
+  },
   "berry-tshirt": {
     id: "berry-tshirt",
     name: "BERRY T-Shirt",
