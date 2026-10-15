@@ -45,6 +45,22 @@ const PRODUCTS_CATALOG = {
     ],
     description: "Embrace the dark power of Curse God Zalta. The official CURSE GOD custom graphic t-shirt features Zalta's dark bull beast aura and signature CG monogram and pink metal metal lettering. Made with heavyweight 100% combed cotton for premium comfort and long-lasting print quality."
   },
+  "cursegod-sealed-tshirt": {
+    id: "cursegod-sealed-tshirt",
+    name: "CURSE GOD: SEALED T-Shirt",
+    price: 799,
+    mrp: 1299,
+    image: "assets/cursegod-sealed-1.png",
+    badge: "Coming Soon",
+    badgeClass: "cursegod-badge",
+    isComingSoon: true,
+    images: [
+      "assets/cursegod-sealed-1.png",
+      "assets/cursegod-sealed-2.png",
+      "assets/cursegod-sealed-3.png"
+    ],
+    description: "Sealed in Hell for 7,999 years. The official CURSE GOD: SEALED custom graphic t-shirt features the chrome gothic CG emblem and infernal awakening typography. Crafted with heavyweight 100% combed cotton for unyielding street presence. Dropping soon."
+  },
   "ruler-tshirt": {
     id: "ruler-tshirt",
     name: "THE RULER T-Shirt",
@@ -322,6 +338,10 @@ function updateCartUI() {
 window.addToCart = function(id, size = "N/A", fit = "Regular") {
   const product = PRODUCTS_CATALOG[id];
   if (!product) return;
+  if (product.isComingSoon) {
+    showNotification(`${product.name} is coming soon! Dropping soon.`);
+    return;
+  }
 
   const isOversized = fit === "Oversized";
   const itemSizeString = isOversized ? `${size} - Oversized` : `${size} - Regular`;

@@ -46,6 +46,22 @@ const PRODUCTS_CATALOG = {
     ],
     description: "Embrace the dark power of Curse God Zalta. The official CURSE GOD custom graphic t-shirt features Zalta's dark bull beast aura and signature CG monogram and pink metal metal lettering. Made with heavyweight 100% combed cotton for premium comfort and long-lasting print quality."
   },
+  "cursegod-sealed-tshirt": {
+    id: "cursegod-sealed-tshirt",
+    name: "CURSE GOD: SEALED T-Shirt",
+    price: 799,
+    mrp: 1299,
+    image: "assets/cursegod-sealed-1.png",
+    badge: "Coming Soon",
+    badgeClass: "cursegod-badge",
+    isComingSoon: true,
+    images: [
+      "assets/cursegod-sealed-1.png",
+      "assets/cursegod-sealed-2.png",
+      "assets/cursegod-sealed-3.png"
+    ],
+    description: "Sealed in Hell for 7,999 years. The official CURSE GOD: SEALED custom graphic t-shirt features the chrome gothic CG emblem and infernal awakening typography. Crafted with heavyweight 100% combed cotton for unyielding street presence. Dropping soon."
+  },
   "ruler-tshirt": {
     id: "ruler-tshirt",
     name: "THE RULER T-Shirt",
@@ -252,9 +268,9 @@ function initProductDetail() {
         <h1 class="product-title">${product.name}</h1>
         
         <div class="product-pricing">
-          <span class="price-value">\u20B9${product.price}</span>
-          ${product.mrp ? `<span class="price-mrp">\u20B9${product.mrp}</span>` : ''}
-          <span class="price-tag">In Stock — Ready to Ship</span>
+          <span class="price-value">${product.isComingSoon ? 'Dropping Soon' : '₹' + product.price}</span>
+          ${product.mrp && !product.isComingSoon ? `<span class="price-mrp">₹${product.mrp}</span>` : ''}
+          <span class="price-tag" style="${product.isComingSoon ? 'background: rgba(243, 156, 18, 0.15); color: #F39C12; border-color: rgba(243, 156, 18, 0.3);' : ''}">${product.isComingSoon ? '<i class="fa-solid fa-hourglass-half"></i> Coming Soon — Dropping Soon' : 'In Stock — Ready to Ship'}</span>
         </div>
         
         <p class="product-description">
@@ -285,9 +301,15 @@ function initProductDetail() {
         </div>
         
         <div class="product-actions">
-          <button id="add-to-cart-btn" class="btn btn-danger btn-add-cart" style="width: 100%; max-width: 320px;">
-            <i class="fa-solid fa-cart-plus"></i> Add to Cart
-          </button>
+          ${product.isComingSoon ? `
+            <button id="add-to-cart-btn" class="btn btn-outline" style="width: 100%; max-width: 320px; border-color: #F39C12; color: #F39C12; opacity: 0.8; cursor: not-allowed;" disabled>
+              <i class="fa-solid fa-clock"></i> Coming Soon
+            </button>
+          ` : `
+            <button id="add-to-cart-btn" class="btn btn-danger btn-add-cart" style="width: 100%; max-width: 320px;">
+              <i class="fa-solid fa-cart-plus"></i> Add to Cart
+            </button>
+          `}
         </div>
         
         <div class="product-benefits">
@@ -338,7 +360,7 @@ function initProductDetail() {
       const isOversized = activeFit === "Oversized";
       const extraPrice = isOversized ? 50 : 0;
       
-      priceVal.innerHTML = `&#8377;${product.price + extraPrice}`;
+      if (!product.isComingSoon) { priceVal.innerHTML = `&#8377;${product.price + extraPrice}`; }
       if (mrpVal && product.mrp) {
         mrpVal.innerHTML = `&#8377;${product.mrp + extraPrice}`;
       }
@@ -500,6 +522,10 @@ function updateCartUI() {
 window.addToCart = function(id, size = "N/A") {
   const product = PRODUCTS_CATALOG[id];
   if (!product) return;
+  if (product.isComingSoon) {
+    showNotification(`${product.name} is coming soon! Dropping soon.`);
+    return;
+  }
 
   const existingItemIndex = cart.findIndex(item => item.id === id && item.size === size);
 
