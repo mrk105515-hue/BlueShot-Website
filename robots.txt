@@ -7,4 +7,4 @@ Allow: /
 User-agent: Mediapartners-Google
 Allow: /
 
-Sitemap: https://blueshotwiki.com/sitemap.xml
+Sitemap: https://mrk105515-hue.github.io/BlueShot-Website/sitemap.xml

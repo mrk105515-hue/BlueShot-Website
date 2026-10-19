@@ -1109,7 +1109,7 @@ if (typeof showNotification === "undefined") {
 window.handleSmartBack = function() {
   const currentPath = window.location.pathname;
   const hasHistory = window.history.length > 1;
-  const isInternalReferrer = document.referrer && (document.referrer.includes(window.location.host) || document.referrer.includes('blueshotwiki.com'));
+  const isInternalReferrer = document.referrer && (document.referrer.includes(window.location.host) || document.referrer.includes('blueshotwiki.com') || document.referrer.includes('github.io'));
 
   if (hasHistory && isInternalReferrer) {
     window.history.back();
