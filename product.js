@@ -744,7 +744,7 @@ function initCheckoutWizard() {
         "currency": "INR",
         "name": "The BlueShot Merch Store",
         "description": itemsList.join(", "),
-        "image": "https://blueshotwiki.netlify.app/assets/char-bsg.png",
+        "image": "https://blueshot.online/assets/favicon.png",
         "handler": function (response) {
           // Payment successful!
           showNotification(`Payment Successful! ID: ${response.razorpay_payment_id}`);
