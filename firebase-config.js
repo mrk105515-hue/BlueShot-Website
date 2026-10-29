@@ -21,8 +21,8 @@ const shiprocketConfig = {
   webhookUrl: "",
 
   // Option B: Dynamic API User Authentication (Never expires)
-  email: "blueshotconnectx@gmail.com",
-  password: "13*PFTU8t6LO1MSHaOtwnChCXEreQj01",
+  email: "Blueshotx99@gmail.com",
+  password: "BAiDJk7PjXqDmiQec0wUJO*tS#@RuQ9Y",
   token: null,
   pickupLocation: "Home", // Must match your Shiprocket panel's pickup location name
   channelId: "11155451" // Your connected Custom Channel ID
