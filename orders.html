@@ -154,7 +154,10 @@
       <div class="admin-orders-card" id="admin-orders-card">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,18,79,0.3); padding-bottom: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
           <h2 style="color: var(--color-red-neon); font-size: 1.6rem; font-weight: 800; text-transform: uppercase;"><i class="fa-solid fa-screwdriver-wrench"></i> Admin Order Manager</h2>
-          <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <button class="admin-action-btn" style="background: rgba(0, 229, 255, 0.2); border-color: var(--color-blue-neon); color: var(--color-blue-neon); font-weight: 700; padding: 0.4rem 1.2rem; border-radius: 20px; cursor: pointer;" onclick="openManualOrderModal()">
+              <i class="fa-solid fa-file-import"></i> Import Razorpay Order
+            </button>
             <button class="admin-action-btn" style="background: rgba(255,18,79,0.2); border-color: var(--color-red-neon); color: #ff124f; font-weight: 700; padding: 0.4rem 1rem; border-radius: 20px;" onclick="clearAllTestOrders()">
               <i class="fa-solid fa-trash-can"></i> Clear Test Orders
             </button>
@@ -185,6 +188,111 @@
 
     </div>
   </section>
+
+  
+  <!-- MANUAL ORDER IMPORT MODAL -->
+  <div id="manual-order-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 99999; align-items: center; justify-content: center; padding: 1.5rem; overflow-y: auto;">
+    <div style="background: #141416; border: 1px solid rgba(0, 229, 255, 0.35); border-radius: 16px; max-width: 650px; width: 100%; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 229, 255, 0.15); padding: 2rem; position: relative; margin: auto;">
+      
+      <!-- Close button -->
+      <button type="button" onclick="closeManualOrderModal()" style="position: absolute; top: 1.25rem; right: 1.25rem; background: transparent; border: none; color: #aaa; font-size: 1.4rem; cursor: pointer;">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+        <div style="width: 38px; height: 38px; border-radius: 8px; background: rgba(0, 229, 255, 0.15); display: flex; align-items: center; justify-content: center; color: var(--color-blue-neon); font-size: 1.1rem;">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div>
+          <h3 style="color: #fff; font-size: 1.35rem; font-weight: 800; margin: 0; text-transform: uppercase;">Import Razorpay Order</h3>
+          <p style="color: var(--text-muted); font-size: 0.82rem; margin: 0.2rem 0 0 0;">Enter details from Razorpay to add order to Admin Panel & Shiprocket.</p>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form id="manual-order-form" onsubmit="handleManualOrderSubmit(event)" style="margin-top: 1.25rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--color-blue-neon); font-weight: 700; margin-bottom: 0.4rem;">Razorpay Payment ID *</label>
+            <input type="text" id="manual-order-id" placeholder="e.g. pay_P21tFIsQSy60O" required style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.4rem;">Amount Paid (₹) *</label>
+            <input type="number" id="manual-total-amount" placeholder="999" value="999" required style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.4rem;">Customer Full Name *</label>
+            <input type="text" id="manual-cust-name" placeholder="Customer Name" required style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.4rem;">Phone Number *</label>
+            <input type="tel" id="manual-cust-phone" placeholder="9876543210" required style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box;">
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.4rem;">Customer Email Address</label>
+          <input type="email" id="manual-cust-email" placeholder="customer@gmail.com" style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.4rem;">Complete Shipping Address *</label>
+          <textarea id="manual-cust-address" rows="2" placeholder="House/Flat No, Street, Locality, Landmark" required style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; resize: vertical; box-sizing: border-box;"></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.4rem;">City *</label>
+            <input type="text" id="manual-cust-city" placeholder="e.g. Mumbai" required style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.4rem;">State *</label>
+            <input type="text" id="manual-cust-state" placeholder="e.g. Maharashtra" required style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.4rem;">PIN Code *</label>
+            <input type="text" id="manual-cust-zip" placeholder="e.g. 400001" required style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+          <div>
+            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.4rem;">Item Purchased</label>
+            <select id="manual-item-select" style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box;">
+              <option value="REDAGO T-Shirt" selected>REDAGO T-Shirt (₹999)</option>
+              <option value="CURSE GOD T-Shirt">CURSE GOD T-Shirt (₹799)</option>
+              <option value="BERRY T-Shirt">BERRY T-Shirt (₹599)</option>
+              <option value="BLACK DAGGER T-Shirt">BLACK DAGGER T-Shirt (₹799)</option>
+              <option value="Other Merch Item">Other Merch Item</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.4rem;">Size</label>
+            <select id="manual-item-size" style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box;">
+              <option value="S">S</option>
+              <option value="M" selected>M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.25rem;">
+          <button type="button" onclick="closeManualOrderModal()" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #ccc; padding: 0.6rem 1.4rem; border-radius: 20px; font-weight: 600; cursor: pointer;">
+            Cancel
+          </button>
+          <button type="submit" id="manual-order-submit-btn" style="background: var(--color-blue-neon); border: none; color: #000; padding: 0.6rem 1.6rem; border-radius: 20px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync Order
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- TOAST ALERT CONTAINER -->
   <div class="alert-container" id="alert-container"></div>

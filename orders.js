@@ -602,7 +602,10 @@ function renderAdminTable(orders) {
       </td>
       <td style="font-family: monospace;">${order.trackingNumber || '<span style="color:var(--text-muted)">Unshipped</span>'}</td>
       <td>
-        <div style="display: flex; gap: 0.5rem;">
+        <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+          <button class="admin-action-btn" style="background: rgba(0,229,255,0.15); border-color: var(--color-blue-neon); color: var(--color-blue-neon);" title="Sync order to Shiprocket" onclick="pushSingleOrderToShiprocket('${order.orderId}')">
+            <i class="fa-solid fa-truck-fast"></i> Shiprocket
+          </button>
           <button class="admin-action-btn" onclick="openAdminEditForm('${order.orderId}')">
             <i class="fa-solid fa-pen-to-square"></i> Edit
           </button>
@@ -967,3 +970,266 @@ window.clearAllTestOrders = function() {
       });
   }
 };
+
+
+// ==========================================================================
+// MANUAL ORDER IMPORT & SHIPROCKET SYNC
+// ==========================================================================
+
+window.openManualOrderModal = function() {
+  const modal = document.getElementById("manual-order-modal");
+  if (modal) modal.style.display = "flex";
+};
+
+window.closeManualOrderModal = function() {
+  const modal = document.getElementById("manual-order-modal");
+  if (modal) modal.style.display = "none";
+};
+
+window.handleManualOrderSubmit = async function(event) {
+  event.preventDefault();
+  const submitBtn = document.getElementById("manual-order-submit-btn");
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving Order...';
+  }
+
+  const orderId = document.getElementById("manual-order-id").value.trim();
+  const totalAmount = parseFloat(document.getElementById("manual-total-amount").value.trim()) || 999;
+  const custName = document.getElementById("manual-cust-name").value.trim();
+  const custPhone = document.getElementById("manual-cust-phone").value.trim();
+  const custEmail = document.getElementById("manual-cust-email").value.trim() || "customer@blueshot.online";
+  const custAddress = document.getElementById("manual-cust-address").value.trim();
+  const custCity = document.getElementById("manual-cust-city").value.trim();
+  const custState = document.getElementById("manual-cust-state").value.trim();
+  const custZip = document.getElementById("manual-cust-zip").value.trim();
+  const itemName = document.getElementById("manual-item-select").value;
+  const itemSize = document.getElementById("manual-item-size").value;
+
+  const itemImage = itemName.includes("REDAGO") ? "assets/redago-new-1.png" :
+                    itemName.includes("CURSE") ? "assets/cursegod-angle-1.png" :
+                    itemName.includes("BERRY") ? "assets/berry-angle-1.png" :
+                    itemName.includes("DAGGER") ? "assets/blackdagger-front.png" : "assets/redago-new-1.png";
+
+  const itemId = itemName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+
+  const orderData = {
+    orderId: orderId,
+    userId: "admin_manual_import",
+    email: custEmail,
+    phone: custPhone,
+    name: custName,
+    address: custAddress,
+    landmark: "",
+    city: custCity,
+    state: custState,
+    zip: custZip,
+    country: "India",
+    items: [
+      {
+        id: itemId,
+        name: itemName,
+        price: totalAmount,
+        image: itemImage,
+        size: itemSize,
+        quantity: 1
+      }
+    ],
+    totalAmount: totalAmount,
+    status: "Processing",
+    trackingNumber: "",
+    courierPartner: "Shiprocket",
+    referralCode: null,
+    manualImport: true
+  };
+
+  try {
+    if (!isDemoMode && db) {
+      await db.collection("orders").doc(orderId).set({
+        ...orderData,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      console.log("Order saved to Firestore:", orderId);
+    } else {
+      let localOrders = JSON.parse(localStorage.getItem("dxz_demo_orders") || "[]");
+      localOrders = localOrders.filter(o => o.orderId !== orderId);
+      localOrders.unshift({
+        ...orderData,
+        createdAt: new Date().toISOString()
+      });
+      localStorage.setItem("dxz_demo_orders", JSON.stringify(localOrders));
+    }
+
+    showToastNotification(`Order #${orderId} imported successfully!`);
+    closeManualOrderModal();
+    document.getElementById("manual-order-form").reset();
+    loadAdminOrders();
+
+    // Trigger Shiprocket sync attempt
+    syncOrderWithShiprocket(orderData);
+  } catch (err) {
+    console.error("Failed to save manual order:", err);
+    showToastNotification("Error saving order: " + err.message, true);
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync Order';
+    }
+  }
+};
+
+window.pushSingleOrderToShiprocket = async function(orderId) {
+  const order = (window.currentLoadedOrders || []).find(o => o.orderId === orderId);
+  if (!order) {
+    showToastNotification("Order details not found.", true);
+    return;
+  }
+  showToastNotification(`Pushing order #${orderId} to Shiprocket...`);
+  await syncOrderWithShiprocket(order);
+};
+
+// Shiprocket sync function for orders.js
+async function syncOrderWithShiprocket(order) {
+  if (typeof shiprocketConfig === "undefined") {
+    console.warn("Shiprocket configuration not found in firebase-config.js. Order sync skipped.");
+    showToastNotification("Shiprocket config missing.", true);
+    return;
+  }
+
+  // 1. Webhook if configured
+  if (shiprocketConfig.webhookUrl && shiprocketConfig.webhookUrl !== "YOUR_MAKE_OR_ZAPIER_WEBHOOK_URL") {
+    try {
+      const response = await fetch(shiprocketConfig.webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(order)
+      });
+      if (response.ok) {
+        showToastNotification("Order synced with Shiprocket webhook!");
+      } else {
+        showToastNotification("Webhook sync error: " + response.status, true);
+      }
+    } catch (err) {
+      console.error("Webhook sync error:", err);
+      showToastNotification("Webhook sync failed.", true);
+    }
+    return;
+  }
+
+  // 2. Direct API Integration
+  let token = (shiprocketConfig.token && shiprocketConfig.token !== "YOUR_SHIPROCKET_JWT_TOKEN") ? shiprocketConfig.token : null;
+
+  if (!token && shiprocketConfig.email && shiprocketConfig.email !== "YOUR_SHIPROCKET_EMAIL" && shiprocketConfig.password && shiprocketConfig.password !== "YOUR_SHIPROCKET_PASSWORD") {
+    try {
+      const proxyUrl = "https://proxy.cors.sh/";
+      const targetAuthUrl = "https://apiv2.shiprocket.in/v1/external/auth/login";
+
+      const authResponse = await fetch(`${proxyUrl}${targetAuthUrl}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: shiprocketConfig.email,
+          password: shiprocketConfig.password
+        })
+      });
+
+      if (!authResponse.ok) {
+        throw new Error(`Shiprocket login failed (${authResponse.status})`);
+      }
+
+      const authData = await authResponse.json();
+      token = authData.token;
+    } catch (err) {
+      console.error("Shiprocket Login Error:", err);
+      showToastNotification("Shiprocket login failed: " + err.message, true);
+      return;
+    }
+  }
+
+  if (token) {
+    try {
+      const proxyUrl = "https://proxy.cors.sh/";
+      const orderItems = (order.items || []).map(item => ({
+        name: `${item.name} (${item.size || 'Standard'})`,
+        sku: `${item.id || 'item'}-${item.size || 'std'}`,
+        units: item.quantity || 1,
+        selling_price: item.price || order.totalAmount
+      }));
+
+      const now = new Date();
+      const formattedDate = now.getFullYear() + "-" +
+        String(now.getMonth() + 1).padStart(2, '0') + "-" +
+        String(now.getDate()).padStart(2, '0') + " " +
+        String(now.getHours()).padStart(2, '0') + ":" +
+        String(now.getMinutes()).padStart(2, '0');
+
+      const payload = {
+        order_id: order.orderId,
+        order_date: formattedDate,
+        pickup_location: shiprocketConfig.pickupLocation || "Home",
+        channel_id: shiprocketConfig.channelId || "",
+        billing_customer_name: (order.name || "Customer").split(" ")[0],
+        billing_last_name: (order.name || "").split(" ").slice(1).join(" ") || "",
+        billing_address: order.address + (order.landmark ? ", Near " + order.landmark : ""),
+        billing_city: order.city || "Mumbai",
+        billing_pincode: order.zip || "400001",
+        billing_state: order.state || order.city || "Maharashtra",
+        billing_country: "India",
+        billing_email: order.email || "customer@blueshot.online",
+        billing_phone: order.phone || "",
+        shipping_is_billing: true,
+        shipping_customer_name: (order.name || "Customer").split(" ")[0],
+        shipping_last_name: (order.name || "").split(" ").slice(1).join(" ") || "",
+        shipping_address: order.address + (order.landmark ? ", Near " + order.landmark : ""),
+        shipping_city: order.city || "Mumbai",
+        shipping_pincode: order.zip || "400001",
+        shipping_state: order.state || order.city || "Maharashtra",
+        shipping_country: "India",
+        shipping_email: order.email || "customer@blueshot.online",
+        shipping_phone: order.phone || "",
+        order_items: orderItems,
+        payment_method: "Prepaid",
+        sub_total: order.totalAmount,
+        length: 10,
+        breadth: 10,
+        height: 5,
+        weight: 0.3
+      };
+
+      const targetOrderUrl = "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc";
+      const orderResponse = await fetch(`${proxyUrl}${targetOrderUrl}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!orderResponse.ok) {
+        const errMsg = await orderResponse.text();
+        throw new Error(errMsg);
+      }
+
+      const orderData = await orderResponse.json();
+      console.log("Shiprocket sync success:", orderData);
+      showToastNotification(`Order #${order.orderId} synced to Shiprocket successfully!`);
+
+      if (orderData && (orderData.shipment_id || orderData.order_id)) {
+        const srId = String(orderData.shipment_id || orderData.order_id);
+        if (!isDemoMode && db) {
+          db.collection("orders").doc(order.orderId).update({
+            shiprocketOrderId: srId,
+            trackingNumber: orderData.awb_code || ""
+          }).then(() => loadAdminOrders());
+        }
+      }
+    } catch (err) {
+      console.error("Shiprocket API Order Error:", err);
+      showToastNotification("Shiprocket error: " + err.message, true);
+    }
+    return;
+  }
+
+  showToastNotification("Shiprocket sync skipped: please check credentials in firebase-config.js", true);
+}
