@@ -477,7 +477,12 @@ function renderOrderDetails(order) {
     <div class="order-header-row">
       <div>
         <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.25rem;">Receipt &amp; Tracking Details</div>
-        <span class="order-id-badge">${order.orderId}</span>
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <span class="order-id-badge">${order.orderId}</span>
+          <button type="button" class="btn" style="padding: 0.2rem 0.6rem; font-size: 0.75rem; background: rgba(0,255,136,0.1); border: 1px solid #00ff88; color: #00ff88; border-radius: 20px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;" title="Copy tracking link" onclick="copyOrderTrackingLink('${order.orderId}', '${order.email || ''}', this)">
+            <i class="fa-solid fa-link"></i> Copy Tracking Link
+          </button>
+        </div>
         <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Placed on: <strong>${formattedDate}</strong></div>
       </div>
       <span class="order-status-badge ${statusClass}">${order.status}</span>
@@ -619,7 +624,12 @@ function renderAdminTable(orders) {
     tr.innerHTML = `
       <td>${formattedDate}</td>
       <td>
-        <span style="font-family: monospace; font-size: 0.8rem; color:var(--color-blue-neon); font-weight:700;">${order.orderId}</span>
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <span style="font-family: monospace; font-size: 0.8rem; color:var(--color-blue-neon); font-weight:700;">${order.orderId}</span>
+          <button type="button" title="Copy tracking link" onclick="copyOrderTrackingLink('${order.orderId}', '${order.email || ''}', this)" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.8rem; padding: 0 2px;" onmouseover="this.style.color='var(--color-blue-neon)'" onmouseout="this.style.color='var(--text-muted)'">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
         <div style="font-size:0.75rem; color:var(--text-muted);">${order.email}</div>
       </td>
       <td>
@@ -637,6 +647,9 @@ function renderAdminTable(orders) {
         <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
           <button class="admin-action-btn" style="background: rgba(0,229,255,0.15); border-color: var(--color-blue-neon); color: var(--color-blue-neon);" title="Sync order to Shiprocket" onclick="pushSingleOrderToShiprocket('${order.orderId}')">
             <i class="fa-solid fa-truck-fast"></i> Shiprocket
+          </button>
+          <button class="admin-action-btn" style="background: rgba(0,255,136,0.12); border-color: #00ff88; color: #00ff88;" title="Copy direct customer tracking link" onclick="copyOrderTrackingLink('${order.orderId}', '${order.email || ''}', this)">
+            <i class="fa-solid fa-link"></i> Copy Link
           </button>
           <button class="admin-action-btn" onclick="openAdminEditForm('${order.orderId}')">
             <i class="fa-solid fa-pen-to-square"></i> Edit
@@ -1388,4 +1401,57 @@ function formatDateOnly(dateStr) {
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return dateStr;
   return d.toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+window.copyOrderTrackingLink = function(orderId, email, btnElement) {
+  const origin = window.location.origin && window.location.origin !== "null" ? window.location.origin : "https://blueshot.online";
+  const path = window.location.pathname && window.location.pathname.includes("orders.html") ? window.location.pathname : "/orders.html";
+  const trackingUrl = `${origin}${path}?orderId=${encodeURIComponent(orderId)}${email ? '&email=' + encodeURIComponent(email) : ''}`;
+
+  const finishCopy = () => {
+    showToastNotification(`Copied tracking link for Order #${orderId}!`);
+    if (btnElement) {
+      const origHtml = btnElement.innerHTML;
+      btnElement.innerHTML = `<i class="fa-solid fa-check"></i> Copied!`;
+      const origBorder = btnElement.style.borderColor;
+      const origColor = btnElement.style.color;
+      btnElement.style.borderColor = "#00ff88";
+      btnElement.style.color = "#00ff88";
+      setTimeout(() => {
+        btnElement.innerHTML = origHtml;
+        btnElement.style.borderColor = origBorder;
+        btnElement.style.color = origColor;
+      }, 2000);
+    }
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(trackingUrl).then(finishCopy).catch(() => {
+      fallbackCopyText(trackingUrl, finishCopy);
+    });
+  } else {
+    fallbackCopyText(trackingUrl, finishCopy);
+  }
+};
+
+function fallbackCopyText(text, callback) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  ta.style.top = "-9999px";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    const successful = document.execCommand("copy");
+    if (successful && callback) {
+      callback();
+    } else {
+      showToastNotification("Press Ctrl+C to copy: " + text, true);
+    }
+  } catch (err) {
+    showToastNotification("Could not copy link to clipboard.", true);
+  }
+  document.body.removeChild(ta);
 }
