@@ -1233,3 +1233,110 @@ async function syncOrderWithShiprocket(order) {
 
   showToastNotification("Shiprocket sync skipped: please check credentials in firebase-config.js", true);
 }
+
+// ==========================================================================
+// SMART AUTO-FILL & PINCODE LOOKUP
+// ==========================================================================
+
+window.lookupPincode = async function(pincode) {
+  const cleanPin = (pincode || "").trim();
+  if (cleanPin.length !== 6 || !/^[1-9][0-9]{5}$/.test(cleanPin)) return;
+
+  try {
+    const res = await fetch(`https://api.postalpincode.in/pincode/${cleanPin}`);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data && data[0] && data[0].Status === "Success" && data[0].PostOffice && data[0].PostOffice.length > 0) {
+      const po = data[0].PostOffice[0];
+      const cityInput = document.getElementById("manual-cust-city");
+      const stateInput = document.getElementById("manual-cust-state");
+      if (cityInput && (!cityInput.value || cityInput.value === "e.g. Mumbai")) cityInput.value = po.District || po.Name;
+      if (stateInput && (!stateInput.value || stateInput.value === "e.g. Maharashtra")) stateInput.value = po.State;
+      showToastNotification(`Auto-detected: ${po.District}, ${po.State}`);
+    }
+  } catch (e) {
+    console.warn("Pincode lookup error:", e);
+  }
+};
+
+window.parseSmartPaste = async function() {
+  const raw = (document.getElementById("smart-paste-input").value || "").trim();
+  if (!raw) {
+    showToastNotification("Please paste some details first.", true);
+    return;
+  }
+
+  // 1. Payment ID
+  const payMatch = raw.match(/\b(pay_[a-zA-Z0-9]+)\b/);
+  if (payMatch) {
+    document.getElementById("manual-order-id").value = payMatch[1];
+  }
+
+  // 2. Amount
+  const amtMatch = raw.match(/(?:₹|INR|amount[:=]?\s*)\s*([0-9,]+(?:\.[0-9]{2})?)/i) || raw.match(/\b(999|799|599|1998|1598)\b/);
+  if (amtMatch) {
+    document.getElementById("manual-total-amount").value = parseFloat(amtMatch[1].replace(/,/g, ''));
+  }
+
+  // 3. Phone number
+  const phoneMatch = raw.match(/(?:shipping_phone|phone|contact|mobile)[:=]?\s*(\+?91[\-\s]?)?([6-9]\d{9})\b/i) || raw.match(/\b([6-9]\d{9})\b/);
+  if (phoneMatch) {
+    document.getElementById("manual-cust-phone").value = phoneMatch[2] || phoneMatch[0];
+  }
+
+  // 4. Email
+  const emailMatch = raw.match(/\b([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})\b/);
+  if (emailMatch && !emailMatch[1].includes("blueshotconnectx")) {
+    document.getElementById("manual-cust-email").value = emailMatch[1];
+  }
+
+  // 5. Name
+  const nameMatch = raw.match(/(?:name|customer|shipping_name|billing_name)[:=]?\s*([A-Za-z\s]{3,30})/i);
+  if (nameMatch && !/REDAGO|CURSE|BERRY|DAGGER|India|Shop|Capture/i.test(nameMatch[1])) {
+    document.getElementById("manual-cust-name").value = nameMatch[1].trim();
+  }
+
+  // 6. Item & Size
+  const itemSelect = document.getElementById("manual-item-select");
+  if (/REDAGO/i.test(raw)) itemSelect.value = "REDAGO T-Shirt";
+  else if (/CURSE\s*GOD/i.test(raw)) itemSelect.value = "CURSE GOD T-Shirt";
+  else if (/BERRY/i.test(raw)) itemSelect.value = "BERRY T-Shirt";
+  else if (/DAGGER|BLACK\s*DAGGER/i.test(raw)) itemSelect.value = "BLACK DAGGER T-Shirt";
+
+  const sizeSelect = document.getElementById("manual-item-size");
+  const sizeMatch = raw.match(/\b(XXL|XL|L|M|S)\b/i);
+  if (sizeMatch) {
+    sizeSelect.value = sizeMatch[1].toUpperCase();
+  }
+
+  // 7. PIN Code
+  let extractedZip = null;
+  const zipMatch = raw.match(/(?:zip|pin|pincode|postal)[:=]?\s*([1-9][0-9]{5})\b/i) || raw.match(/\b([1-9][0-9]{5})\b/);
+  if (zipMatch) {
+    extractedZip = zipMatch[1];
+    document.getElementById("manual-cust-zip").value = extractedZip;
+  }
+
+  // 8. Shipping Address
+  const addrMatch = raw.match(/shipping_address[:=]?\s*([^\n\r]+)/i);
+  if (addrMatch) {
+    let cleanAddr = addrMatch[1].trim();
+    cleanAddr = cleanAddr.replace(/,\s*Zip:\s*\d{6}/i, '').replace(/,\s*Country:\s*India/i, '').replace(/,\s*Country:\s*IN/i, '');
+    document.getElementById("manual-cust-address").value = cleanAddr;
+  } else {
+    const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    for (const line of lines) {
+      if (/\b(Flat|House|H No|Road|Street|Lane|Nagar|Colony|Apartment|Apt|Sector|Plot)\b/i.test(line)) {
+        document.getElementById("manual-cust-address").value = line;
+        break;
+      }
+    }
+  }
+
+  // Auto lookup city and state from PIN code
+  if (extractedZip) {
+    await window.lookupPincode(extractedZip);
+  }
+
+  showToastNotification("Details auto-filled from pasted text!");
+};

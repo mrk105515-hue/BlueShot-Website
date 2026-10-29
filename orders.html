@@ -210,6 +210,22 @@
         </div>
       </div>
 
+            <!-- 1-Click Smart Quick Paste Card -->
+      <div style="background: rgba(0, 229, 255, 0.05); border: 1px dashed var(--color-blue-neon); border-radius: 10px; padding: 1rem; margin-top: 1rem; margin-bottom: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+          <label style="color: var(--color-blue-neon); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem; margin: 0;">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> 1-Click Smart Paste (Auto-Fill Everything)
+          </label>
+          <span style="font-size: 0.72rem; color: var(--text-muted);">Paste raw Notes or payment summary from Razorpay</span>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <textarea id="smart-paste-input" rows="2" placeholder="Paste Payment ID, customer notes, or details here... (e.g. pay_..., shipping_address: ..., items: ...)" style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; font-size: 0.82rem; font-family: monospace; resize: vertical; box-sizing: border-box;"></textarea>
+          <button type="button" onclick="parseSmartPaste()" style="background: var(--color-blue-neon); color: #000; border: none; border-radius: 6px; padding: 0 1.2rem; font-weight: 800; font-size: 0.85rem; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 0.4rem;">
+            <i class="fa-solid fa-bolt"></i> Auto Fill
+          </button>
+        </div>
+      </div>
+
       <!-- Form -->
       <form id="manual-order-form" onsubmit="handleManualOrderSubmit(event)" style="margin-top: 1.25rem;">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
@@ -255,7 +271,7 @@
           </div>
           <div>
             <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.4rem;">PIN Code *</label>
-            <input type="text" id="manual-cust-zip" placeholder="e.g. 400001" required style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box;">
+            <input type="text" id="manual-cust-zip" oninput="lookupPincode(this.value)" placeholder="e.g. 400001" required style="width: 100%; padding: 0.7rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; box-sizing: border-box;">
           </div>
         </div>
 
