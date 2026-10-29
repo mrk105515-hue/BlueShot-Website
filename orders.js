@@ -462,6 +462,17 @@ function renderOrderDetails(order) {
       <span class="order-status-badge ${statusClass}">${order.status}</span>
     </div>
 
+    <!-- Expected Delivery Banner -->
+    <div style="background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.25); border-radius: 10px; padding: 0.85rem 1.25rem; margin: 1.25rem 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+      <div style="display: flex; align-items: center; gap: 0.6rem; color: var(--color-blue-neon); font-size: 0.95rem; font-weight: 700;">
+        <i class="fa-solid fa-calendar-check" style="font-size: 1.15rem;"></i>
+        <span>Estimated Delivery Date:</span>
+      </div>
+      <div style="color: #FFF; font-weight: 800; font-size: 1.05rem; font-family: var(--font-display); letter-spacing: 0.03em;">
+        ${order.estimatedDelivery ? formatDateOnly(order.estimatedDelivery) : '3 - 5 Business Days'}
+      </div>
+    </div>
+
     <!-- Timeline Tracker -->
     <div class="tracker-timeline">
       <div class="timeline-progress-bar" style="width: ${progressWidth};"></div>
@@ -635,6 +646,9 @@ function renderAdminTable(orders) {
           <label style="margin-left: 1rem;">Shiprocket AWB:</label>
           <input type="text" id="edit-awb-${order.orderId}" placeholder="Enter Tracking AWB" value="${order.trackingNumber || ''}">
           
+          <label style="margin-left: 1rem;">Expected Delivery:</label>
+          <input type="date" id="edit-delivery-${order.orderId}" value="${order.estimatedDelivery || ''}" style="padding: 0.4rem 0.6rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; color: #fff; font-size: 0.85rem;">
+          
           <button class="admin-action-btn" style="margin-left: 1rem; background:rgba(0,229,255,0.1); border-color:var(--color-blue-neon);" onclick="saveAdminEdit('${order.orderId}')">
             <i class="fa-solid fa-floppy-disk"></i> Save
           </button>
@@ -760,6 +774,8 @@ window.deleteAdminCheckpointLocal = function(orderId, index) {
 window.saveAdminEdit = function(orderId) {
   const status = document.getElementById(`edit-status-${orderId}`).value;
   const awb = document.getElementById(`edit-awb-${orderId}`).value.trim();
+  const deliveryInput = document.getElementById(`edit-delivery-${orderId}`);
+  const deliveryDate = deliveryInput ? deliveryInput.value : null;
   const checkpoints = window.activeEditCheckpoints[orderId] || [];
 
   if (isDemoMode) {
@@ -768,6 +784,7 @@ window.saveAdminEdit = function(orderId) {
     if (index > -1) {
       localOrders[index].status = status;
       localOrders[index].trackingNumber = awb;
+      localOrders[index].estimatedDelivery = deliveryDate;
       localOrders[index].checkpoints = checkpoints;
       localStorage.setItem("dxz_demo_orders", JSON.stringify(localOrders));
       
@@ -788,6 +805,7 @@ window.saveAdminEdit = function(orderId) {
     db.collection("orders").doc(orderId).update({
       status: status,
       trackingNumber: awb,
+      estimatedDelivery: deliveryDate,
       checkpoints: checkpoints
     })
     .then(() => {
@@ -1005,6 +1023,8 @@ window.handleManualOrderSubmit = async function(event) {
   const custZip = document.getElementById("manual-cust-zip").value.trim();
   const itemName = document.getElementById("manual-item-select").value;
   const itemSize = document.getElementById("manual-item-size").value;
+  const deliveryInput = document.getElementById("manual-cust-delivery");
+  const deliveryDate = deliveryInput ? deliveryInput.value : null;
 
   const itemImage = itemName.includes("REDAGO") ? "assets/redago-new-1.png" :
                     itemName.includes("CURSE") ? "assets/cursegod-angle-1.png" :
@@ -1039,6 +1059,7 @@ window.handleManualOrderSubmit = async function(event) {
     status: "Processing",
     trackingNumber: "",
     courierPartner: "Shiprocket",
+    estimatedDelivery: deliveryDate,
     referralCode: null,
     manualImport: true
   };
@@ -1340,3 +1361,10 @@ window.parseSmartPaste = async function() {
 
   showToastNotification("Details auto-filled from pasted text!");
 };
+
+function formatDateOnly(dateStr) {
+  if (!dateStr) return '3 - 5 Business Days';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+}
