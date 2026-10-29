@@ -1121,7 +1121,7 @@ async function syncOrderWithShiprocket(order) {
 
   if (!token && shiprocketConfig.email && shiprocketConfig.email !== "YOUR_SHIPROCKET_EMAIL" && shiprocketConfig.password && shiprocketConfig.password !== "YOUR_SHIPROCKET_PASSWORD") {
     try {
-      const proxyUrl = "https://proxy.cors.sh/";
+      const proxyUrl = "";
       const targetAuthUrl = "https://apiv2.shiprocket.in/v1/external/auth/login";
 
       const authResponse = await fetch(`${proxyUrl}${targetAuthUrl}`, {
@@ -1148,7 +1148,7 @@ async function syncOrderWithShiprocket(order) {
 
   if (token) {
     try {
-      const proxyUrl = "https://proxy.cors.sh/";
+      const proxyUrl = "";
       const orderItems = (order.items || []).map(item => ({
         name: `${item.name} (${item.size || 'Standard'})`,
         sku: `${item.id || 'item'}-${item.size || 'std'}`,
