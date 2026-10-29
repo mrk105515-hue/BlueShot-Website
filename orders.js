@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTabs();
   initLookupForm();
   initAuthListener();
+  checkUrlParams();
 });
 
 // ==========================================================================
@@ -144,6 +145,26 @@ function initLookupForm() {
 
     findAndDisplayOrder(orderId, email);
   });
+}
+
+function checkUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get("orderId") || params.get("id");
+  const email = params.get("email");
+
+  if (orderId) {
+    const tabGuestBtn = document.getElementById("tab-guest-btn");
+    if (tabGuestBtn) tabGuestBtn.click();
+
+    const idInput = document.getElementById("lookup-order-id");
+    if (idInput) idInput.value = orderId;
+
+    if (email) {
+      const emailInput = document.getElementById("lookup-email");
+      if (emailInput) emailInput.value = email;
+      setTimeout(() => findAndDisplayOrder(orderId, email), 300);
+    }
+  }
 }
 
 function findAndDisplayOrder(orderId, email) {
