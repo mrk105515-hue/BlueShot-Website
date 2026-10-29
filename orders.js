@@ -1122,7 +1122,7 @@ async function syncOrderWithShiprocket(order) {
   if (!token && shiprocketConfig.email && shiprocketConfig.email !== "YOUR_SHIPROCKET_EMAIL" && shiprocketConfig.password && shiprocketConfig.password !== "YOUR_SHIPROCKET_PASSWORD") {
     try {
       const proxyUrl = "";
-      const targetAuthUrl = "https://apiv2.shiprocket.in/v1/external/auth/login";
+      const targetAuthUrl = (typeof shiprocketConfig !== "undefined" && shiprocketConfig.apiBaseUrl ? shiprocketConfig.apiBaseUrl : "https://misty-hall-0686.mrk105515.workers.dev") + "/v1/external/auth/login";
 
       const authResponse = await fetch(`${proxyUrl}${targetAuthUrl}`, {
         method: "POST",
@@ -1196,7 +1196,7 @@ async function syncOrderWithShiprocket(order) {
         weight: 0.3
       };
 
-      const targetOrderUrl = "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc";
+      const targetOrderUrl = (typeof shiprocketConfig !== "undefined" && shiprocketConfig.apiBaseUrl ? shiprocketConfig.apiBaseUrl : "https://misty-hall-0686.mrk105515.workers.dev") + "/v1/external/orders/create/adhoc";
       const orderResponse = await fetch(`${proxyUrl}${targetOrderUrl}`, {
         method: "POST",
         headers: {

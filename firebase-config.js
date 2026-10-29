@@ -24,6 +24,7 @@ const shiprocketConfig = {
   email: "Blueshotx99@gmail.com",
   password: "BAiDJk7PjXqDmiQec0wUJO*tS#@RuQ9Y",
   token: null,
+  apiBaseUrl: "https://misty-hall-0686.mrk105515.workers.dev",
   pickupLocation: "Home", // Must match your Shiprocket panel's pickup location name
   channelId: "11155451" // Your connected Custom Channel ID
 };
