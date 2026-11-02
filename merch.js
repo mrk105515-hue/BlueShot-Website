@@ -13,6 +13,7 @@ let currentFeaturedId = "redago-tshirt"; // Active selected featured product
 // Products Catalog (Matches UI markup)
 const PRODUCTS_CATALOG = {
   "redago-tshirt": {
+    isUnavailable: true,
     id: "redago-tshirt",
     name: "REDAGO T-Shirt",
     price: 999,
@@ -29,6 +30,7 @@ const PRODUCTS_CATALOG = {
     description: "Unleash the ultimate cosmic force. The official REDAGO custom graphic t-shirt features BSG's powerful Season 3 aura. Made with heavyweight 100% combed cotton for maximum durability and comfort."
   },
   "cursegod-tshirt": {
+    isUnavailable: true,
     id: "cursegod-tshirt",
     name: "CURSE GOD T-Shirt",
     price: 799,
@@ -46,6 +48,7 @@ const PRODUCTS_CATALOG = {
     description: "Embrace the dark power of Curse God Zalta. The official CURSE GOD custom graphic t-shirt features Zalta's dark bull beast aura and signature CG monogram and pink metal metal lettering. Made with heavyweight 100% combed cotton for premium comfort and long-lasting print quality."
   },
   "cursegod-sealed-tshirt": {
+    isUnavailable: true,
     id: "cursegod-sealed-tshirt",
     name: "CURSE GOD: SEALED T-Shirt",
     price: 799,
@@ -62,6 +65,7 @@ const PRODUCTS_CATALOG = {
     description: "Sealed in Hell for 7,999 years. The official CURSE GOD: SEALED custom graphic t-shirt features the chrome gothic CG emblem and infernal awakening typography. Crafted with heavyweight 100% combed cotton for unyielding street presence. Dropping soon."
   },
   "ruler-tshirt": {
+    isUnavailable: true,
     id: "ruler-tshirt",
     name: "THE RULER T-Shirt",
     price: 799,
@@ -79,6 +83,7 @@ const PRODUCTS_CATALOG = {
     description: "Claim supreme dominion over the realm. The official THE RULER OF THE WORLD custom graphic t-shirt features the iconic imperial compass rose with high-contrast noir character artwork and crimson gothic calligraphy. Made with heavyweight 100% combed cotton for premium comfort, everyday durability, and uncompromising streetwear dominance."
   },
   "berry-tshirt": {
+    isUnavailable: true,
     id: "berry-tshirt",
     name: "BERRY T-Shirt",
     price: 599,
@@ -97,6 +102,7 @@ const PRODUCTS_CATALOG = {
   },
 
   "suma-berry-bundle": {
+    isUnavailable: true,
     id: "suma-berry-bundle",
     name: "SUMA & BERRY Duo Bundle",
     price: 1499,
@@ -110,6 +116,7 @@ const PRODUCTS_CATALOG = {
     description: "Double the faction power. Get both the custom SUMA and BERRY T-Shirts in one exclusive faction bundle pack. Show your support for the East Emperor's line and command the battlefield."
   },
   "cursegod-dominance-tshirt": {
+    isUnavailable: true,
     id: "cursegod-dominance-tshirt",
     name: "CURSE GOD DOMINANCE T-Shirt",
     price: 599,
@@ -127,6 +134,7 @@ const PRODUCTS_CATALOG = {
     description: "Rule the battlefield with supreme authority. The official CURSE GOD DOMINANCE custom graphic t-shirt features the striking white metal typography style on a premium heavyweight obsidian black tee. Built for those who demand power and dominance."
   },
   "bloodscar-tshirt": {
+    isUnavailable: true,
     id: "bloodscar-tshirt",
     name: "7 BLOODSCAR OF HELL T-Shirt",
     price: 599,
@@ -140,6 +148,7 @@ const PRODUCTS_CATALOG = {
     description: "Embrace the underworld fury. The official 7 BLOODSCAR OF HELL custom graphic t-shirt features the raw white metal typography style on a premium heavyweight obsidian black tee. Built for faction legends who command dark power."
   },
   "plain-black-tshirt": {
+    isUnavailable: true,
     id: "plain-black-tshirt",
     name: "Plain Faction T-Shirt (Black)",
     price: 499,
@@ -155,6 +164,7 @@ const PRODUCTS_CATALOG = {
     description: "Keep it minimal and clean. The official Plain Faction T-Shirt in stealthy Faction Black. Made with 100% premium heavyweight combed cotton for a perfect fit and everyday durability."
   },
   "plain-berry-tshirt": {
+    isUnavailable: true,
     id: "plain-berry-tshirt",
     name: "Plain Faction T-Shirt (Berry)",
     price: 499,
@@ -168,6 +178,7 @@ const PRODUCTS_CATALOG = {
     description: "Keep it minimal and clean. The official Plain Faction T-Shirt in rich Berry Purple. Made with 100% premium heavyweight combed cotton for a perfect fit and everyday durability."
   },
   "plain-maroon-tshirt": {
+    isUnavailable: true,
     id: "plain-maroon-tshirt",
     name: "Plain Faction T-Shirt (Maroon)",
     price: 499,
@@ -181,6 +192,7 @@ const PRODUCTS_CATALOG = {
     description: "Keep it minimal and clean. The official Plain Faction T-Shirt in bold Faction Maroon. Made with 100% premium heavyweight combed cotton for a perfect fit and everyday durability."
   },
   "plain-white-tshirt": {
+    isUnavailable: true,
     id: "plain-white-tshirt",
     name: "Plain Faction T-Shirt (White)",
     price: 499,
@@ -340,6 +352,10 @@ window.addToCart = function(id, size = "N/A", fit = "Regular") {
   if (!product) return;
   if (product.isComingSoon) {
     showNotification(`${product.name} is coming soon! Dropping soon.`);
+    return;
+  }
+  if (product.isUnavailable) {
+    showNotification(`${product.name} is currently unavailable.`, true);
     return;
   }
 

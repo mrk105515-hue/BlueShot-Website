@@ -396,6 +396,35 @@
   border: 1px solid rgba(155, 89, 182, 0.3);
 }
 
+.card-badge.unavailable,
+.shop-body .card-badge.unavailable {
+  background: rgba(255, 18, 79, 0.18) !important;
+  color: #ff3366 !important;
+  border: 1px solid rgba(255, 18, 79, 0.45) !important;
+}
+
+.card-btn-add.unavailable,
+.shop-body .card-btn-add.unavailable,
+.series-slider-gallery .product-card .card-btn-add.unavailable,
+.series-slider-gallery .product-card:not(.focused-card) .card-btn-add.unavailable {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #8e8e93 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+.shop-body .card-btn-add.unavailable:hover,
+.series-slider-gallery .product-card .card-btn-add.unavailable:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #8e8e93 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
 .quick-add-btn {
   position: absolute;
   bottom: -50px;
