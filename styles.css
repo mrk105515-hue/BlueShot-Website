@@ -4335,6 +4335,86 @@ body.loaded .visual-card.reveal-scale:hover {
 }
 
 /* ==========================================================================
+   SUPPORTER & AUTH MODAL INPUT STYLES (DARK CYBERPUNK & CLEAR CONTRAST)
+   ========================================================================== */
+.order-input,
+.supporter-modal-dialog input,
+.supporter-auth-card input {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  background: rgba(18, 18, 28, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 10px;
+  color: #ffffff !important;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.order-input::placeholder,
+.supporter-modal-dialog input::placeholder,
+.supporter-auth-card input::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.order-input:focus,
+.supporter-modal-dialog input:focus,
+.supporter-auth-card input:focus {
+  outline: none;
+  border-color: var(--color-blue-neon) !important;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.3) !important;
+  background: rgba(22, 22, 34, 0.95) !important;
+  color: #ffffff !important;
+}
+
+/* Specific styling for the Contribution Amount Input */
+.supporter-amount-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(10, 10, 16, 0.9) !important;
+  border: 1.5px solid var(--color-blue-neon) !important;
+  border-radius: 12px;
+  padding: 0.4rem 0.9rem;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+  transition: all 0.2s ease;
+}
+
+.supporter-amount-wrap:focus-within {
+  border-color: #ffd700 !important;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.35);
+}
+
+.supporter-amount-symbol {
+  font-size: 1.4rem;
+  color: var(--color-blue-neon);
+  font-weight: 900;
+  font-family: var(--font-display);
+}
+
+#supporter-amount-input {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+  font-family: var(--font-display) !important;
+  font-size: 1.4rem !important;
+  font-weight: 800 !important;
+  padding: 0.3rem 0.5rem !important;
+  letter-spacing: 0.05em;
+  width: 100%;
+}
+
+#supporter-amount-input::-webkit-inner-spin-button,
+#supporter-amount-input::-webkit-outer-spin-button {
+  filter: invert(1);
+  opacity: 0.85;
+  cursor: pointer;
+}
+
+
+/* ==========================================================================
    MERGED RANK SHOP & SPECIAL LEADERBOARD UI
    (EMPEROR, APEX, WARLORD, ELITE WITH INTEGRATED [BUY] & 1. 2. 3. BOARDS)
    ========================================================================== */
