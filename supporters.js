@@ -148,7 +148,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     initAuthListener();
     initAuthModal();
-    renderRankCards();
+    renderMergedRankBoards();
     loadSupportersFromDatabase();
     initSupporterModal();
   });
@@ -410,72 +410,138 @@
     }
   };
 
+  // 1. ORDER OF RANKS (DESCENDING: EMPEROR -> APEX -> WARLORD -> ELITE)
+  const RANK_ORDER = ["emperor", "apex", "warlord", "elite"];
+
   // ==========================================================================
-  // RENDER 4 RANK CARDS (MINIMAL & RESPONSIVE)
+  // MERGED RANK SHOP & SPECIAL LEADERBOARD RENDERING
   // ==========================================================================
-  function renderRankCards() {
-    const container = document.getElementById("ranks-showcase-grid");
+  function renderMergedRankBoards() {
+    const container = document.getElementById("merged-rank-boards");
     if (!container) return;
 
-    const ranksArray = [
-      SUPPORTER_RANKS.elite,
-      SUPPORTER_RANKS.warlord,
-      SUPPORTER_RANKS.apex,
-      SUPPORTER_RANKS.emperor
-    ];
+    container.innerHTML = RANK_ORDER.map(rankId => {
+      const rank = SUPPORTER_RANKS[rankId];
+      if (!rank) return "";
 
-    container.innerHTML = ranksArray.map(rank => {
       const isElite = rank.id === "elite";
-      const isPopular = rank.popular;
-      const isSupreme = rank.supreme;
+      const isEmperor = rank.id === "emperor";
+
+      // Filter supporters belonging to this specific rank tier, sorted descending by glory
+      const tierSupporters = supportersData
+        .filter(s => (s.rank || "").toLowerCase() === rankId)
+        .sort((a, b) => (b.glory || 0) - (a.glory || 0));
+
+      // Guarantee at least 3 entries (1., 2., 3.) plus any extra supporters
+      const totalEntriesToShow = Math.max(3, tierSupporters.length);
+      const entriesHtml = [];
+
+      for (let i = 0; i < totalEntriesToShow; i++) {
+        const pos = i + 1;
+        const supporter = tierSupporters[i];
+
+        let posClass = "entry-rank-pos";
+        let rowClass = "tier-board-entry";
+        if (pos === 1) {
+          posClass += " top-1";
+          rowClass += " top-1";
+        } else if (pos === 2) {
+          posClass += " top-2";
+          rowClass += " top-2";
+        } else if (pos === 3) {
+          posClass += " top-3";
+          rowClass += " top-3";
+        }
+
+        if (supporter) {
+          const isLorePaid = supporter.paymentMethod === "lore_cash";
+          const formattedGlory = (supporter.glory || 0).toLocaleString('en-IN');
+          entriesHtml.push(`
+            <div class="${rowClass}">
+              <div class="${posClass}">${pos}.</div>
+              <div class="entry-supporter-main">
+                <div class="entry-supporter-header-row">
+                  <span class="entry-supporter-name">${escapeHtml(supporter.name)}</span>
+                  ${supporter.faction ? `<span class="entry-faction-tag">${escapeHtml(supporter.faction)}</span>` : ''}
+                  ${isLorePaid ? '<span class="lore-cash-chip" title="Claimed with $10k game cash!"><i class="fa-solid fa-gamepad"></i> Game Cash</span>' : ''}
+                </div>
+                ${supporter.message ? `<div class="entry-supporter-quote">"${escapeHtml(supporter.message)}"</div>` : ''}
+              </div>
+              <div class="entry-glory-side">
+                <div class="entry-glory-value" style="color: ${rank.color};">
+                  <i class="fa-solid fa-bolt"></i> ${formattedGlory} GLORY
+                </div>
+              </div>
+            </div>
+          `);
+        } else {
+          // Vacant slot so 1., 2., 3. are always displayed
+          entriesHtml.push(`
+            <div class="${rowClass} vacant-entry">
+              <div class="${posClass}">${pos}.</div>
+              <div class="entry-supporter-main">
+                <div class="entry-vacant-text">
+                  <i class="fa-solid fa-shield-halved" style="color: ${rank.color};"></i>
+                  <span>Vacant Rank Spot — Claim to be #${pos} ${rank.name}!</span>
+                </div>
+              </div>
+              <div class="entry-glory-side">
+                <button type="button" class="btn-claim-vacant-spot" onclick="handleClaimClick('${rank.id}')">
+                  <i class="fa-solid fa-plus"></i> Claim #${pos} Spot
+                </button>
+              </div>
+            </div>
+          `);
+        }
+      }
 
       return `
-        <div class="rank-card ${rank.id}-card" data-rank="${rank.id}">
-          <div class="rank-card-glow" style="background: radial-gradient(circle, rgba(${rank.rgb}, 0.28) 0%, transparent 70%);"></div>
+        <section class="rank-tier-board-section ${rank.id}-tier-board" id="tier-board-${rank.id}">
+          <div class="tier-glow-accent" style="background: ${rank.color};"></div>
 
-          ${isSupreme ? '<div class="rank-card-pill supreme"><i class="fa-solid fa-crown"></i> SUPREME OVERLORD</div>' : ''}
-          ${isPopular ? '<div class="rank-card-pill popular"><i class="fa-solid fa-fire"></i> MOST POPULAR</div>' : ''}
-
-          <div class="rank-crest-wrapper">
-            <img src="${rank.image}" alt="${rank.name} Crest" class="rank-crest-img">
-          </div>
-
-          <div class="rank-header">
-            <h3 class="rank-name" style="color: ${rank.color};">${rank.name}</h3>
-            <span class="rank-title">${rank.title}</span>
-            <p class="rank-tagline">${rank.tagline}</p>
-          </div>
-
-          <div class="rank-pricing-block">
-            <div class="rank-price-main">
-              <span class="currency">₹</span><span class="amount">${rank.price}</span>
+          <!-- Header: Rank Identity + [BUY] Button -->
+          <div class="tier-board-header">
+            <div class="tier-board-identity">
+              <div class="tier-crest-wrap">
+                <img src="${rank.image}" alt="${rank.name} Crest" class="tier-crest-img">
+              </div>
+              <div class="tier-identity-text">
+                <div class="tier-badge-row">
+                  <span class="tier-rank-badge ${rank.id}-badge">${isEmperor ? 'SUPREME OVERLORD' : (rank.popular ? 'POPULAR TIER' : 'FACTION TIER')}</span>
+                  <span class="tier-rank-title">${rank.title}</span>
+                </div>
+                <h2 class="tier-rank-name" style="color: ${rank.color};">${rank.name}</h2>
+                <div class="tier-price-row">
+                  <span class="tier-price-highlight">Base: ₹${rank.price}</span>
+                  ${isElite ? `
+                    <span>or</span>
+                    <span class="tier-lore-cash-tag"><i class="fa-solid fa-gamepad"></i> $10,000 Lore Game Cash</span>
+                  ` : `
+                    <span>· Grants ${rank.minGlory}+ Glory Points (₹1 = 1 Glory)</span>
+                  `}
+                </div>
+              </div>
             </div>
-            ${isElite ? `
-              <div class="rank-lore-cash-tag" title="Can also be claimed using in-game cash from Detective NJ!">
-                <i class="fa-solid fa-gamepad"></i> OR <strong>$10,000</strong> Lore Game Cash
-              </div>
-            ` : `
-              <div class="rank-glory-tag">
-                <i class="fa-solid fa-bolt"></i> Grants <strong>${rank.minGlory}</strong> Glory Points Base
-              </div>
-            `}
+
+            <!-- BUY Button -->
+            <div class="tier-board-actions">
+              <button class="btn btn-tier-buy ${rank.id}-buy-btn" onclick="handleClaimClick('${rank.id}')">
+                <i class="fa-solid fa-shield-halved"></i> BUY ${rank.name} · ₹${rank.price}
+              </button>
+            </div>
           </div>
 
-          <div class="glory-rule-callout">
-            <i class="fa-solid fa-angles-up" style="color: ${rank.color};"></i>
-            <span>Contribute <strong>above ₹${rank.price}</strong> anytime to gain extra Glory &amp; reach #1!</span>
+          <!-- Leaderboard Area (1. 2. 3. ...) -->
+          <div class="tier-leaderboard-area">
+            <div class="tier-leaderboard-subhead">
+              <span><i class="fa-solid fa-trophy" style="color: ${rank.color};"></i> ${rank.name} SPECIAL BOARD</span>
+              <span>Ranked by Glory Points</span>
+            </div>
+            <div class="tier-entries-list">
+              ${entriesHtml.join('')}
+            </div>
           </div>
-
-          <ul class="rank-perks-list">
-            ${rank.perks.map(perk => `
-              <li><i class="fa-solid fa-circle-check" style="color: ${rank.color};"></i> <span>${perk}</span></li>
-            `).join('')}
-          </ul>
-
-          <button class="btn rank-claim-btn" onclick="handleClaimClick('${rank.id}')" style="background: linear-gradient(135deg, ${rank.color}, rgba(${rank.rgb}, 0.7));">
-            <i class="fa-solid fa-shield-halved"></i> Claim ${rank.name}
-          </button>
-        </div>
+        </section>
       `;
     }).join('');
   }
@@ -516,7 +582,7 @@
           // Sort descending by Glory Points
           merged.sort((a, b) => b.glory - a.glory);
           supportersData = merged;
-          renderLeaderboard();
+          renderMergedRankBoards();
           updateHeroSpotlight();
         }, (error) => {
           console.warn("Firestore Supporters listener notice (using seed cache):", error);
@@ -539,134 +605,8 @@
     } else {
       supportersData = [...DEFAULT_SUPPORTERS];
     }
-    renderLeaderboard();
+    renderMergedRankBoards();
     updateHeroSpotlight();
-  }
-
-  // ==========================================================================
-  // LEADERBOARD & PODIUM RENDERING
-  // ==========================================================================
-  function renderLeaderboard() {
-    const podiumContainer = document.getElementById("supporters-podium-container");
-    const tableBody = document.getElementById("supporters-leaderboard-body");
-    if (!podiumContainer || !tableBody) return;
-
-    // Filter by rank if selected
-    const filtered = activeFilter === "all" 
-      ? supportersData 
-      : supportersData.filter(s => (s.rank || "").toLowerCase() === activeFilter.toLowerCase());
-
-    // 1. Render Top 3 Podium
-    const topThree = filtered.slice(0, 3);
-    const podiumPlaces = [
-      { pos: 2, label: "2ND PLACE", class: "second-place", icon: "fa-medal" },
-      { pos: 1, label: "1ST PLACE - SUPREME", class: "first-place", icon: "fa-crown" },
-      { pos: 3, label: "3RD PLACE", class: "third-place", icon: "fa-award" }
-    ];
-
-    podiumContainer.innerHTML = podiumPlaces.map(p => {
-      const idx = p.pos - 1;
-      const supporter = topThree[idx];
-      if (supporter) {
-        const rankInfo = SUPPORTER_RANKS[supporter.rank] || SUPPORTER_RANKS.elite;
-        return `
-          <div class="podium-card ${p.class}">
-            <div class="podium-crown"><i class="fa-solid ${p.icon}"></i> ${p.label}</div>
-            <div class="podium-crest-box">
-              <img src="${rankInfo.image}" alt="${rankInfo.name}" class="podium-crest-img">
-            </div>
-            <h4 class="podium-name">${escapeHtml(supporter.name)}</h4>
-            <div class="podium-faction">${escapeHtml(supporter.faction || "Faction Member")}</div>
-            <div class="podium-glory" style="color: ${rankInfo.color};">
-              <i class="fa-solid fa-bolt"></i> ${(supporter.glory || 0).toLocaleString('en-IN')} GLORY
-            </div>
-            ${supporter.message ? `<p class="podium-quote">"${escapeHtml(supporter.message)}"</p>` : ''}
-          </div>
-        `;
-      } else {
-        return `
-          <div class="podium-card ${p.class} empty-podium">
-            <div class="podium-crown"><i class="fa-solid ${p.icon}"></i> ${p.label}</div>
-            <div class="podium-crest-placeholder"><i class="fa-solid fa-lock"></i></div>
-            <h4 style="color:var(--text-muted); font-size: 0.9rem;">Vacant Rank</h4>
-            <p style="font-size: 0.75rem; color: var(--text-muted);">Contribute Glory to claim this spot!</p>
-          </div>
-        `;
-      }
-    }).join('');
-
-    // 2. Render Full Ranked Table
-    if (filtered.length === 0) {
-      tableBody.innerHTML = `
-        <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
-          <i class="fa-solid fa-shield-halved" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--color-blue-neon);"></i>
-          <p>No supporters found in this category yet. Be the first to claim this rank!</p>
-        </div>
-      `;
-      return;
-    }
-
-    let rowsHtml = filtered.map((supporter, idx) => {
-      const rankInfo = SUPPORTER_RANKS[supporter.rank] || SUPPORTER_RANKS.elite;
-      const rankNum = idx + 1;
-      let badgeClass = "badge-number";
-      if (rankNum === 1) badgeClass += " top-1";
-      else if (rankNum === 2) badgeClass += " top-2";
-      else if (rankNum === 3) badgeClass += " top-3";
-
-      const formattedGlory = (supporter.glory || 0).toLocaleString('en-IN');
-      const isLoreRedeemed = supporter.paymentMethod === "lore_cash";
-
-      return `
-        <tr class="supporter-row">
-          <td class="col-rank">
-            <span class="${badgeClass}">#${rankNum}</span>
-          </td>
-          <td class="col-user">
-            <div class="supporter-name-box">
-              <strong class="supporter-name">${escapeHtml(supporter.name)}</strong>
-              ${supporter.message ? `<div class="supporter-lore-msg">"${escapeHtml(supporter.message)}"</div>` : ''}
-            </div>
-          </td>
-          <td class="col-tier">
-            <div class="tier-cell">
-              <img src="${rankInfo.image}" alt="${rankInfo.name}" class="table-crest-thumb">
-              <span class="table-rank-pill" style="color: ${rankInfo.color}; border: 1px solid rgba(${rankInfo.rgb}, 0.3); background: rgba(${rankInfo.rgb}, 0.1);">
-                ${rankInfo.name}
-              </span>
-            </div>
-          </td>
-          <td class="col-faction">
-            <span class="supporter-faction-tag">${escapeHtml(supporter.faction || "Independent")}</span>
-            ${isLoreRedeemed ? '<span class="lore-cash-chip" title="Unlocked using $10k Detective NJ bounty cash!"><i class="fa-solid fa-gamepad"></i> Game Cash</span>' : ''}
-          </td>
-          <td class="col-glory" style="text-align: right;">
-            <div class="glory-number" style="color: ${rankInfo.color}; font-weight: 800; font-family: var(--font-display);">
-              <i class="fa-solid fa-bolt"></i> ${formattedGlory}
-            </div>
-          </td>
-        </tr>
-      `;
-    }).join('');
-
-    tableBody.innerHTML = `
-      <div class="supporters-table-wrap">
-        <table class="supporters-table">
-          <thead>
-            <tr>
-              <th style="width: 70px;">Rank</th>
-              <th>Supporter</th>
-              <th>Rank Tier</th>
-              <th>Faction</th>
-              <th style="text-align: right;">Glory Points</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${rowsHtml}
-          </tbody>
-        </table>
-      </div>
-    `;
   }
 
   // Update Hero Spotlight if element exists (on index.html)
@@ -694,7 +634,7 @@
     activeFilter = rankKey;
     document.querySelectorAll(".board-filter-btn").forEach(btn => btn.classList.remove("active"));
     if (btnEl) btnEl.classList.add("active");
-    renderLeaderboard();
+    renderMergedRankBoards();
   };
 
   // ==========================================================================
