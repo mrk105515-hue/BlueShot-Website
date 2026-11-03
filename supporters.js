@@ -230,15 +230,8 @@
     }
   }
 
-  // Claim click handler with strict authentication check
+  // Claim click handler: opens the Buy & Glory modal directly
   window.handleClaimClick = function(rankId) {
-    if (!currentUser) {
-      pendingRankClaim = rankId;
-      const rank = SUPPORTER_RANKS[rankId];
-      const rankName = rank ? rank.name : "Rank";
-      openAuthModal('login', `Please log in or register to claim the ${rankName} rank!`);
-      return;
-    }
     openSupporterModal(rankId);
   };
 
@@ -656,34 +649,51 @@
   }
 
   window.openSupporterModal = function(rankId) {
-    // Enforce Login Gate
-    if (!currentUser) {
-      pendingRankClaim = rankId;
-      openAuthModal('login', `Please log in to claim this rank.`);
-      return;
-    }
-
     currentSelectedRank = rankId || "elite";
     const rank = SUPPORTER_RANKS[currentSelectedRank] || SUPPORTER_RANKS.elite;
     const modal = document.getElementById("supporter-modal");
     if (!modal) return;
 
     // Set modal details
-    document.getElementById("modal-crest-img").src = rank.image;
-    document.getElementById("modal-rank-name").textContent = rank.name;
-    document.getElementById("modal-rank-name").style.color = rank.color;
-    document.getElementById("modal-rank-title").textContent = rank.title;
-    document.getElementById("modal-base-price").textContent = `Base Plan: ₹${rank.price}`;
+    const crestEl = document.getElementById("modal-crest-img");
+    if (crestEl) crestEl.src = rank.image;
+    const nameEl = document.getElementById("modal-rank-name");
+    if (nameEl) {
+      nameEl.textContent = rank.name;
+      nameEl.style.color = rank.color;
+    }
+    const titleEl = document.getElementById("modal-rank-title");
+    if (titleEl) titleEl.textContent = rank.title;
+    const priceEl = document.getElementById("modal-base-price");
+    if (priceEl) priceEl.textContent = `Base Plan: ₹${rank.price}`;
+
+    // Account status inside modal if present
+    const accountText = document.getElementById("modal-account-text");
+    const authLink = document.getElementById("modal-auth-toggle-link");
+    if (currentUser) {
+      if (accountText) accountText.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#00ff88;"></i> Linked as <strong>${escapeHtml(currentUser.displayName || currentUser.email)}</strong>`;
+      if (authLink) authLink.style.display = "none";
+    } else {
+      if (accountText) accountText.innerHTML = `<i class="fa-solid fa-user-lock"></i> Guest claim (optional account link)`;
+      if (authLink) {
+        authLink.style.display = "inline-block";
+        authLink.textContent = "Sign In";
+      }
+    }
 
     // Pre-fill user profile fields
     const nameInput = document.getElementById("supporter-name-input");
     const emailInput = document.getElementById("supporter-email-input");
-    if (nameInput) nameInput.value = currentUser.displayName || (currentUser.email ? currentUser.email.split("@")[0] : "");
-    if (emailInput) emailInput.value = currentUser.email || "";
+    if (currentUser) {
+      if (nameInput && !nameInput.value) nameInput.value = currentUser.displayName || (currentUser.email ? currentUser.email.split("@")[0] : "");
+      if (emailInput && !emailInput.value) emailInput.value = currentUser.email || "";
+    }
 
     const amountInput = document.getElementById("supporter-amount-input");
-    amountInput.min = rank.price;
-    amountInput.value = rank.price;
+    if (amountInput) {
+      amountInput.min = rank.price;
+      amountInput.value = rank.price;
+    }
 
     // Lore Game Cash Check ($10,000 for Elite)
     const loreCashSection = document.getElementById("lore-cash-tab-btn");
@@ -731,6 +741,14 @@
     document.body.style.overflow = "";
   };
 
+  // Keyboard Escape Handler
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeSupporterModal();
+      closeAuthModal();
+    }
+  });
+
   window.addExtraGlory = function(extraAmount) {
     const input = document.getElementById("supporter-amount-input");
     if (!input) return;
@@ -774,12 +792,6 @@
   // PAYMENT HANDLER 1: RAZORPAY UPI / CARDS
   // ==========================================================================
   window.submitRazorpaySupporter = function() {
-    if (!currentUser) {
-      alert("You must be signed in to complete your rank claim.");
-      openAuthModal('login');
-      return;
-    }
-
     const rank = SUPPORTER_RANKS[currentSelectedRank] || SUPPORTER_RANKS.elite;
     const name = document.getElementById("supporter-name-input").value.trim();
     const email = document.getElementById("supporter-email-input").value.trim();
@@ -821,8 +833,8 @@
         completeSupporterRegistration({
           paymentId: response.razorpay_payment_id,
           paymentMethod: "razorpay",
-          userId: currentUser.uid,
-          userEmail: currentUser.email,
+          userId: currentUser ? currentUser.uid : ("usr_" + Date.now().toString(36)),
+          userEmail: currentUser ? currentUser.email : email,
           name: name,
           email: email,
           rank: rank.id,
@@ -846,16 +858,10 @@
   // PAYMENT HANDLER 2: REDEEM LORE GAME CASH ($10,000 FOR ELITE)
   // ==========================================================================
   window.redeemLoreCashSupporter = function() {
-    if (!currentUser) {
-      alert("You must be signed in to redeem your lore game cash.");
-      openAuthModal('login');
-      return;
-    }
-
     if (currentSelectedRank !== "elite") return;
 
     const name = document.getElementById("supporter-name-input").value.trim();
-    const email = document.getElementById("supporter-email-input").value.trim() || currentUser.email;
+    const email = document.getElementById("supporter-email-input").value.trim() || (currentUser ? currentUser.email : "supporter@blueshot.online");
     const faction = document.getElementById("supporter-faction-input").value.trim() || "Detective NJ Squad";
     const message = document.getElementById("supporter-message-input").value.trim() || "Redeemed with $10,000 Detective NJ bounty cash!";
 
@@ -884,8 +890,8 @@
     completeSupporterRegistration({
       paymentId: paymentId,
       paymentMethod: "lore_cash",
-      userId: currentUser.uid,
-      userEmail: currentUser.email,
+      userId: currentUser ? currentUser.uid : ("usr_" + Date.now().toString(36)),
+      userEmail: currentUser ? currentUser.email : email,
       name: name,
       email: email,
       rank: "elite",
