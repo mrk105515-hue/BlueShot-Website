@@ -94,6 +94,7 @@
       <nav>
         <ul class="nav-links" id="nav-links">
           <li class="nav-link active"><a href="#hero">Home</a></li>
+          <li class="nav-link"><a href="#supporters">Supporters</a></li>
           <li class="nav-link"><a href="#featured-video">Season 3</a></li>
           <li class="nav-link"><a href="characters.html">Characters</a></li>
           <li class="nav-link"><a href="mystery.html">Lore Game</a></li>
@@ -162,21 +163,84 @@
       </div>
       
       <div class="hero-visual">
-        <div class="visual-glow"></div>
-        <div class="visual-card reveal-scale delay-3">
+        <div class="visual-glow" style="background: radial-gradient(circle, rgba(199, 66, 255, 0.25) 0%, transparent 70%);"></div>
+        <div class="visual-card supporters-spotlight-card reveal-scale delay-3" style="border-color: rgba(199, 66, 255, 0.35); box-shadow: 0 15px 40px rgba(199, 66, 255, 0.2);">
           <div class="card-top">
-            <span class="card-status"><span class="card-status-dot" style="background-color: #ff3b30; box-shadow: 0 0 8px #ff3b30;"></span> COUNTDOWN ACTIVE</span>
-            <span class="card-brand">EP 26</span>
+            <span class="card-status" style="color: #c742ff;"><span class="card-status-dot" style="background-color: #c742ff; box-shadow: 0 0 8px #c742ff;"></span> SUPPORTERS BOARD</span>
+            <span class="card-brand" style="color: #ffd700;"><i class="fa-solid fa-crown"></i> HALL OF FAME</span>
           </div>
-          <div class="card-image-wrap">
-            <img src="assets/BSGRED_EP_26.png" alt="Episode 26 Release Countdown" class="card-image">
+          <div class="card-image-wrap" style="position: relative; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(199, 66, 255, 0.1) 0%, transparent 70%); margin: 1rem 0;">
+            <img src="assets/rank-emperor.jpg" alt="Top Supporter Crest" class="card-image" id="hero-spotlight-crest" style="max-height: 170px; width: auto; object-fit: contain; filter: drop-shadow(0 0 20px rgba(199, 66, 255, 0.6));">
+            <div class="spotlight-rank-tag" id="hero-spotlight-rank" style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #c742ff, #ff007f); color: #fff; padding: 0.25rem 0.85rem; border-radius: 20px; font-size: 0.72rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">EMPEROR RANK</div>
           </div>
-          <div class="card-info">
-            <h3>EP 26 COMING ON</h3>
-            <p class="card-timer" id="hero-timer">00:00:00</p>
+          <div class="card-info" style="text-align: center;">
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">Top Champion</div>
+            <h3 id="hero-spotlight-name" style="font-size: 1.25rem; color: #fff; margin-bottom: 0.25rem; font-family: var(--font-display);">Neeraj Saklani</h3>
+            <p id="hero-spotlight-glory" style="color: #ffd700; font-weight: 800; font-size: 0.95rem; margin-bottom: 1.2rem;"><i class="fa-solid fa-bolt"></i> 5,000 Glory Points</p>
+            <a href="#supporters" class="btn btn-primary" style="width: 100%; border-radius: 30px; font-size: 0.85rem; padding: 0.7rem 1.2rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none; background: linear-gradient(135deg, #c742ff, #00e5ff); border: none;">
+              <i class="fa-solid fa-shield-halved"></i> Claim Rank &amp; Glory
+            </a>
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- SUPPORTERS & GLOBAL LEADERBOARD SECTION -->
+  <section class="supporters-section section-padding" id="supporters">
+    <div class="container-width">
+      
+      <!-- Section Header -->
+      <div class="section-header" style="text-align: center; margin-bottom: 3.5rem;">
+        <span class="section-subtitle" style="color: var(--color-blue-neon); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; font-size: 0.85rem;">
+          <i class="fa-solid fa-crown" style="color: #ffd700;"></i> Patronage &amp; Hall of Fame
+        </span>
+        <h2 class="section-title" style="font-size: clamp(2rem, 5vw, 3.2rem); margin-top: 0.5rem; text-shadow: 0 0 25px rgba(0, 229, 255, 0.3);">
+          Supporters
+        </h2>
+        <p class="section-desc" style="max-width: 720px; margin: 0 auto; color: var(--text-secondary); line-height: 1.6;">
+          Claim your cosmic faction rank, support the BlueShot universe, and get immortalized on the global board. 
+          <strong>Contribute any custom amount above your plan</strong> to boost your Glory Points and secure the top spot on the leaderboard!
+        </p>
+      </div>
+
+      <!-- 4 Ranks Grid (Dynamically Populated & Fully Semantic) -->
+      <div class="ranks-grid" id="ranks-showcase-grid">
+        <!-- Rendered by supporters.js -->
+      </div>
+
+      <!-- Special Board / Global Leaderboard -->
+      <div class="supporters-board-card">
+        <div class="board-header">
+          <div class="board-title-group">
+            <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--color-blue-neon); font-weight: 800;">
+              <i class="fa-solid fa-trophy" style="color: #ffd700;"></i> Global Hall of Fame
+            </span>
+            <h3>Special Supporter Board</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Ranked dynamically by Glory Points. Updated in real time for everyone.</p>
+          </div>
+
+          <!-- Filter Tabs -->
+          <div class="board-filter-tabs">
+            <button class="board-filter-btn active" onclick="filterSupporters('all', this)">All Supporters</button>
+            <button class="board-filter-btn" onclick="filterSupporters('emperor', this)"><i class="fa-solid fa-crown" style="color: #c742ff;"></i> Emperor</button>
+            <button class="board-filter-btn" onclick="filterSupporters('apex', this)"><i class="fa-solid fa-bolt" style="color: #ffd700;"></i> Apex</button>
+            <button class="board-filter-btn" onclick="filterSupporters('warlord', this)"><i class="fa-solid fa-shield" style="color: #00e5ff;"></i> Warlord</button>
+            <button class="board-filter-btn" onclick="filterSupporters('elite', this)"><i class="fa-solid fa-award" style="color: #ff7b25;"></i> Elite</button>
+          </div>
+        </div>
+
+        <!-- Top 3 Podium -->
+        <div class="supporters-podium" id="supporters-podium-container">
+          <!-- Populated by supporters.js -->
+        </div>
+
+        <!-- Full Table List Container -->
+        <div id="supporters-leaderboard-body">
+          <!-- Populated by supporters.js -->
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -520,6 +584,95 @@
     </div>
   </div>
 
+  <!-- SUPPORTER PURCHASE & GLORY MODAL -->
+  <div class="modal" id="supporter-modal">
+    <div class="modal-backdrop" id="supporter-modal-backdrop"></div>
+    <div class="modal-content supporter-modal-content">
+      <button class="modal-close-btn" id="supporter-modal-close" aria-label="Close Modal"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="modal-rank-summary">
+        <img src="assets/rank-elite.png" alt="Rank Crest" id="modal-crest-img" class="modal-crest-img">
+        <div>
+          <span id="modal-rank-title" style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px;">Faction Vanguard</span>
+          <h3 id="modal-rank-name" style="font-size: 1.6rem; font-family: var(--font-display); font-weight: 900; margin: 0.1rem 0;">ELITE</h3>
+          <span id="modal-base-price" style="font-size: 0.85rem; color: #fff; font-weight: 600;">Base Plan: ₹5</span>
+        </div>
+      </div>
+
+      <!-- Payment Method Switcher (for Elite rank lore cash) -->
+      <div class="payment-tab-selector">
+        <button class="payment-tab-btn active" id="pay-tab-razorpay" onclick="switchPaymentTab('razorpay')">
+          <i class="fa-solid fa-credit-card"></i> Pay Online (UPI / Cards)
+        </button>
+        <button class="payment-tab-btn lore-tab" id="lore-cash-tab-btn" onclick="switchPaymentTab('lore')" style="display: none;">
+          <i class="fa-solid fa-gamepad"></i> Lore Game Cash ($10,000)
+        </button>
+      </div>
+
+      <!-- FORM FIELDS -->
+      <form id="supporter-form" onsubmit="event.preventDefault();" style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.35rem;">Supporter Name / Gamer Tag *</label>
+          <input type="text" id="supporter-name-input" required placeholder="e.g. Akira_BSG, Sanjay Kumar" style="width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; box-sizing: border-box;">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div>
+            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.35rem;">Email (for receipt) *</label>
+            <input type="email" id="supporter-email-input" required placeholder="you@email.com" style="width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.35rem;">Favorite Faction</label>
+            <input type="text" id="supporter-faction-input" placeholder="e.g. Flame Devil, East Emperor" style="width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; box-sizing: border-box;">
+          </div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.35rem;">Personal Message / Quote (Optional)</label>
+          <input type="text" id="supporter-message-input" placeholder="e.g. Glory to BSG! Reaching Beyond State." maxlength="100" style="width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; box-sizing: border-box;">
+        </div>
+
+        <!-- RAZORPAY / CASH GLORY AMOUNT BOX -->
+        <div id="razorpay-pay-box">
+          <div style="background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+              <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--color-blue-neon); font-weight: 700;">Contribution Amount (₹)</span>
+              <span id="modal-glory-preview" style="font-family: var(--font-display); font-size: 0.85rem; font-weight: 800; color: #ffd700;">⚡ 5 GLORY</span>
+            </div>
+            <input type="number" id="supporter-amount-input" min="5" value="5" style="width: 100%; font-size: 1.3rem; font-weight: 800; font-family: var(--font-display); padding: 0.6rem 0.8rem; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; box-sizing: border-box;">
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0.4rem 0 0.5rem 0;">💡 <em>Pay any amount above your plan to gain extra Glory Points and be at the top of your ranking!</em></p>
+            <div class="glory-chips">
+              <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; align-items: center;">Quick Boost:</span>
+              <button type="button" class="glory-chip" onclick="addExtraGlory(10)">+₹10</button>
+              <button type="button" class="glory-chip" onclick="addExtraGlory(50)">+₹50</button>
+              <button type="button" class="glory-chip" onclick="addExtraGlory(100)">+₹100</button>
+              <button type="button" class="glory-chip" onclick="addExtraGlory(500)">+₹500</button>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary" onclick="submitRazorpaySupporter()" style="width: 100%; padding: 0.9rem; font-size: 1rem; font-weight: 800; border-radius: 30px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: linear-gradient(135deg, #00e5ff, #0071e3); color: #000;">
+            <i class="fa-solid fa-lock"></i> Proceed to Pay via Razorpay
+          </button>
+        </div>
+
+        <!-- LORE CASH PAY BOX -->
+        <div id="lore-cash-pay-box" style="display: none;">
+          <div style="background: rgba(0, 255, 136, 0.08); border: 1px solid rgba(0, 255, 136, 0.25); border-radius: 12px; padding: 1.25rem; text-align: center; margin-bottom: 1.25rem;">
+            <div style="font-size: 2.2rem; color: #00ff88; margin-bottom: 0.5rem;"><i class="fa-solid fa-sack-dollar"></i></div>
+            <h4 style="color: #fff; margin-bottom: 0.25rem;">Detective NJ Bounty Cash</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Your in-game cash from solved cases in the Lore Mystery Game:</p>
+            <div style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 900; color: #00ff88;" id="lore-wallet-balance-num">$0</div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">Cost: <strong>$10,000 Lore Cash</strong> to unlock permanent Elite Rank &amp; 100 Glory Points.</p>
+          </div>
+
+          <button type="button" id="claim-lore-cash-btn" class="btn btn-primary" onclick="redeemLoreCashSupporter()" style="width: 100%; padding: 0.9rem; font-size: 0.95rem; font-weight: 800; border-radius: 30px; background: linear-gradient(135deg, #00ff88, #00e5ff); color: #000; border: none; cursor: pointer;">
+            <i class="fa-solid fa-check-circle"></i> Redeem 10,000$ Game Cash
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- FLOATING FEEDBACK ALERT -->
   <div class="alert-container" id="alert-container"></div>
 
@@ -529,6 +682,10 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
+
+  <!-- Razorpay Web SDK for Instant Supporter Checkout -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="supporters.js?v=1.0.0"></script>
 
   <!-- Custom Scripts -->
   <script src="script.js?v=1.0.2"></script>
