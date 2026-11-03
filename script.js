@@ -420,7 +420,8 @@ function initStatsCounter() {
 // VIDEO WATCH MODAL FUNCTIONS
 function initVideoModal() {
   const trigger = document.getElementById("video-container-trigger");
-  const modal = document.getElementById("video-modal");`r`n  if (!modal) return;
+  const modal = document.getElementById("video-modal");
+  if (!modal) return;
   const closeBtn = document.getElementById("video-modal-close");
   const placeholder = document.getElementById("video-modal-iframe-placeholder");
   const backdrop = modal.querySelector(".modal-backdrop");
