@@ -1,7 +1,7 @@
 // ==========================================================================
 // DXZ SUPPORTERS & GLOBAL RANK SYSTEM
 // Handles Rank Purchases (Razorpay & Lore Game Cash), Glory Boosting,
-// and Live Leaderboard / Special Board Synchronization.
+// Strict Authentication Gating, and Live Special Board Leaderboard.
 // ==========================================================================
 
 (function() {
@@ -19,12 +19,12 @@
       color: "#ff7b25",
       rgb: "255, 123, 37",
       title: "Faction Vanguard",
-      tagline: "The foundation of the resistance.",
+      tagline: "The steadfast foundation of the resistance.",
       perks: [
-        "Official Bronze Crest on Global Board",
+        "Official Bronze Crest on Special Board",
         "Unlock with ₹5 OR $10,000 Lore Game Cash",
         "Permanent Supporter Profile Badge",
-        "Custom Glory Boosting to rise in rank"
+        "Custom Glory Boosting to rise to #1"
       ]
     },
     warlord: {
@@ -38,9 +38,9 @@
       title: "Battle Commander",
       tagline: "Leading the frontlines into cosmic battle.",
       perks: [
-        "Silver & Ice Blue Crest on Global Board",
+        "Silver & Ice Blue Crest on Special Board",
         "Cyan highlighted card on the Special Board",
-        "Faction Commander badge on profile",
+        "Battle Commander badge on profile",
         "Custom Glory Boosting to claim #1"
       ]
     },
@@ -54,9 +54,9 @@
       rgb: "255, 215, 0",
       title: "Zenith Sovereign",
       popular: true,
-      tagline: "Unrivaled warriors reaching the peak of power.",
+      tagline: "Unrivaled warriors reaching the peak of cosmic power.",
       perks: [
-        "Radiant Golden Crest on Global Board",
+        "Radiant Golden Crest on Special Board",
         "Top 3 Podium Spotlight Eligibility",
         "Golden Glowing Nameplate on Leaderboard",
         "Custom Glory Boosting to claim #1"
@@ -74,7 +74,7 @@
       supreme: true,
       tagline: "Supreme rulers who shape the destiny of DXZ.",
       perks: [
-        "Mythic Violet Crest on Global Board",
+        "Mythic Violet Crest on Special Board",
         "Guaranteed Hero Section Spotlight Feature",
         "Permanent Cosmic Flame Border Animation",
         "Supreme Leaderboard Priority & Glory Boost"
@@ -100,223 +100,504 @@
       rank: "apex",
       glory: 1250,
       amount: 1250,
-      faction: "East Empire",
-      message: "Standing firm against Kraven and the Abyss.",
-      createdAt: "2026-10-20T14:30:00Z"
+      faction: "Blue Shot Guild",
+      message: "Protecting the Redago legacy at all costs.",
+      createdAt: "2026-10-18T14:30:00Z"
     },
     {
       id: "sup_seed_3",
-      name: "ShadowDagger",
+      name: "ShadowStrike",
       rank: "warlord",
-      glory: 600,
-      amount: 600,
-      faction: "Dark Magic",
-      message: "Dominance through sheer will.",
-      createdAt: "2026-10-24T18:00:00Z"
+      glory: 480,
+      amount: 480,
+      faction: "Shadow Syndicate",
+      message: "Watch your back, Black Dagger.",
+      createdAt: "2026-10-22T08:15:00Z"
     },
     {
       id: "sup_seed_4",
-      name: "Detective_NJ_Ace",
+      name: "Detective_NJ",
       rank: "elite",
-      glory: 150,
-      amount: 150,
-      faction: "Investigator",
-      paymentMethod: "lore_cash",
-      message: "Bounty cashed in from solved mysteries! 🕵️‍♂️",
-      createdAt: "2026-10-28T12:15:00Z"
+      glory: 250,
+      amount: 250,
+      faction: "Detective Division",
+      message: "Redeemed with $10,000 crime syndicate bounties! 🕵️‍♂️",
+      createdAt: "2026-10-25T19:00:00Z"
+    },
+    {
+      id: "sup_seed_5",
+      name: "CyberRonin_99",
+      rank: "warlord",
+      glory: 120,
+      amount: 120,
+      faction: "Independent Faction",
+      message: "Glory to the fighters.",
+      createdAt: "2026-10-28T11:20:00Z"
     }
   ];
 
-  let currentSelectedRank = "elite";
+  let supportersData = [];
   let activeFilter = "all";
-  let loadedSupporters = [];
+  let currentSelectedRank = "elite";
+  let currentUser = null;
+  let pendingRankClaim = null;
 
   // ==========================================================================
   // INITIALIZATION
   // ==========================================================================
   document.addEventListener("DOMContentLoaded", () => {
-    initSupportersSection();
+    initAuthListener();
+    initAuthModal();
+    renderRankCards();
     loadSupportersFromDatabase();
     initSupporterModal();
   });
 
   // ==========================================================================
-  // RENDER RANKS GRID IN SUPPORTERS SECTION
+  // AUTHENTICATION MANAGEMENT
   // ==========================================================================
-  function initSupportersSection() {
-    const grid = document.getElementById("ranks-showcase-grid");
-    if (!grid) return;
+  function initAuthListener() {
+    if (typeof firebase !== "undefined" && firebase.auth) {
+      firebase.auth().onAuthStateChanged((user) => {
+        currentUser = user;
+        updateAuthUI(user);
+        
+        // Auto-fill inputs if supporter modal is open
+        if (user) {
+          const nameInput = document.getElementById("supporter-name-input");
+          const emailInput = document.getElementById("supporter-email-input");
+          if (nameInput && !nameInput.value) {
+            nameInput.value = user.displayName || user.email.split("@")[0];
+          }
+          if (emailInput && !emailInput.value) {
+            emailInput.value = user.email || "";
+          }
+        }
+      });
+    } else {
+      // Local demo mode check
+      const demoUser = localStorage.getItem("dxz_demo_user");
+      if (demoUser) {
+        try {
+          currentUser = JSON.parse(demoUser);
+          updateAuthUI(currentUser);
+        } catch (e) {}
+      } else {
+        updateAuthUI(null);
+      }
+    }
+  }
 
-    grid.innerHTML = Object.values(SUPPORTER_RANKS).map(rank => {
+  function updateAuthUI(user) {
+    const authBar = document.getElementById("supporter-auth-bar");
+    if (!authBar) return;
+
+    if (user) {
+      const displayName = user.displayName || (user.email ? user.email.split("@")[0] : "Supporter");
+      authBar.innerHTML = `
+        <div class="auth-bar-logged-in">
+          <div class="auth-user-chip">
+            <span class="auth-status-dot online"></span>
+            <div class="auth-user-meta">
+              <span class="auth-greeting">Signed In As</span>
+              <strong class="auth-username">${escapeHtml(displayName)}</strong>
+              <span class="auth-email">(${escapeHtml(user.email || "")})</span>
+            </div>
+          </div>
+          <div class="auth-actions">
+            <span class="auth-verified-badge"><i class="fa-solid fa-circle-check"></i> Eligible to Claim Ranks</span>
+            <button class="btn btn-sm btn-outline-danger" onclick="signOutSupporterUser()">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+            </button>
+          </div>
+        </div>
+      `;
+    } else {
+      authBar.innerHTML = `
+        <div class="auth-bar-logged-out">
+          <div class="auth-lock-info">
+            <i class="fa-solid fa-shield-halved auth-lock-icon"></i>
+            <div>
+              <strong>Authentication Required to Claim Ranks</strong>
+              <p>You can view ranks and the Special Board, but you must be logged in to claim a rank and link your profile to the leaderboard.</p>
+            </div>
+          </div>
+          <button class="btn btn-outline-cyan auth-bar-btn" onclick="openAuthModal('login')">
+            <i class="fa-solid fa-right-to-bracket"></i> Log In / Register
+          </button>
+        </div>
+      `;
+    }
+  }
+
+  // Claim click handler with strict authentication check
+  window.handleClaimClick = function(rankId) {
+    if (!currentUser) {
+      pendingRankClaim = rankId;
+      const rank = SUPPORTER_RANKS[rankId];
+      const rankName = rank ? rank.name : "Rank";
+      openAuthModal('login', `Please log in or register to claim the ${rankName} rank!`);
+      return;
+    }
+    openSupporterModal(rankId);
+  };
+
+  // Auth Modal Management
+  function initAuthModal() {
+    const modal = document.getElementById("supporter-auth-modal");
+    if (!modal) return;
+
+    const closeBtn = document.getElementById("supporter-auth-close");
+    const backdrop = document.getElementById("supporter-auth-backdrop");
+    if (closeBtn) closeBtn.onclick = closeAuthModal;
+    if (backdrop) backdrop.onclick = closeAuthModal;
+
+    const loginForm = document.getElementById("supporter-login-form");
+    if (loginForm) {
+      loginForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("supporter-auth-email").value.trim();
+        const pass = document.getElementById("supporter-auth-pass").value;
+        const submitBtn = document.getElementById("supporter-login-submit");
+        const alertBox = document.getElementById("supporter-auth-alert");
+
+        if (alertBox) alertBox.style.display = "none";
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Signing In...`;
+        }
+
+        try {
+          if (typeof firebase !== "undefined" && firebase.auth) {
+            await firebase.auth().signInWithEmailAndPassword(email, pass);
+          } else {
+            // Local fallback
+            currentUser = { uid: "usr_" + Date.now(), email: email, displayName: email.split("@")[0] };
+            localStorage.setItem("dxz_demo_user", JSON.stringify(currentUser));
+            updateAuthUI(currentUser);
+          }
+          closeAuthModal();
+          
+          if (pendingRankClaim) {
+            const nextRank = pendingRankClaim;
+            pendingRankClaim = null;
+            setTimeout(() => openSupporterModal(nextRank), 300);
+          }
+        } catch (err) {
+          if (alertBox) {
+            alertBox.textContent = err.message || "Failed to sign in. Please verify your credentials.";
+            alertBox.style.display = "block";
+          }
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> Sign In`;
+          }
+        }
+      };
+    }
+
+    const regForm = document.getElementById("supporter-register-form");
+    if (regForm) {
+      regForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const name = document.getElementById("supporter-reg-name").value.trim();
+        const email = document.getElementById("supporter-reg-email").value.trim();
+        const pass = document.getElementById("supporter-reg-pass").value;
+        const submitBtn = document.getElementById("supporter-reg-submit");
+        const alertBox = document.getElementById("supporter-auth-alert");
+
+        if (alertBox) alertBox.style.display = "none";
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...`;
+        }
+
+        try {
+          if (typeof firebase !== "undefined" && firebase.auth) {
+            const cred = await firebase.auth().createUserWithEmailAndPassword(email, pass);
+            await cred.user.updateProfile({ displayName: name });
+            if (firebase.firestore) {
+              await firebase.firestore().collection("members").doc(cred.user.uid).set({
+                uid: cred.user.uid,
+                email: email,
+                displayName: name,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              }).catch(() => {});
+            }
+          } else {
+            currentUser = { uid: "usr_" + Date.now(), email: email, displayName: name };
+            localStorage.setItem("dxz_demo_user", JSON.stringify(currentUser));
+            updateAuthUI(currentUser);
+          }
+          closeAuthModal();
+
+          if (pendingRankClaim) {
+            const nextRank = pendingRankClaim;
+            pendingRankClaim = null;
+            setTimeout(() => openSupporterModal(nextRank), 300);
+          }
+        } catch (err) {
+          if (alertBox) {
+            alertBox.textContent = err.message || "Registration failed. Try again with a stronger password.";
+            alertBox.style.display = "block";
+          }
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i class="fa-solid fa-user-plus"></i> Create Account`;
+          }
+        }
+      };
+    }
+  }
+
+  window.openAuthModal = function(mode, customNotice) {
+    const modal = document.getElementById("supporter-auth-modal");
+    if (!modal) return;
+
+    const noticeEl = document.getElementById("supporter-auth-custom-notice");
+    if (noticeEl) {
+      if (customNotice) {
+        noticeEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${escapeHtml(customNotice)}`;
+        noticeEl.style.display = "block";
+      } else {
+        noticeEl.style.display = "none";
+      }
+    }
+
+    const alertBox = document.getElementById("supporter-auth-alert");
+    if (alertBox) alertBox.style.display = "none";
+
+    switchAuthMode(mode || 'login');
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  };
+
+  window.closeAuthModal = function() {
+    const modal = document.getElementById("supporter-auth-modal");
+    if (modal) modal.classList.remove("active");
+    document.body.style.overflow = "";
+  };
+
+  window.switchAuthMode = function(mode) {
+    const tabLogin = document.getElementById("auth-tab-login");
+    const tabReg = document.getElementById("auth-tab-reg");
+    const loginForm = document.getElementById("supporter-login-form");
+    const regForm = document.getElementById("supporter-register-form");
+
+    if (mode === 'register') {
+      if (tabLogin) tabLogin.classList.remove("active");
+      if (tabReg) tabReg.classList.add("active");
+      if (loginForm) loginForm.style.display = "none";
+      if (regForm) regForm.style.display = "block";
+    } else {
+      if (tabLogin) tabLogin.classList.add("active");
+      if (tabReg) tabReg.classList.remove("active");
+      if (loginForm) loginForm.style.display = "block";
+      if (regForm) regForm.style.display = "none";
+    }
+  };
+
+  window.signOutSupporterUser = async function() {
+    if (confirm("Are you sure you want to sign out?")) {
+      if (typeof firebase !== "undefined" && firebase.auth) {
+        await firebase.auth().signOut().catch(() => {});
+      }
+      localStorage.removeItem("dxz_demo_user");
+      currentUser = null;
+      updateAuthUI(null);
+    }
+  };
+
+  // ==========================================================================
+  // RENDER 4 RANK CARDS (MINIMAL & RESPONSIVE)
+  // ==========================================================================
+  function renderRankCards() {
+    const container = document.getElementById("ranks-showcase-grid");
+    if (!container) return;
+
+    const ranksArray = [
+      SUPPORTER_RANKS.elite,
+      SUPPORTER_RANKS.warlord,
+      SUPPORTER_RANKS.apex,
+      SUPPORTER_RANKS.emperor
+    ];
+
+    container.innerHTML = ranksArray.map(rank => {
       const isElite = rank.id === "elite";
-      const badgePill = rank.supreme 
-        ? `<span class="rank-card-pill supreme"><i class="fa-solid fa-crown"></i> SUPREME RANK</span>`
-        : rank.popular 
-        ? `<span class="rank-card-pill popular"><i class="fa-solid fa-fire"></i> MOST POPULAR</span>`
-        : '';
+      const isPopular = rank.popular;
+      const isSupreme = rank.supreme;
 
       return `
         <div class="rank-card ${rank.id}-card" data-rank="${rank.id}">
-          <div class="rank-card-glow" style="background: radial-gradient(circle, rgba(${rank.rgb}, 0.22) 0%, transparent 70%);"></div>
-          ${badgePill}
-          
+          <div class="rank-card-glow" style="background: radial-gradient(circle, rgba(${rank.rgb}, 0.28) 0%, transparent 70%);"></div>
+
+          ${isSupreme ? '<div class="rank-card-pill supreme"><i class="fa-solid fa-crown"></i> SUPREME OVERLORD</div>' : ''}
+          ${isPopular ? '<div class="rank-card-pill popular"><i class="fa-solid fa-fire"></i> MOST POPULAR</div>' : ''}
+
           <div class="rank-crest-wrapper">
             <img src="${rank.image}" alt="${rank.name} Crest" class="rank-crest-img">
           </div>
 
           <div class="rank-header">
-            <span class="rank-badge-tag" style="background: rgba(${rank.rgb}, 0.15); color: ${rank.color}; border: 1px solid rgba(${rank.rgb}, 0.35);">
-              ${rank.title}
-            </span>
-            <h3 class="rank-title" style="color: #fff; text-shadow: 0 0 15px rgba(${rank.rgb}, 0.5);">${rank.name}</h3>
+            <h3 class="rank-name" style="color: ${rank.color};">${rank.name}</h3>
+            <span class="rank-title">${rank.title}</span>
             <p class="rank-tagline">${rank.tagline}</p>
           </div>
 
-          <div class="rank-pricing-box">
-            <div class="rank-main-price">
-              <span class="currency">₹</span><span class="price-val">${rank.price}</span>
+          <div class="rank-pricing-block">
+            <div class="rank-price-main">
+              <span class="currency">₹</span><span class="amount">${rank.price}</span>
             </div>
             ${isElite ? `
               <div class="rank-lore-cash-tag" title="Can also be claimed using in-game cash from Detective NJ!">
                 <i class="fa-solid fa-gamepad"></i> OR <strong>$10,000</strong> Lore Game Cash
               </div>
             ` : `
-              <div class="rank-glory-boost-hint">
-                <i class="fa-solid fa-bolt"></i> Grants <strong>${rank.minGlory}+</strong> Base Glory
+              <div class="rank-glory-tag">
+                <i class="fa-solid fa-bolt"></i> Grants <strong>${rank.minGlory}</strong> Glory Points Base
               </div>
             `}
           </div>
 
+          <div class="glory-rule-callout">
+            <i class="fa-solid fa-angles-up" style="color: ${rank.color};"></i>
+            <span>Contribute <strong>above ₹${rank.price}</strong> anytime to gain extra Glory &amp; reach #1!</span>
+          </div>
+
           <ul class="rank-perks-list">
-            ${rank.perks.map(p => `<li><i class="fa-solid fa-check" style="color: ${rank.color};"></i> ${p}</li>`).join("")}
+            ${rank.perks.map(perk => `
+              <li><i class="fa-solid fa-circle-check" style="color: ${rank.color};"></i> <span>${perk}</span></li>
+            `).join('')}
           </ul>
 
-          <button class="btn rank-claim-btn" onclick="openSupporterModal('${rank.id}')" style="background: linear-gradient(135deg, ${rank.color}, rgba(${rank.rgb}, 0.7));">
+          <button class="btn rank-claim-btn" onclick="handleClaimClick('${rank.id}')" style="background: linear-gradient(135deg, ${rank.color}, rgba(${rank.rgb}, 0.7));">
             <i class="fa-solid fa-shield-halved"></i> Claim ${rank.name}
           </button>
         </div>
       `;
-    }).join("");
+    }).join('');
   }
 
   // ==========================================================================
-  // DATABASE / FIRESTORE LOADER & LEADERBOARD SYNC
+  // FETCH & SYNC SUPPORTERS (FIRESTORE + SEED FALLBACK)
   // ==========================================================================
   window.loadSupportersFromDatabase = function() {
-    const listContainer = document.getElementById("supporters-leaderboard-body");
-    if (!listContainer) return;
-
-    listContainer.innerHTML = `<div style="text-align:center; padding: 3rem; color:var(--text-muted);"><i class="fa-solid fa-spinner fa-spin fa-2x"></i><p style="margin-top:0.75rem;">Loading Special Supporter Board...</p></div>`;
-
     if (typeof firebase !== "undefined" && firebase.firestore) {
       const db = firebase.firestore();
       db.collection("supporters")
         .orderBy("glory", "desc")
         .limit(100)
-        .get()
-        .then((snapshot) => {
+        .onSnapshot((snapshot) => {
           const list = [];
-          snapshot.forEach(doc => {
+          snapshot.forEach((doc) => {
             const data = doc.data();
-            list.push({ ...data, id: doc.id });
+            list.push({
+              id: doc.id,
+              name: data.name || "Anonymous",
+              rank: data.rank || "elite",
+              glory: Number(data.glory) || 0,
+              amount: Number(data.amount) || 0,
+              faction: data.faction || "Independent Faction",
+              message: data.message || "",
+              createdAt: data.createdAt ? (data.createdAt.toDate ? data.createdAt.toDate().toISOString() : data.createdAt) : new Date().toISOString()
+            });
           });
 
-          // Fallback / merge local and seed supporters if Firestore collection has few items
-          const localStored = JSON.parse(localStorage.getItem("dxz_supporters") || "[]");
-          const mergedMap = new Map();
-          
-          DEFAULT_SUPPORTERS.forEach(s => mergedMap.set(s.name.toLowerCase(), s));
-          localStored.forEach(s => mergedMap.set(s.name.toLowerCase(), s));
-          list.forEach(s => mergedMap.set(s.name.toLowerCase(), s));
+          // Merge with DEFAULT_SUPPORTERS to ensure rich visual leaderboard
+          const merged = [...list];
+          DEFAULT_SUPPORTERS.forEach(seed => {
+            if (!merged.find(item => item.id === seed.id || item.name.toLowerCase() === seed.name.toLowerCase())) {
+              merged.push(seed);
+            }
+          });
 
-          loadedSupporters = Array.from(mergedMap.values()).sort((a, b) => (b.glory || 0) - (a.glory || 0));
+          // Sort descending by Glory Points
+          merged.sort((a, b) => b.glory - a.glory);
+          supportersData = merged;
           renderLeaderboard();
           updateHeroSpotlight();
-        })
-        .catch(err => {
-          console.warn("Firestore supporters read error, using fallback seed:", err);
-          fallbackToLocalStorage();
+        }, (error) => {
+          console.warn("Firestore Supporters listener notice (using seed cache):", error);
+          loadLocalSupporters();
         });
     } else {
-      fallbackToLocalStorage();
+      loadLocalSupporters();
     }
   };
 
-  function fallbackToLocalStorage() {
-    const localStored = JSON.parse(localStorage.getItem("dxz_supporters") || "[]");
-    const mergedMap = new Map();
-    DEFAULT_SUPPORTERS.forEach(s => mergedMap.set(s.name.toLowerCase(), s));
-    localStored.forEach(s => mergedMap.set(s.name.toLowerCase(), s));
-
-    loadedSupporters = Array.from(mergedMap.values()).sort((a, b) => (b.glory || 0) - (a.glory || 0));
+  function loadLocalSupporters() {
+    const stored = localStorage.getItem("dxz_supporters");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        supportersData = [...parsed, ...DEFAULT_SUPPORTERS].sort((a, b) => b.glory - a.glory);
+      } catch (e) {
+        supportersData = [...DEFAULT_SUPPORTERS];
+      }
+    } else {
+      supportersData = [...DEFAULT_SUPPORTERS];
+    }
     renderLeaderboard();
     updateHeroSpotlight();
   }
 
   // ==========================================================================
-  // RENDER SPECIAL BOARD (PODIUM + RANKED TABLE)
+  // LEADERBOARD & PODIUM RENDERING
   // ==========================================================================
   function renderLeaderboard() {
-    const container = document.getElementById("supporters-leaderboard-body");
     const podiumContainer = document.getElementById("supporters-podium-container");
-    if (!container) return;
+    const tableBody = document.getElementById("supporters-leaderboard-body");
+    if (!podiumContainer || !tableBody) return;
 
-    let filtered = loadedSupporters;
-    if (activeFilter !== "all") {
-      filtered = loadedSupporters.filter(s => (s.rank || "").toLowerCase() === activeFilter.toLowerCase());
-    }
+    // Filter by rank if selected
+    const filtered = activeFilter === "all" 
+      ? supportersData 
+      : supportersData.filter(s => (s.rank || "").toLowerCase() === activeFilter.toLowerCase());
 
-    // 1. Render Top 3 Podium (for 'all' or filtered with at least 1)
-    if (podiumContainer) {
-      if (filtered.length >= 1) {
-        podiumContainer.style.display = "flex";
-        const first = filtered[0];
-        const second = filtered[1] || null;
-        const third = filtered[2] || null;
+    // 1. Render Top 3 Podium
+    const topThree = filtered.slice(0, 3);
+    const podiumPlaces = [
+      { pos: 2, label: "2ND PLACE", class: "second-place", icon: "fa-medal" },
+      { pos: 1, label: "1ST PLACE - SUPREME", class: "first-place", icon: "fa-crown" },
+      { pos: 3, label: "3RD PLACE", class: "third-place", icon: "fa-award" }
+    ];
 
-        const renderPodiumCard = (supporter, placeNum, placeClass, placeLabel) => {
-          if (!supporter) {
-            return `
-              <div class="podium-card empty-podium ${placeClass}">
-                <div class="podium-rank-tag">${placeLabel}</div>
-                <div class="podium-crest-placeholder"><i class="fa-solid fa-lock"></i></div>
-                <h4 style="color:var(--text-muted); font-size: 0.9rem;">Vacant Rank</h4>
-                <p style="font-size: 0.75rem; color: var(--text-muted);">Contribute Glory to claim this spot!</p>
-              </div>
-            `;
-          }
-
-          const rankInfo = SUPPORTER_RANKS[supporter.rank] || SUPPORTER_RANKS.elite;
-          return `
-            <div class="podium-card ${placeClass}">
-              <div class="podium-crown"><i class="fa-solid fa-crown"></i> ${placeLabel}</div>
-              <div class="podium-crest-box">
-                <img src="${rankInfo.image}" alt="${rankInfo.name}" class="podium-crest-img">
-              </div>
-              <span class="podium-rank-badge" style="background: rgba(${rankInfo.rgb}, 0.2); color: ${rankInfo.color}; border: 1px solid ${rankInfo.color};">
-                ${rankInfo.name}
-              </span>
-              <h3 class="podium-name">${escapeHtml(supporter.name)}</h3>
-              <div class="podium-faction">${escapeHtml(supporter.faction || "Faction Warrior")}</div>
-              <div class="podium-glory"><i class="fa-solid fa-bolt"></i> ${(supporter.glory || 0).toLocaleString('en-IN')} GLORY</div>
-              ${supporter.message ? `<p class="podium-quote">"${escapeHtml(supporter.message)}"</p>` : ''}
+    podiumContainer.innerHTML = podiumPlaces.map(p => {
+      const idx = p.pos - 1;
+      const supporter = topThree[idx];
+      if (supporter) {
+        const rankInfo = SUPPORTER_RANKS[supporter.rank] || SUPPORTER_RANKS.elite;
+        return `
+          <div class="podium-card ${p.class}">
+            <div class="podium-crown"><i class="fa-solid ${p.icon}"></i> ${p.label}</div>
+            <div class="podium-crest-box">
+              <img src="${rankInfo.image}" alt="${rankInfo.name}" class="podium-crest-img">
             </div>
-          `;
-        };
-
-        podiumContainer.innerHTML = `
-          ${renderPodiumCard(second, 2, "second-place", "2ND PLACE")}
-          ${renderPodiumCard(first, 1, "first-place", "CHAMPION")}
-          ${renderPodiumCard(third, 3, "third-place", "3RD PLACE")}
+            <h4 class="podium-name">${escapeHtml(supporter.name)}</h4>
+            <div class="podium-faction">${escapeHtml(supporter.faction || "Faction Member")}</div>
+            <div class="podium-glory" style="color: ${rankInfo.color};">
+              <i class="fa-solid fa-bolt"></i> ${(supporter.glory || 0).toLocaleString('en-IN')} GLORY
+            </div>
+            ${supporter.message ? `<p class="podium-quote">"${escapeHtml(supporter.message)}"</p>` : ''}
+          </div>
         `;
       } else {
-        podiumContainer.style.display = "none";
+        return `
+          <div class="podium-card ${p.class} empty-podium">
+            <div class="podium-crown"><i class="fa-solid ${p.icon}"></i> ${p.label}</div>
+            <div class="podium-crest-placeholder"><i class="fa-solid fa-lock"></i></div>
+            <h4 style="color:var(--text-muted); font-size: 0.9rem;">Vacant Rank</h4>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Contribute Glory to claim this spot!</p>
+          </div>
+        `;
       }
-    }
+    }).join('');
 
-    // 2. Render Full Ranked List
+    // 2. Render Full Ranked Table
     if (filtered.length === 0) {
-      container.innerHTML = `
+      tableBody.innerHTML = `
         <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
           <i class="fa-solid fa-shield-halved" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--color-blue-neon);"></i>
           <p>No supporters found in this category yet. Be the first to claim this rank!</p>
@@ -325,77 +606,79 @@
       return;
     }
 
-    container.innerHTML = `
+    let rowsHtml = filtered.map((supporter, idx) => {
+      const rankInfo = SUPPORTER_RANKS[supporter.rank] || SUPPORTER_RANKS.elite;
+      const rankNum = idx + 1;
+      let badgeClass = "badge-number";
+      if (rankNum === 1) badgeClass += " top-1";
+      else if (rankNum === 2) badgeClass += " top-2";
+      else if (rankNum === 3) badgeClass += " top-3";
+
+      const formattedGlory = (supporter.glory || 0).toLocaleString('en-IN');
+      const isLoreRedeemed = supporter.paymentMethod === "lore_cash";
+
+      return `
+        <tr class="supporter-row">
+          <td class="col-rank">
+            <span class="${badgeClass}">#${rankNum}</span>
+          </td>
+          <td class="col-user">
+            <div class="supporter-name-box">
+              <strong class="supporter-name">${escapeHtml(supporter.name)}</strong>
+              ${supporter.message ? `<div class="supporter-lore-msg">"${escapeHtml(supporter.message)}"</div>` : ''}
+            </div>
+          </td>
+          <td class="col-tier">
+            <div class="tier-cell">
+              <img src="${rankInfo.image}" alt="${rankInfo.name}" class="table-crest-thumb">
+              <span class="table-rank-pill" style="color: ${rankInfo.color}; border: 1px solid rgba(${rankInfo.rgb}, 0.3); background: rgba(${rankInfo.rgb}, 0.1);">
+                ${rankInfo.name}
+              </span>
+            </div>
+          </td>
+          <td class="col-faction">
+            <span class="supporter-faction-tag">${escapeHtml(supporter.faction || "Independent")}</span>
+            ${isLoreRedeemed ? '<span class="lore-cash-chip" title="Unlocked using $10k Detective NJ bounty cash!"><i class="fa-solid fa-gamepad"></i> Game Cash</span>' : ''}
+          </td>
+          <td class="col-glory" style="text-align: right;">
+            <div class="glory-number" style="color: ${rankInfo.color}; font-weight: 800; font-family: var(--font-display);">
+              <i class="fa-solid fa-bolt"></i> ${formattedGlory}
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    tableBody.innerHTML = `
       <div class="supporters-table-wrap">
         <table class="supporters-table">
           <thead>
             <tr>
-              <th style="width: 70px;">RANK</th>
-              <th>SUPPORTER</th>
-              <th>CREST & TIER</th>
-              <th>FACTION</th>
-              <th>GLORY POINTS</th>
-              <th>DATE</th>
+              <th style="width: 70px;">Rank</th>
+              <th>Supporter</th>
+              <th>Rank Tier</th>
+              <th>Faction</th>
+              <th style="text-align: right;">Glory Points</th>
             </tr>
           </thead>
           <tbody>
-            ${filtered.map((s, idx) => {
-              const rankInfo = SUPPORTER_RANKS[s.rank] || SUPPORTER_RANKS.elite;
-              const dateStr = s.createdAt ? new Date(s.createdAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Season 3';
-              const rankNum = idx + 1;
-              const isTop3 = rankNum <= 3;
-              const badgeBadge = isTop3 ? `<span class="badge-number top-${rankNum}">#${rankNum}</span>` : `<span class="badge-number">#${rankNum}</span>`;
-
-              return `
-                <tr class="supporter-row ${s.rank}-row ${isTop3 ? 'top-three-row' : ''}">
-                  <td>${badgeBadge}</td>
-                  <td>
-                    <div class="supporter-user-cell">
-                      <strong class="supporter-name">${escapeHtml(s.name)}</strong>
-                      ${s.message ? `<div class="supporter-lore-msg">"${escapeHtml(s.message)}"</div>` : ''}
-                    </div>
-                  </td>
-                  <td>
-                    <div class="tier-cell">
-                      <img src="${rankInfo.image}" alt="${rankInfo.name}" class="table-crest-thumb">
-                      <span class="table-rank-pill" style="background: rgba(${rankInfo.rgb}, 0.15); color: ${rankInfo.color}; border: 1px solid rgba(${rankInfo.rgb}, 0.35);">
-                        ${rankInfo.name}
-                      </span>
-                    </div>
-                  </td>
-                  <td>
-                    <span class="supporter-faction-tag">${escapeHtml(s.faction || "Faction Rebel")}</span>
-                  </td>
-                  <td>
-                    <div class="glory-cell" style="color: ${rankInfo.color};">
-                      <i class="fa-solid fa-bolt"></i> <strong>${(s.glory || 0).toLocaleString('en-IN')}</strong> PTS
-                      ${s.paymentMethod === 'lore_cash' ? '<span class="lore-cash-chip" title="Unlocked via Detective NJ Bounty Cash">$10K GAME CASH</span>' : ''}
-                    </div>
-                  </td>
-                  <td style="color: var(--text-muted); font-size: 0.82rem;">${dateStr}</td>
-                </tr>
-              `;
-            }).join("")}
+            ${rowsHtml}
           </tbody>
         </table>
       </div>
     `;
   }
 
-  // ==========================================================================
-  // HERO SECTION SPOTLIGHT SYNC
-  // ==========================================================================
+  // Update Hero Spotlight if element exists (on index.html)
   function updateHeroSpotlight() {
+    if (!supportersData || supportersData.length === 0) return;
+    const topSupporter = supportersData[0];
+    const rankInfo = SUPPORTER_RANKS[topSupporter.rank] || SUPPORTER_RANKS.emperor;
+
     const crestEl = document.getElementById("hero-spotlight-crest");
     const nameEl = document.getElementById("hero-spotlight-name");
     const gloryEl = document.getElementById("hero-spotlight-glory");
     const rankEl = document.getElementById("hero-spotlight-rank");
-
-    if (!loadedSupporters || loadedSupporters.length === 0) return;
-
-    // Pick top emperor or highest overall
-    const topSupporter = loadedSupporters[0];
-    const rankInfo = SUPPORTER_RANKS[topSupporter.rank] || SUPPORTER_RANKS.emperor;
 
     if (crestEl) crestEl.src = rankInfo.image;
     if (nameEl) nameEl.textContent = topSupporter.name;
@@ -406,9 +689,7 @@
     }
   }
 
-  // ==========================================================================
-  // LEADERBOARD FILTER BUTTONS
-  // ==========================================================================
+  // Filter Buttons
   window.filterSupporters = function(rankKey, btnEl) {
     activeFilter = rankKey;
     document.querySelectorAll(".board-filter-btn").forEach(btn => btn.classList.remove("active"));
@@ -417,7 +698,7 @@
   };
 
   // ==========================================================================
-  // SUPPORTER PURCHASE MODAL
+  // SUPPORTER PURCHASE / REDEMPTION MODAL
   // ==========================================================================
   function initSupporterModal() {
     const modal = document.getElementById("supporter-modal");
@@ -428,7 +709,6 @@
     if (closeBtn) closeBtn.onclick = closeSupporterModal;
     if (backdrop) backdrop.onclick = closeSupporterModal;
 
-    // Amount input Glory preview listener
     const amountInput = document.getElementById("supporter-amount-input");
     if (amountInput) {
       amountInput.addEventListener("input", updateGloryPreview);
@@ -436,6 +716,13 @@
   }
 
   window.openSupporterModal = function(rankId) {
+    // Enforce Login Gate
+    if (!currentUser) {
+      pendingRankClaim = rankId;
+      openAuthModal('login', `Please log in to claim this rank.`);
+      return;
+    }
+
     currentSelectedRank = rankId || "elite";
     const rank = SUPPORTER_RANKS[currentSelectedRank] || SUPPORTER_RANKS.elite;
     const modal = document.getElementById("supporter-modal");
@@ -448,15 +735,18 @@
     document.getElementById("modal-rank-title").textContent = rank.title;
     document.getElementById("modal-base-price").textContent = `Base Plan: ₹${rank.price}`;
 
+    // Pre-fill user profile fields
+    const nameInput = document.getElementById("supporter-name-input");
+    const emailInput = document.getElementById("supporter-email-input");
+    if (nameInput) nameInput.value = currentUser.displayName || (currentUser.email ? currentUser.email.split("@")[0] : "");
+    if (emailInput) emailInput.value = currentUser.email || "";
+
     const amountInput = document.getElementById("supporter-amount-input");
     amountInput.min = rank.price;
     amountInput.value = rank.price;
 
-    // Check Lore Game Cash ($10,000 for Elite)
+    // Lore Game Cash Check ($10,000 for Elite)
     const loreCashSection = document.getElementById("lore-cash-tab-btn");
-    const loreCashPanel = document.getElementById("lore-cash-pay-box");
-    
-    // Read Detective NJ Game State from localStorage
     const savedLoreState = localStorage.getItem('dxz_detective_nj_game_state_v2.6.0');
     let gameWalletBalance = 0;
     if (savedLoreState) {
@@ -516,7 +806,6 @@
     if (!input || !previewEl) return;
 
     const val = parseFloat(input.value) || 0;
-    // 1 Rupee = 1 Glory point. Any payment at or above base grants full Glory.
     const calculatedGlory = Math.max(rank.minGlory, Math.round(val));
 
     previewEl.innerHTML = `<i class="fa-solid fa-bolt" style="color:#ffd700;"></i> <strong>${calculatedGlory.toLocaleString('en-IN')}</strong> GLORY POINTS`;
@@ -545,6 +834,12 @@
   // PAYMENT HANDLER 1: RAZORPAY UPI / CARDS
   // ==========================================================================
   window.submitRazorpaySupporter = function() {
+    if (!currentUser) {
+      alert("You must be signed in to complete your rank claim.");
+      openAuthModal('login');
+      return;
+    }
+
     const rank = SUPPORTER_RANKS[currentSelectedRank] || SUPPORTER_RANKS.elite;
     const name = document.getElementById("supporter-name-input").value.trim();
     const email = document.getElementById("supporter-email-input").value.trim();
@@ -586,6 +881,8 @@
         completeSupporterRegistration({
           paymentId: response.razorpay_payment_id,
           paymentMethod: "razorpay",
+          userId: currentUser.uid,
+          userEmail: currentUser.email,
           name: name,
           email: email,
           rank: rank.id,
@@ -601,7 +898,7 @@
       const rzp = new Razorpay(options);
       rzp.open();
     } else {
-      alert("Razorpay gateway is loading, please try again in a moment.");
+      alert("Razorpay gateway is initializing, please try again in a moment.");
     }
   };
 
@@ -609,10 +906,16 @@
   // PAYMENT HANDLER 2: REDEEM LORE GAME CASH ($10,000 FOR ELITE)
   // ==========================================================================
   window.redeemLoreCashSupporter = function() {
+    if (!currentUser) {
+      alert("You must be signed in to redeem your lore game cash.");
+      openAuthModal('login');
+      return;
+    }
+
     if (currentSelectedRank !== "elite") return;
 
     const name = document.getElementById("supporter-name-input").value.trim();
-    const email = document.getElementById("supporter-email-input").value.trim() || "game_user@blueshot.online";
+    const email = document.getElementById("supporter-email-input").value.trim() || currentUser.email;
     const faction = document.getElementById("supporter-faction-input").value.trim() || "Detective NJ Squad";
     const message = document.getElementById("supporter-message-input").value.trim() || "Redeemed with $10,000 Detective NJ bounty cash!";
 
@@ -641,11 +944,13 @@
     completeSupporterRegistration({
       paymentId: paymentId,
       paymentMethod: "lore_cash",
+      userId: currentUser.uid,
+      userEmail: currentUser.email,
       name: name,
       email: email,
       rank: "elite",
       amount: 5,
-      glory: 100, // Rewarding $10K lore cash with 100 Glory points!
+      glory: 100, // 100 Glory points reward for $10k lore cash!
       faction: faction,
       message: message
     });
@@ -685,7 +990,7 @@
 
   function showSupporterCelebration(data) {
     const rank = SUPPORTER_RANKS[data.rank] || SUPPORTER_RANKS.elite;
-    alert(`🎉 CONGRATULATIONS ${data.name.toUpperCase()}!\n\nYou have officially unlocked the ${rank.name} RANK with ${data.glory} Glory Points!\n\nYour name and rank crest are now immortalized on the global Supporters Board.`);
+    alert(`🎉 CONGRATULATIONS ${data.name.toUpperCase()}!\n\nYou have officially unlocked the ${rank.name} RANK with ${data.glory} Glory Points!\n\nYour profile has been immortalized on the global Special Board.`);
   }
 
   function escapeHtml(str) {

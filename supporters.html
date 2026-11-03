@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supporters &amp; Faction Ranks | The BlueShot Universe</title>
+  <meta name="description" content="Unlock ELITE, WARLORD, APEX, and EMPEROR ranks, gain Glory Points, and earn your place on the live Special Board in the Danger X Zone universe.">
+  <link rel="canonical" href="https://blueshot.online/supporters.html">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Supporters &amp; Special Board - The BlueShot">
+  <meta property="og:description" content="Claim cosmic faction ranks, gain Glory Points, and get immortalized on the live Special Board.">
+  <meta property="og:image" content="https://blueshot.online/assets/rank-emperor.jpg">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css?v=2.2.0">
+</head>
+<body class="supporters-page-body">
+
+  <!-- NAVIGATION HEADER -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="nav-logo">
+        THE BLUESHOT <span class="logo-dot"></span>
+      </a>
+      
+      <nav>
+        <ul class="nav-links" id="nav-links">
+          <li class="nav-link"><a href="index.html">Home</a></li>
+          <li class="nav-link active"><a href="supporters.html">Supporters</a></li>
+          <li class="nav-link"><a href="characters.html">Characters</a></li>
+          <li class="nav-link"><a href="universe-lore.html">Lore</a></li>
+          <li class="nav-link"><a href="merch.html">Shop</a></li>
+          <li class="nav-link"><a href="hub.html">Hub</a></li>
+          <li class="nav-link"><a href="game.html">Arena</a></li>
+          <li class="nav-link"><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+      
+      <div class="nav-socials">
+        <button class="social-icon global-search-trigger" title="Search site (Press /)" id="nav-search-trigger"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <a href="https://youtube.com/@BlueShot77" target="_blank" class="social-icon" title="YouTube" id="nav-yt"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://discord.gg/gfvf46ymng" target="_blank" class="social-icon" title="Discord" id="nav-dc"><i class="fa-brands fa-discord"></i></a>
+      </div>
+      
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- SUPPORTERS MAIN CONTENT -->
+  <main class="supporters-section" style="padding-top: 130px; padding-bottom: 80px; min-height: 90vh;">
+    <div class="container-width">
+
+      <!-- Breadcrumb Link -->
+      <div style="margin-bottom: 2rem;">
+        <a href="index.html" style="color: var(--text-muted); font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: color 0.2s ease;">
+          <i class="fa-solid fa-arrow-left"></i> Back to Universe
+        </a>
+      </div>
+
+      <!-- Hero Header -->
+      <div class="section-header" style="text-align: center; margin-bottom: 2.5rem;">
+        <span class="section-subtitle" style="color: var(--color-blue-neon); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; font-size: 0.85rem;">
+          <i class="fa-solid fa-crown" style="color: #ffd700;"></i> Cosmic Patronage &amp; Hall of Fame
+        </span>
+        <h1 class="series-title" style="font-size: clamp(2.5rem, 5.5vw, 4rem); margin: 0.5rem 0 1rem; text-shadow: 0 0 25px rgba(0, 229, 255, 0.35);">
+          SUPPORTERS
+        </h1>
+        <p class="section-desc" style="max-width: 720px; margin: 0 auto; color: var(--text-secondary); line-height: 1.6; font-size: 1rem;">
+          Claim your cosmic faction rank, back the BlueShot universe, and get immortalized on the public Special Board.
+          <strong>Contribute above any plan</strong> to multiply your Glory Points and claim the coveted #1 spot!
+        </p>
+      </div>
+
+      <!-- Minimal Auth Gate / Account Status Bar -->
+      <div class="supporter-auth-bar-wrap">
+        <div id="supporter-auth-bar" class="supporter-auth-bar">
+          <!-- Populated dynamically by supporters.js -->
+        </div>
+      </div>
+
+      <!-- 4 Rank Cards Grid -->
+      <div class="ranks-grid" id="ranks-showcase-grid">
+        <!-- Rendered dynamically by supporters.js -->
+      </div>
+
+      <!-- Special Board / Global Leaderboard -->
+      <div class="supporters-board-card" style="margin-top: 5rem;">
+        <div class="board-header">
+          <div class="board-title-group">
+            <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--color-blue-neon); font-weight: 800;">
+              <i class="fa-solid fa-trophy" style="color: #ffd700;"></i> Global Hall of Fame
+            </span>
+            <h3>Special Supporter Board</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Ranked live by Glory Points. Displayed to everyone worldwide.</p>
+          </div>
+
+          <!-- Filter Tabs -->
+          <div class="board-filter-tabs">
+            <button class="board-filter-btn active" onclick="filterSupporters('all', this)">All Supporters</button>
+            <button class="board-filter-btn" onclick="filterSupporters('emperor', this)"><i class="fa-solid fa-crown" style="color: #c742ff;"></i> Emperor</button>
+            <button class="board-filter-btn" onclick="filterSupporters('apex', this)"><i class="fa-solid fa-bolt" style="color: #ffd700;"></i> Apex</button>
+            <button class="board-filter-btn" onclick="filterSupporters('warlord', this)"><i class="fa-solid fa-shield" style="color: #00e5ff;"></i> Warlord</button>
+            <button class="board-filter-btn" onclick="filterSupporters('elite', this)"><i class="fa-solid fa-award" style="color: #ff7b25;"></i> Elite</button>
+          </div>
+        </div>
+
+        <!-- Top 3 Podium -->
+        <div class="supporters-podium" id="supporters-podium-container">
+          <!-- Populated by supporters.js -->
+        </div>
+
+        <!-- Full Table List Container -->
+        <div id="supporters-leaderboard-body">
+          <!-- Populated by supporters.js -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- CLAIM & GLORY MODAL -->
+  <div class="order-modal-overlay" id="supporter-modal" style="display: none;">
+    <div class="order-modal-backdrop" id="supporter-modal-backdrop"></div>
+    <div class="order-modal-content supporter-modal-content">
+      <button class="order-modal-close" id="supporter-modal-close" aria-label="Close Modal">&times;</button>
+
+      <div class="modal-rank-summary">
+        <img id="modal-crest-img" src="assets/rank-elite.png" alt="Rank Crest" class="modal-crest-img">
+        <div class="modal-rank-info">
+          <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px;">Selected Rank</span>
+          <h3 id="modal-rank-name" style="margin: 0; font-family: var(--font-display); font-size: 1.4rem;">ELITE</h3>
+          <p id="modal-rank-title" style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);"></p>
+          <span id="modal-base-price" style="display: inline-block; font-size: 0.8rem; font-weight: 700; color: #ffd700; margin-top: 0.25rem;">Base Plan: ₹5</span>
+        </div>
+      </div>
+
+      <!-- Payment Method Tabs (Razorpay vs Lore Game Cash) -->
+      <div class="payment-tab-selector">
+        <button type="button" class="payment-tab-btn active" id="pay-tab-razorpay" onclick="switchPaymentTab('razorpay')">
+          <i class="fa-solid fa-bolt"></i> UPI / Card / NetBanking
+        </button>
+        <button type="button" class="payment-tab-btn lore-tab" id="lore-cash-tab-btn" style="display: none;" onclick="switchPaymentTab('lore')">
+          <i class="fa-solid fa-gamepad"></i> Lore Game Cash ($10,000)
+        </button>
+      </div>
+
+      <!-- Form Inputs -->
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <label for="supporter-name-input" style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Supporter Display Name / Gamer Tag *</label>
+        <input type="text" id="supporter-name-input" class="order-input" placeholder="e.g. ShadowHunter_7" maxlength="30" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <label for="supporter-email-input" style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Email Address (For Receipt &amp; Account Link) *</label>
+        <input type="email" id="supporter-email-input" class="order-input" placeholder="you@domain.com" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <label for="supporter-faction-input" style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Faction Affiliation (Optional)</label>
+        <input type="text" id="supporter-faction-input" class="order-input" placeholder="e.g. Blue Shot Guild, Shadow Syndicate, Independent" maxlength="35">
+      </div>
+
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label for="supporter-message-input" style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Hall of Fame Quote / Message (Optional)</label>
+        <input type="text" id="supporter-message-input" class="order-input" placeholder="e.g. Standing with BSG to the end!" maxlength="80">
+      </div>
+
+      <!-- TAB 1: Razorpay Checkout with Custom Glory Boosting -->
+      <div id="razorpay-pay-box">
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 1.1rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <label for="supporter-amount-input" style="font-size: 0.85rem; font-weight: 700; color: #fff;">Contribution Amount (INR)</label>
+            <span id="modal-glory-preview" style="font-size: 0.85rem; color: #ffd700;"></span>
+          </div>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Rule: <strong>₹1 = 1 Glory Point</strong>. Pay any amount above the base plan to increase your ranking and rise to #1!
+          </p>
+
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.2rem; color: var(--color-blue-neon); font-weight: 800;">₹</span>
+            <input type="number" id="supporter-amount-input" class="order-input" style="font-size: 1.2rem; font-weight: 800; color: #fff;" min="5" step="1" value="5">
+          </div>
+
+          <!-- Quick Glory Chips -->
+          <div class="glory-chips">
+            <span style="font-size: 0.72rem; color: var(--text-muted); align-self: center;">Boost Glory:</span>
+            <button type="button" class="glory-chip" onclick="addExtraGlory(10)">+₹10</button>
+            <button type="button" class="glory-chip" onclick="addExtraGlory(50)">+₹50</button>
+            <button type="button" class="glory-chip" onclick="addExtraGlory(100)">+₹100</button>
+            <button type="button" class="glory-chip" onclick="addExtraGlory(500)">+₹500</button>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="submitRazorpaySupporter()" style="width: 100%; border-radius: 30px; padding: 0.85rem; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.6rem;">
+          <i class="fa-solid fa-lock"></i> Proceed to Secure Payment (Razorpay)
+        </button>
+      </div>
+
+      <!-- TAB 2: Redeem Lore Game Cash (Detective NJ) -->
+      <div id="lore-cash-pay-box" style="display: none;">
+        <div style="background: rgba(0, 255, 136, 0.05); border: 1px solid rgba(0, 255, 136, 0.25); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; text-align: center;">
+          <i class="fa-solid fa-gamepad" style="font-size: 2.2rem; color: #00ff88; margin-bottom: 0.5rem;"></i>
+          <h4 style="margin: 0 0 0.4rem; color: #fff; font-family: var(--font-display);">Lore Mystery Game Cash</h4>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            Redeem <strong>$10,000</strong> bounty cash earned playing Detective NJ to unlock the <strong>ELITE</strong> rank free!
+          </p>
+          <div style="font-size: 0.85rem; color: var(--text-muted);">
+            Your Current Detective NJ Wallet: <strong id="lore-wallet-balance-num" style="color: #00ff88;">$0</strong>
+          </div>
+        </div>
+
+        <button type="button" class="btn" id="claim-lore-cash-btn" onclick="redeemLoreCashSupporter()" style="width: 100%; border-radius: 30px; padding: 0.85rem; font-size: 0.95rem; font-weight: 700; background: linear-gradient(135deg, #00ff88, #00a86b); color: #000; border: none; display: flex; align-items: center; justify-content: center; gap: 0.6rem;">
+          <i class="fa-solid fa-check-circle"></i> Redeem 10,000$ Game Cash
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AUTHENTICATION GATE MODAL (MINIMAL & SLEEK) -->
+  <div class="supporter-auth-modal" id="supporter-auth-modal">
+    <div class="supporter-auth-backdrop" id="supporter-auth-backdrop"></div>
+    <div class="supporter-auth-card">
+      <button class="supporter-auth-close-btn" id="supporter-auth-close" aria-label="Close Authentication Modal">&times;</button>
+
+      <div style="text-align: center; margin-bottom: 1.25rem;">
+        <div style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 14px; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3); color: var(--color-blue-neon); font-size: 1.5rem; margin-bottom: 0.75rem;">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3 style="color: #fff; font-family: var(--font-display); font-size: 1.4rem; margin: 0 0 0.25rem;">Faction Portal</h3>
+        <p style="color: var(--text-muted); font-size: 0.8rem; margin: 0;">Sign in to claim your rank and link to the Special Board</p>
+      </div>
+
+      <!-- Custom Rank Notice Alert -->
+      <div id="supporter-auth-custom-notice" class="supporter-auth-custom-notice" style="display: none;"></div>
+
+      <!-- Error Alert -->
+      <div id="supporter-auth-alert" class="supporter-auth-alert"></div>
+
+      <!-- Tabs: Sign In / Create Account -->
+      <div class="supporter-auth-tabs">
+        <button type="button" class="supporter-auth-tab active" id="auth-tab-login" onclick="switchAuthMode('login')">Sign In</button>
+        <button type="button" class="supporter-auth-tab" id="auth-tab-reg" onclick="switchAuthMode('register')">Create Account</button>
+      </div>
+
+      <!-- 1. Sign In Form -->
+      <form id="supporter-login-form">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="supporter-auth-email" style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Email Address</label>
+          <input type="email" id="supporter-auth-email" class="order-input" placeholder="you@domain.com" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label for="supporter-auth-pass" style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Password</label>
+          <input type="password" id="supporter-auth-pass" class="order-input" placeholder="••••••••" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-outline-cyan" id="supporter-login-submit" style="width: 100%; border-radius: 24px; padding: 0.75rem; font-weight: 700;">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign In
+        </button>
+      </form>
+
+      <!-- 2. Register Form -->
+      <form id="supporter-register-form" style="display: none;">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="supporter-reg-name" style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Username / Gamer Tag</label>
+          <input type="text" id="supporter-reg-name" class="order-input" placeholder="e.g. CosmicRider" maxlength="30" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="supporter-reg-email" style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Email Address</label>
+          <input type="email" id="supporter-reg-email" class="order-input" placeholder="you@domain.com" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label for="supporter-reg-pass" style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Password (Min 6 characters)</label>
+          <input type="password" id="supporter-reg-pass" class="order-input" placeholder="••••••••" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="supporter-reg-submit" style="width: 100%; border-radius: 24px; padding: 0.75rem; font-weight: 700;">
+          <i class="fa-solid fa-user-plus"></i> Create Account &amp; Continue
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container-width">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">THE BLUESHOT</div>
+          <p class="footer-desc">An epic dark science fiction animated series exploring power, sacrifice, and the fate of reality.</p>
+        </div>
+        <div class="footer-links">
+          <h4 class="footer-heading">Universe</h4>
+          <ul>
+            <li><a href="supporters.html">Supporters &amp; Ranks</a></li>
+            <li><a href="characters.html">Characters</a></li>
+            <li><a href="universe-lore.html">Lore &amp; Timeline</a></li>
+            <li><a href="merch.html">Merchandise</a></li>
+            <li><a href="hub.html">Faction Hub</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4 class="footer-heading">Support</h4>
+          <ul>
+            <li><a href="orders.html">Track Orders</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="shipping.html">Shipping Policy</a></li>
+            <li><a href="refunds.html">Returns &amp; Refunds</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 The BlueShot Series. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK Client Libraries (v9 Compat Mode) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <!-- Razorpay Web SDK for Instant Supporter Checkout -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Supporters Logic Script -->
+  <script src="supporters.js?v=2.0.0"></script>
+
+  <!-- Main Website Script (Menu, Global Search, etc.) -->
+  <script src="script.js?v=1.0.2"></script>
+</body>
+</html>
