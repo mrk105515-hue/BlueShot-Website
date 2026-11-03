@@ -4728,7 +4728,8 @@ body.loaded .visual-card.reveal-scale:hover {
   font-family: var(--font-display);
   font-size: 1.3rem;
   font-weight: 900;
-  width: 38px;
+  min-width: 44px;
+  width: auto;
   flex-shrink: 0;
   color: var(--text-muted);
 }
@@ -4796,6 +4797,44 @@ body.loaded .visual-card.reveal-scale:hover {
   align-items: center;
   gap: 0.35rem;
   justify-content: flex-end;
+}
+
+/* Empty Board State when no buyers yet in a rank */
+.tier-board-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 1.1rem 1.4rem;
+  flex-wrap: wrap;
+}
+
+.tier-empty-main {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tier-empty-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.tier-empty-title {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+}
+
+.tier-empty-desc {
+  color: var(--text-muted);
+  font-size: 0.82rem;
 }
 
 .tier-board-entry.vacant-entry {

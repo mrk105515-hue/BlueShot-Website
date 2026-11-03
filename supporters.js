@@ -57,7 +57,7 @@
       tagline: "Unrivaled warriors reaching the peak of cosmic power.",
       perks: [
         "Radiant Golden Crest on Special Board",
-        "Top 3 Podium Spotlight Eligibility",
+        "Permanent Special Board Listing (All Buyers Featured)",
         "Golden Glowing Nameplate on Leaderboard",
         "Custom Glory Boosting to claim #1"
       ]
@@ -82,7 +82,7 @@
     }
   };
 
-  // Default seed supporters for instant rich display
+  // Default seed supporters for instant rich display (All buyers immortalized)
   const DEFAULT_SUPPORTERS = [
     {
       id: "sup_seed_1",
@@ -105,6 +105,16 @@
       createdAt: "2026-10-18T14:30:00Z"
     },
     {
+      id: "sup_seed_6",
+      name: "Kaelen_Void",
+      rank: "apex",
+      glory: 820,
+      amount: 820,
+      faction: "Shadow Syndicate",
+      message: "The Void bows to no one.",
+      createdAt: "2026-10-20T16:00:00Z"
+    },
+    {
       id: "sup_seed_3",
       name: "ShadowStrike",
       rank: "warlord",
@@ -115,16 +125,6 @@
       createdAt: "2026-10-22T08:15:00Z"
     },
     {
-      id: "sup_seed_4",
-      name: "Detective_NJ",
-      rank: "elite",
-      glory: 250,
-      amount: 250,
-      faction: "Detective Division",
-      message: "Redeemed with $10,000 crime syndicate bounties! 🕵️‍♂️",
-      createdAt: "2026-10-25T19:00:00Z"
-    },
-    {
       id: "sup_seed_5",
       name: "CyberRonin_99",
       rank: "warlord",
@@ -133,10 +133,71 @@
       faction: "Independent Faction",
       message: "Glory to the fighters.",
       createdAt: "2026-10-28T11:20:00Z"
+    },
+    {
+      id: "sup_seed_7",
+      name: "AeroPulse",
+      rank: "warlord",
+      glory: 85,
+      amount: 85,
+      faction: "Blue Shot Guild",
+      message: "Speed and precision on the battlefield.",
+      createdAt: "2026-10-29T12:00:00Z"
+    },
+    {
+      id: "sup_seed_8",
+      name: "Valkyrie_Rose",
+      rank: "warlord",
+      glory: 60,
+      amount: 60,
+      faction: "Independent Faction",
+      message: "Standing firm on the frontlines.",
+      createdAt: "2026-10-30T14:00:00Z"
+    },
+    {
+      id: "sup_seed_4",
+      name: "Detective_NJ",
+      rank: "elite",
+      glory: 250,
+      amount: 250,
+      faction: "Detective Division",
+      paymentMethod: "lore_cash",
+      message: "Redeemed with $10,000 crime syndicate bounties! 🕵️‍♂️",
+      createdAt: "2026-10-25T19:00:00Z"
+    },
+    {
+      id: "sup_seed_9",
+      name: "NeonSpecter",
+      rank: "elite",
+      glory: 45,
+      amount: 45,
+      faction: "Shadow Syndicate",
+      message: "Rising through the faction ranks.",
+      createdAt: "2026-10-31T09:30:00Z"
+    },
+    {
+      id: "sup_seed_10",
+      name: "PixelCrusader",
+      rank: "elite",
+      glory: 20,
+      amount: 20,
+      faction: "Blue Shot Guild",
+      message: "For the glory of the BlueShot universe!",
+      createdAt: "2026-11-01T15:20:00Z"
+    },
+    {
+      id: "sup_seed_11",
+      name: "EchoZero",
+      rank: "elite",
+      glory: 10,
+      amount: 10,
+      faction: "Independent Faction",
+      message: "Excited for the upcoming lore episodes.",
+      createdAt: "2026-11-02T18:10:00Z"
     }
   ];
 
-  let supportersData = [];
+  let supportersData = [...DEFAULT_SUPPORTERS];
   let activeFilter = "all";
   let currentSelectedRank = "elite";
   let currentUser = null;
@@ -425,28 +486,25 @@
         .filter(s => (s.rank || "").toLowerCase() === rankId)
         .sort((a, b) => (b.glory || 0) - (a.glory || 0));
 
-      // Guarantee at least 3 entries (1., 2., 3.) plus any extra supporters
-      const totalEntriesToShow = Math.max(3, tierSupporters.length);
+      // Render ALL buyers who bought this rank (1., 2., 3., 4., 5., etc. - all buyers displayed!)
       const entriesHtml = [];
 
-      for (let i = 0; i < totalEntriesToShow; i++) {
-        const pos = i + 1;
-        const supporter = tierSupporters[i];
+      if (tierSupporters.length > 0) {
+        tierSupporters.forEach((supporter, idx) => {
+          const pos = idx + 1;
+          let posClass = "entry-rank-pos";
+          let rowClass = "tier-board-entry";
+          if (pos === 1) {
+            posClass += " top-1";
+            rowClass += " top-1";
+          } else if (pos === 2) {
+            posClass += " top-2";
+            rowClass += " top-2";
+          } else if (pos === 3) {
+            posClass += " top-3";
+            rowClass += " top-3";
+          }
 
-        let posClass = "entry-rank-pos";
-        let rowClass = "tier-board-entry";
-        if (pos === 1) {
-          posClass += " top-1";
-          rowClass += " top-1";
-        } else if (pos === 2) {
-          posClass += " top-2";
-          rowClass += " top-2";
-        } else if (pos === 3) {
-          posClass += " top-3";
-          rowClass += " top-3";
-        }
-
-        if (supporter) {
           const isLorePaid = supporter.paymentMethod === "lore_cash";
           const formattedGlory = (supporter.glory || 0).toLocaleString('en-IN');
           entriesHtml.push(`
@@ -467,25 +525,23 @@
               </div>
             </div>
           `);
-        } else {
-          // Vacant slot so 1., 2., 3. are always displayed
-          entriesHtml.push(`
-            <div class="${rowClass} vacant-entry">
-              <div class="${posClass}">${pos}.</div>
-              <div class="entry-supporter-main">
-                <div class="entry-vacant-text">
-                  <i class="fa-solid fa-shield-halved" style="color: ${rank.color};"></i>
-                  <span>Vacant Rank Spot — Claim to be #${pos} ${rank.name}!</span>
-                </div>
-              </div>
-              <div class="entry-glory-side">
-                <button type="button" class="btn-claim-vacant-spot" onclick="handleClaimClick('${rank.id}')">
-                  <i class="fa-solid fa-plus"></i> Claim #${pos} Spot
-                </button>
+        });
+      } else {
+        // No buyers yet in this tier
+        entriesHtml.push(`
+          <div class="tier-board-empty">
+            <div class="tier-empty-main">
+              <i class="fa-solid fa-shield-halved" style="color: ${rank.color}; font-size: 1.3rem;"></i>
+              <div class="tier-empty-text">
+                <span class="tier-empty-title">No buyers yet in ${rank.name}</span>
+                <span class="tier-empty-desc">Be the first to claim this rank and take the #1 spot on the Special Board!</span>
               </div>
             </div>
-          `);
-        }
+            <button type="button" class="btn-claim-vacant-spot" onclick="handleClaimClick('${rank.id}')">
+              <i class="fa-solid fa-bolt"></i> Claim #1 Spot
+            </button>
+          </div>
+        `);
       }
 
       return `
@@ -524,11 +580,11 @@
             </div>
           </div>
 
-          <!-- Leaderboard Area (1. 2. 3. ...) -->
+          <!-- Leaderboard Area (All buyers listed) -->
           <div class="tier-leaderboard-area">
             <div class="tier-leaderboard-subhead">
-              <span><i class="fa-solid fa-trophy" style="color: ${rank.color};"></i> ${rank.name} SPECIAL BOARD</span>
-              <span>Ranked by Glory Points</span>
+              <span><i class="fa-solid fa-trophy" style="color: ${rank.color};"></i> ${rank.name} SPECIAL BOARD (${tierSupporters.length} Buyer${tierSupporters.length === 1 ? '' : 's'})</span>
+              <span>All Buyers Listed · Ranked by Glory</span>
             </div>
             <div class="tier-entries-list">
               ${entriesHtml.join('')}
@@ -547,7 +603,7 @@
       const db = firebase.firestore();
       db.collection("supporters")
         .orderBy("glory", "desc")
-        .limit(100)
+        .limit(1000)
         .onSnapshot((snapshot) => {
           const list = [];
           snapshot.forEach((doc) => {
