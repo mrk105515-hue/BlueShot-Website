@@ -1481,3 +1481,30 @@ html, body.mystery-fullscreen-body {
 .bounty-val.penalty-loss {
   animation: lossFlash 0.85s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* DYNAMIC QUESTION SWAP TRANSITION */
+@keyframes caseSwapPulse {
+  0% { transform: scale(1); filter: brightness(1); opacity: 1; }
+  40% { transform: scale(0.97); filter: brightness(1.25) drop-shadow(0 0 15px rgba(246, 199, 90, 0.7)); opacity: 0.45; }
+  100% { transform: scale(1); filter: brightness(1); opacity: 1; }
+}
+
+.case-swapping {
+  animation: caseSwapPulse 0.48s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.badge-swapped {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  background: rgba(255, 179, 0, 0.2);
+  border: 1px solid var(--color-gold-bright);
+  color: var(--color-gold-bright);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 0.5rem;
+}

@@ -32,7 +32,7 @@
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css?v=1.0.3">
-  <link rel="stylesheet" href="mystery.css?v=2.6.0">
+  <link rel="stylesheet" href="mystery.css?v=3.0.0">
 </head>
 <body class="mystery-fullscreen-body">
   
@@ -96,7 +96,7 @@
 
       <div class="hud-center-progress">
         <div class="hud-progress-labels">
-          <span>Case Files: <strong id="hud-solved-count">0 / 18</strong></span>
+          <span>Active Cases: <strong id="hud-solved-count">0 / 15</strong></span>
           <span id="hud-progress-text">0% Solved</span>
         </div>
         <div class="hud-progress-track">
@@ -110,8 +110,8 @@
           <span class="bounty-lbl">Vault:</span>
           <span class="bounty-val" id="hud-wallet-balance">$0</span>
         </div>
-        <button class="btn-open-archives" id="open-archives-btn" title="Open 18 Case Archives">
-          <i class="fa-solid fa-folder-tree"></i> Cases (18)
+        <button class="btn-open-archives" id="open-archives-btn" title="Open 15 Active Case Archives">
+          <i class="fa-solid fa-folder-tree"></i> Cases (15)
         </button>
         <button class="btn-hud-reset" id="reset-progress-btn" title="Reset all progress"><i class="fa-solid fa-rotate-left"></i></button>
       </div>
@@ -197,12 +197,12 @@
     <div class="archives-backdrop" id="archives-modal-backdrop"></div>
     <div class="archives-content">
       <div class="archives-header">
-        <h3><i class="fa-solid fa-folder-tree"></i> Classified DXZ Case Archives (18 Cases)</h3>
+        <h3><i class="fa-solid fa-folder-tree"></i> Classified DXZ Active Case Session (15 Cases)</h3>
         <button class="archives-close-btn" id="archives-modal-close"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <p class="archives-subtitle">Select any unlocked case file to start interrogating clues with Detective NJ.</p>
+      <p class="archives-subtitle">15 cases assigned for this active session from the 60 DXZ archives. Incorrect deductions immediately swap the case with a new archive file!</p>
       <div class="case-archive-grid" id="case-archive-grid">
-        <!-- Dynamically populated 18 cases -->
+        <!-- Dynamically populated 15 cases -->
       </div>
       
 
@@ -228,6 +228,6 @@
 
   <script src="script.js?v=1.0.3"></script>
   <script src="search.js?v=1.0.2"></script>
-  <script src="mystery.js?v=2.6.0"></script>
+  <script src="mystery.js?v=3.0.0"></script>
 </body>
 </html>
