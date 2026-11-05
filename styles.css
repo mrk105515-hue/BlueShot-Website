@@ -3380,6 +3380,7 @@ body.loaded .visual-card.reveal-scale:hover {
   border: 3px solid #00e5ff;
   box-shadow: 0 0 25px rgba(0, 229, 255, 0.6);
   object-fit: cover;
+  object-position: top center;
   background: #121422;
 }
 
