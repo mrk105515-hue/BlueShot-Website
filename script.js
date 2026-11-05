@@ -102,7 +102,7 @@ const CHARACTER_DB = {
 };
 
 // YOUTUBE VIDEO DATA
-const YT_VIDEO_ID = "hZq-gwlKtr0";
+const YT_VIDEO_ID = "xQP42Dz4imc";
 
 // DYNAMIC FONTAWESOME LOADER
 function loadFontAwesome() {
@@ -159,7 +159,7 @@ function initDynamicIframes() {
     latestVideoContainer.innerHTML = "";
     const iframe = document.createElement("iframe");
     iframe.className = "latest-video-iframe";
-    iframe.src = "https://www.youtube.com/embed/SKI7ZxkcbR8?rel=0&autoplay=0&controls=1&loop=1&playlist=SKI7ZxkcbR8";
+    iframe.src = "https://www.youtube.com/embed/IgtWfwH_IJM?rel=0&autoplay=0&controls=1&loop=1&playlist=IgtWfwH_IJM";
     iframe.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture");
     iframe.setAttribute("allowfullscreen", "true");
     iframe.style.border = "none";
@@ -190,9 +190,9 @@ function initHeroBgVideo() {
   iframe.setAttribute("title", "DXZ Background Video");
   iframe.setAttribute("aria-hidden", "true");
   iframe.src = [
-    "https://www.youtube.com/embed/hZq-gwlKtr0",
+    "https://www.youtube.com/embed/xQP42Dz4imc",
     "?autoplay=1&mute=1&loop=1",
-    "&playlist=hZq-gwlKtr0",
+    "&playlist=xQP42Dz4imc",
     "&controls=0&rel=0&fs=0",
     "&iv_load_policy=3&disablekb=1&modestbranding=1",
     "&enablejsapi=1"
@@ -449,6 +449,12 @@ function initVideoModal() {
     document.body.style.overflow = "";
   };
 
+  if (trigger) {
+    trigger.addEventListener("click", (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  }
   closeBtn.addEventListener("click", closeModal);
   backdrop.addEventListener("click", closeModal);
 }
