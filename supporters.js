@@ -81,8 +81,7 @@
       perks: [
         "Get a Special Character Appearance (Cameo / Custom Role)",
         "All Apex Perks",
-        "Emperor Badge & Highest Priority",
-        "Permanent Place in the Hall of Fame"
+        "Entrance in the Hall of Fame"
       ]
     }
   };
