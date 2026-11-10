@@ -938,7 +938,7 @@ function initBannerCarousel() {
     });
   }
 
-  track.addEventListener("scroll", updateActiveDot);
+  track.addEventListener("scroll", updateActiveDot, { passive: true });
 
   // Navigate to slide on indicator click
   dots.forEach(dot => {

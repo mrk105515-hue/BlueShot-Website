@@ -317,16 +317,23 @@ function initNavbar() {
   const navLinksList = document.getElementById("nav-links");
   const navLinks = document.querySelectorAll(".nav-link");
 
-  // Sticky Navbar on Scroll
+  // Sticky Navbar on Scroll (High performance rAF throttled + passive)
+  let navTicking = false;
   window.addEventListener("scroll", () => {
-    if (navbar) {
-      if (window.scrollY > 50) {
-        navbar.classList.add("scrolled");
-      } else {
-        navbar.classList.remove("scrolled");
-      }
+    if (!navTicking) {
+      window.requestAnimationFrame(() => {
+        if (navbar) {
+          if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+          } else {
+            navbar.classList.remove("scrolled");
+          }
+        }
+        navTicking = false;
+      });
+      navTicking = true;
     }
-  });
+  }, { passive: true });
 
   // Mobile Menu Toggle
   if (mobileMenuBtn && navLinksList) {
@@ -413,7 +420,7 @@ function initStatsCounter() {
     }
   };
 
-  window.addEventListener("scroll", checkScroll);
+  window.addEventListener("scroll", checkScroll, { passive: true });
   checkScroll(); // Trigger if already in viewport
 }
 
