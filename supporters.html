@@ -60,29 +60,8 @@
   </header>
 
   <!-- SUPPORTERS MAIN CONTENT -->
-  <main class="supporters-section" style="padding-top: 130px; padding-bottom: 80px; min-height: 90vh;">
+  <main class="supporters-section" style="padding-top: 105px; padding-bottom: 80px; min-height: 90vh;">
     <div class="container-width">
-
-      <!-- Breadcrumb Link -->
-      <div style="margin-bottom: 2rem;">
-        <a href="index.html" style="color: var(--text-muted); font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: color 0.2s ease;">
-          <i class="fa-solid fa-arrow-left"></i> Back to Universe
-        </a>
-      </div>
-
-      <!-- Hero Header -->
-      <div class="section-header" style="text-align: center; margin-bottom: 2.5rem;">
-        <span class="section-subtitle" style="color: var(--color-blue-neon); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; font-size: 0.85rem;">
-          <i class="fa-solid fa-crown" style="color: #ffd700;"></i> Cosmic Patronage &amp; Hall of Fame
-        </span>
-        <h1 class="series-title" style="font-size: clamp(2.5rem, 5.5vw, 4rem); margin: 0.5rem 0 1rem; text-shadow: 0 0 25px rgba(0, 229, 255, 0.35);">
-          SUPPORTERS
-        </h1>
-        <p class="section-desc" style="max-width: 720px; margin: 0 auto; color: var(--text-secondary); line-height: 1.6; font-size: 1rem;">
-          Claim your cosmic faction rank, back the BlueShot universe, and get immortalized on the public Special Board.
-          <strong>Contribute above any plan</strong> to multiply your Glory Points and claim the coveted #1 spot!
-        </p>
-      </div>
 
       <!-- Minimal Auth Gate / Account Status Bar -->
       <div class="supporter-auth-bar-wrap">
@@ -344,10 +323,85 @@
             </button>
           </div>
         </div>
+
+        <!-- WHAT IS GLORY? BANNER (MATCHING REFERENCE UI) -->
+        <div class="what-is-glory-banner">
+          <div class="glory-intro-block">
+            <div class="glory-star-box">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="url(#gloryStarGrad)"/>
+                <defs>
+                  <linearGradient id="gloryStarGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#ffffff"/>
+                    <stop offset="0.5" stop-color="#d946ef"/>
+                    <stop offset="1" stop-color="#a855f7"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div class="glory-intro-info">
+              <h4 class="glory-intro-title">What is Glory?</h4>
+              <p class="glory-intro-desc">Glory is your supporter points. You earn Glory by joining a rank and can use it to redeem exclusive rewards.</p>
+            </div>
+          </div>
+
+          <div class="glory-divider-line"></div>
+
+          <div class="glory-rewards-cluster">
+            <div class="glory-reward-card">
+              <div class="glory-reward-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d946ef" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                  <rect x="2" y="7" width="20" height="5"></rect>
+                  <line x1="12" y1="22" x2="12" y2="7"></line>
+                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                </svg>
+              </div>
+              <div class="glory-reward-meta">
+                <span class="glory-reward-heading">Merchandise</span>
+                <span class="glory-reward-sub">(Keychains, T-Shirts, Hoodies)</span>
+              </div>
+            </div>
+
+            <div class="glory-reward-card">
+              <div class="glory-reward-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d946ef" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+                  <line x1="7" y1="2" x2="7" y2="22"></line>
+                  <line x1="17" y1="2" x2="17" y2="22"></line>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <line x1="2" y1="7" x2="7" y2="7"></line>
+                  <line x1="2" y1="17" x2="7" y2="17"></line>
+                  <line x1="17" y1="17" x2="22" y2="17"></line>
+                  <line x1="17" y1="7" x2="22" y2="7"></line>
+                </svg>
+              </div>
+              <div class="glory-reward-meta">
+                <span class="glory-reward-heading">Video Features</span>
+                <span class="glory-reward-sub">(Name, Quiz, Story, Characters)</span>
+              </div>
+            </div>
+          </div>
+
+          <a href="merch.html" class="btn-glory-shop">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span>Open Glory Shop</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
       </section>
 
       <!-- LIVE SPECIAL BOARD LEADERBOARD -->
-      <div class="section-header" style="text-align: center; margin: 4.5rem 0 2rem;">
+      <section class="special-board-section" id="leaderboard">
+        <div class="section-header" style="text-align: center; margin: 3rem 0 2rem;">
         <span class="section-subtitle" style="color: var(--color-blue-neon); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; font-size: 0.85rem;">
           <i class="fa-solid fa-trophy" style="color: #ffd700;"></i> Live Hall of Fame
         </span>
@@ -363,6 +417,7 @@
       <div class="merged-rank-boards-container" id="merged-rank-boards">
         <!-- Rendered dynamically by supporters.js -->
       </div>
+      </section>
 
     </div>
   </main>
