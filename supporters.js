@@ -12,72 +12,77 @@
     elite: {
       id: "elite",
       name: "ELITE",
+      classNumber: 1,
+      classLabel: "Supporter Class 1",
       price: 5,
       minGlory: 5,
       gameCashPrice: 10000,
       image: "assets/rank-elite.png",
-      color: "#ff7b25",
-      rgb: "255, 123, 37",
-      title: "Faction Vanguard",
+      color: "#ff4d2d",
+      rgb: "255, 77, 45",
+      title: "Supporter Class 1",
       tagline: "The steadfast foundation of the resistance.",
       perks: [
-        "Official Bronze Crest on Special Board",
-        "Unlock with ₹5 OR $10,000 Lore Game Cash",
-        "Permanent Supporter Profile Badge",
-        "Custom Glory Boosting to rise to #1"
+        "Get your Name Featured in Supporter Credits",
+        "Elite Supporter Badge",
+        "Supporter Updates & Polls"
       ]
     },
     warlord: {
       id: "warlord",
       name: "WARLORD",
+      classNumber: 2,
+      classLabel: "Supporter Class 2",
       price: 10,
       minGlory: 10,
       image: "assets/rank-warlord.png",
-      color: "#00e5ff",
-      rgb: "0, 229, 255",
-      title: "Battle Commander",
+      color: "#00a8ff",
+      rgb: "0, 168, 255",
+      title: "Supporter Class 2",
       tagline: "Leading the frontlines into cosmic battle.",
       perks: [
-        "Silver & Ice Blue Crest on Special Board",
-        "Cyan highlighted card on the Special Board",
-        "Battle Commander badge on profile",
-        "Custom Glory Boosting to claim #1"
+        "Ask a Quiz Question (Featured in Community Quiz)",
+        "All Elite Perks",
+        "Warlord Badge & Highlight"
       ]
     },
     apex: {
       id: "apex",
       name: "APEX",
+      classNumber: 3,
+      classLabel: "Supporter Class 3",
       price: 40,
       minGlory: 40,
       image: "assets/rank-apex.png",
-      color: "#ffd700",
-      rgb: "255, 215, 0",
-      title: "Zenith Sovereign",
+      color: "#ffaa00",
+      rgb: "255, 170, 0",
+      title: "Supporter Class 3",
       popular: true,
       tagline: "Unrivaled warriors reaching the peak of cosmic power.",
       perks: [
-        "Radiant Golden Crest on Special Board",
-        "Permanent Special Board Listing (All Buyers Featured)",
-        "Golden Glowing Nameplate on Leaderboard",
-        "Custom Glory Boosting to claim #1"
+        "Add a Special Story Part (Idea, Theory or Concept)",
+        "All Warlord Perks",
+        "Apex Badge & Higher Priority"
       ]
     },
     emperor: {
       id: "emperor",
       name: "EMPEROR",
+      classNumber: 4,
+      classLabel: "Supporter Class 4",
       price: 100,
       minGlory: 100,
       image: "assets/rank-emperor.png",
-      color: "#c742ff",
-      rgb: "199, 66, 255",
-      title: "Cosmic Overlord",
+      color: "#b026ff",
+      rgb: "176, 38, 255",
+      title: "Supporter Class 4",
       supreme: true,
       tagline: "Supreme rulers who shape the destiny of DXZ.",
       perks: [
-        "Mythic Violet Crest on Special Board",
-        "Guaranteed Hero Section Spotlight Feature",
-        "Permanent Cosmic Flame Border Animation",
-        "Supreme Leaderboard Priority & Glory Boost"
+        "Get a Special Character Appearance (Cameo / Custom Role)",
+        "All Apex Perks",
+        "Emperor Badge & Highest Priority",
+        "Permanent Place in the Hall of Fame"
       ]
     }
   };

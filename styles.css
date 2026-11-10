@@ -4894,4 +4894,471 @@ body.loaded .visual-card.reveal-scale:hover {
   }
 }
 
+/* ==========================================================================
+   TOP CLASS OF COMMUNITY - RANK BUYING CARDS (MATCHING REFERENCE UI)
+   ========================================================================== */
+.community-class-section {
+  position: relative;
+  max-width: 1260px;
+  margin: 1.5rem auto 4.5rem;
+  padding: 0 1rem;
+}
+
+/* Ambient cosmic energy glow flares */
+.community-class-section::before,
+.community-class-section::after {
+  content: "";
+  position: absolute;
+  top: -30px;
+  width: 340px;
+  height: 240px;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(55px);
+}
+.community-class-section::before {
+  left: -20px;
+  background: radial-gradient(circle, rgba(176, 38, 255, 0.22) 0%, transparent 70%);
+}
+.community-class-section::after {
+  right: -20px;
+  background: radial-gradient(circle, rgba(176, 38, 255, 0.22) 0%, transparent 70%);
+}
+
+.community-class-header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 2.6rem;
+}
+
+.community-class-crown {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.35rem;
+  color: #ffffff;
+  font-size: 1.15rem;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+}
+
+.community-class-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  font-weight: 900;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem 0;
+}
+
+.community-laurel {
+  display: inline-flex;
+  align-items: center;
+  color: #d946ef;
+  filter: drop-shadow(0 0 8px rgba(217, 70, 239, 0.6));
+}
+
+.community-class-title .title-white {
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+.community-class-title .title-purple {
+  background: linear-gradient(90deg, #d946ef 0%, #c026d3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 25px rgba(217, 70, 239, 0.5));
+}
+
+.community-class-desc {
+  max-width: 680px;
+  margin: 0 auto;
+  color: #a1a1aa;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* 4-Cards Grid */
+.community-cards-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+/* Individual Card Styling */
+.community-rank-card {
+  position: relative;
+  background: rgba(10, 10, 16, 0.88);
+  border-radius: 20px;
+  padding: 1.8rem 1.35rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.community-rank-card:hover {
+  transform: translateY(-6px);
+}
+
+/* Internal Card Top Ambient Glow */
+.community-rank-card .card-glow-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.9;
+}
+
+/* Crest & Laurel Presentation */
+.community-crest-box {
+  position: relative;
+  width: 105px;
+  height: 105px;
+  margin: 0.25rem auto 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.community-crest-laurel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 105px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.community-crest-img {
+  position: relative;
+  z-index: 2;
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.7));
+  transition: transform 0.25s ease;
+}
+
+.community-rank-card:hover .community-crest-img {
+  transform: scale(1.06);
+}
+
+/* Rank Name & Class Subtitle */
+.community-rank-heading {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin: 0 0 0.25rem 0;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.3);
+}
+
+.community-class-subtext {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: #94a3b8;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.15rem;
+}
+
+.community-class-subtext::before,
+.community-class-subtext::after {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Price & Glory Pill Box */
+.community-price-box {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  border-radius: 30px;
+  padding: 0.55rem 0.75rem;
+  margin-bottom: 1.35rem;
+  font-weight: 800;
+}
+
+.community-price-val {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.community-price-divider {
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 300;
+  font-size: 1.1rem;
+}
+
+.community-glory-val {
+  font-size: 0.92rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Perks List */
+.community-perks {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.6rem 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex-grow: 1;
+}
+
+.community-perks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #e2e8f0;
+}
+
+.community-perks .perk-ico {
+  font-size: 0.95rem;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.community-perks .perk-txt {
+  flex: 1;
+}
+
+/* Bottom Action Join Button */
+.btn-community-join {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 0.78rem 1.2rem;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-community-join:hover {
+  transform: translateY(-2px) scale(1.02);
+  border-color: #ffffff;
+}
+
+.btn-community-join:active {
+  transform: translateY(1px);
+}
+
+/* --------------------------------------------------------------------------
+   THEME SPECIFIC STYLES: ELITE, WARLORD, APEX, EMPEROR
+   -------------------------------------------------------------------------- */
+
+/* 1. ELITE (Supporter Class 1 - Neon Red/Orange #ff4d2d) */
+.card-tier-elite {
+  border: 1.5px solid #ff4d2d;
+  box-shadow: 0 0 24px rgba(255, 77, 45, 0.35), inset 0 0 15px rgba(255, 77, 45, 0.08);
+}
+.card-tier-elite:hover {
+  box-shadow: 0 0 35px rgba(255, 77, 45, 0.55), inset 0 0 20px rgba(255, 77, 45, 0.15);
+  border-color: #ff6a00;
+}
+.card-tier-elite .card-glow-layer {
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 77, 45, 0.22) 0%, transparent 70%);
+}
+.card-tier-elite .community-crest-laurel {
+  color: #ff4d2d;
+  filter: drop-shadow(0 0 8px rgba(255, 77, 45, 0.6));
+}
+.card-tier-elite .community-price-box {
+  background: rgba(255, 77, 45, 0.08);
+  border: 1.5px solid #ff4d2d;
+  box-shadow: 0 0 14px rgba(255, 77, 45, 0.2);
+}
+.card-tier-elite .community-glory-val,
+.card-tier-elite .perk-ico {
+  color: #ff5722;
+}
+.card-tier-elite .btn-community-join {
+  background: linear-gradient(135deg, #ff4500 0%, #ff6a00 100%);
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.55);
+}
+.card-tier-elite .btn-community-join:hover {
+  box-shadow: 0 0 28px rgba(255, 69, 0, 0.8);
+}
+
+/* 2. WARLORD (Supporter Class 2 - Electric Blue/Cyan #00a8ff) */
+.card-tier-warlord {
+  border: 1.5px solid #00a8ff;
+  box-shadow: 0 0 24px rgba(0, 168, 255, 0.35), inset 0 0 15px rgba(0, 168, 255, 0.08);
+}
+.card-tier-warlord:hover {
+  box-shadow: 0 0 35px rgba(0, 168, 255, 0.55), inset 0 0 20px rgba(0, 168, 255, 0.15);
+  border-color: #00d2ff;
+}
+.card-tier-warlord .card-glow-layer {
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 168, 255, 0.22) 0%, transparent 70%);
+}
+.card-tier-warlord .community-crest-laurel {
+  color: #00a8ff;
+  filter: drop-shadow(0 0 8px rgba(0, 168, 255, 0.6));
+}
+.card-tier-warlord .community-price-box {
+  background: rgba(0, 168, 255, 0.08);
+  border: 1.5px solid #00a8ff;
+  box-shadow: 0 0 14px rgba(0, 168, 255, 0.2);
+}
+.card-tier-warlord .community-glory-val,
+.card-tier-warlord .perk-ico {
+  color: #00c3ff;
+}
+.card-tier-warlord .btn-community-join {
+  background: linear-gradient(135deg, #0066ff 0%, #00b4ff 100%);
+  box-shadow: 0 0 20px rgba(0, 168, 255, 0.55);
+}
+.card-tier-warlord .btn-community-join:hover {
+  box-shadow: 0 0 28px rgba(0, 168, 255, 0.8);
+}
+
+/* 3. APEX (Supporter Class 3 - Radiant Gold/Amber #ffaa00) */
+.card-tier-apex {
+  border: 1.5px solid #ffaa00;
+  box-shadow: 0 0 25px rgba(255, 170, 0, 0.38), inset 0 0 15px rgba(255, 170, 0, 0.08);
+}
+.card-tier-apex:hover {
+  box-shadow: 0 0 38px rgba(255, 170, 0, 0.6), inset 0 0 20px rgba(255, 170, 0, 0.15);
+  border-color: #ffd000;
+}
+.card-tier-apex .card-glow-layer {
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 170, 0, 0.22) 0%, transparent 70%);
+}
+.card-tier-apex .community-crest-laurel {
+  color: #ffaa00;
+  filter: drop-shadow(0 0 8px rgba(255, 170, 0, 0.6));
+}
+.card-tier-apex .community-price-box {
+  background: rgba(255, 170, 0, 0.08);
+  border: 1.5px solid #ffaa00;
+  box-shadow: 0 0 14px rgba(255, 170, 0, 0.2);
+}
+.card-tier-apex .community-glory-val,
+.card-tier-apex .perk-ico {
+  color: #ffd000;
+}
+.card-tier-apex .btn-community-join {
+  background: linear-gradient(135deg, #e69500 0%, #ffb800 100%);
+  box-shadow: 0 0 20px rgba(255, 170, 0, 0.55);
+}
+.card-tier-apex .btn-community-join:hover {
+  box-shadow: 0 0 28px rgba(255, 170, 0, 0.8);
+}
+
+/* 4. EMPEROR (Supporter Class 4 - Neon Royal Purple #b026ff) */
+.card-tier-emperor {
+  border: 1.5px solid #b026ff;
+  box-shadow: 0 0 28px rgba(176, 38, 255, 0.45), inset 0 0 15px rgba(176, 38, 255, 0.1);
+}
+.card-tier-emperor:hover {
+  box-shadow: 0 0 42px rgba(176, 38, 255, 0.7), inset 0 0 20px rgba(176, 38, 255, 0.2);
+  border-color: #d946ef;
+}
+.card-tier-emperor .card-glow-layer {
+  background: radial-gradient(ellipse at 50% 0%, rgba(176, 38, 255, 0.25) 0%, transparent 70%);
+}
+.card-tier-emperor .community-crest-laurel {
+  color: #b026ff;
+  filter: drop-shadow(0 0 10px rgba(176, 38, 255, 0.7));
+}
+.card-tier-emperor .community-price-box {
+  background: rgba(176, 38, 255, 0.08);
+  border: 1.5px solid #b026ff;
+  box-shadow: 0 0 14px rgba(176, 38, 255, 0.25);
+}
+.card-tier-emperor .community-glory-val,
+.card-tier-emperor .perk-ico {
+  color: #d946ef;
+}
+.card-tier-emperor .btn-community-join {
+  background: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%);
+  box-shadow: 0 0 22px rgba(176, 38, 255, 0.6);
+}
+.card-tier-emperor .btn-community-join:hover {
+  box-shadow: 0 0 32px rgba(176, 38, 255, 0.9);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1080px) {
+  .community-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .community-cards-grid {
+    grid-template-columns: 1fr;
+    max-width: 360px;
+  }
+  .community-class-title {
+    font-size: 1.5rem;
+    letter-spacing: 1.5px;
+    gap: 0.5rem;
+  }
+  .community-laurel {
+    display: none;
+  }
+}
+
 
