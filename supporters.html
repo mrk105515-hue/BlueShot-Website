@@ -567,24 +567,48 @@
         </div>
       </section>
 
-      <!-- LIVE SPECIAL BOARD LEADERBOARD -->
-      <section class="special-board-section" id="leaderboard">
-        <div class="section-header" style="text-align: center; margin: 3rem 0 2rem;">
-        <span class="section-subtitle" style="color: var(--color-blue-neon); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; font-size: 0.85rem;">
-          <i class="fa-solid fa-trophy" style="color: #ffd700;"></i> Live Hall of Fame
-        </span>
-        <h2 class="series-title" style="font-size: clamp(2rem, 4.5vw, 3.2rem); margin: 0.4rem 0 0.8rem; text-shadow: 0 0 25px rgba(0, 229, 255, 0.35);">
-          Special Board Leaderboard
-        </h2>
-        <p class="section-desc" style="max-width: 680px; margin: 0 auto; color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem;">
-          All verified rank holders across each cosmic tier, ranked by Glory Points.
-        </p>
-      </div>
+      <!-- LIVE GLORY LEADERBOARD SECTION (ESPORTS PODIUM & RANKING TABLE) -->
+      <section class="glory-leaderboard-section" id="leaderboard">
+        <div class="community-class-header glory-leaderboard-header">
+          <div class="community-class-crown">
+            <svg width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 17L4 5L8.5 10L12 3L15.5 10L20 5L22 17H2Z" fill="#ffd700" stroke="#ffd700" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h2 class="community-class-title">
+            <span class="community-laurel left">
+              <svg width="32" height="26" viewBox="0 0 36 30" fill="#d946ef" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 34 28 C 20 26 8 18 10 2" stroke="#d946ef" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+                <path d="M 10 2 C 8 0 11 -1 13 0 C 14 3 13 5 10 2 Z" fill="#d946ef"/>
+                <path d="M 11 6 C 5 5 1 2 0 -2 C 4 -1 8 2 11 6 Z" fill="#d946ef"/>
+                <path d="M 13 7 C 17 4 21 2 24 -1 C 23 3 20 6 13 7 Z" fill="#d946ef"/>
+                <path d="M 13 13 C 7 12 3 9 1 5 C 6 6 10 9 13 13 Z" fill="#d946ef"/>
+                <path d="M 16 14 C 21 11 25 8 29 5 C 27 10 24 13 16 14 Z" fill="#d946ef"/>
+                <path d="M 18 20 C 12 19 8 16 6 12 C 11 13 15 16 18 20 Z" fill="#d946ef"/>
+                <path d="M 21 21 C 26 18 30 15 34 12 C 32 17 29 20 21 21 Z" fill="#d946ef"/>
+              </svg>
+            </span>
+            <span class="title-white">GLORY </span><span class="title-purple">LEADERBOARD</span>
+            <span class="community-laurel right">
+              <svg width="32" height="26" viewBox="0 0 36 30" fill="#d946ef" xmlns="http://www.w3.org/2000/svg" style="transform: scaleX(-1);">
+                <path d="M 34 28 C 20 26 8 18 10 2" stroke="#d946ef" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+                <path d="M 10 2 C 8 0 11 -1 13 0 C 14 3 13 5 10 2 Z" fill="#d946ef"/>
+                <path d="M 11 6 C 5 5 1 2 0 -2 C 4 -1 8 2 11 6 Z" fill="#d946ef"/>
+                <path d="M 13 7 C 17 4 21 2 24 -1 C 23 3 20 6 13 7 Z" fill="#d946ef"/>
+                <path d="M 13 13 C 7 12 3 9 1 5 C 6 6 10 9 13 13 Z" fill="#d946ef"/>
+                <path d="M 16 14 C 21 11 25 8 29 5 C 27 10 24 13 16 14 Z" fill="#d946ef"/>
+                <path d="M 18 20 C 12 19 8 16 6 12 C 11 13 15 16 18 20 Z" fill="#d946ef"/>
+                <path d="M 21 21 C 26 18 30 15 34 12 C 32 17 29 20 21 21 Z" fill="#d946ef"/>
+              </svg>
+            </span>
+          </h2>
+          <p class="community-class-desc">Top Supporters of BlueShot &mdash; Ranked by Total Glory</p>
+        </div>
 
-      <!-- MERGED RANK BOARDS & SHOP CONTAINER (EMPEROR, APEX, WARLORD, ELITE) -->
-      <div class="merged-rank-boards-container" id="merged-rank-boards">
-        <!-- Rendered dynamically by supporters.js -->
-      </div>
+        <!-- DYNAMIC GLORY LEADERBOARD (COMPACT TOP-3 PODIUM, TABS, RANKING TABLE) -->
+        <div class="glory-leaderboard-container" id="merged-rank-boards">
+          <!-- Rendered dynamically by supporters.js -->
+        </div>
       </section>
 
     </div>

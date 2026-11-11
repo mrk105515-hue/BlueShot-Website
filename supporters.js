@@ -87,53 +87,75 @@
   };
 
   // Default seed supporters for instant rich display (All buyers immortalized)
-  const DEFAULT_SUPPORTERS = [
+    const DEFAULT_SUPPORTERS = [
     {
       id: "sup_seed_1",
       name: "Neeraj Saklani",
       rank: "emperor",
-      glory: 5000,
-      amount: 5000,
-      faction: "Flame Devil",
+      glory: 25600,
+      amount: 25600,
+      avatar: "assets/char-bsg.png",
+      verified: true,
+      faction: "Creator & Overlord",
       message: "Creator of DXZ. To the Beyond State! 🔥",
       createdAt: "2026-10-15T10:00:00Z"
     },
     {
       id: "sup_seed_2",
-      name: "BSG_Vanguard",
+      name: "Kaelen_Void",
       rank: "apex",
-      glory: 1250,
-      amount: 1250,
-      faction: "Blue Shot Guild",
-      message: "Protecting the Redago legacy at all costs.",
+      glory: 12840,
+      amount: 12840,
+      avatar: "assets/char-blackdagger.png",
+      verified: false,
+      faction: "Shadow Syndicate",
+      message: "The Void bows to no one.",
       createdAt: "2026-10-18T14:30:00Z"
     },
     {
-      id: "sup_seed_6",
-      name: "Kaelen_Void",
-      rank: "apex",
-      glory: 820,
-      amount: 820,
-      faction: "Shadow Syndicate",
-      message: "The Void bows to no one.",
+      id: "sup_seed_3",
+      name: "BSG_Vanguard",
+      rank: "warlord",
+      glory: 9870,
+      amount: 9870,
+      avatar: "assets/char-kan.png",
+      verified: false,
+      faction: "Blue Shot Guild",
+      message: "Protecting the Redago legacy at all costs.",
       createdAt: "2026-10-20T16:00:00Z"
     },
     {
-      id: "sup_seed_3",
-      name: "ShadowStrike",
-      rank: "warlord",
-      glory: 480,
-      amount: 480,
-      faction: "Shadow Syndicate",
-      message: "Watch your back, Black Dagger.",
+      id: "sup_seed_4",
+      name: "Flame_Devil",
+      rank: "apex",
+      glory: 8420,
+      amount: 8420,
+      avatar: "assets/char-berry.png",
+      verified: false,
+      faction: "Flame Devil Squad",
+      message: "Burn bright, strike hard.",
       createdAt: "2026-10-22T08:15:00Z"
     },
     {
       id: "sup_seed_5",
+      name: "Shadow_Nexus",
+      rank: "warlord",
+      glory: 7950,
+      amount: 7950,
+      avatar: "assets/char-jiggo.png",
+      verified: false,
+      faction: "Shadow Syndicate",
+      message: "Stealth, shadow, dominance.",
+      createdAt: "2026-10-25T11:20:00Z"
+    },
+    {
+      id: "sup_seed_6",
       name: "CyberRonin_99",
       rank: "warlord",
-      glory: 120,
-      amount: 120,
+      glory: 5200,
+      amount: 5200,
+      avatar: "assets/char-zalta.png",
+      verified: false,
       faction: "Independent Faction",
       message: "Glory to the fighters.",
       createdAt: "2026-10-28T11:20:00Z"
@@ -142,8 +164,10 @@
       id: "sup_seed_7",
       name: "AeroPulse",
       rank: "warlord",
-      glory: 85,
-      amount: 85,
+      glory: 3850,
+      amount: 3850,
+      avatar: "assets/char-eysa.png",
+      verified: false,
       faction: "Blue Shot Guild",
       message: "Speed and precision on the battlefield.",
       createdAt: "2026-10-29T12:00:00Z"
@@ -151,50 +175,60 @@
     {
       id: "sup_seed_8",
       name: "Valkyrie_Rose",
-      rank: "warlord",
-      glory: 60,
-      amount: 60,
+      rank: "elite",
+      glory: 2460,
+      amount: 2460,
+      avatar: "assets/char-suma.png",
+      verified: false,
       faction: "Independent Faction",
       message: "Standing firm on the frontlines.",
       createdAt: "2026-10-30T14:00:00Z"
     },
     {
-      id: "sup_seed_4",
+      id: "sup_seed_9",
       name: "Detective_NJ",
       rank: "elite",
-      glory: 250,
-      amount: 250,
+      glory: 1850,
+      amount: 1850,
+      avatar: "assets/detective-nj-smirk.png",
+      verified: true,
       faction: "Detective Division",
       paymentMethod: "lore_cash",
       message: "Redeemed with $10,000 crime syndicate bounties! 🕵️‍♂️",
       createdAt: "2026-10-25T19:00:00Z"
     },
     {
-      id: "sup_seed_9",
+      id: "sup_seed_10",
       name: "NeonSpecter",
       rank: "elite",
-      glory: 45,
-      amount: 45,
+      glory: 940,
+      amount: 940,
+      avatar: "assets/char-hell.png",
+      verified: false,
       faction: "Shadow Syndicate",
       message: "Rising through the faction ranks.",
       createdAt: "2026-10-31T09:30:00Z"
     },
     {
-      id: "sup_seed_10",
+      id: "sup_seed_11",
       name: "PixelCrusader",
       rank: "elite",
-      glory: 20,
-      amount: 20,
+      glory: 520,
+      amount: 520,
+      avatar: "assets/cursegod-2.png",
+      verified: false,
       faction: "Blue Shot Guild",
       message: "For the glory of the BlueShot universe!",
       createdAt: "2026-11-01T15:20:00Z"
     },
     {
-      id: "sup_seed_11",
+      id: "sup_seed_12",
       name: "EchoZero",
       rank: "elite",
-      glory: 10,
-      amount: 10,
+      glory: 180,
+      amount: 180,
+      avatar: "assets/ruler-1.png",
+      verified: false,
       faction: "Independent Faction",
       message: "Excited for the upcoming lore episodes.",
       createdAt: "2026-11-02T18:10:00Z"
@@ -468,136 +502,314 @@
     }
   };
 
-  // 1. ORDER OF RANKS (DESCENDING: EMPEROR -> APEX -> WARLORD -> ELITE)
-  const RANK_ORDER = ["emperor", "apex", "warlord", "elite"];
+  
+  function getSupporterAvatar(supporter) {
+    if (supporter.avatar) return supporter.avatar;
+    const name = (supporter.name || "").toLowerCase();
+    if (name.includes("neeraj")) return "assets/char-bsg.png";
+    if (name.includes("kaelen")) return "assets/char-blackdagger.png";
+    if (name.includes("vanguard")) return "assets/char-kan.png";
+    if (name.includes("flame")) return "assets/char-berry.png";
+    if (name.includes("nexus") || name.includes("strike")) return "assets/char-jiggo.png";
+    if (name.includes("ronin")) return "assets/char-zalta.png";
+    if (name.includes("aero")) return "assets/char-eysa.png";
+    if (name.includes("valkyrie")) return "assets/char-suma.png";
+    if (name.includes("detective")) return "assets/detective-nj-smirk.png";
+    if (supporter.rank === "emperor") return "assets/char-bsg.png";
+    if (supporter.rank === "apex") return "assets/char-blackdagger.png";
+    if (supporter.rank === "warlord") return "assets/char-kan.png";
+    return "assets/char-berry.png";
+  }
+
 
   // ==========================================================================
-  // MERGED RANK SHOP & SPECIAL LEADERBOARD RENDERING
+  // ESPORTS-STYLE GLORY LEADERBOARD RENDERING (PODIUM + FILTER TABS + TABLE)
   // ==========================================================================
   function renderMergedRankBoards() {
     const container = document.getElementById("merged-rank-boards");
     if (!container) return;
 
-    container.innerHTML = RANK_ORDER.map(rankId => {
-      const rank = SUPPORTER_RANKS[rankId];
-      if (!rank) return "";
+    // Filter supporters by active tab
+    const filteredSupporters = (activeFilter === "all")
+      ? [...supportersData]
+      : supportersData.filter(s => (s.rank || "").toLowerCase() === activeFilter);
 
-      const isElite = rank.id === "elite";
-      const isEmperor = rank.id === "emperor";
+    // Sort descending by glory
+    filteredSupporters.sort((a, b) => (b.glory || 0) - (a.glory || 0));
 
-      // Filter supporters belonging to this specific rank tier, sorted descending by glory
-      const tierSupporters = supportersData
-        .filter(s => (s.rank || "").toLowerCase() === rankId)
-        .sort((a, b) => (b.glory || 0) - (a.glory || 0));
+    // Top 3 supporters for the podium
+    const top3 = (activeFilter === "all" ? supportersData : filteredSupporters).slice(0, 3);
+    const top1 = top3[0] || null;
+    const top2 = top3[1] || null;
+    const top3rd = top3[2] || null;
 
-      // Render ALL buyers who bought this rank (1., 2., 3., 4., 5., etc. - all buyers displayed!)
-      const entriesHtml = [];
+    // Build Podium HTML
+    let podiumHtml = "";
+    if (top1) {
+      const rank1 = SUPPORTER_RANKS[top1.rank] || SUPPORTER_RANKS.emperor;
+      const rank2 = top2 ? (SUPPORTER_RANKS[top2.rank] || SUPPORTER_RANKS.apex) : null;
+      const rank3 = top3rd ? (SUPPORTER_RANKS[top3rd.rank] || SUPPORTER_RANKS.warlord) : null;
 
-      if (tierSupporters.length > 0) {
-        tierSupporters.forEach((supporter, idx) => {
-          const pos = idx + 1;
-          let posClass = "entry-rank-pos";
-          let rowClass = "tier-board-entry";
-          if (pos === 1) {
-            posClass += " top-1";
-            rowClass += " top-1";
-          } else if (pos === 2) {
-            posClass += " top-2";
-            rowClass += " top-2";
-          } else if (pos === 3) {
-            posClass += " top-3";
-            rowClass += " top-3";
-          }
-
-          const isLorePaid = supporter.paymentMethod === "lore_cash";
-          const formattedGlory = (supporter.glory || 0).toLocaleString('en-IN');
-          entriesHtml.push(`
-            <div class="${rowClass}">
-              <div class="${posClass}">${pos}.</div>
-              <div class="entry-supporter-main">
-                <div class="entry-supporter-header-row">
-                  <span class="entry-supporter-name">${escapeHtml(supporter.name)}</span>
-                  ${supporter.faction ? `<span class="entry-faction-tag">${escapeHtml(supporter.faction)}</span>` : ''}
-                  ${isLorePaid ? '<span class="lore-cash-chip" title="Claimed with $10k game cash!"><i class="fa-solid fa-gamepad"></i> Game Cash</span>' : ''}
-                </div>
-                ${supporter.message ? `<div class="entry-supporter-quote">"${escapeHtml(supporter.message)}"</div>` : ''}
-              </div>
-              <div class="entry-glory-side">
-                <div class="entry-glory-value" style="color: ${rank.color};">
-                  <i class="fa-solid fa-bolt"></i> ${formattedGlory} GLORY
-                </div>
-              </div>
+      podiumHtml = `
+        <div class="glory-podium-wrap">
+          <!-- 2ND PLACE (LEFT) -->
+          ${top2 ? `
+          <div class="podium-card podium-rank-2">
+            <div class="podium-pillar-header">
+              <span class="podium-medal-badge silver">2</span>
             </div>
-          `);
-        });
-      } else {
-        // No buyers yet in this tier
-        entriesHtml.push(`
-          <div class="tier-board-empty">
-            <div class="tier-empty-main">
-              <i class="fa-solid fa-shield-halved" style="color: ${rank.color}; font-size: 1.3rem;"></i>
-              <div class="tier-empty-text">
-                <span class="tier-empty-title">No buyers yet in ${rank.name}</span>
-                <span class="tier-empty-desc">Be the first to claim this rank and take the #1 spot on the Special Board!</span>
-              </div>
+            <div class="podium-avatar-box silver-ring">
+              <img src="${getSupporterAvatar(top2)}" alt="${escapeHtml(top2.name)}" class="podium-avatar-img">
+              <span class="podium-crest-badge" title="${rank2.name}">
+                <img src="${rank2.image}" alt="${rank2.name}">
+              </span>
             </div>
-            <button type="button" class="btn-claim-vacant-spot" onclick="handleClaimClick('${rank.id}')">
-              <i class="fa-solid fa-bolt"></i> Claim #1 Spot
-            </button>
+            <div class="podium-name-tag">
+              <span class="podium-supporter-name">${escapeHtml(top2.name)}</span>
+            </div>
+            <div class="podium-rank-pill ${rank2.id}-pill">
+              <span>${rank2.name}</span>
+            </div>
+            <div class="podium-score-pill">
+              <span class="glory-bolt-ico">⚡</span>
+              <span class="glory-score-val">${(top2.glory || 0).toLocaleString('en-IN')}</span>
+              <span class="glory-score-lbl">GLORY</span>
+            </div>
+            <div class="podium-pedestal pedestal-2">
+              <span class="pedestal-num">2</span>
+            </div>
           </div>
-        `);
-      }
+          ` : '<div class="podium-card podium-empty"></div>'}
 
-      return `
-        <section class="rank-tier-board-section ${rank.id}-tier-board" id="tier-board-${rank.id}">
-          <div class="tier-glow-accent" style="background: ${rank.color};"></div>
-
-          <!-- Header: Rank Identity + [BUY] Button -->
-          <div class="tier-board-header">
-            <div class="tier-board-identity">
-              <div class="tier-crest-wrap">
-                <img src="${rank.image}" alt="${rank.name} Crest" class="tier-crest-img">
-              </div>
-              <div class="tier-identity-text">
-                <div class="tier-badge-row">
-                  <span class="tier-rank-badge ${rank.id}-badge">${isEmperor ? 'SUPREME OVERLORD' : (rank.popular ? 'POPULAR TIER' : 'FACTION TIER')}</span>
-                  <span class="tier-rank-title">${rank.title}</span>
-                </div>
-                <h2 class="tier-rank-name" style="color: ${rank.color};">${rank.name}</h2>
-                <div class="tier-price-row">
-                  <span class="tier-price-highlight">Base: ₹${rank.price}</span>
-                  ${isElite ? `
-                    <span>or</span>
-                    <span class="tier-lore-cash-tag"><i class="fa-solid fa-gamepad"></i> $10,000 Lore Game Cash</span>
-                  ` : `
-                    <span>· Grants ${rank.minGlory}+ Glory Points (₹1 = 1 Glory)</span>
-                  `}
-                </div>
-              </div>
+          <!-- 1ST PLACE (CENTER, ELEVATED) -->
+          <div class="podium-card podium-rank-1">
+            <div class="podium-pillar-header">
+              <span class="podium-crown-icon">👑</span>
+              <span class="podium-medal-badge gold">1</span>
             </div>
-
-            <!-- BUY Button -->
-            <div class="tier-board-actions">
-              <button class="btn btn-tier-buy ${rank.id}-buy-btn" onclick="handleClaimClick('${rank.id}')">
-                <i class="fa-solid fa-shield-halved"></i> BUY ${rank.name} · ₹${rank.price}
-              </button>
+            <div class="podium-avatar-box gold-ring">
+              <img src="${getSupporterAvatar(top1)}" alt="${escapeHtml(top1.name)}" class="podium-avatar-img">
+              <span class="podium-crest-badge" title="${rank1.name}">
+                <img src="${rank1.image}" alt="${rank1.name}">
+              </span>
+            </div>
+            <div class="podium-name-tag">
+              <span class="podium-supporter-name">${escapeHtml(top1.name)}</span>
+              ${top1.verified ? `
+                <svg class="verified-ico" width="15" height="15" viewBox="0 0 24 24" fill="#a855f7" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+              ` : ''}
+            </div>
+            <div class="podium-rank-pill ${rank1.id}-pill">
+              <span>${rank1.name}</span>
+            </div>
+            <div class="podium-score-pill gold-highlight">
+              <span class="glory-bolt-ico gold-bolt">⚡</span>
+              <span class="glory-score-val gold-val">${(top1.glory || 0).toLocaleString('en-IN')}</span>
+              <span class="glory-score-lbl">GLORY</span>
+            </div>
+            <div class="podium-pedestal pedestal-1">
+              <span class="pedestal-num">1</span>
             </div>
           </div>
 
-          <!-- Leaderboard Area (All buyers listed) -->
-          <div class="tier-leaderboard-area">
-            <div class="tier-leaderboard-subhead">
-              <span><i class="fa-solid fa-trophy" style="color: ${rank.color};"></i> ${rank.name} SPECIAL BOARD (${tierSupporters.length} Buyer${tierSupporters.length === 1 ? '' : 's'})</span>
-              <span>All Buyers Listed · Ranked by Glory</span>
+          <!-- 3RD PLACE (RIGHT) -->
+          ${top3rd ? `
+          <div class="podium-card podium-rank-3">
+            <div class="podium-pillar-header">
+              <span class="podium-medal-badge bronze">3</span>
             </div>
-            <div class="tier-entries-list">
-              ${entriesHtml.join('')}
+            <div class="podium-avatar-box bronze-ring">
+              <img src="${getSupporterAvatar(top3rd)}" alt="${escapeHtml(top3rd.name)}" class="podium-avatar-img">
+              <span class="podium-crest-badge" title="${rank3.name}">
+                <img src="${rank3.image}" alt="${rank3.name}">
+              </span>
+            </div>
+            <div class="podium-name-tag">
+              <span class="podium-supporter-name">${escapeHtml(top3rd.name)}</span>
+            </div>
+            <div class="podium-rank-pill ${rank3.id}-pill">
+              <span>${rank3.name}</span>
+            </div>
+            <div class="podium-score-pill">
+              <span class="glory-bolt-ico">⚡</span>
+              <span class="glory-score-val">${(top3rd.glory || 0).toLocaleString('en-IN')}</span>
+              <span class="glory-score-lbl">GLORY</span>
+            </div>
+            <div class="podium-pedestal pedestal-3">
+              <span class="pedestal-num">3</span>
             </div>
           </div>
-        </section>
+          ` : '<div class="podium-card podium-empty"></div>'}
+        </div>
       `;
-    }).join('');
+    }
+
+    // Filter Tabs HTML
+    const filterTabsHtml = `
+      <div class="glory-filter-bar">
+        <button type="button" class="glory-filter-tab ${activeFilter === 'all' ? 'active' : ''}" onclick="filterSupporters('all', this)">
+          <svg width="15" height="13" viewBox="0 0 24 20" fill="currentColor">
+            <path d="M2 17L4 5L8.5 10L12 3L15.5 10L20 5L22 17H2Z"/>
+          </svg>
+          <span>All</span>
+        </button>
+        <button type="button" class="glory-filter-tab ${activeFilter === 'elite' ? 'active' : ''}" onclick="filterSupporters('elite', this)">
+          <span class="tab-rank-dot elite-dot"></span>
+          <span>Elite</span>
+        </button>
+        <button type="button" class="glory-filter-tab ${activeFilter === 'warlord' ? 'active' : ''}" onclick="filterSupporters('warlord', this)">
+          <span class="tab-rank-dot warlord-dot"></span>
+          <span>Warlord</span>
+        </button>
+        <button type="button" class="glory-filter-tab ${activeFilter === 'apex' ? 'active' : ''}" onclick="filterSupporters('apex', this)">
+          <span class="tab-rank-dot apex-dot"></span>
+          <span>Apex</span>
+        </button>
+        <button type="button" class="glory-filter-tab ${activeFilter === 'emperor' ? 'active' : ''}" onclick="filterSupporters('emperor', this)">
+          <span class="tab-rank-dot emperor-dot"></span>
+          <span>Emperor</span>
+        </button>
+      </div>
+    `;
+
+    // Ranking Table Rows HTML
+    let rowsHtml = "";
+    if (filteredSupporters.length > 0) {
+      rowsHtml = filteredSupporters.map((supporter, idx) => {
+        const pos = idx + 1;
+        const rank = SUPPORTER_RANKS[supporter.rank] || SUPPORTER_RANKS.elite;
+        const formattedGlory = (supporter.glory || 0).toLocaleString('en-IN');
+        const isTop1 = pos === 1;
+        const isTop2 = pos === 2;
+        const isTop3 = pos === 3;
+        const topRowClass = isTop1 ? "row-top-1" : isTop2 ? "row-top-2" : isTop3 ? "row-top-3" : "";
+
+        let posBadge = `<span class="pos-num-text">${pos}</span>`;
+        if (isTop1) {
+          posBadge = `<div class="pos-medal-wrap medal-gold">
+            <svg class="pos-wreath-svg left" width="13" height="20" viewBox="0 0 16 26" fill="currentColor">
+              <path d="M14 24 C 6 20 2 12 4 2 C 5 7 9 12 14 14 C 11 11 12 6 15 4 C 13 8 13 13 14 18 Z" opacity="0.9"/>
+              <circle cx="4" cy="5" r="1.8"/>
+              <circle cx="2" cy="11" r="1.8"/>
+              <circle cx="4" cy="17" r="1.8"/>
+              <circle cx="8" cy="22" r="1.8"/>
+            </svg>
+            <span class="pos-num-val">1</span>
+            <svg class="pos-wreath-svg right" width="13" height="20" viewBox="0 0 16 26" fill="currentColor" style="transform: scaleX(-1);">
+              <path d="M14 24 C 6 20 2 12 4 2 C 5 7 9 12 14 14 C 11 11 12 6 15 4 C 13 8 13 13 14 18 Z" opacity="0.9"/>
+              <circle cx="4" cy="5" r="1.8"/>
+              <circle cx="2" cy="11" r="1.8"/>
+              <circle cx="4" cy="17" r="1.8"/>
+              <circle cx="8" cy="22" r="1.8"/>
+            </svg>
+          </div>`;
+        } else if (isTop2) {
+          posBadge = `<div class="pos-medal-wrap medal-silver">
+            <svg class="pos-wreath-svg left" width="13" height="20" viewBox="0 0 16 26" fill="currentColor">
+              <path d="M14 24 C 6 20 2 12 4 2 C 5 7 9 12 14 14 C 11 11 12 6 15 4 C 13 8 13 13 14 18 Z" opacity="0.9"/>
+              <circle cx="4" cy="5" r="1.8"/>
+              <circle cx="2" cy="11" r="1.8"/>
+              <circle cx="4" cy="17" r="1.8"/>
+              <circle cx="8" cy="22" r="1.8"/>
+            </svg>
+            <span class="pos-num-val">2</span>
+            <svg class="pos-wreath-svg right" width="13" height="20" viewBox="0 0 16 26" fill="currentColor" style="transform: scaleX(-1);">
+              <path d="M14 24 C 6 20 2 12 4 2 C 5 7 9 12 14 14 C 11 11 12 6 15 4 C 13 8 13 13 14 18 Z" opacity="0.9"/>
+              <circle cx="4" cy="5" r="1.8"/>
+              <circle cx="2" cy="11" r="1.8"/>
+              <circle cx="4" cy="17" r="1.8"/>
+              <circle cx="8" cy="22" r="1.8"/>
+            </svg>
+          </div>`;
+        } else if (isTop3) {
+          posBadge = `<div class="pos-medal-wrap medal-bronze">
+            <svg class="pos-wreath-svg left" width="13" height="20" viewBox="0 0 16 26" fill="currentColor">
+              <path d="M14 24 C 6 20 2 12 4 2 C 5 7 9 12 14 14 C 11 11 12 6 15 4 C 13 8 13 13 14 18 Z" opacity="0.9"/>
+              <circle cx="4" cy="5" r="1.8"/>
+              <circle cx="2" cy="11" r="1.8"/>
+              <circle cx="4" cy="17" r="1.8"/>
+              <circle cx="8" cy="22" r="1.8"/>
+            </svg>
+            <span class="pos-num-val">3</span>
+            <svg class="pos-wreath-svg right" width="13" height="20" viewBox="0 0 16 26" fill="currentColor" style="transform: scaleX(-1);">
+              <path d="M14 24 C 6 20 2 12 4 2 C 5 7 9 12 14 14 C 11 11 12 6 15 4 C 13 8 13 13 14 18 Z" opacity="0.9"/>
+              <circle cx="4" cy="5" r="1.8"/>
+              <circle cx="2" cy="11" r="1.8"/>
+              <circle cx="4" cy="17" r="1.8"/>
+              <circle cx="8" cy="22" r="1.8"/>
+            </svg>
+          </div>`;
+        }
+
+        return `
+          <div class="glory-table-row ${topRowClass}">
+            <div class="row-cell cell-pos">
+              ${posBadge}
+            </div>
+            <div class="row-cell cell-supporter">
+              <div class="table-avatar-wrap">
+                <img src="${getSupporterAvatar(supporter)}" alt="${escapeHtml(supporter.name)}" class="table-avatar-img">
+              </div>
+              <div class="table-supporter-meta">
+                <div class="table-name-line">
+                  <span class="table-supporter-name">${escapeHtml(supporter.name)}</span>
+                  ${supporter.verified ? `
+                    <svg class="verified-ico-mini" width="13" height="13" viewBox="0 0 24 24" fill="#a855f7">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                  ` : ''}
+                </div>
+                ${supporter.faction ? `<span class="table-faction-lbl">${escapeHtml(supporter.faction)}</span>` : ''}
+              </div>
+            </div>
+            <div class="row-cell cell-rank">
+              <span class="table-rank-pill ${rank.id}-pill">
+                <img src="${rank.image}" alt="${rank.name}" class="table-pill-crest">
+                <span>${rank.name}</span>
+              </span>
+            </div>
+            <div class="row-cell cell-glory">
+              <span class="table-glory-bolt">⚡</span>
+              <span class="table-glory-value">${formattedGlory}</span>
+              <span class="table-glory-sub">GLORY</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    } else {
+      rowsHtml = `
+        <div class="glory-table-empty">
+          <i class="fa-solid fa-trophy" style="font-size: 2rem; color: rgba(255, 255, 255, 0.2); margin-bottom: 0.5rem;"></i>
+          <p>No supporters found in this tier yet.</p>
+        </div>
+      `;
+    }
+
+    const tableHtml = `
+      <div class="glory-table-wrap">
+        <div class="glory-table-head">
+          <div class="head-cell cell-pos">#</div>
+          <div class="head-cell cell-supporter">Supporter</div>
+          <div class="head-cell cell-rank">Rank</div>
+          <div class="head-cell cell-glory">Lifetime Glory</div>
+        </div>
+        <div class="glory-table-body">
+          ${rowsHtml}
+        </div>
+      </div>
+    `;
+
+    container.innerHTML = `
+      <div class="glory-leaderboard-inner">
+        ${podiumHtml}
+        ${filterTabsHtml}
+        ${tableHtml}
+      </div>
+    `;
   }
+
 
   // ==========================================================================
   // FETCH & SYNC SUPPORTERS (FIRESTORE + SEED FALLBACK)
@@ -684,9 +896,7 @@
 
   // Filter Buttons
   window.filterSupporters = function(rankKey, btnEl) {
-    activeFilter = rankKey;
-    document.querySelectorAll(".board-filter-btn").forEach(btn => btn.classList.remove("active"));
-    if (btnEl) btnEl.classList.add("active");
+    activeFilter = rankKey || "all";
     renderMergedRankBoards();
   };
 
