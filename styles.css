@@ -4448,23 +4448,23 @@ body.loaded .visual-card.reveal-scale:hover {
   background: #08080c;
   border: 1px solid rgba(168, 85, 247, 0.22);
   border-radius: 24px;
-  padding: 2.5rem 2rem 2.75rem;
+  padding: 2.5rem 1.75rem 2.75rem;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(168, 85, 247, 0.08);
   position: relative;
   overflow: hidden;
 }
 
-/* Ambient glow accent behind container */
+/* Ambient purple glow accent behind container */
 .glory-leaderboard-container::before {
   content: "";
   position: absolute;
   top: -80px;
   left: 50%;
   transform: translateX(-50%);
-  width: 550px;
-  height: 220px;
-  background: radial-gradient(ellipse, rgba(168, 85, 247, 0.14) 0%, transparent 70%);
-  filter: blur(55px);
+  width: 750px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
+  filter: blur(60px);
   pointer-events: none;
   z-index: 0;
 }
@@ -4475,184 +4475,301 @@ body.loaded .visual-card.reveal-scale:hover {
 }
 
 /* ==========================================================================
-   COMPACT TOP-3 PODIUM
+   TOP 3 ARCHITECTURAL PODIUM WITH BACKGROUND ARTWORK
    ========================================================================== */
-.glory-podium-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 1.5rem;
-  margin: 0.5rem auto 2.5rem;
-  max-width: 820px;
+.podium-stage-container {
   position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.5rem auto 2.5rem;
+  overflow: hidden;
 }
 
-.glory-podium-wrap .podium-card {
-  min-width: 0;
-  flex: 0 1 auto;
+/* Transparent Duo Character Artwork Layer (behind podium pillars) */
+.podium-artwork-bg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 960px;
+  height: 490px;
+  background: url('assets/leaderboard-duo-bg.png') no-repeat center top;
+  background-size: 100% auto;
+  opacity: 0.52;
+  filter: drop-shadow(0 0 35px rgba(168, 85, 247, 0.35));
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 45%, rgba(0,0,0,0.15) 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 45%, rgba(0,0,0,0.15) 85%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Connected Architectural Stage */
+.podium-stage {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 860px;
+  margin-top: 0.5rem;
+}
+
+/* Connected Pillars Row */
+.podium-pillars-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  gap: 2px;
+}
+
+/* Individual Architectural Podium Pillar */
+.architectural-pillar {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   position: relative;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  background: rgba(14, 14, 22, 0.78);
-  border-radius: 20px;
-  padding: 1.5rem 1.25rem 0;
-  overflow: hidden;
+  transition: transform 0.25s ease;
 }
 
-.podium-card:hover {
-  transform: translateY(-4px);
+/* 1st Place Pillar (Tallest, Centered) */
+.pillar-rank-1 {
+  order: 2;
+  width: 290px;
+  z-index: 3;
 }
 
-.podium-rank-1 {
+/* 2nd Place Pillar (Left, Medium) */
+.pillar-rank-2 {
+  order: 1;
   width: 250px;
   z-index: 2;
-  border: 1px solid rgba(255, 215, 0, 0.35);
-  background: linear-gradient(180deg, rgba(255, 215, 0, 0.08) 0%, rgba(14, 14, 22, 0.9) 100%);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 215, 0, 0.12);
-  transform: translateY(-8px);
 }
 
-.podium-rank-1:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7), 0 0 35px rgba(255, 215, 0, 0.2);
+/* 3rd Place Pillar (Right, Lowest) */
+.pillar-rank-3 {
+  order: 3;
+  width: 250px;
+  z-index: 2;
 }
 
-.podium-rank-2 {
-  width: 215px;
-  z-index: 1;
-  border: 1px solid rgba(212, 212, 216, 0.22);
-  background: linear-gradient(180deg, rgba(212, 212, 216, 0.05) 0%, rgba(14, 14, 22, 0.9) 100%);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 212, 216, 0.08);
+.pillar-empty {
+  visibility: hidden;
+  pointer-events: none;
 }
 
-.podium-rank-3 {
-  width: 215px;
-  z-index: 1;
-  border: 1px solid rgba(217, 119, 6, 0.22);
-  background: linear-gradient(180deg, rgba(217, 119, 6, 0.05) 0%, rgba(14, 14, 22, 0.9) 100%);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(217, 119, 6, 0.08);
-}
-
-.podium-pillar-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 0.45rem;
-  position: relative;
-}
-
-.podium-crown-icon {
-  font-size: 1.6rem;
+/* Floating Crown on 1st place */
+.pillar-crown {
+  font-size: 1.85rem;
   line-height: 1;
-  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+  margin-bottom: 0.35rem;
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.9));
   animation: crown-float 3s ease-in-out infinite alternate;
 }
 
 @keyframes crown-float {
   0% { transform: translateY(0); }
-  100% { transform: translateY(-3px); }
+  100% { transform: translateY(-4px); }
 }
 
-.podium-medal-badge {
+/* Medal Badges for 2 and 3 */
+.pillar-medal {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   font-family: var(--font-display);
-  font-size: 0.82rem;
   font-weight: 900;
-  color: #000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  font-size: 0.85rem;
+  margin-bottom: 0.35rem;
 }
 
-.podium-medal-badge.gold {
-  background: linear-gradient(135deg, #ffe066, #ffb703);
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+.pillar-medal.silver {
+  background: linear-gradient(135deg, #f8fafc, #94a3b8);
+  color: #0f172a;
   border: 1px solid #fff;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
 }
 
-.podium-medal-badge.silver {
-  background: linear-gradient(135deg, #f4f4f5, #a1a1aa);
-  box-shadow: 0 0 12px rgba(192, 192, 192, 0.45);
-  border: 1px solid #fff;
-}
-
-.podium-medal-badge.bronze {
-  background: linear-gradient(135deg, #fbbf24, #b45309);
-  box-shadow: 0 0 12px rgba(205, 127, 50, 0.45);
+.pillar-medal.bronze {
+  background: linear-gradient(135deg, #fcd34d, #b45309);
   color: #fff;
   border: 1px solid #fde68a;
+  box-shadow: 0 0 15px rgba(217, 119, 6, 0.5);
 }
 
-/* Avatar Box */
-.podium-avatar-box {
+/* Avatar Box with metallic ring */
+.pillar-avatar-box {
   position: relative;
   border-radius: 50%;
+  margin-bottom: -16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.65rem;
-  background: #12121c;
+  background: #11111a;
+  z-index: 4;
 }
 
 .gold-ring {
-  width: 86px;
-  height: 86px;
-  border: 3px solid #ffd700;
-  box-shadow: 0 0 25px rgba(255, 215, 0, 0.45), inset 0 0 12px rgba(255, 215, 0, 0.2);
+  width: 88px;
+  height: 88px;
+  border: 3.5px solid #ffd700;
+  box-shadow: 0 0 32px rgba(255, 215, 0, 0.6), inset 0 0 16px rgba(255, 215, 0, 0.25);
 }
 
 .silver-ring {
-  width: 72px;
-  height: 72px;
-  border: 2.5px solid #d4d4d8;
-  box-shadow: 0 0 18px rgba(212, 212, 216, 0.35);
+  width: 74px;
+  height: 74px;
+  border: 3px solid #38bdf8;
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.5), inset 0 0 12px rgba(56, 189, 248, 0.2);
 }
 
 .bronze-ring {
-  width: 72px;
-  height: 72px;
-  border: 2.5px solid #d97706;
-  box-shadow: 0 0 18px rgba(217, 119, 6, 0.35);
+  width: 74px;
+  height: 74px;
+  border: 3px solid #d97706;
+  box-shadow: 0 0 24px rgba(217, 119, 6, 0.5), inset 0 0 12px rgba(217, 119, 6, 0.2);
 }
 
-.podium-avatar-img {
+.pillar-avatar-img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
 }
 
-/* Small crest badge on bottom right of avatar */
-.podium-crest-badge {
+.pillar-crest-tag {
   position: absolute;
   bottom: -4px;
   right: -4px;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: #09090e;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
 }
 
-.podium-crest-badge img {
+.pillar-crest-tag img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-/* Name Tag */
-.podium-name-tag {
+/* THE SOLID MONOLITH PLATFORM (CONNECTED ARCHITECTURAL BLOCK) */
+.pillar-platform-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.6rem 0.85rem 0.85rem;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease;
+}
+
+/* 1st Place Platform Block */
+.pillar-rank-1 .pillar-platform-block {
+  min-height: 235px;
+  background: linear-gradient(180deg, rgba(255, 215, 0, 0.16) 0%, rgba(26, 20, 14, 0.94) 25%, rgba(12, 12, 18, 0.98) 100%);
+  border-top: 3.5px solid #ffd700;
+  border-left: 1.5px solid rgba(255, 215, 0, 0.45);
+  border-right: 1.5px solid rgba(255, 215, 0, 0.45);
+  box-shadow: 0 -6px 35px rgba(255, 215, 0, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* 2nd Place Platform Block */
+.pillar-rank-2 .pillar-platform-block {
+  min-height: 180px;
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.14) 0%, rgba(15, 23, 42, 0.94) 25%, rgba(10, 12, 18, 0.98) 100%);
+  border-top: 3px solid #38bdf8;
+  border-left: 1.5px solid rgba(56, 189, 248, 0.35);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -4px 25px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* 3rd Place Platform Block */
+.pillar-rank-3 .pillar-platform-block {
+  min-height: 140px;
+  background: linear-gradient(180deg, rgba(217, 119, 6, 0.14) 0%, rgba(32, 20, 14, 0.94) 25%, rgba(10, 12, 18, 0.98) 100%);
+  border-top: 3px solid #d97706;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1.5px solid rgba(217, 119, 6, 0.35);
+  box-shadow: 0 -4px 25px rgba(217, 119, 6, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Ambient light rim at top of each platform */
+.pillar-platform-block::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #ffffff, transparent);
+  opacity: 0.7;
+}
+
+/* Large Embossed Architectural Pillar Number */
+.platform-rank-num {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-size: 3.8rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -2px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.pillar-rank-1 .platform-rank-num {
+  color: #ffd700;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+  opacity: 0.32;
+}
+
+.pillar-rank-2 .platform-rank-num {
+  color: #38bdf8;
+  text-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
+  opacity: 0.28;
+}
+
+.pillar-rank-3 .platform-rank-num {
+  color: #d97706;
+  text-shadow: 0 0 25px rgba(217, 119, 6, 0.7);
+  opacity: 0.28;
+}
+
+/* Platform Content (Supporter Info mounted directly on the pillar) */
+.platform-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Supporter Username */
+.pillar-username-row {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4662,28 +4779,28 @@ body.loaded .visual-card.reveal-scale:hover {
   padding: 0 0.5rem;
 }
 
-.podium-supporter-name {
-  font-size: 1.05rem;
+.pillar-username {
+  font-size: 1.12rem;
   font-weight: 800;
-  color: #fff;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.9);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 180px;
 }
 
-.podium-rank-1 .podium-supporter-name {
-  font-size: 1.15rem;
-  color: #ffffff;
+.pillar-rank-1 .pillar-username {
+  font-size: 1.25rem;
 }
 
-.verified-ico {
+.verified-badge {
+  color: #c084fc;
+  filter: drop-shadow(0 0 6px rgba(192, 132, 252, 0.8));
   flex-shrink: 0;
-  filter: drop-shadow(0 0 5px rgba(168, 85, 247, 0.6));
 }
 
 /* Rank Pill */
-.podium-rank-pill {
+.pillar-rank-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -4694,130 +4811,92 @@ body.loaded .visual-card.reveal-scale:hover {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.45rem;
 }
 
-.podium-rank-pill.emperor-pill {
-  background: rgba(199, 66, 255, 0.15);
-  color: #d946ef;
-  border: 1px solid rgba(199, 66, 255, 0.45);
+.emperor-pill {
+  background: rgba(199, 66, 255, 0.18);
+  color: #e879f9;
+  border: 1px solid rgba(199, 66, 255, 0.55);
+  box-shadow: 0 0 15px rgba(199, 66, 255, 0.25);
 }
 
-.podium-rank-pill.apex-pill {
-  background: rgba(255, 215, 0, 0.15);
-  color: #ffd700;
-  border: 1px solid rgba(255, 215, 0, 0.45);
+.apex-pill {
+  background: rgba(56, 189, 248, 0.18);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.55);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
 }
 
-.podium-rank-pill.warlord-pill {
-  background: rgba(0, 229, 255, 0.15);
-  color: #00e5ff;
-  border: 1px solid rgba(0, 229, 255, 0.45);
+.warlord-pill {
+  background: rgba(217, 119, 6, 0.18);
+  color: #f59e0b;
+  border: 1px solid rgba(217, 119, 6, 0.55);
+  box-shadow: 0 0 15px rgba(217, 119, 6, 0.25);
 }
 
-.podium-rank-pill.elite-pill {
-  background: rgba(255, 123, 37, 0.15);
+.elite-pill {
+  background: rgba(255, 123, 37, 0.18);
   color: #ff7b25;
-  border: 1px solid rgba(255, 123, 37, 0.45);
+  border: 1px solid rgba(255, 123, 37, 0.55);
+  box-shadow: 0 0 15px rgba(255, 123, 37, 0.25);
 }
 
-/* Glory Score Pill */
-.podium-score-pill {
+/* Glory Pill */
+.pillar-glory-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.3rem 0.85rem;
+  padding: 0.32rem 0.85rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(16, 16, 24, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   font-family: var(--font-display);
   font-weight: 800;
-  margin-bottom: 1.1rem;
+  font-size: 0.92rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
 }
 
-.podium-score-pill.gold-highlight {
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.16), rgba(255, 145, 0, 0.1));
-  border-color: rgba(255, 215, 0, 0.4);
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.15);
-}
-
-.glory-bolt-ico {
-  color: #e4e4e7;
-  font-size: 0.85rem;
-}
-
-.glory-bolt-ico.gold-bolt {
+.pillar-glory-pill.gold {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.22), rgba(245, 158, 11, 0.12));
+  border-color: rgba(255, 215, 0, 0.55);
   color: #ffd700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.pillar-glory-pill.silver {
+  border-color: rgba(56, 189, 248, 0.45);
+  color: #e2e8f0;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+
+.pillar-glory-pill.bronze {
+  border-color: rgba(217, 119, 6, 0.45);
+  color: #fbbf24;
+  box-shadow: 0 0 15px rgba(217, 119, 6, 0.2);
+}
+
+.glory-bolt {
+  color: #ffd700;
+  font-size: 0.9rem;
   filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.8));
 }
 
-.glory-score-val {
-  color: #fff;
-  font-size: 0.95rem;
-  letter-spacing: 0.03em;
-}
-
-.glory-score-val.gold-val {
-  color: #ffd700;
-  font-size: 1.05rem;
-}
-
-.glory-score-lbl {
-  color: #71717a;
+.glory-lbl {
   font-size: 0.65rem;
+  color: #94a3b8;
   letter-spacing: 0.08em;
 }
 
-/* Pedestals - Flush to bottom of card */
-.podium-pedestal {
-  width: calc(100% + 2.5rem);
-  margin-left: -1.25rem;
-  margin-right: -1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
-}
-
-.pedestal-1 {
-  height: 48px;
-  background: linear-gradient(180deg, rgba(255, 215, 0, 0.25) 0%, rgba(20, 16, 26, 0.95) 100%);
-  border-top: 2px solid #ffd700;
-}
-
-.pedestal-2 {
-  height: 38px;
-  background: linear-gradient(180deg, rgba(212, 212, 216, 0.2) 0%, rgba(16, 16, 24, 0.95) 100%);
-  border-top: 2px solid #d4d4d8;
-}
-
-.pedestal-3 {
-  height: 32px;
-  background: linear-gradient(180deg, rgba(217, 119, 6, 0.2) 0%, rgba(16, 14, 22, 0.95) 100%);
-  border-top: 2px solid #d97706;
-}
-
-.pedestal-num {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 900;
-  line-height: 1;
-}
-
-.pedestal-1 .pedestal-num {
-  color: #ffd700;
-  text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
-}
-
-.pedestal-2 .pedestal-num {
-  color: #d4d4d8;
-  text-shadow: 0 0 10px rgba(212, 212, 216, 0.4);
-}
-
-.pedestal-3 .pedestal-num {
-  color: #d97706;
-  text-shadow: 0 0 10px rgba(217, 119, 6, 0.4);
+/* Shared Connected Base Slab */
+.podium-shared-base {
+  width: 100%;
+  height: 22px;
+  background: linear-gradient(180deg, rgba(28, 28, 42, 0.98) 0%, rgba(10, 10, 16, 1) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1.5px solid rgba(168, 85, 247, 0.35);
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 30px rgba(168, 85, 247, 0.2);
 }
 
 /* ==========================================================================
@@ -5170,27 +5249,32 @@ body.loaded .visual-card.reveal-scale:hover {
     margin: 2.5rem auto 3.5rem;
   }
   .glory-leaderboard-container {
-    padding: 1.5rem 0.85rem 1.75rem;
+    padding: 1.5rem 0.75rem 1.75rem;
   }
-  .glory-podium-wrap {
-    gap: 0.5rem;
-    margin-bottom: 1.75rem;
+  .podium-artwork-bg {
+    height: 380px;
   }
-  .podium-card {
-    padding: 1.2rem 0.6rem 0;
+  .podium-pillars-row {
+    gap: 1px;
   }
-  .podium-rank-1 {
+  .pillar-rank-1 {
     width: 125px;
-    transform: translateY(-4px);
   }
-  .podium-rank-2,
-  .podium-rank-3 {
-    width: 105px;
+  .pillar-rank-2,
+  .pillar-rank-3 {
+    width: 100px;
   }
-  .podium-pedestal {
-    width: calc(100% + 1.2rem);
-    margin-left: -0.6rem;
-    margin-right: -0.6rem;
+  .pillar-rank-1 .pillar-platform-block {
+    min-height: 175px;
+    padding: 1.3rem 0.35rem 0.5rem;
+  }
+  .pillar-rank-2 .pillar-platform-block {
+    min-height: 135px;
+    padding: 1.15rem 0.35rem 0.5rem;
+  }
+  .pillar-rank-3 .pillar-platform-block {
+    min-height: 110px;
+    padding: 1rem 0.35rem 0.5rem;
   }
   .gold-ring {
     width: 62px;
@@ -5198,46 +5282,40 @@ body.loaded .visual-card.reveal-scale:hover {
   }
   .silver-ring,
   .bronze-ring {
-    width: 50px;
-    height: 50px;
+    width: 52px;
+    height: 52px;
   }
-  .podium-crown-icon {
-    font-size: 1.2rem;
+  .pillar-crown {
+    font-size: 1.3rem;
   }
-  .podium-medal-badge {
+  .pillar-medal {
     width: 22px;
     height: 22px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
   }
-  .podium-supporter-name {
-    font-size: 0.82rem;
-    max-width: 95px;
+  .pillar-username {
+    font-size: 0.76rem;
+    max-width: 82px;
+    letter-spacing: -0.2px;
   }
-  .podium-rank-pill {
-    font-size: 0.6rem;
-    padding: 0.15rem 0.5rem;
+  .pillar-rank-pill {
+    font-size: 0.58rem;
+    padding: 0.12rem 0.45rem;
+    margin-bottom: 0.3rem;
   }
-  .podium-score-pill {
-    padding: 0.2rem 0.5rem;
-    margin-bottom: 0.8rem;
+  .pillar-glory-pill {
+    font-size: 0.74rem;
+    padding: 0.18rem 0.5rem;
   }
-  .glory-score-val {
-    font-size: 0.78rem;
-  }
-  .glory-score-lbl {
+  .glory-lbl {
     display: none;
   }
-  .pedestal-1 {
-    height: 36px;
+  .platform-rank-num {
+    font-size: 2.4rem;
+    bottom: 4px;
   }
-  .pedestal-2 {
-    height: 28px;
-  }
-  .pedestal-3 {
-    height: 24px;
-  }
-  .pedestal-num {
-    font-size: 1.05rem;
+  .podium-shared-base {
+    height: 16px;
   }
 
   .glory-table-head {
@@ -5270,25 +5348,21 @@ body.loaded .visual-card.reveal-scale:hover {
 
 @media (max-width: 520px) {
   .glory-leaderboard-container {
-    padding: 1.25rem 0.6rem 1.5rem;
+    padding: 1.25rem 0.5rem 1.5rem;
   }
-  .glory-podium-wrap {
-    gap: 0.35rem;
+  .podium-artwork-bg {
+    height: 320px;
+    opacity: 0.45;
   }
-  .podium-card {
-    padding: 0.9rem 0.4rem 0;
+  .podium-pillars-row {
+    gap: 1px;
   }
-  .podium-rank-1 {
-    width: 108px;
+  .pillar-rank-1 {
+    width: 110px;
   }
-  .podium-rank-2,
-  .podium-rank-3 {
-    width: 96px;
-  }
-  .podium-pedestal {
-    width: calc(100% + 0.8rem);
-    margin-left: -0.4rem;
-    margin-right: -0.4rem;
+  .pillar-rank-2,
+  .pillar-rank-3 {
+    width: 95px;
   }
   .gold-ring {
     width: 54px;
@@ -5299,22 +5373,17 @@ body.loaded .visual-card.reveal-scale:hover {
     width: 44px;
     height: 44px;
   }
-  .podium-supporter-name {
-    font-size: 0.8rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 80px;
+  .pillar-username {
+    font-size: 0.7rem;
+    max-width: 75px;
   }
-  .podium-rank-pill {
-    font-size: 0.55rem;
-    padding: 0.12rem 0.4rem;
+  .pillar-rank-pill {
+    font-size: 0.52rem;
+    padding: 0.1rem 0.35rem;
   }
-  .podium-score-pill {
+  .pillar-glory-pill {
     padding: 0.15rem 0.4rem;
-  }
-  .glory-score-val {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
   }
 
   .glory-filter-bar {

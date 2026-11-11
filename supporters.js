@@ -543,7 +543,7 @@
     const top2 = top3[1] || null;
     const top3rd = top3[2] || null;
 
-    // Build Podium HTML
+    // Build Podium HTML - Connected Architectural Platforms with Background Artwork
     let podiumHtml = "";
     if (top1) {
       const rank1 = SUPPORTER_RANKS[top1.rank] || SUPPORTER_RANKS.emperor;
@@ -551,97 +551,108 @@
       const rank3 = top3rd ? (SUPPORTER_RANKS[top3rd.rank] || SUPPORTER_RANKS.warlord) : null;
 
       podiumHtml = `
-        <div class="glory-podium-wrap">
-          <!-- 2ND PLACE (LEFT) -->
-          ${top2 ? `
-          <div class="podium-card podium-rank-2">
-            <div class="podium-pillar-header">
-              <span class="podium-medal-badge silver">2</span>
-            </div>
-            <div class="podium-avatar-box silver-ring">
-              <img src="${getSupporterAvatar(top2)}" alt="${escapeHtml(top2.name)}" class="podium-avatar-img">
-              <span class="podium-crest-badge" title="${rank2.name}">
-                <img src="${rank2.image}" alt="${rank2.name}">
-              </span>
-            </div>
-            <div class="podium-name-tag">
-              <span class="podium-supporter-name">${escapeHtml(top2.name)}</span>
-            </div>
-            <div class="podium-rank-pill ${rank2.id}-pill">
-              <span>${rank2.name}</span>
-            </div>
-            <div class="podium-score-pill">
-              <span class="glory-bolt-ico">⚡</span>
-              <span class="glory-score-val">${(top2.glory || 0).toLocaleString('en-IN')}</span>
-              <span class="glory-score-lbl">GLORY</span>
-            </div>
-            <div class="podium-pedestal pedestal-2">
-              <span class="pedestal-num">2</span>
-            </div>
-          </div>
-          ` : '<div class="podium-card podium-empty"></div>'}
+        <div class="podium-stage-container">
+          <!-- Transparent Duo Character Artwork Layer -->
+          <div class="podium-artwork-bg" aria-hidden="true"></div>
 
-          <!-- 1ST PLACE (CENTER, ELEVATED) -->
-          <div class="podium-card podium-rank-1">
-            <div class="podium-pillar-header">
-              <span class="podium-crown-icon">👑</span>
-              <span class="podium-medal-badge gold">1</span>
-            </div>
-            <div class="podium-avatar-box gold-ring">
-              <img src="${getSupporterAvatar(top1)}" alt="${escapeHtml(top1.name)}" class="podium-avatar-img">
-              <span class="podium-crest-badge" title="${rank1.name}">
-                <img src="${rank1.image}" alt="${rank1.name}">
-              </span>
-            </div>
-            <div class="podium-name-tag">
-              <span class="podium-supporter-name">${escapeHtml(top1.name)}</span>
-              ${top1.verified ? `
-                <svg class="verified-ico" width="15" height="15" viewBox="0 0 24 24" fill="#a855f7" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-              ` : ''}
-            </div>
-            <div class="podium-rank-pill ${rank1.id}-pill">
-              <span>${rank1.name}</span>
-            </div>
-            <div class="podium-score-pill gold-highlight">
-              <span class="glory-bolt-ico gold-bolt">⚡</span>
-              <span class="glory-score-val gold-val">${(top1.glory || 0).toLocaleString('en-IN')}</span>
-              <span class="glory-score-lbl">GLORY</span>
-            </div>
-            <div class="podium-pedestal pedestal-1">
-              <span class="pedestal-num">1</span>
-            </div>
-          </div>
+          <!-- Connected Architectural Stage -->
+          <div class="podium-stage">
+            <div class="podium-pillars-row">
 
-          <!-- 3RD PLACE (RIGHT) -->
-          ${top3rd ? `
-          <div class="podium-card podium-rank-3">
-            <div class="podium-pillar-header">
-              <span class="podium-medal-badge bronze">3</span>
+              <!-- 2ND PLACE (LEFT PILLAR - SILVER / BLUE) -->
+              ${top2 ? `
+              <div class="architectural-pillar pillar-rank-2">
+                <span class="pillar-medal silver">2</span>
+                <div class="pillar-avatar-box silver-ring">
+                  <img src="${getSupporterAvatar(top2)}" alt="${escapeHtml(top2.name)}" class="pillar-avatar-img">
+                  <span class="pillar-crest-tag" title="${rank2.name}">
+                    <img src="${rank2.image}" alt="${rank2.name}">
+                  </span>
+                </div>
+                <div class="pillar-platform-block">
+                  <div class="platform-content">
+                    <div class="pillar-username-row">
+                      <span class="pillar-username">${escapeHtml(top2.name)}</span>
+                    </div>
+                    <div class="pillar-rank-pill ${rank2.id}-pill">
+                      <span>${rank2.name}</span>
+                    </div>
+                    <div class="pillar-glory-pill silver">
+                      <span class="glory-bolt">⚡</span>
+                      <span>${(top2.glory || 0).toLocaleString('en-IN')}</span>
+                      <span class="glory-lbl">GLORY</span>
+                    </div>
+                  </div>
+                  <span class="platform-rank-num">2</span>
+                </div>
+              </div>
+              ` : '<div class="architectural-pillar pillar-empty"></div>'}
+
+              <!-- 1ST PLACE (CENTER PILLAR - TALLEST, GOLD) -->
+              <div class="architectural-pillar pillar-rank-1">
+                <span class="pillar-crown">👑</span>
+                <div class="pillar-avatar-box gold-ring">
+                  <img src="${getSupporterAvatar(top1)}" alt="${escapeHtml(top1.name)}" class="pillar-avatar-img">
+                  <span class="pillar-crest-tag" title="${rank1.name}">
+                    <img src="${rank1.image}" alt="${rank1.name}">
+                  </span>
+                </div>
+                <div class="pillar-platform-block">
+                  <div class="platform-content">
+                    <div class="pillar-username-row">
+                      <span class="pillar-username">${escapeHtml(top1.name)}</span>
+                      ${top1.verified ? `
+                        <svg class="verified-badge" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                      ` : ''}
+                    </div>
+                    <div class="pillar-rank-pill ${rank1.id}-pill">
+                      <span>${rank1.name}</span>
+                    </div>
+                    <div class="pillar-glory-pill gold">
+                      <span class="glory-bolt">⚡</span>
+                      <span>${(top1.glory || 0).toLocaleString('en-IN')}</span>
+                      <span class="glory-lbl">GLORY</span>
+                    </div>
+                  </div>
+                  <span class="platform-rank-num">1</span>
+                </div>
+              </div>
+
+              <!-- 3RD PLACE (RIGHT PILLAR - BRONZE) -->
+              ${top3rd ? `
+              <div class="architectural-pillar pillar-rank-3">
+                <span class="pillar-medal bronze">3</span>
+                <div class="pillar-avatar-box bronze-ring">
+                  <img src="${getSupporterAvatar(top3rd)}" alt="${escapeHtml(top3rd.name)}" class="pillar-avatar-img">
+                  <span class="pillar-crest-tag" title="${rank3.name}">
+                    <img src="${rank3.image}" alt="${rank3.name}">
+                  </span>
+                </div>
+                <div class="pillar-platform-block">
+                  <div class="platform-content">
+                    <div class="pillar-username-row">
+                      <span class="pillar-username">${escapeHtml(top3rd.name)}</span>
+                    </div>
+                    <div class="pillar-rank-pill ${rank3.id}-pill">
+                      <span>${rank3.name}</span>
+                    </div>
+                    <div class="pillar-glory-pill bronze">
+                      <span class="glory-bolt">⚡</span>
+                      <span>${(top3rd.glory || 0).toLocaleString('en-IN')}</span>
+                      <span class="glory-lbl">GLORY</span>
+                    </div>
+                  </div>
+                  <span class="platform-rank-num">3</span>
+                </div>
+              </div>
+              ` : '<div class="architectural-pillar pillar-empty"></div>'}
+
             </div>
-            <div class="podium-avatar-box bronze-ring">
-              <img src="${getSupporterAvatar(top3rd)}" alt="${escapeHtml(top3rd.name)}" class="podium-avatar-img">
-              <span class="podium-crest-badge" title="${rank3.name}">
-                <img src="${rank3.image}" alt="${rank3.name}">
-              </span>
-            </div>
-            <div class="podium-name-tag">
-              <span class="podium-supporter-name">${escapeHtml(top3rd.name)}</span>
-            </div>
-            <div class="podium-rank-pill ${rank3.id}-pill">
-              <span>${rank3.name}</span>
-            </div>
-            <div class="podium-score-pill">
-              <span class="glory-bolt-ico">⚡</span>
-              <span class="glory-score-val">${(top3rd.glory || 0).toLocaleString('en-IN')}</span>
-              <span class="glory-score-lbl">GLORY</span>
-            </div>
-            <div class="podium-pedestal pedestal-3">
-              <span class="pedestal-num">3</span>
-            </div>
+            <!-- Shared base slab connecting the 3 pillars -->
+            <div class="podium-shared-base"></div>
           </div>
-          ` : '<div class="podium-card podium-empty"></div>'}
         </div>
       `;
     }
