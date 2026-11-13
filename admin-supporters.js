@@ -8,7 +8,6 @@
 
   // Constants & Rank Configuration
   const MASTER_ADMIN_EMAIL = "blueshotconnectx@gmail.com";
-  const ADMIN_PASSKEYS = ["admin77", "dxzadmin2026", "blueshotadmin"];
   const AUTH_STORAGE_KEY = "dxz_admin_authenticated";
   const ADMIN_USER_STORAGE_KEY = "dxz_admin_user";
   
@@ -24,7 +23,7 @@
   let filteredSupporters = [];
 
   // ==========================================================================
-  // 1. AUTHENTICATION & ACCESS LOCK SCREEN (DEFAULT FOR blueshotconnectx@gmail.com)
+  // 1. STRICT OAUTH AUTHENTICATION (EXCLUSIVELY FOR blueshotconnectx@gmail.com)
   // ==========================================================================
   function isMasterAdmin(userOrEmail) {
     if (!userOrEmail) return false;
@@ -37,7 +36,7 @@
     const adminUser = {
       email: email || MASTER_ADMIN_EMAIL,
       name: name || "Master Admin",
-      isMaster: isMasterAdmin(email || MASTER_ADMIN_EMAIL)
+      isMaster: true
     };
     sessionStorage.setItem(ADMIN_USER_STORAGE_KEY, JSON.stringify(adminUser));
     unlockBackofficeUI();
@@ -60,13 +59,147 @@
     }
   }
 
+  function showAccessDenied(htmlMessage) {
+    const box = document.getElementById("admin-access-denied");
+    const text = document.getElementById("admin-access-denied-text");
+    if (box && text) {
+      text.innerHTML = htmlMessage;
+      box.style.display = "flex";
+    }
+    showToast("Access Denied: Restricted to Owner", false);
+  }
+
+  function clearAccessDenied() {
+    const box = document.getElementById("admin-access-denied");
+    if (box) box.style.display = "none";
+  }
+
+  function handleAuthAttempt(user) {
+    if (!user || !user.email) {
+      showAccessDenied("Authentication error: No verified email returned.");
+      return;
+    }
+
+    if (isMasterAdmin(user)) {
+      clearAccessDenied();
+      grantAdminAccess(user.email, user.displayName || "Owner");
+      showToast("Access Granted. Welcome, Owner (" + user.email + ")!", true);
+    } else {
+      // Immediate access rejection for any other user
+      const attemptedEmail = user.email;
+      sessionStorage.removeItem(AUTH_STORAGE_KEY);
+      sessionStorage.removeItem(ADMIN_USER_STORAGE_KEY);
+      if (typeof firebase !== 'undefined' && firebase.auth) {
+        firebase.auth().signOut().catch(() => {});
+      }
+      showAccessDenied("⛔ Access Denied: <strong>" + escapeHtml(attemptedEmail) + "</strong> is not authorized to access this backoffice. This portal is strictly restricted to <strong>" + MASTER_ADMIN_EMAIL + "</strong>.");
+    }
+  }
+
+  // Google OAuth Sign-In (Exclusively for blueshotconnectx@gmail.com)
+  window.signInAdminWithGoogle = async function() {
+    clearAccessDenied();
+    if (typeof firebase === 'undefined' || !firebase.auth) {
+      showAccessDenied("Authentication service unavailable. Please check your internet connection.");
+      return;
+    }
+
+    const btn = document.getElementById("btn-admin-google");
+    const origHtml = btn ? btn.innerHTML : "";
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting to Google...';
+    }
+
+    try {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      const res = await firebase.auth().signInWithPopup(provider);
+      handleAuthAttempt(res.user);
+    } catch (err) {
+      console.warn("Google sign-in attempt warning:", err);
+      if (err.code !== 'auth/popup-closed-by-user' && err.code !== 'auth/cancelled-popup-request') {
+        showAccessDenied("Google sign-in failed: " + (err.message || "Unknown error"));
+      }
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
+    }
+  };
+
+  // Email / Password Sign-In (For blueshotconnectx@gmail.com)
+  window.signInAdminWithEmail = async function() {
+    clearAccessDenied();
+    const emailInput = document.getElementById("admin-auth-email");
+    const passInput = document.getElementById("admin-auth-password");
+    const email = (emailInput ? emailInput.value : "").trim();
+    const password = (passInput ? passInput.value : "").trim();
+
+    if (!password) {
+      showAccessDenied("Please enter your account password.");
+      if (passInput) passInput.focus();
+      return;
+    }
+
+    if (typeof firebase === 'undefined' || !firebase.auth) {
+      showAccessDenied("Authentication service unavailable. Please check connection.");
+      return;
+    }
+
+    const btn = document.getElementById("btn-admin-email-submit");
+    const origHtml = btn ? btn.innerHTML : "";
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying Credentials...';
+    }
+
+    try {
+      const res = await firebase.auth().signInWithEmailAndPassword(email, password);
+      handleAuthAttempt(res.user);
+    } catch (err) {
+      console.warn("Admin email sign-in attempt error:", err);
+      showAccessDenied("Authentication failed: " + (err.message || "Invalid password or credentials."));
+      if (passInput) {
+        passInput.value = "";
+        passInput.focus();
+      }
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
+    }
+  };
+
+  window.lockAdminSession = async function() {
+    sessionStorage.removeItem(AUTH_STORAGE_KEY);
+    sessionStorage.removeItem(ADMIN_USER_STORAGE_KEY);
+    if (typeof firebase !== 'undefined' && firebase.auth) {
+      try {
+        await firebase.auth().signOut();
+      } catch (e) {}
+    }
+    const lockScreen = document.getElementById("admin-lock-screen");
+    if (lockScreen) lockScreen.style.display = "flex";
+    const chip = document.getElementById("admin-account-chip");
+    if (chip) chip.style.display = "none";
+    clearAccessDenied();
+    const passInput = document.getElementById("admin-auth-password");
+    if (passInput) passInput.value = "";
+    showToast("Backoffice locked. Signed out securely.", true);
+  };
+
   function checkStoredMasterAdmin() {
-    // 1. Session Storage already authorized
-    if (sessionStorage.getItem(AUTH_STORAGE_KEY) === "true") {
+    // 1. Session Storage already authorized in this tab
+    const isAuth = sessionStorage.getItem(AUTH_STORAGE_KEY) === "true";
+    const user = getStoredAdminUser();
+    if (isAuth && user && isMasterAdmin(user.email)) {
       return true;
     }
 
-    // 2. Firebase Auth currently logged in
+    // 2. Firebase Auth currently logged in as master admin
     if (typeof firebase !== "undefined" && firebase.auth && firebase.auth().currentUser) {
       const u = firebase.auth().currentUser;
       if (isMasterAdmin(u)) {
@@ -75,19 +208,7 @@
       }
     }
 
-    // 3. Demo / LocalStorage user
-    try {
-      const demoStr = localStorage.getItem("dxz_demo_user");
-      if (demoStr) {
-        const u = JSON.parse(demoStr);
-        if (isMasterAdmin(u)) {
-          grantAdminAccess(u.email, u.displayName);
-          return true;
-        }
-      }
-    } catch (e) {}
-
-    // 4. Firebase Auth persisted user in localStorage
+    // 3. Persistent Firebase Auth keys in localStorage
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
       if (k && k.startsWith("firebase:authUser")) {
@@ -103,58 +224,6 @@
 
     return false;
   }
-
-  window.verifyAdminPasskey = function() {
-    const inputEl = document.getElementById("admin-passkey-input");
-    const entered = (inputEl ? inputEl.value : "").trim();
-
-    if (ADMIN_PASSKEYS.includes(entered) || entered.toLowerCase() === MASTER_ADMIN_EMAIL.toLowerCase()) {
-      grantAdminAccess(MASTER_ADMIN_EMAIL, "Master Administrator");
-      showToast("Access Granted. Welcome Administrator!", true);
-    } else {
-      showToast("Invalid Admin Passkey. Please try again.", false);
-      if (inputEl) {
-        inputEl.value = "";
-        inputEl.focus();
-        inputEl.style.borderColor = "var(--admin-red)";
-        setTimeout(() => { inputEl.style.borderColor = ""; }, 1500);
-      }
-    }
-  };
-
-  window.signInWithMasterAdminAccount = async function() {
-    if (typeof firebase !== "undefined" && firebase.auth) {
-      const curr = firebase.auth().currentUser;
-      if (curr && isMasterAdmin(curr)) {
-        grantAdminAccess(curr.email, curr.displayName);
-        updateAdminProfileUI(curr.email, curr.displayName);
-        showToast("Welcome back, Master Admin (" + curr.email + ")!", true);
-        return;
-      }
-    }
-
-    // Default auto-grant for master account
-    localStorage.setItem("dxz_demo_user", JSON.stringify({
-      uid: "usr_master_admin",
-      email: MASTER_ADMIN_EMAIL,
-      displayName: "Master Admin"
-    }));
-    grantAdminAccess(MASTER_ADMIN_EMAIL, "Master Admin");
-    updateAdminProfileUI(MASTER_ADMIN_EMAIL, "Master Admin");
-    showToast("Master Account Verified: " + MASTER_ADMIN_EMAIL, true);
-  };
-
-  window.lockAdminSession = function() {
-    sessionStorage.removeItem(AUTH_STORAGE_KEY);
-    sessionStorage.removeItem(ADMIN_USER_STORAGE_KEY);
-    const lockScreen = document.getElementById("admin-lock-screen");
-    if (lockScreen) lockScreen.style.display = "flex";
-    const inputEl = document.getElementById("admin-passkey-input");
-    if (inputEl) {
-      inputEl.value = "";
-      inputEl.focus();
-    }
-  };
 
   function unlockBackofficeUI() {
     const lockScreen = document.getElementById("admin-lock-screen");
@@ -850,9 +919,20 @@
     // Live Firebase Auth state listener
     if (typeof firebase !== "undefined" && firebase.auth) {
       firebase.auth().onAuthStateChanged((user) => {
-        if (user && isMasterAdmin(user)) {
-          grantAdminAccess(user.email, user.displayName);
-          updateAdminProfileUI(user.email, user.displayName);
+        if (user) {
+          if (isMasterAdmin(user)) {
+            grantAdminAccess(user.email, user.displayName);
+            updateAdminProfileUI(user.email, user.displayName);
+            clearAccessDenied();
+          } else {
+            // Unauthorized account: immediately revoke access and sign out
+            sessionStorage.removeItem(AUTH_STORAGE_KEY);
+            sessionStorage.removeItem(ADMIN_USER_STORAGE_KEY);
+            const lockScreen = document.getElementById("admin-lock-screen");
+            if (lockScreen) lockScreen.style.display = "flex";
+            showAccessDenied("⛔ Access Denied: <strong>" + escapeHtml(user.email) + "</strong> is not authorized to access this backoffice. This portal is strictly restricted to <strong>" + MASTER_ADMIN_EMAIL + "</strong>.");
+            firebase.auth().signOut().catch(() => {});
+          }
         }
       });
     }
@@ -862,8 +942,6 @@
     } else {
       const lockScreen = document.getElementById("admin-lock-screen");
       if (lockScreen) lockScreen.style.display = "flex";
-      const inputEl = document.getElementById("admin-passkey-input");
-      if (inputEl) inputEl.focus();
     }
   });
 

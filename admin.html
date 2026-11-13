@@ -167,27 +167,49 @@
       margin-bottom: 1.15rem;
       box-shadow: 0 0 15px rgba(255, 215, 0, 0.12);
     }
-    .lock-account-btn {
+    .lock-google-btn {
       width: 100%;
-      padding: 0.85rem;
-      background: linear-gradient(135deg, rgba(199, 66, 255, 0.22) 0%, rgba(121, 40, 202, 0.32) 100%);
-      border: 1px solid rgba(199, 66, 255, 0.5);
-      color: #fff;
+      padding: 0.85rem 1.25rem;
+      background: #ffffff;
+      color: #1a1a1a;
+      border: 1px solid rgba(255, 255, 255, 0.4);
       border-radius: 10px;
       font-weight: 700;
-      font-size: 0.88rem;
+      font-size: 0.92rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
+      gap: 0.65rem;
       transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.12);
     }
-    .lock-account-btn:hover {
-      background: linear-gradient(135deg, rgba(199, 66, 255, 0.45) 0%, rgba(121, 40, 202, 0.55) 100%);
-      box-shadow: 0 0 20px rgba(199, 66, 255, 0.4);
+    .lock-google-btn:hover {
+      background: #f4f4f5;
       transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.22);
+    }
+    .lock-google-btn i {
+      color: #ea4335;
+      font-size: 1.15rem;
+    }
+    .lock-access-denied {
+      margin-top: 1.1rem;
+      padding: 0.85rem 1rem;
+      background: rgba(255, 51, 102, 0.12);
+      border: 1px solid rgba(255, 51, 102, 0.4);
+      border-radius: 10px;
+      color: #ff4d6d;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-align: left;
+      line-height: 1.4;
+    }
+    .lock-access-denied i {
+      font-size: 1.1rem;
+      flex-shrink: 0;
     }
     .lock-divider {
       position: relative;
@@ -844,37 +866,50 @@
   <div class="admin-ambient-glow glow-top-left" aria-hidden="true"></div>
   <div class="admin-ambient-glow glow-top-right" aria-hidden="true"></div>
 
-  <!-- 1. ADMIN LOCK SCREEN GATE -->
+  <!-- 1. ADMIN LOCK SCREEN GATE (RESTRICTED TO blueshotconnectx@gmail.com) -->
   <div id="admin-lock-screen">
     <div class="lock-box">
       <div class="lock-icon-wrap">
         <i class="fa-solid fa-shield-halved"></i>
       </div>
-      <h1 class="lock-title">ADMIN PORTAL</h1>
-      <p class="lock-subtitle">The BlueShot Supporter Backoffice &amp; Buyer Records</p>
+      <h1 class="lock-title">OWNER BACKOFFICE</h1>
+      <p class="lock-subtitle">The BlueShot Supporter &amp; Buyer Records</p>
       
       <div class="lock-account-pill">
         <i class="fa-solid fa-crown" style="color: var(--admin-gold);"></i>
-        <span>Default Access: <strong>blueshotconnectx@gmail.com</strong></span>
+        <span>Exclusive Access: <strong>blueshotconnectx@gmail.com</strong></span>
       </div>
 
-      <button type="button" class="lock-account-btn" onclick="signInWithMasterAdminAccount()">
-        <i class="fa-solid fa-key"></i> One-Click Unlock with Master Account
+      <!-- Google Authentication for blueshotconnectx@gmail.com -->
+      <button type="button" class="lock-google-btn" id="btn-admin-google" onclick="signInAdminWithGoogle()">
+        <i class="fa-brands fa-google"></i> Sign In with Google
       </button>
 
       <div class="lock-divider">
-        <span>OR ENTER PASSKEY</span>
+        <span>OR OWNER ACCOUNT LOGIN</span>
       </div>
 
-      <form id="admin-lock-form" onsubmit="event.preventDefault(); verifyAdminPasskey();">
-        <input type="password" id="admin-passkey-input" class="lock-input" placeholder="Enter Admin Passkey" autofocus>
-        <button type="submit" class="lock-btn">
-          <i class="fa-solid fa-lock-open"></i> Unlock Backoffice
+      <!-- Email / Password Authentication for blueshotconnectx@gmail.com -->
+      <form id="admin-auth-form" onsubmit="event.preventDefault(); signInAdminWithEmail();">
+        <div style="margin-bottom: 0.75rem;">
+          <input type="email" id="admin-auth-email" class="lock-input" value="blueshotconnectx@gmail.com" readonly style="color: var(--admin-cyan); background: rgba(0,0,0,0.7); cursor: default; letter-spacing: 0; margin-bottom: 0;">
+        </div>
+        <div style="margin-bottom: 0.85rem;">
+          <input type="password" id="admin-auth-password" class="lock-input" placeholder="Enter Account Password" required style="letter-spacing: 2px; margin-bottom: 0;">
+        </div>
+        <button type="submit" class="lock-btn" id="btn-admin-email-submit">
+          <i class="fa-solid fa-right-to-bracket"></i> Authenticate Owner
         </button>
       </form>
 
-      <p class="lock-hint">
-        <i class="fa-solid fa-circle-info"></i> Authorized personnel only. Default passkey: <code>admin77</code>
+      <!-- Access Denied Banner for Non-Owner Logins -->
+      <div id="admin-access-denied" class="lock-access-denied" style="display: none;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <div id="admin-access-denied-text">Access Denied: Account not authorized.</div>
+      </div>
+
+      <p class="lock-hint" style="margin-top: 1.25rem;">
+        <i class="fa-solid fa-lock"></i> Secured by Firebase Identity. Only <code>blueshotconnectx@gmail.com</code> is granted access.
       </p>
     </div>
   </div>
