@@ -218,7 +218,7 @@
         symbolUri: createPresetSymbolUri(idx % 16, (idx * 7) % 12),
         verified: false,
         isSimulated: true,
-        faction: FACTIONS[idx % FACTIONS.length],
+        faction: "",
         message: "Pushing rank with the boys! 🔥"
       });
     }
@@ -241,7 +241,7 @@
         symbolUri: createPresetSymbolUri(idx % 16, (idx * 7) % 12),
         verified: false,
         isSimulated: true,
-        faction: FACTIONS[idx % FACTIONS.length],
+        faction: "",
         message: "Grinding for Emperor tier next."
       });
     }
@@ -264,7 +264,7 @@
         symbolUri: createPresetSymbolUri(idx % 16, (idx * 7) % 12),
         verified: false,
         isSimulated: true,
-        faction: FACTIONS[idx % FACTIONS.length],
+        faction: "",
         message: "Supporting BlueShot since day one."
       });
     }
@@ -286,7 +286,7 @@
         symbolUri: createPresetSymbolUri(idx % 16, (idx * 7) % 12),
         verified: false,
         isSimulated: true,
-        faction: FACTIONS[idx % FACTIONS.length],
+        faction: "",
         message: "Hyped for the lore mystery chapters!"
       });
     }
@@ -295,7 +295,7 @@
   }
 
   const SIMULATED_COMMUNITY_POOL = buildSimulatedCommunityPool();
-  const STORAGE_KEY_COMMUNITY = "dxz_simulated_community_v3";
+  const STORAGE_KEY_COMMUNITY = "dxz_simulated_community_v4";
   const ROTATION_CYCLE_MS = 2.5 * 24 * 60 * 60 * 1000; // 2.5 days rotation
   const MICRO_ADJUST_INTERVAL_MS = 3 * 60 * 1000; // 3 minutes adjustment interval
 
@@ -1021,7 +1021,7 @@
                     </svg>
                   ` : ''}
                 </div>
-                ${supporter.faction ? `<span class="table-faction-lbl">${escapeHtml(supporter.faction)}</span>` : ''}
+                ${(!supporter.isSimulated && supporter.faction) ? `<span class="table-faction-lbl">${escapeHtml(supporter.faction)}</span>` : ''}
               </div>
             </div>
             <div class="row-cell cell-rank">
@@ -1059,10 +1059,7 @@
           ${rowsHtml}
         </div>
       </div>
-      <div class="glory-community-note">
-        <i class="fa-solid fa-circle-info"></i>
-        <span>Real supporters always take priority by Lifetime Glory. Simulated community profiles rotate every 2–3 days to showcase rank tiers.</span>
-      </div>
+      
     `;
 
     container.innerHTML = `
@@ -1185,6 +1182,32 @@
     const amountInput = document.getElementById("supporter-amount-input");
     if (amountInput) {
       amountInput.addEventListener("input", updateGloryPreview);
+    }
+
+    const msgInput = document.getElementById("supporter-message-input");
+    const wordCountEl = document.getElementById("supporter-msg-word-count");
+    if (msgInput) {
+      const updateWordCount = () => {
+        const text = msgInput.value.trim();
+        const words = text ? text.split(/\s+/).filter(Boolean) : [];
+        if (words.length > 300) {
+          const trimmed = words.slice(0, 300).join(" ");
+          msgInput.value = trimmed;
+          if (wordCountEl) {
+            wordCountEl.textContent = "300 / 300 words (Max reached)";
+            wordCountEl.style.color = "#ff4444";
+          }
+        } else {
+          if (wordCountEl) {
+            wordCountEl.textContent = `${words.length} / 300 words`;
+            wordCountEl.style.color = words.length >= 280 ? "#ffaa00" : "var(--text-muted)";
+          }
+        }
+      };
+      msgInput.addEventListener("input", updateWordCount);
+      msgInput.addEventListener("keyup", updateWordCount);
+      msgInput.addEventListener("change", updateWordCount);
+      msgInput.addEventListener("paste", () => setTimeout(updateWordCount, 50));
     }
   }
 
@@ -1337,6 +1360,11 @@
     const email = document.getElementById("supporter-email-input").value.trim();
     const faction = document.getElementById("supporter-faction-input").value.trim() || "Independent Faction";
     const message = document.getElementById("supporter-message-input").value.trim();
+    const msgWords = message ? message.split(/\s+/).filter(Boolean) : [];
+    if (msgWords.length > 300) {
+      alert(`Your message exceeds the 300-word limit (${msgWords.length}/300 words). Please shorten your message.`);
+      return;
+    }
     const amountVal = parseFloat(document.getElementById("supporter-amount-input").value) || rank.price;
 
     if (!name) {
@@ -1404,6 +1432,11 @@
     const email = document.getElementById("supporter-email-input").value.trim() || (currentUser ? currentUser.email : "supporter@blueshot.online");
     const faction = document.getElementById("supporter-faction-input").value.trim() || "Detective NJ Squad";
     const message = document.getElementById("supporter-message-input").value.trim() || "Redeemed with $10,000 Detective NJ bounty cash!";
+    const loreMsgWords = message ? message.split(/\s+/).filter(Boolean) : [];
+    if (loreMsgWords.length > 300) {
+      alert(`Your message exceeds the 300-word limit (${loreMsgWords.length}/300 words). Please shorten your message.`);
+      return;
+    }
 
     if (!name) {
       alert("Please enter your Supporter Name / Gamer Tag!");

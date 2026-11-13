@@ -657,8 +657,11 @@
       </div>
 
       <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label for="supporter-message-input" style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Hall of Fame Quote / Message (Optional)</label>
-        <input type="text" id="supporter-message-input" class="order-input" placeholder="e.g. Standing with BSG to the end!" maxlength="80">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem; gap: 0.5rem; flex-wrap: wrap;">
+          <label for="supporter-message-input" style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">Hall of Fame Quote / Message (Optional)</label>
+          <span id="supporter-msg-word-count" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600; white-space: nowrap;">0 / 300 words</span>
+        </div>
+        <textarea id="supporter-message-input" class="order-input" rows="3" placeholder="Share your message, dedication, or theory (up to 300 words)..." style="width: 100%; min-height: 85px; resize: vertical; font-family: inherit; font-size: 0.85rem; line-height: 1.45; padding: 0.65rem 0.85rem; box-sizing: border-box;"></textarea>
       </div>
 
       <!-- TAB 1: Razorpay Checkout with Custom Glory Boosting -->
