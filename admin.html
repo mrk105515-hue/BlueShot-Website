@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal &mdash; The BlueShot Supporter Backoffice</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+
+  <!-- Core Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rajdhani:wght@600;700;800&family=Cinzel:wght@700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles.css?v=2.4.0">
+
+  <style>
+    :root {
+      --admin-bg: #07070b;
+      --admin-card: rgba(18, 18, 26, 0.75);
+      --admin-border: rgba(255, 255, 255, 0.08);
+      --admin-border-focus: rgba(199, 66, 255, 0.5);
+      --admin-purple: #c742ff;
+      --admin-cyan: #00e5ff;
+      --admin-gold: #ffd700;
+      --admin-green: #00ff88;
+      --admin-red: #ff3366;
+    }
+
+    body {
+      background: var(--admin-bg);
+      color: #e4e4e7;
+      font-family: var(--font-main, 'Plus Jakarta Sans', sans-serif);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background Ambient Glows */
+    .admin-ambient-glow {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.25;
+    }
+    .glow-top-left {
+      top: -150px;
+      left: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--admin-purple) 0%, transparent 70%);
+    }
+    .glow-top-right {
+      top: -100px;
+      right: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--admin-cyan) 0%, transparent 70%);
+    }
+
+    /* Lock Screen Modal */
+    #admin-lock-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(5, 5, 8, 0.95);
+      backdrop-filter: blur(25px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .lock-box {
+      background: linear-gradient(135deg, rgba(22, 22, 32, 0.95) 0%, rgba(12, 12, 18, 0.98) 100%);
+      border: 1px solid rgba(199, 66, 255, 0.35);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(199, 66, 255, 0.2);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 440px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+    .lock-icon-wrap {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(199, 66, 255, 0.2), rgba(0, 229, 255, 0.15));
+      border: 1.5px solid rgba(199, 66, 255, 0.4);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: var(--admin-purple);
+      margin-bottom: 1.25rem;
+      box-shadow: 0 0 25px rgba(199, 66, 255, 0.3);
+    }
+    .lock-title {
+      font-family: var(--font-display, 'Rajdhani', sans-serif);
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 0.4rem;
+      letter-spacing: 0.05em;
+    }
+    .lock-subtitle {
+      font-size: 0.86rem;
+      color: #a1a1aa;
+      margin-bottom: 1.8rem;
+    }
+    .lock-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--admin-border);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+    .lock-input:focus {
+      border-color: var(--admin-purple);
+      box-shadow: 0 0 15px rgba(199, 66, 255, 0.3);
+    }
+    .lock-btn {
+      width: 100%;
+      padding: 0.85rem;
+      background: linear-gradient(135deg, #c742ff 0%, #7928ca 100%);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .lock-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(199, 66, 255, 0.4);
+    }
+        .lock-account-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.35);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      color: #fef08a;
+      margin-bottom: 1.15rem;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.12);
+    }
+    .lock-account-btn {
+      width: 100%;
+      padding: 0.85rem;
+      background: linear-gradient(135deg, rgba(199, 66, 255, 0.22) 0%, rgba(121, 40, 202, 0.32) 100%);
+      border: 1px solid rgba(199, 66, 255, 0.5);
+      color: #fff;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    .lock-account-btn:hover {
+      background: linear-gradient(135deg, rgba(199, 66, 255, 0.45) 0%, rgba(121, 40, 202, 0.55) 100%);
+      box-shadow: 0 0 20px rgba(199, 66, 255, 0.4);
+      transform: translateY(-1px);
+    }
+    .lock-divider {
+      position: relative;
+      margin: 1.1rem 0;
+      text-align: center;
+    }
+    .lock-divider::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .lock-divider span {
+      position: relative;
+      background: #111118;
+      padding: 0 0.75rem;
+      font-size: 0.68rem;
+      color: #71717a;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .admin-account-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.32rem 0.85rem;
+      background: rgba(199, 66, 255, 0.14);
+      border: 1px solid rgba(199, 66, 255, 0.4);
+      border-radius: 999px;
+      font-size: 0.76rem;
+      color: #e4e4e7;
+    }
+    .admin-role-badge {
+      font-size: 0.62rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      background: var(--admin-gold);
+      color: #000;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+    }
+.lock-hint {
+      font-size: 0.75rem;
+      color: #71717a;
+      margin-top: 1rem;
+    }
+
+    /* Admin Shell Header */
+    .admin-navbar {
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid var(--admin-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.85rem 1.75rem;
+    }
+    .admin-nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .admin-brand-title {
+      font-family: var(--font-display, 'Rajdhani', sans-serif);
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+    .admin-badge-pill {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.6rem;
+      background: rgba(199, 66, 255, 0.15);
+      color: var(--admin-purple);
+      border: 1px solid rgba(199, 66, 255, 0.35);
+      border-radius: 999px;
+    }
+    .admin-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .sync-status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: #a1a1aa;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      border: 1px solid var(--admin-border);
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--admin-green);
+      box-shadow: 0 0 8px var(--admin-green);
+      animation: pulse-live 2s infinite;
+    }
+    @keyframes pulse-live {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .admin-btn {
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.2s;
+      border: 1px solid var(--admin-border);
+      background: rgba(255, 255, 255, 0.04);
+      color: #e4e4e7;
+    }
+    .admin-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+    .admin-btn-primary {
+      background: linear-gradient(135deg, rgba(199, 66, 255, 0.3) 0%, rgba(0, 229, 255, 0.2) 100%);
+      border-color: rgba(199, 66, 255, 0.4);
+      color: #fff;
+    }
+    .admin-btn-primary:hover {
+      background: linear-gradient(135deg, rgba(199, 66, 255, 0.45) 0%, rgba(0, 229, 255, 0.35) 100%);
+      border-color: var(--admin-purple);
+      box-shadow: 0 0 15px rgba(199, 66, 255, 0.3);
+    }
+
+    /* Main Container */
+    .admin-main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* KPI Summary Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .kpi-card {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      padding: 1.35rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(12px);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .kpi-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+    .kpi-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+    }
+    .kpi-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #a1a1aa;
+    }
+    .kpi-icon {
+      font-size: 1.15rem;
+      color: var(--admin-purple);
+    }
+    .kpi-value {
+      font-family: var(--font-display, 'Rajdhani', sans-serif);
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+    .kpi-sub {
+      font-size: 0.76rem;
+      color: #71717a;
+    }
+    .kpi-accent-gold .kpi-icon { color: var(--admin-gold); }
+    .kpi-accent-cyan .kpi-icon { color: var(--admin-cyan); }
+    .kpi-accent-green .kpi-icon { color: var(--admin-green); }
+
+    /* Tier Counts Bar */
+    .tier-summary-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--admin-border);
+      border-radius: 12px;
+      padding: 0.85rem 1.25rem;
+      margin-bottom: 2rem;
+      align-items: center;
+    }
+    .tier-strip-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #a1a1aa;
+      margin-right: 0.5rem;
+    }
+    .tier-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+    .tier-pill.emperor {
+      background: rgba(199, 66, 255, 0.12);
+      color: #d946ef;
+      border: 1px solid rgba(199, 66, 255, 0.35);
+    }
+    .tier-pill.apex {
+      background: rgba(255, 215, 0, 0.12);
+      color: #ffd700;
+      border: 1px solid rgba(255, 215, 0, 0.35);
+    }
+    .tier-pill.warlord {
+      background: rgba(0, 229, 255, 0.12);
+      color: #00e5ff;
+      border: 1px solid rgba(0, 229, 255, 0.35);
+    }
+    .tier-pill.elite {
+      background: rgba(255, 123, 37, 0.12);
+      color: #ff7b25;
+      border: 1px solid rgba(255, 123, 37, 0.35);
+    }
+
+    /* Filter & Controls Panel */
+    .controls-panel {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .filter-group-left {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      flex: 1;
+      min-width: 280px;
+    }
+    .search-input-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+    .search-input-wrap i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #71717a;
+      font-size: 0.85rem;
+    }
+    .search-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--admin-border);
+      border-radius: 8px;
+      padding: 0.6rem 1rem 0.6rem 2.4rem;
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--admin-purple);
+    }
+
+    .filter-select {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--admin-border);
+      border-radius: 8px;
+      padding: 0.6rem 0.85rem;
+      color: #e4e4e7;
+      font-size: 0.82rem;
+      outline: none;
+      cursor: pointer;
+    }
+    .filter-select:focus {
+      border-color: var(--admin-purple);
+    }
+
+    /* Table Card */
+    .table-container-card {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    }
+    .table-header-bar {
+      padding: 1.15rem 1.5rem;
+      border-bottom: 1px solid var(--admin-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .table-header-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .table-counter-badge {
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 0.74rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      color: #a1a1aa;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    .admin-table th {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 0.85rem 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: #71717a;
+      border-bottom: 1px solid var(--admin-border);
+      white-space: nowrap;
+    }
+    .admin-table td {
+      padding: 0.95rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .admin-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Supporter Cell */
+    .supporter-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .supporter-avatar-mini {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: #181822;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .supporter-meta-box {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .supporter-name-line {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .supporter-email-sub {
+      font-size: 0.72rem;
+      color: #71717a;
+    }
+
+    /* Receipt ID Badge with Click-to-Copy */
+    .id-code-badge {
+      font-family: 'Space Grotesk', monospace;
+      font-size: 0.74rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--admin-border);
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      color: var(--admin-cyan);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .id-code-badge:hover {
+      background: rgba(0, 229, 255, 0.1);
+      border-color: rgba(0, 229, 255, 0.4);
+    }
+
+    /* Action Buttons in Table */
+    .action-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .tbl-action-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 1px solid var(--admin-border);
+      background: rgba(255, 255, 255, 0.03);
+      color: #a1a1aa;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      transition: all 0.15s;
+    }
+    .tbl-action-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    .btn-verify-active {
+      color: var(--admin-purple);
+      border-color: rgba(199, 66, 255, 0.4);
+      background: rgba(199, 66, 255, 0.1);
+    }
+    .btn-del:hover {
+      color: var(--admin-red);
+      border-color: rgba(255, 51, 102, 0.4);
+      background: rgba(255, 51, 102, 0.1);
+    }
+
+    /* Modals */
+    .admin-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(16px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s, visibility 0.25s;
+    }
+    .admin-modal-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .admin-modal-card {
+      background: linear-gradient(135deg, rgba(20, 20, 28, 0.98) 0%, rgba(12, 12, 18, 0.99) 100%);
+      border: 1px solid rgba(199, 66, 255, 0.3);
+      border-radius: 20px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8), 0 0 40px rgba(199, 66, 255, 0.2);
+      width: 100%;
+      max-width: 580px;
+      overflow: hidden;
+    }
+    .admin-modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--admin-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .admin-modal-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .admin-modal-close {
+      background: none;
+      border: none;
+      color: #71717a;
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+    .admin-modal-close:hover {
+      color: #fff;
+    }
+    .admin-modal-body {
+      padding: 1.5rem;
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+
+    /* Form Styles inside Modal */
+    .form-row {
+      margin-bottom: 1.15rem;
+    }
+    .form-row label {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #a1a1aa;
+      margin-bottom: 0.4rem;
+    }
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--admin-border);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.88rem;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus {
+      border-color: var(--admin-purple);
+    }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* Empty State */
+    .admin-empty-state {
+      padding: 4rem 2rem;
+      text-align: center;
+      color: #71717a;
+    }
+    .admin-empty-icon {
+      font-size: 2.5rem;
+      color: rgba(255, 255, 255, 0.15);
+      margin-bottom: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+      .admin-navbar {
+        padding: 0.65rem 0.85rem;
+      }
+      .admin-nav-inner {
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+      .admin-nav-actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.35rem;
+      }
+      .admin-btn {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.74rem;
+      }
+      .sync-status-indicator {
+        display: none;
+      }
+      .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+      }
+      .kpi-card {
+        padding: 1rem;
+      }
+      .kpi-value {
+        font-size: 1.6rem;
+      }
+      .controls-panel {
+        padding: 1rem;
+      }
+    }
+
+    /* Toast Notification */
+    #admin-toast {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: rgba(18, 18, 24, 0.95);
+      border: 1px solid rgba(199, 66, 255, 0.4);
+      color: #fff;
+      padding: 0.8rem 1.4rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.25s ease;
+      pointer-events: none;
+    }
+    #admin-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Light Effects -->
+  <div class="admin-ambient-glow glow-top-left" aria-hidden="true"></div>
+  <div class="admin-ambient-glow glow-top-right" aria-hidden="true"></div>
+
+  <!-- 1. ADMIN LOCK SCREEN GATE -->
+  <div id="admin-lock-screen">
+    <div class="lock-box">
+      <div class="lock-icon-wrap">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <h1 class="lock-title">ADMIN PORTAL</h1>
+      <p class="lock-subtitle">The BlueShot Supporter Backoffice &amp; Buyer Records</p>
+      
+      <div class="lock-account-pill">
+        <i class="fa-solid fa-crown" style="color: var(--admin-gold);"></i>
+        <span>Default Access: <strong>blueshotconnectx@gmail.com</strong></span>
+      </div>
+
+      <button type="button" class="lock-account-btn" onclick="signInWithMasterAdminAccount()">
+        <i class="fa-solid fa-key"></i> One-Click Unlock with Master Account
+      </button>
+
+      <div class="lock-divider">
+        <span>OR ENTER PASSKEY</span>
+      </div>
+
+      <form id="admin-lock-form" onsubmit="event.preventDefault(); verifyAdminPasskey();">
+        <input type="password" id="admin-passkey-input" class="lock-input" placeholder="Enter Admin Passkey" autofocus>
+        <button type="submit" class="lock-btn">
+          <i class="fa-solid fa-lock-open"></i> Unlock Backoffice
+        </button>
+      </form>
+
+      <p class="lock-hint">
+        <i class="fa-solid fa-circle-info"></i> Authorized personnel only. Default passkey: <code>admin77</code>
+      </p>
+    </div>
+  </div>
+
+  <!-- 2. STICKY TOP NAVBAR -->
+  <header class="admin-navbar">
+    <div class="admin-nav-inner">
+      <div style="display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap;">
+        <a href="admin.html" class="admin-brand">
+          <span class="admin-brand-title">THE BLUESHOT</span>
+          <span class="admin-badge-pill"><i class="fa-solid fa-crown"></i> ADMIN PORTAL</span>
+        </a>
+        <div class="admin-account-chip" id="admin-account-chip" style="display: none;">
+          <i class="fa-solid fa-crown" style="color: var(--admin-gold);"></i>
+          <span id="admin-account-email">blueshotconnectx@gmail.com</span>
+          <span class="admin-role-badge">OWNER</span>
+        </div>
+      </div>
+
+      <div class="admin-nav-actions">
+        <div class="sync-status-indicator" id="sync-indicator">
+          <span class="live-dot"></span>
+          <span id="sync-status-text">Firestore Connected</span>
+        </div>
+
+        <button type="button" class="admin-btn admin-btn-primary" onclick="openManualGrantModal()">
+          <i class="fa-solid fa-user-plus"></i> Grant Supporter
+        </button>
+
+        <button type="button" class="admin-btn" onclick="exportBuyersToCSV()">
+          <i class="fa-solid fa-file-csv"></i> Export CSV
+        </button>
+
+        <a href="supporters.html" target="_blank" class="admin-btn" title="View Public Leaderboard">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Public Board
+        </a>
+
+        <button type="button" class="admin-btn" onclick="lockAdminSession()" title="Lock Backoffice">
+          <i class="fa-solid fa-lock"></i> Lock
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. MAIN CONTENT CONTAINER -->
+  <main class="admin-main">
+
+    <!-- KPI Summary Grid -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-card-header">
+          <span class="kpi-title">Real Supporters</span>
+          <i class="fa-solid fa-users kpi-icon"></i>
+        </div>
+        <div class="kpi-value" id="kpi-total-buyers">0</div>
+        <div class="kpi-sub">Genuine rank patrons on record</div>
+      </div>
+
+      <div class="kpi-card kpi-accent-gold">
+        <div class="kpi-card-header">
+          <span class="kpi-title">Razorpay Revenue</span>
+          <i class="fa-solid fa-indian-rupee-sign kpi-icon"></i>
+        </div>
+        <div class="kpi-value" id="kpi-total-revenue">&#8377;0</div>
+        <div class="kpi-sub">Total verified cash contributions</div>
+      </div>
+
+      <div class="kpi-card kpi-accent-cyan">
+        <div class="kpi-card-header">
+          <span class="kpi-title">Lore Game Cash</span>
+          <i class="fa-solid fa-coins kpi-icon"></i>
+        </div>
+        <div class="kpi-value" id="kpi-total-lore-cash">$0</div>
+        <div class="kpi-sub">Detective NJ bounties redeemed</div>
+      </div>
+
+      <div class="kpi-card kpi-accent-green">
+        <div class="kpi-card-header">
+          <span class="kpi-title">Total Lifetime Glory</span>
+          <i class="fa-solid fa-bolt kpi-icon"></i>
+        </div>
+        <div class="kpi-value" id="kpi-total-glory">0</div>
+        <div class="kpi-sub">Active patronage power assigned</div>
+      </div>
+    </section>
+
+    <!-- Tier Breakdown Pill Strip -->
+    <div class="tier-summary-strip">
+      <span class="tier-strip-title"><i class="fa-solid fa-layer-group"></i> Rank Distribution:</span>
+      <span class="tier-pill emperor"><i class="fa-solid fa-crown"></i> Emperor: <strong id="tier-count-emperor">0</strong></span>
+      <span class="tier-pill apex"><i class="fa-solid fa-gem"></i> Apex: <strong id="tier-count-apex">0</strong></span>
+      <span class="tier-pill warlord"><i class="fa-solid fa-shield"></i> Warlord: <strong id="tier-count-warlord">0</strong></span>
+      <span class="tier-pill elite"><i class="fa-solid fa-bolt"></i> Elite: <strong id="tier-count-elite">0</strong></span>
+    </div>
+
+    <!-- Search & Filters Panel -->
+    <section class="controls-panel">
+      <div class="filter-group-left">
+        <div class="search-input-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="admin-search-input" class="search-input" placeholder="Search name, email, payment ID, faction..." oninput="applyFilters()">
+        </div>
+
+        <select id="filter-rank" class="filter-select" onchange="applyFilters()">
+          <option value="all">All Ranks</option>
+          <option value="emperor">Emperor (₹100)</option>
+          <option value="apex">Apex (₹40)</option>
+          <option value="warlord">Warlord (₹10)</option>
+          <option value="elite">Elite (₹5)</option>
+        </select>
+
+        <select id="filter-method" class="filter-select" onchange="applyFilters()">
+          <option value="all">All Payment Methods</option>
+          <option value="razorpay">Razorpay UPI / Card</option>
+          <option value="lore_cash">Lore Game Cash ($10k)</option>
+          <option value="manual">Manual Admin Grant</option>
+        </select>
+
+        <select id="filter-verified" class="filter-select" onchange="applyFilters()">
+          <option value="all">All Statuses</option>
+          <option value="verified">Verified Only (Badge)</option>
+          <option value="unverified">Standard</option>
+        </select>
+      </div>
+
+      <div class="filter-group-right">
+        <select id="sort-selector" class="filter-select" onchange="applyFilters()">
+          <option value="date-desc">Newest First</option>
+          <option value="date-asc">Oldest First</option>
+          <option value="glory-desc">Glory: High to Low</option>
+          <option value="amount-desc">Amount: High to Low</option>
+          <option value="name-asc">Name: A to Z</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Real Buyers Table Card -->
+    <div class="table-container-card">
+      <div class="table-header-bar">
+        <div class="table-header-title">
+          <i class="fa-solid fa-receipt" style="color: var(--admin-purple);"></i>
+          <span>Real Supporter Transaction Records</span>
+          <span class="table-counter-badge" id="records-counter-badge">0 Records</span>
+        </div>
+
+        <div>
+          <button type="button" class="admin-btn" onclick="refreshAdminData()" title="Reload from Firestore">
+            <i class="fa-solid fa-rotate-right"></i> Refresh
+          </button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Transaction ID</th>
+              <th>Supporter Name</th>
+              <th>Contact Email</th>
+              <th>Rank Tier</th>
+              <th>Lifetime Glory</th>
+              <th>Amount Paid</th>
+              <th>Faction</th>
+              <th>Date &amp; Time</th>
+              <th>Verified</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-table-body">
+            <!-- Populated dynamically by admin.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="table-empty-notice" class="admin-empty-state" style="display: none;">
+        <div class="admin-empty-icon"><i class="fa-solid fa-inbox"></i></div>
+        <h3>No Supporter Transactions Found</h3>
+        <p>No real rank buyer records match your current filter parameters or none have been submitted yet.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 4. MODAL: TRANSACTION DETAILS INSPECTOR -->
+  <div id="details-modal" class="admin-modal-backdrop">
+    <div class="admin-modal-card">
+      <div class="admin-modal-header">
+        <div class="admin-modal-title">
+          <i class="fa-solid fa-circle-info" style="color: var(--admin-cyan);"></i>
+          <span>Transaction Inspector</span>
+        </div>
+        <button type="button" class="admin-modal-close" onclick="closeDetailsModal()">&times;</button>
+      </div>
+      <div class="admin-modal-body" id="details-modal-content">
+        <!-- Filled dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. MODAL: MANUAL SUPPORTER GRANT -->
+  <div id="grant-modal" class="admin-modal-backdrop">
+    <div class="admin-modal-card">
+      <div class="admin-modal-header">
+        <div class="admin-modal-title">
+          <i class="fa-solid fa-crown" style="color: var(--admin-gold);"></i>
+          <span>Manual Supporter Rank Grant</span>
+        </div>
+        <button type="button" class="admin-modal-close" onclick="closeManualGrantModal()">&times;</button>
+      </div>
+      <div class="admin-modal-body">
+        <form id="manual-grant-form" onsubmit="event.preventDefault(); submitManualGrant();">
+          <div class="form-row">
+            <label for="grant-name">Supporter Name / Gamer Tag *</label>
+            <input type="text" id="grant-name" class="form-input" placeholder="e.g. Vicky_Warrior" required>
+          </div>
+
+          <div class="form-row">
+            <label for="grant-email">Supporter Email *</label>
+            <input type="email" id="grant-email" class="form-input" placeholder="e.g. supporter@gmail.com" required>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label for="grant-rank">Rank Tier *</label>
+              <select id="grant-rank" class="form-input" onchange="syncGrantGloryDefault()" required>
+                <option value="emperor">Emperor (₹100)</option>
+                <option value="apex">Apex (₹40)</option>
+                <option value="warlord">Warlord (₹10)</option>
+                <option value="elite">Elite (₹5)</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label for="grant-glory">Glory Points *</label>
+              <input type="number" id="grant-glory" class="form-input" value="100" min="5" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label for="grant-amount">Amount Recorded (₹ / $)</label>
+              <input type="number" id="grant-amount" class="form-input" value="100" min="0">
+            </div>
+
+            <div class="form-row">
+              <label for="grant-method">Grant Reason / Channel</label>
+              <select id="grant-method" class="form-input">
+                <option value="manual">Manual Admin Grant</option>
+                <option value="razorpay">Offline Razorpay UPI</option>
+                <option value="lore_cash">Lore Game Bounty</option>
+                <option value="giveaway">Community Giveaway / VIP</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="grant-faction">Clan / Faction Tag</label>
+            <input type="text" id="grant-faction" class="form-input" placeholder="e.g. Mumbai Strikers" value="BlueShot Community">
+          </div>
+
+          <div class="form-row">
+            <label for="grant-message">Dedication / Patron Message</label>
+            <input type="text" id="grant-message" class="form-input" placeholder="e.g. Honored supporter grant by Admin.">
+          </div>
+
+          <div class="form-row" style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem;">
+            <input type="checkbox" id="grant-verified" style="accent-color: var(--admin-purple); width: 17px; height: 17px;">
+            <label for="grant-verified" style="margin-bottom: 0; cursor: pointer; color: #fff;">
+              Grant Verified Purple Checkmark Badge
+            </label>
+          </div>
+
+          <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+            <button type="button" class="admin-btn" onclick="closeManualGrantModal()">Cancel</button>
+            <button type="submit" class="admin-btn admin-btn-primary">
+              <i class="fa-solid fa-check"></i> Save Record &amp; Update Board
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Element -->
+  <div id="admin-toast">
+    <i class="fa-solid fa-circle-check" style="color: var(--admin-green);"></i>
+    <span id="admin-toast-text">Success</span>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <!-- Admin Supporters Backoffice Script -->
+  <script src="admin-supporters.js?v=1.0.0"></script>
+</body>
+</html>

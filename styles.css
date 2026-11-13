@@ -4433,7 +4433,7 @@ body.loaded .visual-card.reveal-scale:hover {
    ========================================================================== */
 .glory-leaderboard-section {
   position: relative;
-  max-width: 1040px;
+  max-width: 1280px;
   margin: 3.5rem auto 5rem;
   padding: 0 1.25rem;
   z-index: 2;
@@ -4475,46 +4475,98 @@ body.loaded .visual-card.reveal-scale:hover {
 }
 
 /* ==========================================================================
-   TOP 3 ARCHITECTURAL PODIUM WITH BACKGROUND ARTWORK
+   TOP 3 ARCHITECTURAL PODIUM WITH WIDE BANNER & SIDE CHARACTERS
    ========================================================================== */
 .podium-stage-container {
   position: relative;
-  width: 100%;
+  width: calc(100% + 3.5rem);
+  margin: 0 -1.75rem 2.5rem;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin: 0.5rem auto 2.5rem;
+  justify-content: center;
+  min-height: 510px;
   overflow: hidden;
 }
 
-/* Transparent Duo Character Artwork Layer (behind podium pillars) */
-.podium-artwork-bg {
+/* Subtle Purple Ambient Lighting around center */
+.podium-ambient-center {
   position: absolute;
-  top: 0;
+  top: -30px;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
-  max-width: 960px;
-  height: 490px;
-  background: url('assets/leaderboard-duo-bg.png') no-repeat center top;
-  background-size: 100% auto;
-  opacity: 0.52;
-  filter: drop-shadow(0 0 35px rgba(168, 85, 247, 0.35));
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 45%, rgba(0,0,0,0.15) 85%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 45%, rgba(0,0,0,0.15) 85%, transparent 100%);
+  width: 680px;
+  height: 420px;
+  background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.28) 0%, rgba(147, 51, 234, 0.12) 50%, transparent 72%);
+  filter: blur(65px);
   pointer-events: none;
   z-index: 1;
 }
 
-/* Connected Architectural Stage */
+/* Ambient red/orange character glows in the outer corners */
+.char-ambient-left {
+  position: absolute;
+  top: 10px;
+  left: -85px;
+  width: 450px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(220, 38, 38, 0.18) 0%, transparent 70%);
+  filter: blur(55px);
+  pointer-events: none;
+  z-index: 1;
+}
+.char-ambient-right {
+  position: absolute;
+  top: 10px;
+  right: -85px;
+  width: 450px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(234, 88, 12, 0.18) 0%, transparent 70%);
+  filter: blur(55px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Left: Hell holding a cup, nestled in the top-left corner */
+.side-character-left {
+  position: absolute;
+  left: -85px;
+  top: -15px;
+  width: 490px;
+  height: 520px;
+  background: url('assets/bg-char-hell.png') no-repeat left top;
+  background-size: auto 100%;
+  opacity: 0.95;
+  pointer-events: none;
+  z-index: 2;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0.2) 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0.2) 88%, transparent 100%);
+}
+
+/* Right: Zygo holding a cigar/lighter, nestled in the top-right corner */
+.side-character-right {
+  position: absolute;
+  right: -85px;
+  top: -15px;
+  width: 490px;
+  height: 520px;
+  background: url('assets/bg-char-zygo.png') no-repeat right top;
+  background-size: auto 100%;
+  opacity: 0.95;
+  pointer-events: none;
+  z-index: 2;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0.2) 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0.2) 88%, transparent 100%);
+}
+
+/* Connected Architectural Stage (3 Ladders in Center) */
 .podium-stage {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 860px;
+  max-width: 660px;
   margin-top: 0.5rem;
 }
 
@@ -4541,22 +4593,22 @@ body.loaded .visual-card.reveal-scale:hover {
 /* 1st Place Pillar (Tallest, Centered) */
 .pillar-rank-1 {
   order: 2;
-  width: 290px;
-  z-index: 3;
+  width: 250px;
+  z-index: 4;
 }
 
 /* 2nd Place Pillar (Left, Medium) */
 .pillar-rank-2 {
   order: 1;
-  width: 250px;
-  z-index: 2;
+  width: 215px;
+  z-index: 3;
 }
 
 /* 3rd Place Pillar (Right, Lowest) */
 .pillar-rank-3 {
   order: 3;
-  width: 250px;
-  z-index: 2;
+  width: 215px;
+  z-index: 3;
 }
 
 .pillar-empty {
@@ -4576,6 +4628,80 @@ body.loaded .visual-card.reveal-scale:hover {
 @keyframes crown-float {
   0% { transform: translateY(0); }
   100% { transform: translateY(-4px); }
+}
+
+/* Podium Laurel Wreath Badges for Top 3 */
+.podium-wreath-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.25rem;
+  z-index: 5;
+}
+
+.podium-crown-mini {
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.9));
+  margin-bottom: -4px;
+  animation: crown-float 3s ease-in-out infinite alternate;
+}
+
+.wreath-num-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+}
+
+.wreath-digit {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.gold-wreath .wreath-digit {
+  color: #ffd700;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.85);
+}
+
+.silver-wreath .wreath-digit {
+  color: #f1f5f9;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
+}
+
+.bronze-wreath .wreath-digit {
+  color: #fbbf24;
+  text-shadow: 0 0 10px rgba(217, 119, 6, 0.7);
+}
+
+.gold-wreath .wreath-branch {
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+}
+
+.silver-wreath .wreath-branch {
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6));
+}
+
+.bronze-wreath .wreath-branch {
+  filter: drop-shadow(0 0 6px rgba(217, 119, 6, 0.6));
+}
+
+/* Center Golden Star/Winged Crest at Foot of 1st Place Pedestal */
+.pillar-base-emblem {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.pillar-base-emblem svg {
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.85));
 }
 
 /* Medal Badges for 2 and 3 */
@@ -4619,22 +4745,22 @@ body.loaded .visual-card.reveal-scale:hover {
 }
 
 .gold-ring {
-  width: 88px;
-  height: 88px;
+  width: 82px;
+  height: 82px;
   border: 3.5px solid #ffd700;
   box-shadow: 0 0 32px rgba(255, 215, 0, 0.6), inset 0 0 16px rgba(255, 215, 0, 0.25);
 }
 
 .silver-ring {
-  width: 74px;
-  height: 74px;
+  width: 70px;
+  height: 70px;
   border: 3px solid #38bdf8;
   box-shadow: 0 0 24px rgba(56, 189, 248, 0.5), inset 0 0 12px rgba(56, 189, 248, 0.2);
 }
 
 .bronze-ring {
-  width: 74px;
-  height: 74px;
+  width: 70px;
+  height: 70px;
   border: 3px solid #d97706;
   box-shadow: 0 0 24px rgba(217, 119, 6, 0.5), inset 0 0 12px rgba(217, 119, 6, 0.2);
 }
@@ -4684,32 +4810,35 @@ body.loaded .visual-card.reveal-scale:hover {
 
 /* 1st Place Platform Block */
 .pillar-rank-1 .pillar-platform-block {
-  min-height: 235px;
+  min-height: 220px;
   background: linear-gradient(180deg, rgba(255, 215, 0, 0.16) 0%, rgba(26, 20, 14, 0.94) 25%, rgba(12, 12, 18, 0.98) 100%);
   border-top: 3.5px solid #ffd700;
   border-left: 1.5px solid rgba(255, 215, 0, 0.45);
   border-right: 1.5px solid rgba(255, 215, 0, 0.45);
   box-shadow: 0 -6px 35px rgba(255, 215, 0, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+  padding: 1.5rem 0.65rem 0.85rem;
 }
 
 /* 2nd Place Platform Block */
 .pillar-rank-2 .pillar-platform-block {
-  min-height: 180px;
+  min-height: 170px;
   background: linear-gradient(180deg, rgba(56, 189, 248, 0.14) 0%, rgba(15, 23, 42, 0.94) 25%, rgba(10, 12, 18, 0.98) 100%);
   border-top: 3px solid #38bdf8;
   border-left: 1.5px solid rgba(56, 189, 248, 0.35);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 -4px 25px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  padding: 1.5rem 0.65rem 0.85rem;
 }
 
 /* 3rd Place Platform Block */
 .pillar-rank-3 .pillar-platform-block {
-  min-height: 140px;
+  min-height: 135px;
   background: linear-gradient(180deg, rgba(217, 119, 6, 0.14) 0%, rgba(32, 20, 14, 0.94) 25%, rgba(10, 12, 18, 0.98) 100%);
   border-top: 3px solid #d97706;
   border-left: 1px solid rgba(255, 255, 255, 0.08);
   border-right: 1.5px solid rgba(217, 119, 6, 0.35);
   box-shadow: 0 -4px 25px rgba(217, 119, 6, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  padding: 1.5rem 0.65rem 0.85rem;
 }
 
 /* Ambient light rim at top of each platform */
@@ -4773,14 +4902,14 @@ body.loaded .visual-card.reveal-scale:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
+  gap: 0.3rem;
   margin-bottom: 0.35rem;
   max-width: 100%;
-  padding: 0 0.5rem;
+  padding: 0 0.25rem;
 }
 
 .pillar-username {
-  font-size: 1.12rem;
+  font-size: 0.98rem;
   font-weight: 800;
   color: #ffffff;
   text-shadow: 0 2px 10px rgba(0,0,0,0.9);
@@ -4791,6 +4920,11 @@ body.loaded .visual-card.reveal-scale:hover {
 
 .pillar-rank-1 .pillar-username {
   font-size: 1.25rem;
+}
+
+.pillar-rank-2 .pillar-username,
+.pillar-rank-3 .pillar-username {
+  font-size: 0.98rem;
 }
 
 .verified-badge {
@@ -4977,11 +5111,11 @@ body.loaded .visual-card.reveal-scale:hover {
    ========================================================================== */
 .glory-table-wrap {
   width: 100%;
-  background: rgba(12, 12, 18, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 18px;
+  background: rgba(12, 12, 18, 0.85);
+  border: 1.5px solid rgba(168, 85, 247, 0.4);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 35px rgba(168, 85, 247, 0.18), 0 10px 40px rgba(0, 0, 0, 0.75);
 }
 
 .glory-table-head {
@@ -5030,8 +5164,11 @@ body.loaded .visual-card.reveal-scale:hover {
 
 /* Top-3 Row Highlights */
 .glory-table-row.row-top-1 {
-  background: linear-gradient(90deg, rgba(255, 215, 0, 0.07) 0%, rgba(255, 215, 0, 0.01) 100%);
-  border-left: 3px solid #ffd700;
+  background: linear-gradient(90deg, rgba(234, 179, 8, 0.14) 0%, rgba(234, 179, 8, 0.02) 100%);
+  border: 1.5px solid rgba(234, 179, 8, 0.7);
+  box-shadow: 0 0 20px rgba(234, 179, 8, 0.25), inset 0 0 15px rgba(234, 179, 8, 0.08);
+  border-radius: 999px;
+  margin: 0.35rem 0;
 }
 
 .glory-table-row.row-top-2 {
@@ -5241,6 +5378,77 @@ body.loaded .visual-card.reveal-scale:hover {
 }
 
 /* ==========================================================================
+   SUBTLE DISCLOSURE & COMMUNITY PILLS (SIMULATED PROFILES)
+   ========================================================================== */
+.community-sample-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(168, 85, 247, 0.12);
+  color: rgba(216, 180, 254, 0.85);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  margin-left: 6px;
+  vertical-align: middle;
+  line-height: 1.3;
+}
+
+.podium-sample-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(168, 85, 247, 0.15);
+  color: rgba(220, 190, 255, 0.9);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.glory-community-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  margin-top: 14px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.glory-community-note i {
+  color: rgba(168, 85, 247, 0.7);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 1200px) {
+  .side-character-left {
+    left: -70px;
+    top: -10px;
+    width: 440px;
+    height: 490px;
+  }
+  .side-character-right {
+    right: -70px;
+    top: -10px;
+    width: 440px;
+    height: 490px;
+  }
+}
+
+/* ==========================================================================
    RESPONSIVE STYLING (TABLET & MOBILE)
    ========================================================================== */
 @media (max-width: 768px) {
@@ -5251,8 +5459,35 @@ body.loaded .visual-card.reveal-scale:hover {
   .glory-leaderboard-container {
     padding: 1.5rem 0.75rem 1.75rem;
   }
-  .podium-artwork-bg {
+  .podium-ambient-center {
+    width: 380px;
+    height: 300px;
+    filter: blur(40px);
+  }
+  .char-ambient-left {
+    left: -50px;
+  }
+  .char-ambient-right {
+    right: -50px;
+  }
+  .podium-stage-container {
+    width: calc(100% + 1.5rem);
+    margin: 0 -0.75rem 2rem;
+    min-height: 380px;
+  }
+  .side-character-left,
+  .side-character-right {
     height: 380px;
+    width: 320px;
+    opacity: 0.65;
+  }
+  .side-character-left {
+    left: -80px;
+    top: 0;
+  }
+  .side-character-right {
+    right: -80px;
+    top: 0;
   }
   .podium-pillars-row {
     gap: 1px;
@@ -5293,10 +5528,20 @@ body.loaded .visual-card.reveal-scale:hover {
     height: 22px;
     font-size: 0.72rem;
   }
+  .pillar-username-row {
+    flex-direction: column;
+    gap: 0.18rem;
+    padding: 0 0.2rem;
+  }
   .pillar-username {
     font-size: 0.76rem;
-    max-width: 82px;
+    max-width: 100%;
     letter-spacing: -0.2px;
+  }
+  .podium-sample-pill {
+    font-size: 0.52rem;
+    padding: 0 5px;
+    margin-left: 0;
   }
   .pillar-rank-pill {
     font-size: 0.58rem;
@@ -5350,9 +5595,26 @@ body.loaded .visual-card.reveal-scale:hover {
   .glory-leaderboard-container {
     padding: 1.25rem 0.5rem 1.5rem;
   }
-  .podium-artwork-bg {
+  .podium-ambient-center {
+    width: 300px;
+    height: 240px;
+    filter: blur(35px);
+  }
+  .side-character-left,
+  .side-character-right {
     height: 320px;
     opacity: 0.45;
+  }
+  .side-character-left {
+    left: -75px;
+  }
+  .side-character-right {
+    right: -75px;
+  }
+  .podium-stage-container {
+    width: calc(100% + 1rem);
+    margin: 0 -0.5rem 1.5rem;
+    min-height: 320px;
   }
   .podium-pillars-row {
     gap: 1px;
@@ -5373,9 +5635,14 @@ body.loaded .visual-card.reveal-scale:hover {
     width: 44px;
     height: 44px;
   }
+  .pillar-username-row {
+    flex-direction: column;
+    gap: 0.12rem;
+    padding: 0 0.15rem;
+  }
   .pillar-username {
-    font-size: 0.7rem;
-    max-width: 75px;
+    font-size: 0.68rem;
+    max-width: 100%;
   }
   .pillar-rank-pill {
     font-size: 0.52rem;
@@ -5387,14 +5654,23 @@ body.loaded .visual-card.reveal-scale:hover {
   }
 
   .glory-filter-bar {
-    gap: 0.2rem;
-    padding: 0.25rem;
+    gap: 0.35rem;
+    padding: 0.25rem 0.5rem;
     max-width: 100%;
     overflow-x: auto;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+  }
+  .glory-filter-bar::-webkit-scrollbar {
+    display: none;
   }
   .glory-filter-tab {
-    padding: 0.35rem 0.65rem;
-    font-size: 0.72rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+    flex-shrink: 0;
   }
 
   .glory-table-head {

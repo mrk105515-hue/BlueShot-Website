@@ -86,156 +86,311 @@
     }
   };
 
-  // Default seed supporters for instant rich display (All buyers immortalized)
-    const DEFAULT_SUPPORTERS = [
-    {
-      id: "sup_seed_1",
-      name: "Neeraj Saklani",
-      rank: "emperor",
-      glory: 25600,
-      amount: 25600,
-      avatar: "assets/char-bsg.png",
-      verified: true,
-      faction: "Creator & Overlord",
-      message: "Creator of DXZ. To the Beyond State! 🔥",
-      createdAt: "2026-10-15T10:00:00Z"
-    },
-    {
-      id: "sup_seed_2",
-      name: "Kaelen_Void",
-      rank: "apex",
-      glory: 12840,
-      amount: 12840,
-      avatar: "assets/char-blackdagger.png",
-      verified: false,
-      faction: "Shadow Syndicate",
-      message: "The Void bows to no one.",
-      createdAt: "2026-10-18T14:30:00Z"
-    },
-    {
-      id: "sup_seed_3",
-      name: "BSG_Vanguard",
-      rank: "warlord",
-      glory: 9870,
-      amount: 9870,
-      avatar: "assets/char-kan.png",
-      verified: false,
-      faction: "Blue Shot Guild",
-      message: "Protecting the Redago legacy at all costs.",
-      createdAt: "2026-10-20T16:00:00Z"
-    },
-    {
-      id: "sup_seed_4",
-      name: "Flame_Devil",
-      rank: "apex",
-      glory: 8420,
-      amount: 8420,
-      avatar: "assets/char-berry.png",
-      verified: false,
-      faction: "Flame Devil Squad",
-      message: "Burn bright, strike hard.",
-      createdAt: "2026-10-22T08:15:00Z"
-    },
-    {
-      id: "sup_seed_5",
-      name: "Shadow_Nexus",
-      rank: "warlord",
-      glory: 7950,
-      amount: 7950,
-      avatar: "assets/char-jiggo.png",
-      verified: false,
-      faction: "Shadow Syndicate",
-      message: "Stealth, shadow, dominance.",
-      createdAt: "2026-10-25T11:20:00Z"
-    },
-    {
-      id: "sup_seed_6",
-      name: "CyberRonin_99",
-      rank: "warlord",
-      glory: 5200,
-      amount: 5200,
-      avatar: "assets/char-zalta.png",
-      verified: false,
-      faction: "Independent Faction",
-      message: "Glory to the fighters.",
-      createdAt: "2026-10-28T11:20:00Z"
-    },
-    {
-      id: "sup_seed_7",
-      name: "AeroPulse",
-      rank: "warlord",
-      glory: 3850,
-      amount: 3850,
-      avatar: "assets/char-eysa.png",
-      verified: false,
-      faction: "Blue Shot Guild",
-      message: "Speed and precision on the battlefield.",
-      createdAt: "2026-10-29T12:00:00Z"
-    },
-    {
-      id: "sup_seed_8",
-      name: "Valkyrie_Rose",
-      rank: "elite",
-      glory: 2460,
-      amount: 2460,
-      avatar: "assets/char-suma.png",
-      verified: false,
-      faction: "Independent Faction",
-      message: "Standing firm on the frontlines.",
-      createdAt: "2026-10-30T14:00:00Z"
-    },
-    {
-      id: "sup_seed_9",
-      name: "Detective_NJ",
-      rank: "elite",
-      glory: 1850,
-      amount: 1850,
-      avatar: "assets/detective-nj-smirk.png",
-      verified: true,
-      faction: "Detective Division",
-      paymentMethod: "lore_cash",
-      message: "Redeemed with $10,000 crime syndicate bounties! 🕵️‍♂️",
-      createdAt: "2026-10-25T19:00:00Z"
-    },
-    {
-      id: "sup_seed_10",
-      name: "NeonSpecter",
-      rank: "elite",
-      glory: 940,
-      amount: 940,
-      avatar: "assets/char-hell.png",
-      verified: false,
-      faction: "Shadow Syndicate",
-      message: "Rising through the faction ranks.",
-      createdAt: "2026-10-31T09:30:00Z"
-    },
-    {
-      id: "sup_seed_11",
-      name: "PixelCrusader",
-      rank: "elite",
-      glory: 520,
-      amount: 520,
-      avatar: "assets/cursegod-2.png",
-      verified: false,
-      faction: "Blue Shot Guild",
-      message: "For the glory of the BlueShot universe!",
-      createdAt: "2026-11-01T15:20:00Z"
-    },
-    {
-      id: "sup_seed_12",
-      name: "EchoZero",
-      rank: "elite",
-      glory: 180,
-      amount: 180,
-      avatar: "assets/ruler-1.png",
-      verified: false,
-      faction: "Independent Faction",
-      message: "Excited for the upcoming lore episodes.",
-      createdAt: "2026-11-02T18:10:00Z"
-    }
+    // ==========================================================================
+  // REALISTIC INDIAN GAMING COMMUNITY POOL & VECTOR PRESET EMBLEMS
+  // ==========================================================================
+  const INDIAN_GAMING_USERNAMES = [
+    "Aman_Sniper", "Rahul007", "AdityaRawat", "AryanX21", "Kunal_OP", "RohanMehta",
+    "Dev_Rajput", "Sahil_Gamer", "AmanVerma_FPS", "Rohit_Sharma_YT", "Shreyas_Pro",
+    "Tanmay_07", "Harsh_Bhardwaj", "Varun_Sniper", "Yash_Pandey", "NitinGamer_IN",
+    "Akash_Choudhary", "Rishabh_OP", "Siddharth_V", "ShubhamG", "Ayush_B",
+    "Mohit_Rawat", "Pranav_Sharma", "Gaurav_Singh", "Ankit_Raj", "Abhishek_01",
+    "Parth_Gamer", "Shivam_Pro", "Vivek_Kumar", "Kartik_Sharma", "Tarun_V",
+    "Chetan_OP", "Mayank_Joshi", "Deepak_Chauhan", "Suraj_FPS", "Vikram_Rathore",
+    "Alok_Gamer", "Sumit_Yadav", "Manish_007", "Neel_Patel", "Karan_Malhotra",
+    "Piyush_Babu", "Rakesh_Thakur", "Prateek_B", "Hemant_Rawat", "Chirag_OP",
+    "Anmol_Singh", "Naveen_Kumar", "Rajesh_YT", "Saurabh_Gamer", "Ashish_Sniper",
+    "Tushar_Verma", "Dhruv_Rathi_Fan", "Lokesh_09", "Harshit_V", "Pankaj_R",
+    "Dinesh_Gaming", "Bhavesh_Patil", "Arun_Nair", "Mukesh_Bhai", "Sanjay_OP",
+    "Girish_FPS", "Anand_Rajput", "Manoj_Sniper", "Suresh_007", "Pawan_Kumar",
+    "Umesh_Gamer", "Kamal_Singh", "Ravi_Kishan_OP", "Ajay_Dev_21", "Nikhil_Bhardwaj",
+    "Gautam_Chopra", "Bhuvan_YT", "Akshat_Gamer", "Rajat_Dalal_OP", "Samir_Khan",
+    "Faizan_FPS", "Arman_Malik", "Kabir_Singh_99", "Raghav_Joshi", "Madhav_V",
+    "Lakshya_Sharma", "Sanket_Patil", "Omkar_Gamer", "Pratham_07", "Tejas_Rathore",
+    "Atharva_K", "Hardik_Gamer", "Rudra_OP", "Reyansh_Verma", "Shaurya_Singh",
+    "Aarav_Sniper", "Vivaan_01", "Advait_Raj", "Kabir_Pro", "Ishaan_Mehta",
+    "Anirudh_Gamer", "Keshav_Chauhan", "Madhavan_FPS", "Subhash_Bhai", "Dhanush_OP",
+    "Balaji_Gamer", "Raghu_Rawat", "Venkatesh_07", "Jayant_Verma", "Inderjeet_Singh",
+    "Kuldeep_Yadav", "Joginder_OP", "Sunny_Deol_Fan", "Montu_Gamer", "Sonu_Bhardwaj",
+    "Chhotu_Sniper", "Monu_Rawat", "Golu_Gamer", "Bunty_OP", "Pappu_Can_Play"
   ];
 
-  let supportersData = [...DEFAULT_SUPPORTERS];
+  const FACTIONS = [
+    "Delhi Dragons", "Mumbai Strikers", "Bengaluru Titans", "Punjab Kings eSports",
+    "Hydra Squad", "Team Velocity", "Phoenix eSports", "GodLike Clan",
+    "Revenant Clan", "BlueShot Community", "Deccan Warriors", "Kolkata Knights"
+  ];
+
+  // Vector Preset Symbols for Simulated Community Profiles
+  function createPresetSymbolUri(symbolId, paletteId) {
+    const palettes = [
+      { start: '#7928ca', end: '#ff0080' },
+      { start: '#0070f3', end: '#00dfd8' },
+      { start: '#f59e0b', end: '#d97706' },
+      { start: '#ef4444', end: '#b91c1c' },
+      { start: '#10b981', end: '#059669' },
+      { start: '#8b5cf6', end: '#6d28d9' },
+      { start: '#ec4899', end: '#be185d' },
+      { start: '#06b6d4', end: '#0284c7' },
+      { start: '#f97316', end: '#ea580c' },
+      { start: '#6366f1', end: '#4338ca' },
+      { start: '#14b8a6', end: '#0f766e' },
+      { start: '#e11d48', end: '#9f1239' }
+    ];
+
+    const p = palettes[(paletteId || 0) % palettes.length];
+
+    const symbols = [
+      // 0: Shield
+      '<path d="M50 16 L78 28 C78 56 50 78 50 84 C50 78 22 56 22 28 Z" fill="none" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"/><path d="M50 32 L66 40 C66 56 50 68 50 72 C50 68 34 56 34 40 Z" fill="#ffffff" opacity="0.85"/>',
+      // 1: Crossed Swords
+      '<path d="M25 25 L75 75 M33 22 L78 67 M22 33 L67 78 M75 25 L25 75 M67 22 L22 67 M78 33 L33 78" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#ffffff"/>',
+      // 2: Crosshair / Target
+      '<circle cx="50" cy="50" r="28" fill="none" stroke="#ffffff" stroke-width="4.5"/><circle cx="50" cy="50" r="14" fill="none" stroke="#ffffff" stroke-width="3.5"/><line x1="50" y1="12" x2="50" y2="28" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/><line x1="50" y1="72" x2="50" y2="88" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/><line x1="12" y1="50" x2="28" y2="50" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/><line x1="72" y1="50" x2="88" y2="50" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/><circle cx="50" cy="50" r="3.5" fill="#ffffff"/>',
+      // 3: Lightning Bolt
+      '<path d="M56 14 L26 50 L48 50 L44 86 L74 46 L52 46 Z" fill="#ffffff" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>',
+      // 4: Crown
+      '<path d="M22 68 L22 36 L36 50 L50 24 L64 50 L78 36 L78 68 Z" fill="#ffffff" stroke="#ffffff" stroke-width="3.5" stroke-linejoin="round"/><circle cx="50" cy="22" r="3.5" fill="#ffffff"/><circle cx="22" cy="34" r="3" fill="#ffffff"/><circle cx="78" cy="34" r="3" fill="#ffffff"/><rect x="22" y="72" width="56" height="6" rx="3" fill="#ffffff"/>',
+      // 5: Flame
+      '<path d="M50 15 C50 15 65 35 65 52 C65 68 55 82 50 85 C45 82 35 68 35 52 C35 38 42 28 50 15 Z" fill="#ffffff"/><path d="M50 40 C50 40 58 52 58 62 C58 70 54 76 50 78 C46 76 42 70 42 62 C42 54 46 48 50 40 Z" fill="' + p.end + '"/>',
+      // 6: Gaming Skull
+      '<path d="M30 45 C30 28 70 28 70 45 C70 56 65 62 60 65 L60 75 L40 75 L40 65 C35 62 30 56 30 45 Z" fill="#ffffff"/><circle cx="42" cy="48" r="5" fill="' + p.start + '"/><circle cx="58" cy="48" r="5" fill="' + p.start + '"/><path d="M48 58 L52 58 L50 63 Z" fill="' + p.start + '"/><line x1="45" y1="70" x2="45" y2="75" stroke="' + p.start + '" stroke-width="2"/><line x1="50" y1="70" x2="50" y2="75" stroke="' + p.start + '" stroke-width="2"/><line x1="55" y1="70" x2="55" y2="75" stroke="' + p.start + '" stroke-width="2"/>',
+      // 7: Trident
+      '<path d="M50 15 L50 85 M50 15 L44 26 M50 15 L56 26 M32 30 C32 50 50 54 50 54 C50 54 68 50 68 30 M32 30 L27 38 M68 30 L73 38" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><line x1="42" y1="80" x2="58" y2="80" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>',
+      // 8: Tactical Star
+      '<path d="M50 15 L58 38 L82 38 L62 52 L70 75 L50 60 L30 75 L38 52 L18 38 L42 38 Z" fill="#ffffff" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>',
+      // 9: Shuriken
+      '<path d="M50 15 L57 43 L85 50 L57 57 L50 85 L43 57 L15 50 L43 43 Z" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round"/><circle cx="50" cy="50" r="7" fill="' + p.start + '"/>',
+      // 10: Falcon Wings
+      '<path d="M50 26 C60 38 78 40 84 58 C74 58 64 50 50 60 C36 50 26 58 16 58 C22 40 40 38 50 26 Z" fill="#ffffff"/><path d="M50 58 L46 76 L50 82 L54 76 Z" fill="#ffffff"/>',
+      // 11: Helm / Spartan
+      '<path d="M50 18 C30 18 26 36 26 54 C26 72 36 78 36 78 L42 66 L58 66 L64 78 C64 78 74 72 74 54 C74 36 70 18 50 18 Z" fill="#ffffff"/><line x1="50" y1="28" x2="50" y2="60" stroke="' + p.start + '" stroke-width="4.5"/><line x1="36" y1="46" x2="64" y2="46" stroke="' + p.start + '" stroke-width="4.5"/>',
+      // 12: Alpha Wolf
+      '<path d="M28 28 L40 44 L32 62 L42 66 L50 82 L58 66 L68 62 L60 44 L72 28 L58 36 L50 22 L42 36 Z" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round"/><circle cx="43" cy="50" r="3" fill="' + p.start + '"/><circle cx="57" cy="50" r="3" fill="' + p.start + '"/>',
+      // 13: Dragon Crest
+      '<path d="M35 25 C45 18 65 20 68 35 C70 48 55 52 62 65 C68 76 58 84 46 80 C36 76 38 64 48 62 C58 60 52 46 44 45 C38 44 32 35 35 25 Z" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/><circle cx="58" cy="32" r="3.5" fill="#ffffff"/>',
+      // 14: Compass Rose
+      '<polygon points="50,15 54,46 85,50 54,54 50,85 46,54 15,50 46,46" fill="#ffffff"/><polygon points="50,15 50,50 15,50" fill="rgba(255,255,255,0.7)"/><polygon points="50,85 50,50 85,50" fill="rgba(255,255,255,0.7)"/><circle cx="50" cy="50" r="4" fill="' + p.end + '"/>',
+      // 15: Assassin Blade
+      '<path d="M50 14 C50 14 62 38 58 60 C55 76 44 86 44 86 C44 86 42 74 45 62 C48 48 44 32 50 14 Z" fill="#ffffff"/><line x1="32" y1="65" x2="68" y2="65" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>'
+    ];
+
+    const s = symbols[(symbolId || 0) % symbols.length];
+    const gradId = 'bgGrad_' + (symbolId || 0) + '_' + (paletteId || 0);
+    const svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'><defs><linearGradient id='" + gradId + "' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='" + p.start + "'/><stop offset='100%' stop-color='" + p.end + "'/></linearGradient></defs><rect width='100' height='100' rx='50' fill='url(#" + gradId + ")'/><g>" + s + "</g></svg>";
+
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+  }
+
+  // Default Vector Initials Avatar for Real Users without custom upload
+  function createDefaultUserAvatar(name) {
+    const cleanName = (name || "Player").trim();
+    const parts = cleanName.split(/\s+/);
+    const initials = (parts[0] ? parts[0][0] : "P") + (parts[1] ? parts[1][0] : "");
+    let hash = 0;
+    for (let i = 0; i < cleanName.length; i++) {
+      hash = cleanName.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const hue1 = Math.abs(hash) % 360;
+    const hue2 = (hue1 + 45) % 360;
+    const svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'><defs><linearGradient id='usrGrad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='hsl(" + hue1 + ", 75%, 45%)'/><stop offset='100%' stop-color='hsl(" + hue2 + ", 85%, 35%)'/></linearGradient></defs><rect width='100' height='100' rx='50' fill='url(#usrGrad)'/><text x='50' y='61' font-family='sans-serif' font-size='36' font-weight='800' fill='#ffffff' text-anchor='middle'>" + initials.toUpperCase() + "</text></svg>";
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+  }
+
+  // Build the master pool of 115 simulated Indian gamer profiles (5-1100 Glory)
+  function buildSimulatedCommunityPool() {
+    const pool = [];
+    
+    // 12 Emperor profiles: 1080 down to 115 (minGlory: 100)
+    const emperorScores = [1095, 1080, 960, 850, 740, 620, 530, 440, 360, 280, 210, 160];
+    for (let i = 0; i < 12; i++) {
+      const idx = i;
+      pool.push({
+        id: "sim_in_" + (idx + 1),
+        name: INDIAN_GAMING_USERNAMES[idx],
+        rank: "emperor",
+        glory: emperorScores[i],
+        baseGlory: emperorScores[i],
+        minRankGlory: 100,
+        maxRankGlory: 1100,
+        symbolId: idx % 16,
+        paletteId: (idx * 7) % 12,
+        symbolUri: createPresetSymbolUri(idx % 16, (idx * 7) % 12),
+        verified: false,
+        isSimulated: true,
+        faction: FACTIONS[idx % FACTIONS.length],
+        message: "Pushing rank with the boys! 🔥"
+      });
+    }
+
+    // 28 Apex profiles: 98 down to 42 (minGlory: 40)
+    const apexStep = (98 - 42) / 27;
+    for (let i = 0; i < 28; i++) {
+      const idx = 12 + i;
+      const score = Math.round(98 - (i * apexStep));
+      pool.push({
+        id: "sim_in_" + (idx + 1),
+        name: INDIAN_GAMING_USERNAMES[idx],
+        rank: "apex",
+        glory: score,
+        baseGlory: score,
+        minRankGlory: 40,
+        maxRankGlory: 99,
+        symbolId: idx % 16,
+        paletteId: (idx * 7) % 12,
+        symbolUri: createPresetSymbolUri(idx % 16, (idx * 7) % 12),
+        verified: false,
+        isSimulated: true,
+        faction: FACTIONS[idx % FACTIONS.length],
+        message: "Grinding for Emperor tier next."
+      });
+    }
+
+    // 45 Warlord profiles: 39 down to 10 (minGlory: 10)
+    const warlordStep = (39 - 10) / 44;
+    for (let i = 0; i < 45; i++) {
+      const idx = 12 + 28 + i;
+      const score = Math.round(39 - (i * warlordStep));
+      pool.push({
+        id: "sim_in_" + (idx + 1),
+        name: INDIAN_GAMING_USERNAMES[idx],
+        rank: "warlord",
+        glory: score,
+        baseGlory: score,
+        minRankGlory: 10,
+        maxRankGlory: 39,
+        symbolId: idx % 16,
+        paletteId: (idx * 7) % 12,
+        symbolUri: createPresetSymbolUri(idx % 16, (idx * 7) % 12),
+        verified: false,
+        isSimulated: true,
+        faction: FACTIONS[idx % FACTIONS.length],
+        message: "Supporting BlueShot since day one."
+      });
+    }
+
+    // 30 Elite profiles: 9 down to 5 (minGlory: 5)
+    for (let i = 0; i < 30; i++) {
+      const idx = 12 + 28 + 45 + i;
+      const score = 9 - (i % 5);
+      pool.push({
+        id: "sim_in_" + (idx + 1),
+        name: INDIAN_GAMING_USERNAMES[idx],
+        rank: "elite",
+        glory: score,
+        baseGlory: score,
+        minRankGlory: 5,
+        maxRankGlory: 9,
+        symbolId: idx % 16,
+        paletteId: (idx * 7) % 12,
+        symbolUri: createPresetSymbolUri(idx % 16, (idx * 7) % 12),
+        verified: false,
+        isSimulated: true,
+        faction: FACTIONS[idx % FACTIONS.length],
+        message: "Hyped for the lore mystery chapters!"
+      });
+    }
+
+    return pool;
+  }
+
+  const SIMULATED_COMMUNITY_POOL = buildSimulatedCommunityPool();
+  const STORAGE_KEY_COMMUNITY = "dxz_simulated_community_v3";
+  const ROTATION_CYCLE_MS = 2.5 * 24 * 60 * 60 * 1000; // 2.5 days rotation
+  const MICRO_ADJUST_INTERVAL_MS = 3 * 60 * 1000; // 3 minutes adjustment interval
+
+  // Get active rotated slice with periodic micro-adjustments stored in localStorage
+  function getActiveSimulatedProfiles() {
+    const currentCycle = Math.floor(Date.now() / ROTATION_CYCLE_MS);
+    let state = null;
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_COMMUNITY);
+      if (stored) state = JSON.parse(stored);
+    } catch (e) {
+      state = null;
+    }
+
+    // Check if current cycle is valid
+    if (state && state.cycle === currentCycle && Array.isArray(state.profiles) && state.profiles.length > 0) {
+      // Check if micro-adjustments are due (> 3 minutes)
+      const now = Date.now();
+      if (now - (state.lastMicroAdjust || 0) >= MICRO_ADJUST_INTERVAL_MS) {
+        // Micro-adjust 4-6 random profiles by +/- 1 to 3 points within rank bounds
+        const countToAdjust = 4 + Math.floor(Math.random() * 3);
+        for (let k = 0; k < countToAdjust; k++) {
+          const randIdx = Math.floor(Math.random() * state.profiles.length);
+          const p = state.profiles[randIdx];
+          const delta = (Math.random() < 0.55 ? 1 : -1) * (1 + Math.floor(Math.random() * 3));
+          p.glory = Math.max(p.minRankGlory, Math.min(p.maxRankGlory, p.glory + delta));
+        }
+        state.lastMicroAdjust = now;
+        try {
+          localStorage.setItem(STORAGE_KEY_COMMUNITY, JSON.stringify(state));
+        } catch (e) {}
+      }
+      return state.profiles;
+    }
+
+    // Generate fresh rotated slice for this 2.5-day cycle
+    const emperors = SIMULATED_COMMUNITY_POOL.filter(p => p.rank === "emperor");
+    const apexes = SIMULATED_COMMUNITY_POOL.filter(p => p.rank === "apex");
+    const warlords = SIMULATED_COMMUNITY_POOL.filter(p => p.rank === "warlord");
+    const elites = SIMULATED_COMMUNITY_POOL.filter(p => p.rank === "elite");
+
+    const activeList = [];
+    // 5 emperors, 12 apex, 18 warlord, 10 elite (total 45)
+    for (let i = 0; i < 5; i++) {
+      activeList.push({ ...emperors[(i + currentCycle * 3) % emperors.length] });
+    }
+    for (let i = 0; i < 12; i++) {
+      activeList.push({ ...apexes[(i + currentCycle * 5) % apexes.length] });
+    }
+    for (let i = 0; i < 18; i++) {
+      activeList.push({ ...warlords[(i + currentCycle * 7) % warlords.length] });
+    }
+    for (let i = 0; i < 10; i++) {
+      activeList.push({ ...elites[(i + currentCycle * 11) % elites.length] });
+    }
+
+    const newState = {
+      cycle: currentCycle,
+      lastMicroAdjust: Date.now(),
+      profiles: activeList
+    };
+
+    try {
+      localStorage.setItem(STORAGE_KEY_COMMUNITY, JSON.stringify(newState));
+    } catch (e) {}
+
+    return activeList;
+  }
+
+  // Real Supporters Seed (Empty by default - real patrons loaded from Firestore / local storage)
+  const DEFAULT_SUPPORTERS = [];
+
+  // Merge Real Supporters with Simulated Profiles:
+  // 1. Prioritizes real supporters by Lifetime Glory.
+  // 2. Evicts any simulated profile within +/- 35 points of a real supporter.
+  // 3. Gradually reduces simulated profiles as real supporters grow (target 40 total).
+  function getMergedSupporters(realSupporters) {
+    const safeReal = Array.isArray(realSupporters) ? realSupporters : [];
+    const activeSim = getActiveSimulatedProfiles();
+
+    // Proximity eviction: if real supporter is within +/- 35 glory points of a simulated entry, evict it
+    const filteredSim = activeSim.filter(sim => {
+      return !safeReal.some(real => Math.abs((real.glory || 0) - sim.glory) <= 35);
+    });
+
+    // Gradually reduce simulated entries (at 40 real supporters, 0 simulated entries appear)
+    const maxSim = Math.max(0, 40 - safeReal.length);
+    const finalSim = filteredSim.slice(0, maxSim);
+
+    const merged = [...safeReal, ...finalSim];
+    merged.sort((a, b) => (b.glory || 0) - (a.glory || 0));
+    return merged;
+  }
+
+  let supportersData = getMergedSupporters([]);
   let activeFilter = "all";
   let currentSelectedRank = "elite";
   let currentUser = null;
@@ -247,49 +402,80 @@
   document.addEventListener("DOMContentLoaded", () => {
     initAuthListener();
     initAuthModal();
-    renderMergedRankBoards();
-    loadSupportersFromDatabase();
+    loadLocalSupporters();
     initSupporterModal();
+    window.loadSupportersFromDatabase();
+
+    // Live background micro-adjustment sync every 3 minutes
+    setInterval(() => {
+      if (typeof window.loadSupportersFromDatabase === "function") {
+        window.loadSupportersFromDatabase();
+      }
+    }, 3 * 60 * 1000);
   });
 
   // ==========================================================================
   // AUTHENTICATION MANAGEMENT
   // ==========================================================================
   function initAuthListener() {
+    const checkDemoFallback = () => {
+      const demoUser = localStorage.getItem("dxz_demo_user");
+      if (demoUser) {
+        try { return JSON.parse(demoUser); } catch (e) {}
+      }
+      return null;
+    };
+
     if (typeof firebase !== "undefined" && firebase.auth) {
       firebase.auth().onAuthStateChanged((user) => {
-        currentUser = user;
-        updateAuthUI(user);
+        const effectiveUser = user || checkDemoFallback();
+        currentUser = effectiveUser;
+        updateAuthUI(effectiveUser);
         
         // Auto-fill inputs if supporter modal is open
-        if (user) {
+        if (effectiveUser) {
           const nameInput = document.getElementById("supporter-name-input");
           const emailInput = document.getElementById("supporter-email-input");
           if (nameInput && !nameInput.value) {
-            nameInput.value = user.displayName || user.email.split("@")[0];
+            nameInput.value = effectiveUser.displayName || (effectiveUser.email ? effectiveUser.email.split("@")[0] : "");
           }
           if (emailInput && !emailInput.value) {
-            emailInput.value = user.email || "";
+            emailInput.value = effectiveUser.email || "";
           }
         }
       });
     } else {
-      // Local demo mode check
-      const demoUser = localStorage.getItem("dxz_demo_user");
-      if (demoUser) {
-        try {
-          currentUser = JSON.parse(demoUser);
-          updateAuthUI(currentUser);
-        } catch (e) {}
-      } else {
-        updateAuthUI(null);
-      }
+      currentUser = checkDemoFallback();
+      updateAuthUI(currentUser);
     }
   }
 
   function updateAuthUI(user) {
     const authBar = document.getElementById("supporter-auth-bar");
     if (!authBar) return;
+
+    const isMaster = user && user.email && user.email.toLowerCase() === "blueshotconnectx@gmail.com";
+    if (isMaster) {
+      sessionStorage.setItem("dxz_admin_authenticated", "true");
+      sessionStorage.setItem("dxz_admin_user", JSON.stringify({
+        email: "blueshotconnectx@gmail.com",
+        name: user.displayName || "Owner",
+        isMaster: true
+      }));
+
+      // Add Admin link to main navigation bar
+      const navLinks = document.getElementById("nav-links");
+      if (navLinks && !document.getElementById("nav-admin-link")) {
+        const li = document.createElement("li");
+        li.id = "nav-admin-link";
+        li.className = "nav-link";
+        li.innerHTML = '<a href="admin.html" style="color: #c742ff; font-weight: 800;"><i class="fa-solid fa-crown" style="color: #ffd700; margin-right: 4px;"></i>Admin</a>';
+        navLinks.appendChild(li);
+      }
+    } else {
+      const adminNav = document.getElementById("nav-admin-link");
+      if (adminNav) adminNav.remove();
+    }
 
     if (user) {
       const displayName = user.displayName || (user.email ? user.email.split("@")[0] : "Supporter");
@@ -300,11 +486,18 @@
             <div class="auth-user-meta">
               <span class="auth-greeting">Signed In As</span>
               <strong class="auth-username">${escapeHtml(displayName)}</strong>
+              ${isMaster ? '<span style="font-size: 0.65rem; font-weight: 900; background: #ffd700; color: #000; padding: 0.12rem 0.5rem; border-radius: 999px; margin-left: 0.4rem; letter-spacing: 0.05em;">MASTER ADMIN</span>' : ''}
               <span class="auth-email">(${escapeHtml(user.email || "")})</span>
             </div>
           </div>
           <div class="auth-actions">
-            <span class="auth-verified-badge"><i class="fa-solid fa-circle-check"></i> Eligible to Claim Ranks</span>
+            ${isMaster ? `
+              <a href="admin.html" class="btn btn-sm" style="background: linear-gradient(135deg, #c742ff, #7928ca); color: #fff; font-weight: 800; border-radius: 999px; padding: 0.38rem 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.45rem; box-shadow: 0 0 16px rgba(199,66,255,0.4);">
+                <i class="fa-solid fa-crown" style="color: #ffd700;"></i> Open Admin Panel
+              </a>
+            ` : `
+              <span class="auth-verified-badge"><i class="fa-solid fa-circle-check"></i> Eligible to Claim Ranks</span>
+            `}
             <button class="btn btn-sm btn-outline-danger" onclick="signOutSupporterUser()">
               <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
             </button>
@@ -504,21 +697,20 @@
 
   
   function getSupporterAvatar(supporter) {
-    if (supporter.avatar) return supporter.avatar;
-    const name = (supporter.name || "").toLowerCase();
-    if (name.includes("neeraj")) return "assets/char-bsg.png";
-    if (name.includes("kaelen")) return "assets/char-blackdagger.png";
-    if (name.includes("vanguard")) return "assets/char-kan.png";
-    if (name.includes("flame")) return "assets/char-berry.png";
-    if (name.includes("nexus") || name.includes("strike")) return "assets/char-jiggo.png";
-    if (name.includes("ronin")) return "assets/char-zalta.png";
-    if (name.includes("aero")) return "assets/char-eysa.png";
-    if (name.includes("valkyrie")) return "assets/char-suma.png";
-    if (name.includes("detective")) return "assets/detective-nj-smirk.png";
-    if (supporter.rank === "emperor") return "assets/char-bsg.png";
-    if (supporter.rank === "apex") return "assets/char-blackdagger.png";
-    if (supporter.rank === "warlord") return "assets/char-kan.png";
-    return "assets/char-berry.png";
+    if (!supporter) return createDefaultUserAvatar("Player");
+    // Real supporters: use uploaded avatar, Neeraj canonical avatar, or default vector initials
+    if (supporter.isReal) {
+      if (supporter.avatar) return supporter.avatar;
+      const name = (supporter.name || "").toLowerCase();
+      
+      return createDefaultUserAvatar(supporter.name);
+    }
+    // Simulated community profile: use vector preset symbol
+    if (supporter.symbolUri) return supporter.symbolUri;
+    if (typeof supporter.symbolId === "number") {
+      return createPresetSymbolUri(supporter.symbolId, supporter.paletteId || 0);
+    }
+    return createPresetSymbolUri(0, 0);
   }
 
 
@@ -552,17 +744,34 @@
 
       podiumHtml = `
         <div class="podium-stage-container">
-          <!-- Transparent Duo Character Artwork Layer -->
-          <div class="podium-artwork-bg" aria-hidden="true"></div>
+          <!-- Ambient Lighting (Purple center, Red left, Orange right) -->
+          <div class="podium-ambient-center" aria-hidden="true"></div>
+          <div class="char-ambient-left" aria-hidden="true"></div>
+          <div class="char-ambient-right" aria-hidden="true"></div>
 
-          <!-- Connected Architectural Stage -->
+          <!-- Left Character: Hell with Cup, BESIDE the ladders -->
+          <div class="side-character-left" aria-hidden="true"></div>
+
+          <!-- Connected Architectural Stage (3 Ladders in Center) -->
           <div class="podium-stage">
             <div class="podium-pillars-row">
 
               <!-- 2ND PLACE (LEFT PILLAR - SILVER / BLUE) -->
               ${top2 ? `
               <div class="architectural-pillar pillar-rank-2">
-                <span class="pillar-medal silver">2</span>
+                <div class="podium-wreath-badge silver-wreath">
+                    <div class="wreath-num-wrap">
+                      <svg class="wreath-branch left" width="14" height="22" viewBox="0 0 16 26" fill="#e2e8f0">
+                        <path d="M14 24 C 6 20 2 12 4 2 C 5 7 9 12 14 14 C 11 11 12 6 15 4 C 13 8 13 13 14 18 Z" opacity="0.95"/>
+                        <circle cx="4" cy="5" r="1.6"/><circle cx="2" cy="11" r="1.6"/><circle cx="4" cy="17" r="1.6"/><circle cx="8" cy="22" r="1.6"/>
+                      </svg>
+                      <span class="wreath-digit silver-text">2</span>
+                      <svg class="wreath-branch right" width="14" height="22" viewBox="0 0 16 26" fill="#e2e8f0" style="transform: scaleX(-1);">
+                        <path d="M14 24 C 6 20 2 12 4 2 C 5 7 9 12 14 14 C 11 11 12 6 15 4 C 13 8 13 13 14 18 Z" opacity="0.95"/>
+                        <circle cx="4" cy="5" r="1.6"/><circle cx="2" cy="11" r="1.6"/><circle cx="4" cy="17" r="1.6"/><circle cx="8" cy="22" r="1.6"/>
+                      </svg>
+                    </div>
+                  </div>
                 <div class="pillar-avatar-box silver-ring">
                   <img src="${getSupporterAvatar(top2)}" alt="${escapeHtml(top2.name)}" class="pillar-avatar-img">
                   <span class="pillar-crest-tag" title="${rank2.name}">
@@ -573,6 +782,7 @@
                   <div class="platform-content">
                     <div class="pillar-username-row">
                       <span class="pillar-username">${escapeHtml(top2.name)}</span>
+                      ${top2.isSimulated ? '<span class="podium-sample-pill" title="Community Sample Profile">Community</span>' : ''}
                     </div>
                     <div class="pillar-rank-pill ${rank2.id}-pill">
                       <span>${rank2.name}</span>
@@ -590,7 +800,22 @@
 
               <!-- 1ST PLACE (CENTER PILLAR - TALLEST, GOLD) -->
               <div class="architectural-pillar pillar-rank-1">
-                <span class="pillar-crown">👑</span>
+                <div class="podium-wreath-badge gold-wreath">
+                    <svg class="podium-crown-mini" width="24" height="18" viewBox="0 0 24 20" fill="#ffd700">
+                      <path d="M2 17L4 5L8.5 10L12 3L15.5 10L20 5L22 17H2Z"/>
+                    </svg>
+                    <div class="wreath-num-wrap">
+                      <svg class="wreath-branch left" width="16" height="24" viewBox="0 0 16 26" fill="#ffd700">
+                        <path d="M14 24 C 6 20 2 12 4 2 C 5 7 9 12 14 14 C 11 11 12 6 15 4 C 13 8 13 13 14 18 Z" opacity="0.95"/>
+                        <circle cx="4" cy="5" r="1.6"/><circle cx="2" cy="11" r="1.6"/><circle cx="4" cy="17" r="1.6"/><circle cx="8" cy="22" r="1.6"/>
+                      </svg>
+                      <span class="wreath-digit gold-text">1</span>
+                      <svg class="wreath-branch right" width="16" height="24" viewBox="0 0 16 26" fill="#ffd700" style="transform: scaleX(-1);">
+                        <path d="M14 24 C 6 20 2 12 4 2 C 5 7 9 12 14 14 C 11 11 12 6 15 4 C 13 8 13 13 14 18 Z" opacity="0.95"/>
+                        <circle cx="4" cy="5" r="1.6"/><circle cx="2" cy="11" r="1.6"/><circle cx="4" cy="17" r="1.6"/><circle cx="8" cy="22" r="1.6"/>
+                      </svg>
+                    </div>
+                  </div>
                 <div class="pillar-avatar-box gold-ring">
                   <img src="${getSupporterAvatar(top1)}" alt="${escapeHtml(top1.name)}" class="pillar-avatar-img">
                   <span class="pillar-crest-tag" title="${rank1.name}">
@@ -601,6 +826,7 @@
                   <div class="platform-content">
                     <div class="pillar-username-row">
                       <span class="pillar-username">${escapeHtml(top1.name)}</span>
+                      ${top1.isSimulated ? '<span class="podium-sample-pill" title="Community Sample Profile">Community</span>' : ''}
                       ${top1.verified ? `
                         <svg class="verified-badge" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
@@ -617,13 +843,31 @@
                     </div>
                   </div>
                   <span class="platform-rank-num">1</span>
+                  <div class="pillar-base-emblem gold-emblem" aria-hidden="true">
+                    <svg width="34" height="28" viewBox="0 0 34 28" fill="none">
+                      <path d="M17 1 L21 9 L30 10 L23 17 L25 26 L17 21 L9 26 L11 17 L4 10 L13 9 Z" fill="#ffd700" stroke="#f59e0b" stroke-width="1.2"/>
+                      <circle cx="17" cy="15" r="3.2" fill="#fff" opacity="0.9"/>
+                    </svg>
+                  </div>
                 </div>
               </div>
 
               <!-- 3RD PLACE (RIGHT PILLAR - BRONZE) -->
               ${top3rd ? `
               <div class="architectural-pillar pillar-rank-3">
-                <span class="pillar-medal bronze">3</span>
+                <div class="podium-wreath-badge bronze-wreath">
+                    <div class="wreath-num-wrap">
+                      <svg class="wreath-branch left" width="14" height="22" viewBox="0 0 16 26" fill="#f59e0b">
+                        <path d="M14 24 C 6 20 2 12 4 2 C 5 7 9 12 14 14 C 11 11 12 6 15 4 C 13 8 13 13 14 18 Z" opacity="0.95"/>
+                        <circle cx="4" cy="5" r="1.6"/><circle cx="2" cy="11" r="1.6"/><circle cx="4" cy="17" r="1.6"/><circle cx="8" cy="22" r="1.6"/>
+                      </svg>
+                      <span class="wreath-digit bronze-text">3</span>
+                      <svg class="wreath-branch right" width="14" height="22" viewBox="0 0 16 26" fill="#f59e0b" style="transform: scaleX(-1);">
+                        <path d="M14 24 C 6 20 2 12 4 2 C 5 7 9 12 14 14 C 11 11 12 6 15 4 C 13 8 13 13 14 18 Z" opacity="0.95"/>
+                        <circle cx="4" cy="5" r="1.6"/><circle cx="2" cy="11" r="1.6"/><circle cx="4" cy="17" r="1.6"/><circle cx="8" cy="22" r="1.6"/>
+                      </svg>
+                    </div>
+                  </div>
                 <div class="pillar-avatar-box bronze-ring">
                   <img src="${getSupporterAvatar(top3rd)}" alt="${escapeHtml(top3rd.name)}" class="pillar-avatar-img">
                   <span class="pillar-crest-tag" title="${rank3.name}">
@@ -634,6 +878,7 @@
                   <div class="platform-content">
                     <div class="pillar-username-row">
                       <span class="pillar-username">${escapeHtml(top3rd.name)}</span>
+                      ${top3rd.isSimulated ? '<span class="podium-sample-pill" title="Community Sample Profile">Community</span>' : ''}
                     </div>
                     <div class="pillar-rank-pill ${rank3.id}-pill">
                       <span>${rank3.name}</span>
@@ -653,6 +898,9 @@
             <!-- Shared base slab connecting the 3 pillars -->
             <div class="podium-shared-base"></div>
           </div>
+
+          <!-- Right Character: Zygo with Cigar/Lighter, BESIDE the ladders -->
+          <div class="side-character-right" aria-hidden="true"></div>
         </div>
       `;
     }
@@ -664,22 +912,22 @@
           <svg width="15" height="13" viewBox="0 0 24 20" fill="currentColor">
             <path d="M2 17L4 5L8.5 10L12 3L15.5 10L20 5L22 17H2Z"/>
           </svg>
-          <span>All</span>
+          <span>All Supporters</span>
         </button>
         <button type="button" class="glory-filter-tab ${activeFilter === 'elite' ? 'active' : ''}" onclick="filterSupporters('elite', this)">
-          <span class="tab-rank-dot elite-dot"></span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#ff7b25"><path d="M12 2L2 9l10 13 10-13-10-7z"/></svg>
           <span>Elite</span>
         </button>
         <button type="button" class="glory-filter-tab ${activeFilter === 'warlord' ? 'active' : ''}" onclick="filterSupporters('warlord', this)">
-          <span class="tab-rank-dot warlord-dot"></span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#38bdf8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           <span>Warlord</span>
         </button>
         <button type="button" class="glory-filter-tab ${activeFilter === 'apex' ? 'active' : ''}" onclick="filterSupporters('apex', this)">
-          <span class="tab-rank-dot apex-dot"></span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#ffd700"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
           <span>Apex</span>
         </button>
         <button type="button" class="glory-filter-tab ${activeFilter === 'emperor' ? 'active' : ''}" onclick="filterSupporters('emperor', this)">
-          <span class="tab-rank-dot emperor-dot"></span>
+          <svg width="13" height="13" viewBox="0 0 24 20" fill="#e879f9"><path d="M2 17L4 5L8.5 10L12 3L15.5 10L20 5L22 17H2Z"/></svg>
           <span>Emperor</span>
         </button>
       </div>
@@ -766,6 +1014,7 @@
               <div class="table-supporter-meta">
                 <div class="table-name-line">
                   <span class="table-supporter-name">${escapeHtml(supporter.name)}</span>
+                  ${supporter.isSimulated ? '<span class="community-sample-pill" title="Sample Community Profile">Community</span>' : ''}
                   ${supporter.verified ? `
                     <svg class="verified-ico-mini" width="13" height="13" viewBox="0 0 24 24" fill="#a855f7">
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
@@ -804,11 +1053,15 @@
           <div class="head-cell cell-pos">#</div>
           <div class="head-cell cell-supporter">Supporter</div>
           <div class="head-cell cell-rank">Rank</div>
-          <div class="head-cell cell-glory">Lifetime Glory</div>
+          <div class="head-cell cell-glory">Total Glory</div>
         </div>
         <div class="glory-table-body">
           ${rowsHtml}
         </div>
+      </div>
+      <div class="glory-community-note">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>Real supporters always take priority by Lifetime Glory. Simulated community profiles rotate every 2–3 days to showcase rank tiers.</span>
       </div>
     `;
 
@@ -847,17 +1100,16 @@
             });
           });
 
-          // Merge with DEFAULT_SUPPORTERS to ensure rich visual leaderboard
-          const merged = [...list];
+          // Real supporters from database + default real seeds
+          const realList = [...list];
           DEFAULT_SUPPORTERS.forEach(seed => {
-            if (!merged.find(item => item.id === seed.id || item.name.toLowerCase() === seed.name.toLowerCase())) {
-              merged.push(seed);
+            if (!realList.find(item => item.id === seed.id || item.name.toLowerCase() === seed.name.toLowerCase())) {
+              realList.push({ ...seed, isReal: true });
             }
           });
 
-          // Sort descending by Glory Points
-          merged.sort((a, b) => b.glory - a.glory);
-          supportersData = merged;
+          // Merge with simulated community profiles via priority & proximity replacement
+          supportersData = getMergedSupporters(realList);
           renderMergedRankBoards();
           updateHeroSpotlight();
         }, (error) => {
@@ -871,16 +1123,23 @@
 
   function loadLocalSupporters() {
     const stored = localStorage.getItem("dxz_supporters");
+    let realList = [];
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        supportersData = [...parsed, ...DEFAULT_SUPPORTERS].sort((a, b) => b.glory - a.glory);
+        if (Array.isArray(parsed)) {
+          realList = parsed.map(p => ({ ...p, isReal: true }));
+        }
       } catch (e) {
-        supportersData = [...DEFAULT_SUPPORTERS];
+        realList = [];
       }
-    } else {
-      supportersData = [...DEFAULT_SUPPORTERS];
     }
+    DEFAULT_SUPPORTERS.forEach(seed => {
+      if (!realList.find(item => item.id === seed.id || item.name.toLowerCase() === seed.name.toLowerCase())) {
+        realList.push({ ...seed, isReal: true });
+      }
+    });
+    supportersData = getMergedSupporters(realList);
     renderMergedRankBoards();
     updateHeroSpotlight();
   }

@@ -129,6 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
   try { initWikiSearch(); } catch(e) { console.error("Error in initWikiSearch:", e); }
   try { initEpisodeCountdown(); } catch(e) { console.error("Error in initEpisodeCountdown:", e); }
   try { initHomeReferralProg(); } catch(e) { console.error("Error in initHomeReferralProg:", e); }
+  try { initMasterAdminNavigation(); } catch(e) {}
 
   // Handle cross-page query parameters for search modals
   const urlParams = new URLSearchParams(window.location.search);
@@ -1166,3 +1167,50 @@ if (document.readyState === 'loading') {
 
 
 
+
+
+// ==========================================================================
+// MASTER ADMIN NAVIGATION ACCESS (DEFAULT FOR blueshotconnectx@gmail.com)
+// ==========================================================================
+function initMasterAdminNavigation() {
+  const MASTER_EMAIL = "blueshotconnectx@gmail.com";
+  const checkAndShowAdminNav = (email) => {
+    if (!email || email.toLowerCase() !== MASTER_EMAIL) return;
+    sessionStorage.setItem("dxz_admin_authenticated", "true");
+    const navLinks = document.getElementById("nav-links");
+    if (navLinks && !document.getElementById("nav-admin-link")) {
+      const li = document.createElement("li");
+      li.id = "nav-admin-link";
+      li.className = "nav-link";
+      li.innerHTML = '<a href="admin.html" style="color: #c742ff; font-weight: 800;"><i class="fa-solid fa-crown" style="color: #ffd700; margin-right: 4px;"></i>Admin</a>';
+      navLinks.appendChild(li);
+    }
+  };
+
+  // 1. Firebase Auth listener
+  if (typeof firebase !== "undefined" && firebase.auth) {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user && user.email) checkAndShowAdminNav(user.email);
+    });
+  }
+
+  // 2. Demo / localStorage user check
+  try {
+    const demo = localStorage.getItem("dxz_demo_user");
+    if (demo) {
+      const u = JSON.parse(demo);
+      if (u && u.email) checkAndShowAdminNav(u.email);
+    }
+  } catch (e) {}
+
+  // 3. Persistent Firebase Auth keys in localStorage
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith("firebase:authUser")) {
+      try {
+        const u = JSON.parse(localStorage.getItem(k));
+        if (u && u.email) checkAndShowAdminNav(u.email);
+      } catch (e) {}
+    }
+  }
+}
